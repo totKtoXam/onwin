@@ -595,3 +595,26 @@ html { scroll-behavior: smooth; }
 .support-qr img { width: 160px; height: 160px; padding: 10px; background: #fff; border-radius: 14px; border: 1px solid var(--border); }
 .support-qr figcaption { color: var(--muted); font-size: 0.9rem; }
 @media (max-width: 600px) { .support-qr { display: none; } }
+
+/* ---------- Установка: два равных способа ---------- */
+.install-choice { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 20px; align-items: start; }
+.install-way { display: flex; flex-direction: column; gap: 14px; }
+.install-way h2 { margin: 0; }
+.install-way p.muted { margin: 0; }
+.install-way .steps { margin-top: 10px; }
+.install-way .command { flex-wrap: wrap; }
+.install-way .command code { min-width: 0; overflow-wrap: anywhere; }
+
+/* ---------- Обновления ---------- */
+.release-list { display: grid; gap: 18px; }
+.release { padding: 24px; }
+.release-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 10px; }
+.release-head h2 { margin: 0; font-size: 1.35rem; }
+.release-date { color: var(--muted); font-size: 0.95rem; }
+.release-notes { color: var(--text); }
+.release-notes h1, .release-notes h2, .release-notes h3 { font-size: 1.05rem; margin: 14px 0 6px; }
+.release-notes pre, .release-notes code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.release-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 12px; }
+.release .command { flex-wrap: wrap; }
+.release .command code { min-width: 0; overflow-wrap: anywhere; }
+.release-empty { color: var(--muted); }

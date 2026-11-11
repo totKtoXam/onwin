@@ -430,6 +430,83 @@
     container.appendChild(dev);
   }
 
+
+  /* ---------- Страница «Обновления» ---------- */
+
+  function setupReleasesPage() {
+    var box = document.querySelector("[data-releases]");
+    if (!box) return;
+    function fail(text) {
+      box.textContent = "";
+      var p = el("p", "release-empty", text + " ");
+      var a = el("a", null, "Открыть выпуски на GitHub");
+      a.href = githubURL + ghPaths.releases;
+      p.appendChild(a);
+      box.appendChild(p);
+    }
+    if (repo === PLACEHOLDER_REPO || !isWeb || !window.fetch) { fail("Список доступен на опубликованном сайте."); return; }
+    // body_html: release notes already rendered and sanitized by GitHub.
+    fetch("https://api.github.com/repos/" + repo + "/releases?per_page=100",
+          { headers: { "Accept": "application/vnd.github.html+json" } })
+      .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+      .then(function (list) {
+        var apps = list.filter(function (r) { return !r.draft && /^v\d/.test(r.tag_name || ""); });
+        box.textContent = "";
+        if (!apps.length) { fail("Выпусков пока нет."); return; }
+        var latestShown = false;
+        apps.forEach(function (rel, i) {
+          var version = rel.tag_name.replace(/^v/, "");
+          var card = el("article", "card release");
+          var head = el("div", "release-head");
+          head.appendChild(el("h2", null, "onwin " + version));
+          if (!latestShown && !rel.prerelease) { head.appendChild(el("span", "badge", "последняя")); latestShown = true; }
+          else if (rel.prerelease) head.appendChild(el("span", "badge", "тестовая"));
+          var date = formatDate(rel.published_at);
+          if (date) head.appendChild(el("span", "release-date", date));
+          card.appendChild(head);
+
+          var actions = el("div", "release-actions");
+          (rel.assets || []).forEach(function (asset) {
+            var kind = /\.dmg$/i.test(asset.name) ? "Скачать DMG" : /-app\.zip$/i.test(asset.name) ? "Приложение без движка (zip)" : "";
+            if (!kind) return;
+            var a = el("a", "btn " + (kind === "Скачать DMG" ? "btn-primary" : "btn-secondary"));
+            a.href = asset.browser_download_url;
+            a.appendChild(el("span", null, kind + (formatSize(asset.size) ? " · " + formatSize(asset.size) : "")));
+            actions.appendChild(a);
+          });
+          var page = el("a", "btn btn-secondary", "Страница выпуска");
+          page.href = rel.html_url;
+          actions.appendChild(page);
+          card.appendChild(actions);
+
+          var cmdId = "cmd-v" + i;
+          var cmd = el("div", "command small-cmd");
+          var code = el("code", null, "curl -fsSL " + installURL + " | bash -s -- --version " + version);
+          code.id = cmdId;
+          cmd.appendChild(code);
+          var btn = el("button", "btn btn-primary");
+          btn.type = "button";
+          btn.setAttribute("data-copy-from", "#" + cmdId);
+          btn.appendChild(el("span", "label", "Скопировать"));
+          cmd.appendChild(btn);
+          card.appendChild(el("p", "muted small", "Установить именно эту версию через Терминал:"));
+          card.appendChild(cmd);
+
+          if (rel.body_html) {
+            var details = el("details", "release-notes");
+            if (i === 0) details.open = true;
+            details.appendChild(el("summary", null, "Что нового и как установить"));
+            var body = el("div");
+            body.innerHTML = rel.body_html;
+            details.appendChild(body);
+            card.appendChild(details);
+          }
+          box.appendChild(card);
+        });
+      })
+      .catch(function () { fail("Не удалось загрузить список выпусков."); });
+  }
+
   /* ---------- Запуск ---------- */
 
   function init() {
@@ -437,6 +514,7 @@
     each("[data-donate]", renderDonate);
     each("[data-support]", renderSupport);
     setupRelease();
+    setupReleasesPage();
     document.addEventListener("click", onCopyClick);
   }
 
