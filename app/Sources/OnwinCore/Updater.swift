@@ -46,6 +46,9 @@ extension OnwinVersion {
         return major < 1 ? "\(version) (бета)" : version
     }
 
+    /// True for every version below 1.0 (beta test).
+    public static var isBeta: Bool { (Int(string.split(separator: ".").first ?? "") ?? 0) < 1 }
+
     /// The running onwin, «0.1.0 (бета)».
     public static var displayString: String { display(string) }
 }

@@ -5,6 +5,9 @@ public enum OnwinLinks {
     /// The project's site (GitHub Pages).
     public static let site = URL(string: "https://totktoxam.github.io/onwin/")!
 
+    /// Documentation on the site (sidebar link «Документация», Help menu).
+    public static let documentation = URL(string: "https://totktoxam.github.io/onwin/docs.html")!
+
     /// «Что делать, если не работает» on the site: opened by «Сообщить о проблеме» while there is no chat yet.
     public static let troubleshooting = URL(string: "https://totktoxam.github.io/onwin/docs.html#troubleshooting")!
 

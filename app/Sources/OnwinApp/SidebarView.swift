@@ -154,6 +154,24 @@ struct ShellSidebarFooter: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Divider()
+            HStack(spacing: 14) {
+                Link(destination: OnwinLinks.documentation) {
+                    Label("Документация", systemImage: "book")
+                }
+                .help("Открыть документацию onwin на сайте")
+                Button {
+                    model.reportProblemFromMenu()
+                } label: {
+                    Label("Сообщить о проблеме", systemImage: "exclamationmark.bubble")
+                }
+                .buttonStyle(.link)
+                .help("Собрать сведения о проблеме и открыть чат поддержки")
+            }
+            .font(.callout)
+            .labelStyle(.titleAndIcon)
+            .tint(OnwinTheme.accent)
+            .padding(.top, 4)
+            .padding(.bottom, 2)
             HStack(spacing: 6) {
                 Image(systemName: model.hasEngine ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
                     .foregroundStyle(model.hasEngine ? OnwinTheme.accent : Color.orange)
@@ -177,5 +195,20 @@ struct ShellSidebarFooter: View {
     private var engineText: String {
         guard let engine = model.defaultEngine else { return "Движок не установлен" }
         return "\(engine.info.displayName) · Wine \(engine.info.wineVersion)"
+    }
+}
+
+/// «бета» next to the window title: every onwin below 1.0 is a beta test.
+struct OnwinBetaBadge: View {
+    var body: some View {
+        if OnwinVersion.isBeta {
+            Text("бета")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(Color.orange)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 2)
+                .background(Capsule().fill(Color.orange.opacity(0.16)))
+                .help("onwin \(OnwinVersion.string) — бета-версия: многое уже работает, но возможны ошибки. Сообщить о проблеме — внизу боковой панели или в меню «Справка».")
+        }
     }
 }

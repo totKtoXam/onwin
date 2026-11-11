@@ -181,6 +181,7 @@ struct OnwinCommands: Commands {
         }
 
         CommandGroup(after: .help) {
+            Link("Документация onwin", destination: OnwinLinks.documentation)
             Button("Сообщить о проблеме…") {
                 model.reportProblemFromMenu()   // Views/ProblemReportSheet.swift
             }

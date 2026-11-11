@@ -17,6 +17,9 @@ struct ContentView: View {
             ShellDetail()
         }
         .toolbar {
+            ToolbarItem(placement: .navigation) {
+                OnwinBetaBadge()
+            }
             ToolbarItem(placement: .status) {
                 ShellToolbarStatus()
             }
