@@ -7,6 +7,12 @@
  *          если пусто всё, вместо кнопок выводится короткая заметка.
  *          boosty, kofi — полные ссылки (https://...).
  *          crypto       — адреса кошельков; ключ — подпись на сайте.
+ * support — куда писать о проблемах (блок «Сообщить о проблеме» на главной
+ *          и в документации). Показываются только заполненные поля; если
+ *          пусто всё, выводится заметка, что способ связи скоро появится.
+ *          telegram — ссылка на чат или группу (https://t.me/...),
+ *          form     — ссылка на веб-форму, где не нужен аккаунт GitHub (https://...),
+ *          email    — адрес почты (name@example.org).
  */
 window.ONWIN_CONFIG = {
   repo: "",
@@ -18,5 +24,11 @@ window.ONWIN_CONFIG = {
       "USDT (сеть Ethereum, ERC-20)": "0xD8a53c26c32DD977B123261Dc70ebE5597c5e2C9",
       "Bitcoin (BTC)": "bc1qddmpxjrsam0ghq5zkmfpzy976nkw2s5z24n60m"
     }
+  },
+  support: {
+    telegram: "https://t.me/+KGkGUTbpk0ZjNDEy",
+    telegramQR: "img/telegram-qr.svg",   // QR-код той же ссылки (qrencode); пусто — без QR
+    form: "",
+    email: ""
   }
 };

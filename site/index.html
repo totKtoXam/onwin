@@ -9,9 +9,9 @@
   <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=3">
-  <script src="config.js?v=2" defer></script>
-  <script src="site.js?v=2" defer></script>
+  <link rel="stylesheet" href="style.css?v=5">
+  <script src="config.js?v=4" defer></script>
+  <script src="site.js?v=4" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержанию</a>
@@ -35,6 +35,7 @@
       <nav class="site-nav" aria-label="Основное меню">
         <ul>
           <li><a href="install.html">Установка</a></li>
+          <li><a href="docs.html">Документация</a></li>
           <li><a href="donate.html">Поддержать</a></li>
           <li><a href="licenses.html">Лицензии</a></li>
           <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
@@ -145,23 +146,31 @@
       <div class="wrap">
         <div class="section-head">
           <span class="eyebrow">Как это работает</span>
-          <h2 id="how-title">Три шага до первой игры</h2>
+          <h2 id="how-title">Быстрый старт</h2>
+          <p>Четыре простых шага — и Windows-игра запущена на вашем Mac.</p>
         </div>
-        <div class="how">
-          <ol class="steps">
-            <li>
-              <h3>Установите onwin</h3>
-              <p>Одна команда в Терминале ставит приложение и движок. Повторный запуск той же команды обновляет их.</p>
-            </li>
-            <li>
-              <h3>Создайте пространство</h3>
-              <p>Укажите установщик программы (.exe) или установите Steam. Нужные компоненты onwin поставит сам.</p>
-            </li>
-            <li>
-              <h3>Запускайте</h3>
-              <p>Из окна onwin, из Launchpad или из Dock. Если игре лучше подходит другой графический движок — переключите его в настройках программы.</p>
-            </li>
-          </ol>
+        <div class="how how-main">
+          <div>
+            <ol class="steps">
+              <li>
+                <h3>Установите onwin</h3>
+                <p>Скопируйте одну команду со страницы <a href="install.html">«Установка»</a> и вставьте её в Терминал. Она поставит приложение и всё, что ему нужно.</p>
+              </li>
+              <li>
+                <h3>Откройте onwin</h3>
+                <p>Если onwin попросит установить Rosetta 2 — нажмите «Установить Rosetta». Это бесплатный переводчик от Apple, без него Windows-программы не запустятся.</p>
+              </li>
+              <li>
+                <h3>Поставьте Steam или свою программу</h3>
+                <p>Нажмите «Установить Steam» — или просто перетащите в окно onwin файл установщика .exe. onwin сам создаст для него отдельное «пространство» — свой маленький Windows.</p>
+              </li>
+              <li>
+                <h3>Играйте</h3>
+                <p>Игры и программы появятся плитками на «Рабочем столе» onwin. Дважды щёлкните по плитке — и всё.</p>
+              </li>
+            </ol>
+            <p><a class="more-link" href="docs.html#quick-start">Подробнее в документации<span aria-hidden="true"> →</span></a></p>
+          </div>
           <div class="card">
             <h3>Что происходит внутри</h3>
             <p class="muted small">Никакой эмуляции целого компьютера: Windows-программа работает как обычный процесс macOS.</p>
@@ -172,6 +181,25 @@
               <li><b>Rosetta 2</b><span>код x86-64 → Apple Silicon</span></li>
               <li><b>macOS и Metal</b><span>ваш Mac</span></li>
             </ul>
+          </div>
+        </div>
+        <figure class="shot">
+          <img src="img/docs/main-window.png" alt="Главное окно onwin: рабочий стол с плитками Windows-программ и игр" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+          <figcaption>Так выглядит onwin: все Windows-программы и игры — плитками на «Рабочем столе»</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section support-section" id="support-home" aria-labelledby="support-title">
+      <div class="wrap">
+        <div class="card">
+          <div>
+            <span class="eyebrow">Помощь</span>
+            <h2 id="support-title">Что-то не работает? Напишите нам</h2>
+            <p>Расскажите своими словами, что случилось. Сначала можно заглянуть в советы <a href="docs.html#troubleshooting">«Если что-то не работает»</a>.</p>
+          </div>
+          <div data-support="compact">
+            <noscript><p class="muted">Способы связи — в разделе <a href="docs.html#troubleshooting">«Если что-то не работает»</a> документации.</p></noscript>
           </div>
         </div>
       </div>
@@ -235,6 +263,7 @@
         <ul class="footer-links">
           <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
           <li><a href="install.html">Установка</a></li>
+          <li><a href="docs.html">Документация</a></li>
           <li><a href="donate.html">Поддержать</a></li>
           <li><a href="licenses.html">Лицензии</a></li>
         </ul>

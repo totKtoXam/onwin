@@ -4,6 +4,7 @@
 #   curl -fsSL https://<owner>.github.io/onwin/install.sh | bash                          install / update
 #   curl -fsSL https://<owner>.github.io/onwin/install.sh | bash -s -- --uninstall        remove onwin, keep spaces
 #   curl -fsSL https://<owner>.github.io/onwin/install.sh | bash -s -- --uninstall --purge   remove everything
+#   curl -fsSL https://<owner>.github.io/onwin/install.sh | bash -s -- --version 0.1.0     install that version
 #
 # What it does (see AGENTS.md, "Релизы и установщик"):
 #   1. reads onwin-release.json of the latest GitHub release (versions, URLs, SHA-256 of every part);
@@ -20,7 +21,6 @@ set -euo pipefail
 REPO="${ONWIN_REPO:-__ONWIN_REPO__}"   # owner/name; filled in when the site or a release is published
 MANIFEST_NAME="onwin-release.json"
 # For testing: ONWIN_MANIFEST_URL=<url of an onwin-release.json>, ONWIN_APP_DIR=<folder for Onwin.app>.
-MANIFEST_URL="${ONWIN_MANIFEST_URL:-https://github.com/$REPO/releases/latest/download/$MANIFEST_NAME}"
 SUPPORT="$HOME/Library/Application Support/onwin"
 ENGINES="$SUPPORT/Engines"
 
@@ -40,10 +40,16 @@ ask_yes() {
 
 UNINSTALL=0
 PURGE=0
-for arg in "$@"; do
+WANT_VERSION=""
+while [ $# -gt 0 ]; do
+    arg="$1"; shift
     case "$arg" in
         --uninstall) UNINSTALL=1 ;;
         --purge) PURGE=1 ;;
+        --version)
+            [ $# -gt 0 ] || die "после --version укажите версию, например 0.1.0"
+            WANT_VERSION="${1#v}"; shift ;;
+        --version=*) WANT_VERSION="${arg#--version=}"; WANT_VERSION="${WANT_VERSION#v}" ;;
         -h|--help) sed -n '2,8p' "$0" 2>/dev/null | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) die "неизвестный параметр: $arg" ;;
     esac
@@ -120,7 +126,15 @@ check_sha() {  # check_sha <file> <sha256>
     [ "$actual" = "$2" ] || die "контрольная сумма $(basename "$1") не совпала — файл повреждён, попробуйте ещё раз"
 }
 
-say "читаю последний выпуск onwin ($REPO)"
+if [ -n "${ONWIN_MANIFEST_URL:-}" ]; then
+    MANIFEST_URL="$ONWIN_MANIFEST_URL"
+elif [ -n "$WANT_VERSION" ]; then
+    case "$WANT_VERSION" in *[!0-9.]*|"") die "неверная версия: $WANT_VERSION (пример: 0.1.0)" ;; esac
+    MANIFEST_URL="https://github.com/$REPO/releases/download/v$WANT_VERSION/$MANIFEST_NAME"
+else
+    MANIFEST_URL="https://github.com/$REPO/releases/latest/download/$MANIFEST_NAME"
+fi
+say "читаю ${WANT_VERSION:+выпуск $WANT_VERSION}${WANT_VERSION:-последний выпуск} onwin ($REPO)"
 /usr/bin/curl -fsSL --retry 3 -o "$WORK/$MANIFEST_NAME" "$MANIFEST_URL" \
     || die "не удалось получить описание выпуска — проверьте подключение к интернету"
 VERSION="$(json version)" || die "описание выпуска повреждено"

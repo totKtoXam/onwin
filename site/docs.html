@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Документация onwin</title>
+  <meta name="description" content="Как пользоваться onwin: быстрый старт, пространства, установка программ и Steam, графика D3DMetal, DXMT и DXVK, ярлыки, что делать, если что-то не работает.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=5">
+  <script src="config.js?v=4" defer></script>
+  <script src="site.js?v=4" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+
+  <aside class="donate-bar" aria-label="Поддержать onwin">
+    <div class="wrap">
+      <p class="donate-bar-text">
+        <svg class="donate-bar-heart" width="16" height="16" fill="#e5484d" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        <span>onwin бесплатный и с открытым кодом<span class="donate-bar-more"> — его развитие держится на ваших пожертвованиях.</span></span>
+      </p>
+      <a class="donate-bar-link" href="#donate">Поддержать<span aria-hidden="true"> →</span></a>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — на главную">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="Основное меню">
+        <ul>
+          <li><a href="install.html">Установка</a></li>
+          <li><a href="docs.html" aria-current="page">Документация</a></li>
+          <li><a href="donate.html">Поддержать</a></li>
+          <li><a href="licenses.html">Лицензии</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap page-head">
+      <h1>Документация</h1>
+      <p class="lead">Как пользоваться onwin — простыми словами. Начните с быстрого старта: через пять минут у вас будет первая Windows-игра или программа на Mac.</p>
+    </div>
+
+    <div class="wrap docs-layout">
+      <nav class="toc" aria-labelledby="toc-title">
+        <p class="toc-title" id="toc-title">Содержание</p>
+        <ol>
+          <li><a href="#quick-start">Быстрый старт</a></li>
+          <li><a href="#spaces">Пространства</a></li>
+          <li><a href="#install-programs">Установка программ</a></li>
+          <li><a href="#steam">Steam и игры</a></li>
+          <li><a href="#graphics">Графика: D3DMetal, DXMT, DXVK</a></li>
+          <li><a href="#components">Компоненты</a></li>
+          <li><a href="#launchers">Ярлыки в Launchpad и Dock</a></li>
+          <li><a href="#troubleshooting">Если что-то не работает</a></li>
+          <li><a href="#update-uninstall">Обновление и удаление</a></li>
+          <li><a href="#cli">Для продвинутых: onwinctl</a></li>
+        </ol>
+      </nav>
+
+      <div class="doc">
+
+        <!-- ================= Быстрый старт ================= -->
+        <section id="quick-start" aria-labelledby="quick-start-title">
+          <h2 id="quick-start-title">Быстрый старт</h2>
+          <p>Пять шагов от установки до первой игры. Ничего настраивать вручную не нужно.</p>
+
+          <ol class="steps">
+            <li>
+              <h3>Установите onwin</h3>
+              <p>Откройте Терминал: нажмите <kbd>⌘</kbd> + <kbd>Пробел</kbd>, введите «Терминал» и нажмите <kbd>Return</kbd>. Вставьте эту команду и снова нажмите <kbd>Return</kbd>:</p>
+              <div class="command small-cmd">
+                <code id="qs-install" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+                <button class="btn btn-primary" type="button" data-copy-from="#qs-install">
+                  <span class="label">Скопировать</span>
+                </button>
+              </div>
+              <p>Команда поставит приложение onwin и его движок. Движок — это часть, которая умеет запускать Windows-программы. Другие способы установки описаны на странице <a href="install.html">«Установка»</a>.</p>
+            </li>
+            <li>
+              <h3>Откройте onwin</h3>
+              <p>onwin лежит в папке «Программы». Если на Mac нет Rosetta 2, onwin покажет окно «Для onwin нужна Rosetta 2». Rosetta 2 — бесплатный переводчик от Apple: без него Windows-программы на Mac с процессором Apple не запустятся. Нажмите «Установить Rosetta». macOS может попросить пароль — это нормально.</p>
+              <p>Дальше вы увидите главное окно. Слева — список разделов: «Рабочий стол», каталог «Приложения и игры», ваши пространства, запущенные программы и журналы. Справа — «Рабочий стол»: здесь появятся все ваши Windows-игры и программы.</p>
+              <figure class="shot">
+                <img src="img/docs/main-window.png" alt="Главное окно onwin: слева разделы, справа рабочий стол с плитками программ и игр" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>Главное окно onwin: «Рабочий стол» с плитками программ</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>Поставьте Steam или свою программу</h3>
+              <p><strong>Steam в один клик.</strong> На пустом рабочем столе нажмите «Установить Steam». Или откройте слева «Приложения и игры», найдите Steam и нажмите «Установить…». onwin сам всё подготовит и запустит установщик.</p>
+              <p><strong>Своя программа</strong> — файл установщика <code>.exe</code> или <code>.msi</code>. Есть три способа:</p>
+              <ul class="list">
+                <li>перетащите файл прямо в окно onwin;</li>
+                <li>перетащите файл на значок onwin в Dock или откройте его через onwin (в Finder: правая кнопка мыши → «Открыть в программе» → onwin);</li>
+                <li>в каталоге, в разделе «Своя программа», нажмите «Выбрать установщик…».</li>
+              </ul>
+              <p>onwin спросит, куда ставить программу: в новое пространство или в одно из уже созданных. Если сомневаетесь — выберите новое.</p>
+              <figure class="shot">
+                <img src="img/docs/catalog.png" alt="Каталог onwin: игровые лаунчеры Steam, Epic Games, GOG Galaxy и Battle.net с кнопками установки" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>Каталог «Приложения и игры»: Steam и другие лаунчеры ставятся в один клик</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>Запустите игру</h3>
+              <p>Всё установленное появляется плиткой на «Рабочем столе» onwin. Дважды щёлкните по плитке — программа или игра запустится. Игры, которые вы скачали в Steam, тоже появляются здесь отдельными плитками.</p>
+              <figure class="shot">
+                <img src="img/docs/steam-games.png" alt="Игры Steam плитками в onwin" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>Игры из Steam — плитками, двойной щелчок запускает игру</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>Для новых игр включите D3DMetal</h3>
+              <p>Современные игры (на DirectX 12, а часто и на DirectX 11) лучше всего работают с D3DMetal — графикой от Apple. onwin не может положить её в комплект, но установит её сам: откройте каталог, раздел «Компоненты», карточку «D3DMetal (Game Porting Toolkit)» и нажмите «Установить D3DMetal». Понадобится войти с бесплатным Apple ID. Подробнее — в разделе <a href="#graphics">«Графика»</a>.</p>
+              <p>Если игре нужен D3DMetal, а он ещё не установлен, onwin сам предложит его поставить перед запуском.</p>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ================= Пространства ================= -->
+        <section id="spaces" aria-labelledby="spaces-title">
+          <h2 id="spaces-title">Пространства</h2>
+          <p><dfn class="term">Пространство</dfn> — это отдельный «компьютер с Windows» внутри onwin. У него свой диск C:, свои программы, настройки и сохранения. Пространства не мешают друг другу. Если что-то сломалось или стало не нужно — удалите пространство, и от программы не останется следа.</p>
+          <p>Обычно хватает одного пространства на лаунчер (например, «Steam») или на одну программу. Когда вы ставите что-то из каталога, onwin создаёт пространство сам.</p>
+
+          <h3>Создать пространство</h3>
+          <p>Слева, в разделе «Пространства», нажмите «Создать пространство…». Или кнопку «Новое пространство» вверху окна, или <kbd>⌘</kbd> + <kbd>N</kbd>. Укажите имя и версию Windows. Большинству игр подходит Windows 10. Графику можно оставить «Автоматически».</p>
+          <figure class="shot">
+            <img src="img/docs/new-space.png" alt="Окно «Новое пространство» с полями имени, версии Windows и графики" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Окно «Новое пространство»</figcaption>
+          </figure>
+
+          <h3>Что можно сделать с пространством</h3>
+          <p>Щёлкните по пространству в списке слева правой кнопкой мыши. Те же команды есть на странице пространства в меню «Ещё».</p>
+          <ul class="list">
+            <li><strong>«Переименовать…»</strong> — дать другое имя. Сначала закройте программы этого пространства.</li>
+            <li><strong>«Дублировать»</strong> — сделать независимую копию со всеми установленными программами. Удобно, чтобы попробовать что-то, не рискуя рабочей версией.</li>
+            <li><strong>«Архивировать…»</strong> — упаковать пространство в один файл <code>.onwinspace</code>. Это резервная копия или способ перенести пространство на другой Mac. Перед этим закройте программы пространства.</li>
+            <li><strong>Восстановить из архива</strong> — дважды щёлкните по файлу <code>.onwinspace</code> или выберите в меню «Файл» пункт «Восстановить пространство из архива…».</li>
+            <li><strong>«Удалить…»</strong> — пространство вместе со всем содержимым уйдёт в Корзину. Пока Корзина не очищена, его можно вернуть.</li>
+            <li><strong>«Показать в Finder»</strong> — открыть папку пространства. Кнопка «Открыть диск C:» на странице пространства открывает его диск C:.</li>
+          </ul>
+
+          <h3>Настройки пространства</h3>
+          <p>Откройте их кнопкой «Настройки» на странице пространства или через меню «Пространство» → «Настройки пространства…». Самое полезное:</p>
+          <ul class="list">
+            <li><strong>«Версия Windows»</strong> (раздел «Основное») — какую Windows «видят» программы. Старым играм иногда нужна Windows 7 или XP.</li>
+            <li><strong>«Графика»</strong> — как рисуется картинка в играх. Обычно лучше оставить «Автоматически». Подробнее — в разделе <a href="#graphics">«Графика»</a>.</li>
+            <li><strong>«Metal HUD»</strong> — показывает поверх игры частоту кадров. Удобно, чтобы проверить, насколько плавно идёт игра.</li>
+            <li><strong>«Высокое разрешение (Retina)»</strong> — картинка чётче, но игры работают медленнее, а надписи в старых программах становятся мелкими. Если сомневаетесь — не включайте.</li>
+            <li><strong>«MSync»</strong> (раздел «Производительность») — ускоряет работу игр. Рекомендуется держать включённым.</li>
+            <li><strong>«Сообщать о поддержке AVX»</strong> — нужно некоторым новым играм, которые без этого не запускаются.</li>
+            <li><strong>«Компоненты»</strong> — что уже стоит в пространстве и что можно доставить. См. раздел <a href="#components">«Компоненты»</a>.</li>
+            <li><strong>«Ярлыки в Launchpad»</strong> — см. раздел <a href="#launchers">«Ярлыки»</a>.</li>
+          </ul>
+          <p>Если пространство сейчас работает, а вы меняете MSync или Retina, onwin предупредит: настройка начнёт действовать после перезапуска пространства, и все его программы закроются.</p>
+          <figure class="shot">
+            <img src="img/docs/space-settings.png" alt="Настройки пространства: разделы «Основное», «Графика» и «Производительность»" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Настройки пространства</figcaption>
+          </figure>
+        </section>
+
+        <!-- ================= Установка программ ================= -->
+        <section id="install-programs" aria-labelledby="install-programs-title">
+          <h2 id="install-programs-title">Установка программ</h2>
+
+          <h3>Из каталога</h3>
+          <p>Каталог — это раздел «Приложения и игры» слева (или меню «Пространство» → «Установить из каталога…»). В нём лежат готовые рецепты. <dfn class="term">Рецепт</dfn> — это инструкция для onwin: какое пространство создать, какие компоненты поставить и какой установщик запустить. Вы нажимаете «Установить…», выбираете, куда ставить, — остальное onwin сделает сам.</p>
+          <p>В разделе «Игровые лаунчеры» есть Steam, Epic Games Launcher, GOG Galaxy и Battle.net. Сверху есть поиск.</p>
+
+          <h3>Свой установщик (.exe или .msi)</h3>
+          <p>Программы нет в каталоге? Поставьте её из файла:</p>
+          <ul class="list">
+            <li>перетащите файл в окно onwin;</li>
+            <li>или в каталоге, в карточке «Установить свою программу», нажмите «Выбрать установщик…»;</li>
+            <li>или на рабочем столе нажмите «Установить» → «Из файла…».</li>
+          </ul>
+          <p>Выберите пространство — новое или одно из созданных — и нажмите «Запустить установщик». Если onwin спросит «Что сделать», выберите «Установить» для установщика или «Запустить» для готовой программы, которую не нужно ставить. Когда установка закончится, onwin сам найдёт новую программу и покажет её на рабочем столе.</p>
+
+          <h3>«Мои приложения»</h3>
+          <p>После установки своей программы onwin предложит сохранить её в «Мои приложения». Это ваши собственные рецепты в каталоге: в следующий раз ту же программу можно поставить в один щелчок. Новый рецепт можно сделать и вручную — карточка «Добавить приложение», кнопка «Создать…». Рецептом можно поделиться: «Экспортировать…» сохранит его в файл <code>.onwinrecipe</code>, а «Импортировать…» добавит чужой. Импорт ничего не запускает — вы сначала увидите, что в рецепте.</p>
+
+          <h3>Запустить .exe без установки</h3>
+          <p>Нажмите «Запустить .exe» вверху окна (или <kbd>⌘</kbd> + <kbd>O</kbd>), выберите файл и пространство. Можно и просто перетащить файл в окно.</p>
+
+          <h3>Закрепить программу</h3>
+          <p>На странице пространства видны его программы. Щёлкните по программе правой кнопкой и выберите «Закрепить». Она попадёт в раздел «Закреплённые». У закреплённой программы в «Свойства…» можно задать своё название, графику, параметры запуска и переменные окружения. Если нужной программы нет в списке, выберите в меню «Ещё» пункт «Добавить программу в список…».</p>
+          <p>Если плитка мешает на рабочем столе, выберите в её меню «Скрыть с рабочего стола». Вернуть скрытые можно кнопкой «Показать скрытые».</p>
+
+          <h3>«Запустить с параметрами…»</h3>
+          <p>Этот пункт есть в меню любой программы и игры. Он запускает программу один раз с особыми настройками: свои аргументы запуска, другая графика, Metal HUD. Настройки пространства при этом не меняются. Удобно, чтобы попробовать, поможет ли что-то. Если помогло — отметьте «Сохранить как программу», и onwin запомнит эти настройки.</p>
+
+          <h3>Удалить программу</h3>
+          <p>Меню «Пространство» → «Удалить программу…» откроет список установленных программ и запустит их деинсталлятор. Чтобы убрать всё сразу, удалите само пространство.</p>
+        </section>
+
+        <!-- ================= Steam ================= -->
+        <section id="steam" aria-labelledby="steam-title">
+          <h2 id="steam-title">Steam и игры</h2>
+          <ol class="steps">
+            <li>
+              <h3>Установите Steam</h3>
+              <p>Каталог → «Steam» → «Установить…». onwin создаст пространство «Steam» и сразу поставит в него настройки, которые нужны Steam на Mac.</p>
+            </li>
+            <li>
+              <h3>Войдите в аккаунт</h3>
+              <p>После установки Steam сам обновится и попросит войти. Входите как обычно — логин и пароль вводятся в окне самого Steam.</p>
+            </li>
+            <li>
+              <h3>Скачайте игру</h3>
+              <p>Установите игру из библиотеки Steam, как на Windows. Готовая игра появится плиткой на рабочем столе onwin и в разделе «Игры Steam» на странице пространства.</p>
+            </li>
+            <li>
+              <h3>Играйте</h3>
+              <p>Двойной щелчок по плитке — «Играть». onwin сам запустит игру через Steam.</p>
+            </li>
+          </ol>
+          <p>На плитке игры видно, что с ней сейчас: «Запущено», «Загружается» или «Нужно обновление». В меню игры (правая кнопка мыши) есть «Показать папку игры», «Проверить целостность файлов», «Страница в магазине Steam» и «Удалить через Steam…». Кнопка «Открыть Steam» на странице пространства открывает сам Steam.</p>
+          <p class="note note-plain">Игры с защитой от читов на уровне ядра Windows (часть онлайн-шутеров) в onwin обычно не запускаются. Это ограничение Wine, а не вашего Mac.</p>
+        </section>
+
+        <!-- ================= Графика ================= -->
+        <section id="graphics" aria-labelledby="graphics-title">
+          <h2 id="graphics-title">Графика: D3DMetal, DXMT, DXVK</h2>
+          <p>Windows-игры рисуют картинку через DirectX — это технология Windows. На Mac её нет, поэтому onwin «переводит» DirectX на язык Mac (Metal). Переводчиков несколько, и разным играм лучше подходят разные. В onwin это называется «Графика».</p>
+
+          <div class="card">
+            <dl class="paths">
+              <div class="path-row"><dt>Автоматически</dt><dd>onwin сам выберет лучший вариант. Начните с него.</dd></div>
+              <div class="path-row"><dt>D3DMetal</dt><dd>от Apple. Лучший выбор для новых игр на DirectX 11 и 12. Нужно установить отдельно (см. ниже).</dd></div>
+              <div class="path-row"><dt>DXMT</dt><dd>открытый переводчик для игр на DirectX 10 и 11.</dd></div>
+              <div class="path-row"><dt>DXVK</dt><dd>для игр на DirectX 9–11. Попробуйте, если с другими вариантами игра не идёт.</dd></div>
+              <div class="path-row"><dt>WineD3D (OpenGL)</dt><dd>самый совместимый, но самый медленный. Подходит старым играм.</dd></div>
+            </dl>
+          </div>
+
+          <h3>Как выбрать</h3>
+          <ul class="list">
+            <li>Сначала оставьте «Автоматически». Когда D3DMetal установлен, onwin выбирает его первым.</li>
+            <li>Игра не запускается, чёрный экран или ошибки картинки — попробуйте другой вариант. Быстрее всего — через «Запустить с параметрами…»: так настройки пространства не изменятся.</li>
+            <li>Нашли подходящий вариант — закрепите программу и в «Свойства…» выберите его в «Графика для этой программы». Или поменяйте «Графика» в настройках пространства — тогда он будет у всех программ пространства.</li>
+          </ul>
+          <p>Изменения графики начинают действовать при следующем запуске программы.</p>
+          <figure class="shot">
+            <img src="img/docs/graphics.png" alt="Выбор графики для программы: Автоматически, D3DMetal, DXMT, DXVK, WineD3D" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Выбор графики для одной программы</figcaption>
+          </figure>
+
+          <h3 id="d3dmetal">Как установить D3DMetal</h3>
+          <p>D3DMetal входит в Game Porting Toolkit — набор Apple для разработчиков игр. Apple выдаёт его только после входа с Apple ID. Подойдёт обычная бесплатная учётная запись. Поэтому onwin не может положить D3DMetal в комплект и никогда его не распространяет: набор скачивается с сайта Apple на вашем Mac.</p>
+          <ol class="steps">
+            <li>
+              <h3>Нажмите «Установить D3DMetal»</h3>
+              <p>Кнопка есть в каталоге (раздел «Компоненты», карточка «D3DMetal (Game Porting Toolkit)»), в меню «Пространство» → «Установить D3DMetal…» и в настройках onwin на вкладке «D3DMetal».</p>
+            </li>
+            <li>
+              <h3>Войдите с Apple ID</h3>
+              <p>Откроется окно «Установка D3DMetal — вход в Apple ID» со страницей Apple. Пароль вводится на странице Apple — onwin его не видит и не сохраняет. Если Apple попросит принять соглашение для разработчиков, примите его там же.</p>
+            </li>
+            <li>
+              <h3>Подождите</h3>
+              <p>onwin сам скачает последнюю версию Game Porting Toolkit и установит из неё D3DMetal — сразу для всех пространств. Это нужно сделать один раз.</p>
+            </li>
+          </ol>
+          <p>Не хотите входить в окне onwin? Нажмите «Открыть в браузере», скачайте Game Porting Toolkit (.dmg) на сайте Apple в папку «Загрузки» — onwin найдёт файл сам. Если файл уже скачан, выберите его кнопкой «Указать вручную…».</p>
+          <figure class="shot">
+            <img src="img/docs/d3dmetal.png" alt="Окно установки D3DMetal: шаги «Вход в Apple ID», «Загрузка Game Porting Toolkit», «Установка D3DMetal»" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Установка D3DMetal: вход с Apple ID на странице Apple</figcaption>
+          </figure>
+        </section>
+
+        <!-- ================= Компоненты ================= -->
+        <section id="components" aria-labelledby="components-title">
+          <h2 id="components-title">Компоненты</h2>
+          <p><dfn class="term">Компоненты</dfn> — это дополнительные части Windows, которые нужны многим играм и программам: библиотеки Visual C++, DirectX, .NET, шрифты и другие. На обычном Windows их ставят вместе с игрой. В onwin это происходит само.</p>
+
+          <h3>Автоматически</h3>
+          <p>Перед первым запуском программы onwin проверяет, каких библиотек ей не хватает, и тихо ставит их. Если программа всё же не запустилась из-за нехватки библиотеки, onwin поставит недостающее и запустит её ещё раз. Всё скачивается с официальных серверов (Microsoft и других авторов).</p>
+          <p>Это включено по умолчанию. Выключить можно в настройках onwin, вкладка «Основные», или в настройках отдельного пространства — пункт «Устанавливать нужные компоненты автоматически». Тогда onwin будет только подсказывать, чего не хватает.</p>
+
+          <h3>Вручную</h3>
+          <p>Откройте каталог, раздел «Компоненты». Выберите компонент, нажмите «Добавить…» и укажите пространство. Ещё один путь — настройки пространства, раздел «Компоненты».</p>
+          <p>Иногда на странице пространства появляется подсказка «Игре может понадобиться» со списком компонентов. Нажмите «Установить всё» — onwin поставит их.</p>
+        </section>
+
+        <!-- ================= Ярлыки ================= -->
+        <section id="launchers" aria-labelledby="launchers-title">
+          <h2 id="launchers-title">Ярлыки в Launchpad и Dock</h2>
+          <p>Любую Windows-программу можно открывать как обычное приложение Mac — из Launchpad, Spotlight или Dock, не заходя в onwin.</p>
+          <ul class="list">
+            <li><strong>Для одной программы:</strong> щёлкните по ней правой кнопкой (на рабочем столе или на странице пространства) и выберите «Создать ярлык в Launchpad».</li>
+            <li><strong>Для всех программ пространства:</strong> в настройках пространства, раздел «Ярлыки в Launchpad», включите «Создавать ярлыки автоматически». onwin сделает ярлык для каждой программы из меню «Пуск», а ярлыки удалённых программ уберёт сам.</li>
+            <li><strong>В Dock:</strong> перетащите ярлык из Launchpad или из папки с ярлыками в Dock, как любое приложение Mac.</li>
+          </ul>
+          <p>Ярлыки лежат в папке <code>~/Applications/onwin/</code>, по папке на каждое пространство. Убрать ярлык — «Удалить ярлык из Launchpad» в меню программы.</p>
+        </section>
+
+        <!-- ================= Проблемы ================= -->
+        <section id="troubleshooting" aria-labelledby="troubleshooting-title">
+          <h2 id="troubleshooting-title">Если что-то не работает</h2>
+          <p>Попробуйте по порядку. Чаще всего помогает первый или второй шаг.</p>
+
+          <ol class="steps">
+            <li>
+              <h3>Перезапустите пространство</h3>
+              <p>Иногда программа «зависает» в фоне. На странице пространства нажмите «Завершить всё» (или меню «Пространство» → «Завершить все программы пространства») и запустите программу снова.</p>
+            </li>
+            <li>
+              <h3>Попробуйте другую графику</h3>
+              <p>Чёрный экран, вылет при старте, ошибки картинки — запустите программу через «Запустить с параметрами…» и выберите другой вариант в «Графика». Подробнее — в разделе <a href="#graphics">«Графика»</a>.</p>
+            </li>
+            <li>
+              <h3>Поставьте предложенные компоненты</h3>
+              <p>Если программа не запустилась, onwin может показать подсказку «…не запустилась — вот что может помочь» со списком компонентов. Нажмите «Установить всё».</p>
+            </li>
+            <li>
+              <h3>Поменяйте версию Windows</h3>
+              <p>Старым играм иногда нужна Windows 7 или XP. Это меняется в настройках пространства, пункт «Версия Windows».</p>
+            </li>
+            <li>
+              <h3>Посмотрите журнал</h3>
+              <p><dfn class="term">Журнал</dfn> — это текстовый файл, куда onwin записывает всё, что происходит при запуске программы. Причина ошибки обычно видна там. Журналы открываются в разделе «Журналы» слева, кнопкой «Журналы» на странице пространства или кнопкой «Показать журнал» в сообщении об ошибке. Сами файлы лежат в папке <code>~/Library/Logs/onwin</code>. Журнал можно скопировать кнопкой «Копировать» и приложить к сообщению о проблеме.</p>
+            </li>
+          </ol>
+          <figure class="shot">
+            <img src="img/docs/troubleshooting-logs.png" alt="Раздел «Журналы» в onwin: список журналов и текст выбранного журнала" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Раздел «Журналы»: здесь видно, что пошло не так</figcaption>
+          </figure>
+
+          <h3>Что обычно не работает</h3>
+          <ul class="list">
+            <li>Игры с античитом, который работает на уровне ядра Windows (часть онлайн-шутеров).</li>
+            <li>Программы, которым нужны свои драйверы устройств: некоторые принтеры, сканеры, ключи защиты, редкие контроллеры.</li>
+            <li>Программы, которые проверяют, что работают на «настоящем» Windows, и отказываются запускаться иначе.</li>
+          </ul>
+          <p>Остальное чаще всего запускается. Если не получилось — напишите нам, это поможет сделать onwin лучше.</p>
+
+          <div class="card" id="report">
+            <h3 style="margin-top: 0">Сообщить о проблеме</h3>
+            <p class="muted">Опишите, что случилось, — простыми словами, без технических подробностей. Мы разберёмся.</p>
+            <div data-support="full">
+              <noscript><p class="muted">Чтобы увидеть способы связи, включите JavaScript.</p></noscript>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= Обновление и удаление ================= -->
+        <section id="update-uninstall" aria-labelledby="update-uninstall-title">
+          <h2 id="update-uninstall-title">Обновление и удаление</h2>
+
+          <h3>Обновить onwin</h3>
+          <p>Выполните в Терминале ту же команду, что и при установке. Она скачает только то, что изменилось.</p>
+          <div class="command small-cmd">
+            <code id="doc-update" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-update">
+              <span class="label">Скопировать</span>
+            </button>
+          </div>
+          <p>Если вы ставили onwin из образа DMG, скачайте новый образ на странице <a href="install.html">«Установка»</a>.</p>
+
+          <h3>Удалить onwin</h3>
+          <p>Эта команда удалит приложение и движок. Ваши пространства — программы, игры и сохранения — останутся на месте.</p>
+          <div class="command small-cmd">
+            <code id="doc-uninstall" data-cmd="uninstall">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-uninstall">
+              <span class="label">Скопировать</span>
+            </button>
+          </div>
+          <p>Чтобы удалить и пространства, используйте эту команду. Терминал переспросит, точно ли удалять. Это необратимо: программы и сохранения внутри пространств пропадут.</p>
+          <div class="command small-cmd">
+            <code id="doc-purge" data-cmd="purge">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall --purge</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-purge">
+              <span class="label">Скопировать</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= onwinctl ================= -->
+        <section id="cli" aria-labelledby="cli-title">
+          <h2 id="cli-title">Для продвинутых: onwinctl</h2>
+          <p><code>onwinctl</code> — инструмент для Терминала: всё то же, что в окне onwin, только командами. Обычным пользователям он не нужен. Полный список команд покажет <code>onwinctl help</code>.</p>
+          <p class="muted small">Если команда <code>onwinctl</code> не находится, запускайте её из приложения: <code>/Applications/Onwin.app/Contents/MacOS/onwinctl</code>.</p>
+
+          <div class="cli-group">
+            <h3>Проверить, что всё установлено</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl status</code></dt><dd>что установлено: Rosetta, движок, D3DMetal</dd></div>
+              <div class="cli-row"><dt><code>onwinctl engines</code></dt><dd>список движков Wine</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Пространства</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl spaces</code></dt><dd>список пространств</dd></div>
+              <div class="cli-row"><dt><code>onwinctl create &lt;имя&gt; [--win win10] [--backend auto|d3dmetal|dxmt|dxvk|wined3d]</code></dt><dd>создать пространство</dd></div>
+              <div class="cli-row"><dt><code>onwinctl info &lt;имя&gt;</code></dt><dd>настройки пространства</dd></div>
+              <div class="cli-row"><dt><code>onwinctl set &lt;имя&gt; &lt;параметр&gt; &lt;значение&gt; [--restart]</code></dt><dd>изменить настройку: backend, win, msync, retina, hud, avx, dxr, metalfx, debug, launchers, autocomponents, env:ИМЯ, dll:ИМЯ</dd></div>
+              <div class="cli-row"><dt><code>onwinctl archive &lt;имя&gt; &lt;файл.onwinspace&gt;</code></dt><dd>упаковать пространство в архив</dd></div>
+              <div class="cli-row"><dt><code>onwinctl restore &lt;файл.onwinspace&gt; [имя]</code></dt><dd>восстановить из архива</dd></div>
+              <div class="cli-row"><dt><code>onwinctl delete &lt;имя&gt;</code></dt><dd>переместить пространство в Корзину</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Установить и запустить</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl catalog</code></dt><dd>каталог приложений и компонентов</dd></div>
+              <div class="cli-row"><dt><code>onwinctl install &lt;приложение&gt; [--space имя]</code></dt><dd>поставить из каталога, например <code>steam</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl run &lt;пространство&gt; &lt;файл.exe|.msi|.lnk&gt; [аргументы...]</code></dt><dd>запустить и ждать; нужные компоненты ставятся сами (<code>--no-auto-components</code> — без этого)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl programs &lt;пространство&gt;</code></dt><dd>найденные программы</dd></div>
+              <div class="cli-row"><dt><code>onwinctl pin &lt;пространство&gt; &lt;путь&gt; [имя]</code></dt><dd>закрепить программу (<code>unpin</code> — открепить)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl wine &lt;пространство&gt; &lt;команда&gt;</code></dt><dd>запустить инструмент Wine, например <code>winecfg</code>, <code>regedit</code>, <code>cmd</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl uninstall-list &lt;пространство&gt;</code></dt><dd>программы, которые можно удалить (<code>uninstall</code> — удалить)</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Steam</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl steam-games &lt;пространство&gt;</code></dt><dd>игры Steam в пространстве</dd></div>
+              <div class="cli-row"><dt><code>onwinctl steam-launch &lt;пространство&gt; &lt;appid|название&gt;</code></dt><dd>запустить игру через Steam</dd></div>
+              <div class="cli-row"><dt><code>onwinctl steam-install &lt;пространство&gt; &lt;appid&gt;</code></dt><dd>открыть установку игры в Steam</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Остановить программы</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl running &lt;пространство&gt;</code></dt><dd>запущено ли пространство</dd></div>
+              <div class="cli-row"><dt><code>onwinctl shutdown &lt;пространство&gt;</code></dt><dd>мягко закрыть все программы (через 10 с — принудительно)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl kill &lt;пространство&gt;</code></dt><dd>принудительно завершить все программы</dd></div>
+              <div class="cli-row"><dt><code>onwinctl reboot &lt;пространство&gt;</code></dt><dd>«перезагрузить Windows» в пространстве</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Графика и компоненты</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl d3dmetal-import &lt;путь к GPTK&gt;</code></dt><dd>импортировать D3DMetal из скачанного Game Porting Toolkit (.dmg или том)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl d3dmetal-fetch</code></dt><dd>импортировать уже скачанный Game Porting Toolkit из «Загрузок»; вход с Apple ID — в приложении onwin</dd></div>
+              <div class="cli-row"><dt><code>onwinctl components [пространство]</code></dt><dd>список компонентов (✓ — установлен)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl component &lt;пространство&gt; &lt;компонент&gt;[,...]</code></dt><dd>установить компонент, например <code>vcrun2026</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl advise &lt;пространство|-&gt; &lt;файл.exe&gt;</code></dt><dd>каких компонентов не хватает программе</dd></div>
+              <div class="cli-row"><dt><code>onwinctl advise-log &lt;журнал.log&gt;</code></dt><dd>что советует журнал неудачного запуска</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Ярлыки и свои рецепты</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl launcher &lt;пространство&gt; &lt;программа&gt;</code></dt><dd>создать ярлык для Launchpad и Dock</dd></div>
+              <div class="cli-row"><dt><code>onwinctl launchers [пространство]</code></dt><dd>список ярлыков</dd></div>
+              <div class="cli-row"><dt><code>onwinctl launcher-remove &lt;пространство&gt; &lt;программа&gt;</code></dt><dd>удалить ярлык</dd></div>
+              <div class="cli-row"><dt><code>onwinctl recipe list</code></dt><dd>ваши рецепты из «Мои приложения»</dd></div>
+              <div class="cli-row"><dt><code>onwinctl recipe export &lt;id&gt; &lt;файл.onwinrecipe&gt;</code></dt><dd>сохранить рецепт в файл (<code>recipe import</code> — добавить из файла)</dd></div>
+            </dl>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <section class="section donate-section" id="donate" aria-labelledby="donate-title" style="padding-top: 0">
+      <div class="wrap">
+        <div class="card donate-block">
+          <div>
+            <span class="eyebrow">Поддержать проект</span>
+            <h2 id="donate-title">Документация помогла?</h2>
+            <p>onwin бесплатный и делается на энтузиазме. Пожертвования оплачивают время на разработку и проверку игр. <a href="donate.html">Подробнее</a></p>
+          </div>
+          <div class="donate-list" data-donate="compact">
+            <noscript><p class="muted">Способы поддержки перечислены на странице <a href="donate.html">«Поддержать»</a>.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">Установка</a></li>
+          <li><a href="docs.html">Документация</a></li>
+          <li><a href="donate.html">Поддержать</a></li>
+          <li><a href="licenses.html">Лицензии</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">Свободное программное обеспечение под лицензией GPL-3.0.</p>
+      <p class="disclaimer">Названия Windows, Mac, Steam и других продуктов принадлежат их владельцам; onwin — независимый проект.</p>
+    </div>
+  </footer>
+</body>
+</html>

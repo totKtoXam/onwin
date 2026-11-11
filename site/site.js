@@ -333,11 +333,109 @@
     }
   }
 
+  /* ---------- Сообщить о проблеме ---------- */
+
+  var SUPPORT_ICONS = {
+    chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 3.5V17h0A2.5 2.5 0 0 1 4 14.5z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></svg>',
+    form: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4.5V3.5h6v1M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg>',
+    mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5"/></svg>'
+  };
+
+  var SUPPORT_CHECKLIST = [
+    "версию onwin и macOS",
+    "модель Mac (например, MacBook Air M2)",
+    "какая программа или игра",
+    "что вы делали и что увидели",
+    "скриншот, если есть"
+  ];
+
+  // Только адрес вида name@domain; «mailto:» в начале допускается.
+  function safeMailto(value) {
+    if (typeof value !== "string") return "";
+    var v = value.trim().replace(/^mailto:/i, "");
+    return /^[^\s@?&#/:"<>]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(v) ? "mailto:" + v : "";
+  }
+
+  function supportChannels() {
+    var s = cfg.support || {};
+    var list = [];
+    var telegram = safeURL(s.telegram);
+    var form = safeURL(s.form);
+    var email = safeMailto(s.email);
+    if (telegram) list.push({ name: "Написать в Telegram", url: telegram, icon: SUPPORT_ICONS.chat, external: true });
+    if (form) list.push({ name: "Заполнить форму", url: form, icon: SUPPORT_ICONS.form, external: true });
+    if (email) list.push({ name: "Написать на почту", url: email, icon: SUPPORT_ICONS.mail, external: false });
+    return list;
+  }
+
+  function renderSupport(container) {
+    var mode = container.getAttribute("data-support") || "compact";
+    var channels = supportChannels();
+    container.textContent = "";
+    container.classList.add("support-block");
+
+    if (!channels.length) {
+      var box = el("div", "donate-empty");
+      box.innerHTML = ICONS.soon;
+      var p = el("p", null, "Способ связи скоро появится здесь.");
+      if (mode !== "full") {
+        p.appendChild(document.createTextNode(" А пока загляните в советы: "));
+        var tips = el("a", null, "«Если что-то не работает»");
+        tips.href = "docs.html#troubleshooting";
+        p.appendChild(tips);
+        p.appendChild(document.createTextNode("."));
+      }
+      box.appendChild(p);
+      container.appendChild(box);
+    } else {
+      var row = el("div", "support-links");
+      channels.forEach(function (c, i) {
+        var a = el("a", "btn btn-lg " + (i === 0 ? "btn-primary" : "btn-secondary"));
+        a.href = c.url;
+        if (c.external) { a.target = "_blank"; a.rel = "noopener"; }
+        a.innerHTML = c.icon;
+        a.appendChild(el("span", null, c.name));
+        row.appendChild(a);
+      });
+      container.appendChild(row);
+      // QR code of the Telegram link: a phone camera opens the group straight away (desktop only, see CSS).
+      var qr = (cfg.support || {}).telegramQR;
+      if (mode === "full" && qr && /^img\/[\w.-]+\.svg$/.test(qr) && channels[0].name === "Написать в Telegram") {
+        var fig = el("figure", "support-qr");
+        var img = el("img");
+        img.src = qr; img.width = 160; img.height = 160; img.alt = "QR-код группы поддержки onwin в Telegram";
+        img.onerror = function () { fig.hidden = true; };
+        fig.appendChild(img);
+        fig.appendChild(el("figcaption", null, "Или наведите камеру телефона"));
+        container.appendChild(fig);
+      }
+    }
+
+    if (mode === "full") {
+      var check = el("div", "note note-plain");
+      check.appendChild(el("p", "support-check-title", "Чтобы мы быстрее помогли, напишите:"));
+      var ul = el("ul", "list support-check");
+      SUPPORT_CHECKLIST.forEach(function (item) { ul.appendChild(el("li", null, item)); });
+      check.appendChild(ul);
+      container.appendChild(check);
+    } else {
+      container.appendChild(el("p", "muted small support-check",
+        "Напишите: " + SUPPORT_CHECKLIST.join(", ") + "."));
+    }
+
+    var dev = el("p", "support-dev");
+    var gh = el("a", null, "Для разработчиков: GitHub Issues");
+    gh.href = githubURL + ghPaths.issues;
+    dev.appendChild(gh);
+    container.appendChild(dev);
+  }
+
   /* ---------- Запуск ---------- */
 
   function init() {
     fillLinks();
     each("[data-donate]", renderDonate);
+    each("[data-support]", renderSupport);
     setupRelease();
     document.addEventListener("click", onCopyClick);
   }
