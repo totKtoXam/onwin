@@ -1,0 +1,56 @@
+# Once a day writes the download counters of all releases (scripts/stats-collect.sh) into downloads.csv
+# on the separate branch «stats», so main stays free of daily commits. GitHub keeps only running totals,
+# this file keeps the history: downloads per day and the daily users estimate (scripts/stats.sh).
+#
+# GitHub pauses scheduled workflows after 60 days without commits in the repository; then run it once
+# by hand (Actions → «Статистика скачиваний» → Run workflow).
+name: Статистика скачиваний
+
+on:
+  schedule:
+    - cron: "17 23 * * *"   # once a day, 23:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stats
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: src
+      - name: Ветка stats
+        run: |
+          if git ls-remote --exit-code --heads "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" stats >/dev/null; then
+            git clone --quiet --branch stats --depth 1 "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" stats
+          else
+            mkdir stats && cd stats && git init --quiet --initial-branch=stats &&
+              git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Записать счётчики
+        run: |
+          cd stats
+          line="$(../src/scripts/stats-collect.sh "$GITHUB_REPOSITORY")"
+          [ -f downloads.csv ] || STATS_HEADER=1 ../src/scripts/stats-collect.sh "$GITHUB_REPOSITORY" | head -1 > downloads.csv
+          # One line per day: a second run on the same day replaces it.
+          grep -v "^${line%%,*}," downloads.csv > downloads.tmp || true
+          echo "$line" >> downloads.tmp && mv downloads.tmp downloads.csv
+          cat > README.md <<'EOF'
+          Счётчики скачиваний onwin по дням (накопительно, по всем релизам). Пишет `.github/workflows/stats.yml`
+          из ветки main; читать удобнее командой `scripts/stats.sh`.
+          EOF
+          git add downloads.csv README.md
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit --quiet -m "stats: $line" || { echo "без изменений"; exit 0; }
+          git push --quiet origin stats
+          tail -3 downloads.csv
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -107,6 +107,10 @@ engine/build-libs.sh && engine/build.sh    # движок → engine/dist/onwin-
   читает тот же `onwin-release.json`, что и `install.sh`: формат меняйте только вместе с ним (поле `schema`). Репозиторий
   задаёт `OnwinLinks.repository`. Сравнивается `build` с CFBundleVersion и `engine.built` с `onwin-engine.json`.
   Автопроверка — только с согласия: при первом запуске onwin один раз спрашивает, до ответа в сеть не ходит.
+- Статистика: `.github/workflows/stats.yml` раз в день пишет счётчики скачиваний GitHub в `downloads.csv` на ветке
+  `stats`, `scripts/stats.sh` показывает скачивания по дням и оценку пользователей в день (по чтениям
+  `onwin-release.json`). Приложение само ничего не отправляет. Имена файлов релиза меняйте вместе с шаблонами
+  в `scripts/stats-collect.sh`.
 - Версии ниже 1.0 — бета: людям версия показывается как «0.1.1 (бета)» (`OnwinVersion.display`).
 - Версия приложения — `OnwinVersion.string` в `app/Sources/OnwinCore/WineRunner.swift`.
 - Приложение не нотаризовано (нет Apple Developer ID). Не обещайте пользователям обратного.
