@@ -103,7 +103,7 @@ extension AppModel {
             return run(program: program, in: current) != nil || isPreparingLaunch(in: current.id)
         }
         guard let path = recipe.launchPath, let file = current.unixPath(forWindowsPath: path), OnwinPaths.exists(file) else {
-            report("\(recipe.name) не найден в пространстве «\(current.name)».")
+            report(String(localized: "\(recipe.name) не найден в пространстве «\(current.name)»."))
             return false
         }
         var request = RunRequest()
@@ -152,7 +152,7 @@ struct SpaceMainProgramButton: View {
                     }
                     Image(systemName: "play.fill")
                         .font(.system(size: 13, weight: .bold))
-                    Text(verbatim: "Запустить \(program.name)")
+                    Text("Запустить \(program.name)")
                         .font(.title3.weight(.semibold))
                         .lineLimit(1)
                         .truncationMode(.tail)
@@ -170,8 +170,9 @@ struct SpaceMainProgramButton: View {
             .buttonStyle(MainProgramButtonStyle())
             .disabled(!enabled)
             .keyboardShortcut(.return, modifiers: .command)
-            .help(isRunning ? "\(program.name) уже работает — повторный запуск обычно выводит окно программы вперёд (⌘↩)"
-                            : "Запустить \(program.name) в пространстве «\(space.name)» (⌘↩)")
+            .help(isRunning
+                  ? String(localized: "\(program.name) уже работает — повторный запуск обычно выводит окно программы вперёд (⌘↩)")
+                  : String(localized: "Запустить \(program.name) в пространстве «\(space.name)» (⌘↩)"))
 
             if alternatives.count > 1 {
                 Menu {
@@ -253,10 +254,10 @@ struct InstallFollowUpBar: View {
             HStack(spacing: 12) {
                 AppIconView(subject: .recipe(offer.recipe, spaces: [space]), symbol: offer.recipe.symbol, size: 36)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(verbatim: "\(offer.recipe.name) установлен")
+                    Text("\(offer.recipe.name) установлен")
                         .font(.headline)
-                    Text(verbatim: canLaunch ? "в пространстве «\(space.name)» — можно запускать"
-                                             : "в пространстве «\(space.name)»")
+                    (canLaunch ? Text("в пространстве «\(space.name)» — можно запускать")
+                               : Text("в пространстве «\(space.name)»"))
                         .font(.callout)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)

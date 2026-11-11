@@ -4,12 +4,11 @@ import OnwinCore
 
 // onwinctl icon — debug view of the icon pipeline (OnwinCore/AppIcons.swift). Dispatched from main.swift.
 
-let iconCommandsUsage = """
-
+let iconCommandsUsage = String(localized: """
 Значки (проверка):
   onwinctl icon <пространство|-> <программа|приложение|component:id|steam:appid> <файл.png> [--only exe|image|remote] [--cover]
                                            записать значок, который покажет onwin, в PNG и показать источники
-"""
+""", bundle: .onwinctl)
 
 /// Runs `onwinctl icon`; false for other commands.
 func runIconCommand(_ command: String, _ arguments: [String]) async -> Bool {
@@ -19,7 +18,7 @@ func runIconCommand(_ command: String, _ arguments: [String]) async -> Bool {
     let cover = args.contains("--cover")
     args.removeAll { $0 == "--cover" }
     guard args.count == 3 else {
-        fail("использование: onwinctl icon <пространство|-> <программа|приложение|component:id|steam:appid> <файл.png> [--only exe|image|remote]")
+        fail(String(localized: "использование: onwinctl icon <пространство|-> <программа|приложение|component:id|steam:appid> <файл.png> [--only exe|image|remote]", bundle: .onwinctl))
     }
     let b: Space? = args[0] == "-" ? nil : space(args[0])
     let query = args[1]
@@ -28,14 +27,14 @@ func runIconCommand(_ command: String, _ arguments: [String]) async -> Bool {
     let subject: AppIconSubject
     let lower = query.lowercased()
     if lower.hasPrefix("steam:"), let appID = Int(query.dropFirst(6)) {
-        guard let b else { fail("для steam:<appid> нужно пространство со Steam") }
+        guard let b else { fail(String(localized: "для steam:<appid> нужно пространство со Steam", bundle: .onwinctl)) }
         subject = .steamGame(appID: appID, space: b, style: cover ? .cover : .icon)
     } else if lower.hasPrefix("component:") {
-        guard let c = Catalog.component(String(query.dropFirst(10))) else { fail("нет компонента «\(query)»") }
+        guard let c = Catalog.component(String(query.dropFirst(10))) else { fail(String(localized: "нет компонента «\(query)»", bundle: .onwinctl)) }
         subject = .component(c)
     } else if lower.hasPrefix("recipe:") || lower.hasPrefix("app:") {
         let id = String(query[query.index(after: query.firstIndex(of: ":")!)...])
-        guard let r = Catalog.app(id) else { fail("нет приложения «\(id)» в каталоге") }
+        guard let r = Catalog.app(id) else { fail(String(localized: "нет приложения «\(id)» в каталоге", bundle: .onwinctl)) }
         subject = .recipe(r, spaces: b.map { [$0] } ?? [])
     } else if let b, let program = lookupProgram(query, in: b) {
         subject = .program(program, space: b)
@@ -44,7 +43,7 @@ func runIconCommand(_ command: String, _ arguments: [String]) async -> Bool {
     } else if let c = Catalog.component(query) {
         subject = .component(c)
     } else {
-        fail("«\(query)» — не программа пространства, не приложение и не компонент каталога")
+        fail(String(localized: "«\(query)» — не программа пространства, не приложение и не компонент каталога", bundle: .onwinctl))
     }
 
     var sources = AppIcons.sources(for: subject)
@@ -57,13 +56,13 @@ func runIconCommand(_ command: String, _ arguments: [String]) async -> Bool {
             }
         }
     }
-    if sources.isEmpty { print("Источников нет — onwin нарисует значок SF Symbol") }
+    if sources.isEmpty { print(String(localized: "Источников нет — onwin нарисует значок SF Symbol", bundle: .onwinctl)) }
     for source in sources {
         let label: String
         switch source {
-        case .executable(let url): label = "значок exe/ico: \(url.path)"
-        case .image(let url): label = "картинка: \(url.path)"
-        case .remote(let url): label = "сайт разработчика: \(url.absoluteString)"
+        case .executable(let url): label = String(localized: "значок exe/ico: \(url.path)", bundle: .onwinctl)
+        case .image(let url): label = String(localized: "картинка: \(url.path)", bundle: .onwinctl)
+        case .remote(let url): label = String(localized: "сайт разработчика: \(url.absoluteString)", bundle: .onwinctl)
         }
         guard let png = await AppIcons.pngData(for: .sources([source])) else {
             print("  ✗ \(label)")
@@ -73,17 +72,17 @@ func runIconCommand(_ command: String, _ arguments: [String]) async -> Bool {
         do {
             try png.write(to: output, options: .atomic)
         } catch {
-            fail("не удалось записать \(output.path): \(error.localizedDescription)")
+            fail(String(localized: "не удалось записать \(output.path): \(error.localizedDescription)", bundle: .onwinctl))
         }
         if let image = CGImageSourceCreateWithData(png as CFData, nil).flatMap({ CGImageSourceCreateImageAtIndex($0, 0, nil) }) {
-            print("Записано: \(output.path) (\(image.width)×\(image.height) px)")
+            print(String(localized: "Записано: \(output.path) (\(image.width)×\(image.height) px)", bundle: .onwinctl))
         } else {
-            print("Записано: \(output.path)")
+            print(String(localized: "Записано: \(output.path)", bundle: .onwinctl))
         }
-        print("Кэш значков: \(AppIcons.cacheDirectory.path)")
+        print(String(localized: "Кэш значков: \(AppIcons.cacheDirectory.path)", bundle: .onwinctl))
         return true
     }
-    fail("ни один источник не дал значка")
+    fail(String(localized: "ни один источник не дал значка", bundle: .onwinctl))
 }
 
 /// A program of the space by id, name or file path; nil when there is none (no exit, unlike findProgram).

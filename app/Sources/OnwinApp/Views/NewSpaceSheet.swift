@@ -131,11 +131,11 @@ struct NewSpaceSheet: View {
 
     private var nameProblem: String? {
         let candidate = trimmedName
-        if candidate.isEmpty { return "Введите имя пространства" }
-        if candidate.hasPrefix(".") { return "Имя не может начинаться с точки" }
-        if candidate.count > 80 { return "Слишком длинное имя — не больше 80 символов" }
+        if candidate.isEmpty { return String(localized: "Введите имя пространства") }
+        if candidate.hasPrefix(".") { return String(localized: "Имя не может начинаться с точки") }
+        if candidate.count > 80 { return String(localized: "Слишком длинное имя — не больше 80 символов") }
         if model.spaces.contains(where: { $0.name.caseInsensitiveCompare(candidate) == .orderedSame }) {
-            return "Пространство «\(candidate)» уже есть — выберите другое имя"
+            return String(localized: "Пространство «\(candidate)» уже есть — выберите другое имя")
         }
         return nil
     }
@@ -154,7 +154,7 @@ struct NewSpaceSheet: View {
     private func prepare() {
         guard !didPrepare else { return }
         if name.isEmpty {
-            name = SpaceManager.availableName("Новое пространство")
+            name = SpaceManager.availableName(String(localized: "Новое пространство", comment: "Default name of a new space"))
         }
         backend = model.settings.defaultBackend
         didPrepare = true

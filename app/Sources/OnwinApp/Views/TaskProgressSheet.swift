@@ -97,7 +97,7 @@ struct TaskProgressSheet: View {
         } else if task.isFinished {
             Text("Операция завершена")
         } else {
-            let state = cancelRequestedFor == task.id ? "Отменяю…" : "Выполняется"
+            let state = cancelRequestedFor == task.id ? String(localized: "Отменяю…") : String(localized: "Выполняется")
             TimelineView(.periodic(from: task.started, by: 1)) { context in
                 Text(state + " · " + TaskProgressSheet.elapsed(from: task.started, to: context.date))
             }
@@ -124,7 +124,7 @@ struct TaskProgressSheet: View {
                     .truncationMode(.middle)
                 Spacer(minLength: 8)
                 if let fraction = task.fraction, !task.isFinished {
-                    Text("\(Int((min(max(fraction, 0), 1) * 100).rounded())) %")
+                    Text(min(max(fraction, 0), 1).formatted(.percent.precision(.fractionLength(0))))
                         .font(.callout)
                         .monospacedDigit()
                         .foregroundStyle(.secondary)
@@ -243,7 +243,7 @@ struct TaskProgressSheet: View {
     private func copyLog(_ task: TaskState) {
         var text = task.title + "\n"
         if let error = task.error {
-            text += "Ошибка: \(error)\n"
+            text += String(localized: "Ошибка: \(error)") + "\n"
         }
         if !task.log.isEmpty {
             text += "\n" + task.log
@@ -268,7 +268,7 @@ struct TaskProgressSheet: View {
 
     static func lineCountText(_ log: String) -> String {
         let lines = log.split(whereSeparator: { $0.isNewline }).count
-        return "\(lines) " + CatalogView.plural(lines, "строка", "строки", "строк")
+        return String(localized: "\(lines) строк")
     }
 
     static func elapsed(from start: Date, to end: Date) -> String {

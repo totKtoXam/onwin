@@ -37,15 +37,15 @@ private struct SpaceRestartPromptModifier: ViewModifier {
     }
 
     private func message(for change: RestartSensitiveChange) -> String {
-        var text = "Эта настройка начнёт действовать только после перезапуска пространства: все его программы будут закрыты. Программы смогут сохранить данные, но если какая-то не закроется за 10 секунд, её завершат принудительно и несохранённое пропадёт."
+        var text = String(localized: "Эта настройка начнёт действовать только после перезапуска пространства: все его программы будут закрыты. Программы смогут сохранить данные, но если какая-то не закроется за 10 секунд, её завершат принудительно и несохранённое пропадёт.")
         if change.msync == true {
-            text += "\n\nНекоторые Windows-программы с MSync работают неправильно."
+            text += "\n\n" + String(localized: "Некоторые Windows-программы с MSync работают неправильно.")
         }
         if change.linkMacFolders != nil {
-            text += "\n\nПапки «Документы», «Загрузки» и другие можно поменять, только пока в пространстве ничего не запущено."
+            text += "\n\n" + String(localized: "Папки «Документы», «Загрузки» и другие можно поменять, только пока в пространстве ничего не запущено.")
         }
         if change.highResolution == true {
-            text += "\n\nМногие Windows-программы в режиме Retina выглядят неправильно."
+            text += "\n\n" + String(localized: "Многие Windows-программы в режиме Retina выглядят неправильно.")
             if let note = DisplayScaleInfo.retinaNote { text += " " + note }
         }
         return text
@@ -60,10 +60,10 @@ enum DisplayScaleInfo {
         guard !scales.isEmpty else { return nil }
         let retina = scales.filter { $0 > 1.5 }.count
         if retina == 0 {
-            return "У этого Mac нет экранов Retina: в этом режиме картинка станет только размытой."
+            return String(localized: "У этого Mac нет экранов Retina: в этом режиме картинка станет только размытой.")
         }
         if retina < scales.count {
-            return "Экраны разные: на Retina картинка станет чётче, на обычных — хуже."
+            return String(localized: "Экраны разные: на Retina картинка станет чётче, на обычных — хуже.")
         }
         return nil
     }

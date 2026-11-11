@@ -118,7 +118,7 @@ extension AppModel {
     }
 
     private func prepare(_ exe: URL, in snapshot: Space, title: String, start: @escaping LaunchAction) async {
-        let activity = "Проверяю, что нужно «\(title)»…"
+        let activity = String(localized: "Проверяю, что нужно «\(title)»…")
         backgroundActivity = activity
         let plan = await Task.detached(priority: .userInitiated) {
             AutoComponents.staticPlan(for: exe, in: snapshot)
@@ -136,16 +136,16 @@ extension AppModel {
             let target = space
             // The sheet the start came from (run options, «Запустить в…») may still be closing.
             try? await Task.sleep(nanoseconds: 300_000_000)
-            let installed = await performTask("Подготовка к запуску «\(title)»") { (context: TaskContext) async throws -> Space in
-                context.status("Для «\(title)» нужны: \(names). onwin установит их сам — это нужно только один раз.")
+            let installed = await performTask(String(localized: "Подготовка к запуску «\(title)»")) { (context: TaskContext) async throws -> Space in
+                context.status(String(localized: "Для «\(title)» нужны: \(names). onwin установит их сам — это нужно только один раз."))
                 for line in AutoComponents.reasons(for: plan) { context.log(line + "\n") }
                 do {
                     return try await AutoComponents.install(plan.install, into: target, progress: context.progress)
                 } catch is CancellationError {
                     throw CancellationError()
                 } catch {
-                    throw OnwinError(error.localizedDescription + "\n\nПрограмма всё равно запускается: многие игры работают и без этого. " +
-                                     "onwin попробует установить компонент снова при следующем запуске.")
+                    throw OnwinError(error.localizedDescription + "\n\n"
+                                     + String(localized: "Программа всё равно запускается: многие игры работают и без этого. onwin попробует установить компонент снова при следующем запуске."))
                 }
             }
             reload()
@@ -235,8 +235,8 @@ extension AppModel {
 
         let names = plan.componentNames
         let title = program.title
-        let result = await performTask("Исправление запуска «\(title)»") { (context: TaskContext) async throws -> Space in
-            context.status("«\(title)» не запустилась: не хватает \(names). Устанавливаю…")
+        let result = await performTask(String(localized: "Исправление запуска «\(title)»")) { (context: TaskContext) async throws -> Space in
+            context.status(String(localized: "«\(title)» не запустилась: не хватает \(names). Устанавливаю…"))
             for line in AutoComponents.reasons(for: plan) { context.log(line + "\n") }
             return try await AutoComponents.install(plan.install, into: snapshot, progress: context.progress)
         }
@@ -244,7 +244,7 @@ extension AppModel {
         guard result != nil else { return true }   // the sheet shows the error
         clearFailureAdvice(for: snapshot.id)
         guard let start, let fresh = self.space(id: snapshot.id) else {
-            report("onwin установил \(names) для «\(title)». Запустите программу ещё раз.")
+            report(String(localized: "onwin установил \(names) для «\(title)». Запустите программу ещё раз."))
             return true
         }
         await waitForTaskSheetToClose()

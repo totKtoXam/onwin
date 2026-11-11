@@ -107,7 +107,7 @@ public enum SpaceManager {
                               engine: Engine? = nil,
                               log: @escaping @Sendable (String) -> Void = { _ in }) async throws -> Space {
         try OnwinPaths.ensureLayout()
-        if find(name) != nil { throw OnwinError("Пространство «\(name)» уже существует") }
+        if find(name) != nil { throw OnwinError(String(localized: "Пространство «\(name)» уже существует", bundle: .onwinCore)) }
         let dir = uniqueDirectory(for: name)
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         var config = SpaceConfig(name: name, windowsVersion: windowsVersion, graphicsBackend: backend)
@@ -131,8 +131,8 @@ public enum SpaceManager {
 
     public static func rename(_ space: Space, to newName: String) throws -> Space {
         let trimmed = newName.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { throw OnwinError("Имя пространства не может быть пустым") }
-        if let other = find(trimmed), other.id != space.id { throw OnwinError("Пространство «\(trimmed)» уже существует") }
+        guard !trimmed.isEmpty else { throw OnwinError(String(localized: "Имя пространства не может быть пустым", bundle: .onwinCore)) }
+        if let other = find(trimmed), other.id != space.id { throw OnwinError(String(localized: "Пространство «\(trimmed)» уже существует", bundle: .onwinCore)) }
         var b = space
         b.config.name = trimmed
         // Same folder name (or only a case change, which the case-insensitive volume treats as the
@@ -149,7 +149,7 @@ public enum SpaceManager {
     }
 
     public static func duplicate(_ space: Space, as newName: String) throws -> Space {
-        if find(newName) != nil { throw OnwinError("Пространство «\(newName)» уже существует") }
+        if find(newName) != nil { throw OnwinError(String(localized: "Пространство «\(newName)» уже существует", bundle: .onwinCore)) }
         let dir = uniqueDirectory(for: newName)
         try FileManager.default.copyItem(at: space.url, to: dir)
         var config = space.config
@@ -169,7 +169,7 @@ public enum SpaceManager {
                                                              "--exclude", ".wineserver*",
                                                              "-C", space.url.deletingLastPathComponent().path,
                                                              space.url.lastPathComponent])
-        guard result.status == 0 else { throw OnwinError("Не удалось упаковать пространство: \(result.output)") }
+        guard result.status == 0 else { throw OnwinError(String(localized: "Не удалось упаковать пространство: \(result.output)", bundle: .onwinCore)) }
     }
 
     /// Restores a space from an archive made by `archive(_:to:)`.
@@ -180,14 +180,14 @@ public enum SpaceManager {
         defer { try? FileManager.default.removeItem(at: staging) }
         let result = try await ProcessRunner.run(URL(fileURLWithPath: "/usr/bin/tar"),
                                                  arguments: ["-xzf", archive.path, "-C", staging.path])
-        guard result.status == 0 else { throw OnwinError("Не удалось распаковать архив: \(result.output)") }
+        guard result.status == 0 else { throw OnwinError(String(localized: "Не удалось распаковать архив: \(result.output)", bundle: .onwinCore)) }
         let contents = try FileManager.default.contentsOfDirectory(at: staging, includingPropertiesForKeys: nil,
                                                                    options: [.skipsHiddenFiles])
         guard let extracted = contents.first(where: { SpaceConfig.exists(in: $0) }) else {
-            throw OnwinError("В архиве нет пространства onwin")
+            throw OnwinError(String(localized: "В архиве нет пространства onwin", bundle: .onwinCore))
         }
         var config = try SpaceConfig.load(from: extracted)
-        let finalName = name ?? (find(config.name) == nil ? config.name : config.name + " (копия)")
+        let finalName = name ?? (find(config.name) == nil ? config.name : String(localized: "\(config.name) (копия)", bundle: .onwinCore, comment: "Name of a restored space when one with the same name exists"))
         config.name = finalName
         config.id = UUID()
         let dir = uniqueDirectory(for: finalName)

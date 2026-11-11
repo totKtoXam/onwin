@@ -12,8 +12,8 @@ public struct PEImage: Sendable {
 
         public var displayName: String {
             switch self {
-            case .i386: return "32-бит (x86)"
-            case .amd64: return "64-бит (x64)"
+            case .i386: return String(localized: "32-бит (x86)", bundle: .onwinCore)
+            case .amd64: return String(localized: "64-бит (x64)", bundle: .onwinCore)
             case .arm64: return "ARM64"
             case .other(let v): return String(format: "0x%04x", v)
             }

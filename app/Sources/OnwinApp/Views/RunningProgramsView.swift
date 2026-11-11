@@ -74,9 +74,7 @@ struct RunningProgramsView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Запущенные программы")
                     .font(.largeTitle.bold())
-                Text(verbatim: runningCount == 0
-                     ? "Сейчас ничего не запущено"
-                     : "Работает: \(RunningProgramControl.programsCount(runningCount))")
+                (runningCount == 0 ? Text("Сейчас ничего не запущено") : Text("Работает: \(runningCount) программ"))
                     .foregroundStyle(.secondary)
             }
             Spacer(minLength: 12)
@@ -144,9 +142,9 @@ struct RunningProgramsView: View {
         .onwinCard(padding: 0)
     }
 
-    private func sectionTitle(_ title: String, symbol: String) -> some View {
+    private func sectionTitle(_ title: LocalizedStringKey, symbol: String) -> some View {
         Label {
-            Text(verbatim: title)
+            Text(title)
         } icon: {
             Image(systemName: symbol)
                 .foregroundStyle(OnwinTheme.accent)
@@ -164,7 +162,7 @@ struct RunningProgramsView: View {
                 Button {
                     model.selection = .space(space.id)
                 } label: {
-                    Text(verbatim: "Открыть «\(space.name)»")
+                    Text("Открыть «\(space.name)»")
                 }
             }
             Button("Запустить программу…") {
@@ -229,7 +227,7 @@ struct RunningProgramRow: View {
                         Text(verbatim: "PID \(program.pid)")
                             .monospacedDigit()
                     }
-                    (Text("начало ") + Text(program.started, style: .time))
+                    Text("начало \(Text(program.started, style: .time))")
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -359,7 +357,7 @@ struct RunningProgramRow: View {
                     Button {
                         quitSpace()
                     } label: {
-                        Text(verbatim: "Завершить всё в пространстве «\(program.spaceName)»")
+                        Text("Завершить всё в пространстве «\(program.spaceName)»")
                     }
                 }
             } label: {
@@ -431,7 +429,7 @@ struct RunningProgramRow: View {
     private func terminate(force: Bool) {
         guard program.isRunning else { return }
         if !RunningProgramControl.terminate(program, force: force) {
-            model.report("Не удалось завершить «\(program.title)» (PID \(program.pid)). Попробуйте «Завершить всё в пространстве».")
+            model.report(String(localized: "Не удалось завершить «\(program.title)» (PID \(Int(program.pid))). Попробуйте «Завершить всё в пространстве»."))
         }
         askedToTerminate = true
     }
@@ -491,7 +489,7 @@ struct RunningLogSheet: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text(verbatim: text.isEmpty ? "Журнал пока пуст." : text)
+                        (text.isEmpty ? Text("Журнал пока пуст.") : Text(verbatim: text))
                             .font(.system(.caption, design: .monospaced))
                             .foregroundStyle(text.isEmpty ? Color.secondary : Color.primary)
                             .textSelection(.enabled)
@@ -558,11 +556,11 @@ enum RunningProgramControl {
 
     static func statusText(_ status: Int32) -> String {
         switch status {
-        case 0: return "Завершена"
-        case _ where WineRunner.exitStatus(status, matches: 1602): return "Отменено пользователем"
-        case _ where WineRunner.exitStatus(status, matches: 1638): return "Уже установлено"
-        case _ where WineRunner.exitStatus(status, matches: 3010): return "Готово, нужна перезагрузка"
-        default: return "Код \(status)"
+        case 0: return String(localized: "Завершена", comment: "Exit status of a program: finished normally")
+        case _ where WineRunner.exitStatus(status, matches: 1602): return String(localized: "Отменено пользователем")
+        case _ where WineRunner.exitStatus(status, matches: 1638): return String(localized: "Уже установлено")
+        case _ where WineRunner.exitStatus(status, matches: 3010): return String(localized: "Готово, нужна перезагрузка")
+        default: return String(localized: "Код \(Int(status))", comment: "Exit code of a program")
         }
     }
 
@@ -592,23 +590,9 @@ enum RunningProgramControl {
             if let newline = text.firstIndex(of: "\n") {
                 text = String(text[text.index(after: newline)...])
             }
-            text = "… показан конец журнала (последние \(maxBytes / 1000) КБ) …\n" + text
+            let shown = Int64(maxBytes).formatted(.byteCount(style: .file))
+            text = String(localized: "… показан конец журнала (последние \(shown)) …") + "\n" + text
         }
         return text
-    }
-
-    /// "1 программа", "3 программы", "7 программ".
-    static func programsCount(_ n: Int) -> String {
-        let mod10 = n % 10
-        let mod100 = n % 100
-        let word: String
-        if mod10 == 1 && mod100 != 11 {
-            word = "программа"
-        } else if (2...4).contains(mod10) && !(12...14).contains(mod100) {
-            word = "программы"
-        } else {
-            word = "программ"
-        }
-        return "\(n) \(word)"
     }
 }

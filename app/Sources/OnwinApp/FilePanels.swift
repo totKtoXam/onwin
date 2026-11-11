@@ -12,9 +12,9 @@ enum OnwinPanels {
     /// .exe / .msi / .lnk / .bat files to run. Empty when cancelled.
     static func chooseRunnableFiles(allowsMultiple: Bool = false) -> [URL] {
         let panel = NSOpenPanel()
-        panel.title = "Запуск Windows-программы"
-        panel.message = "Выберите программу (.exe), установщик (.msi) или ярлык (.lnk)"
-        panel.prompt = "Запустить"
+        panel.title = String(localized: "Запуск Windows-программы")
+        panel.message = String(localized: "Выберите программу (.exe), установщик (.msi) или ярлык (.lnk)")
+        panel.prompt = String(localized: "Запустить")
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = allowsMultiple
@@ -50,9 +50,9 @@ enum OnwinPanels {
     /// D3DMetal source: a mounted Game Porting Toolkit volume / its redist folder, or the .dmg itself.
     static func chooseD3DMetalSource() -> URL? {
         let panel = NSOpenPanel()
-        panel.title = "Импорт D3DMetal"
-        panel.message = "Выберите образ Game Porting Toolkit (.dmg), его смонтированный том или папку redist"
-        panel.prompt = "Импортировать"
+        panel.title = String(localized: "Импорт D3DMetal")
+        panel.message = String(localized: "Выберите образ Game Porting Toolkit (.dmg), его смонтированный том или папку redist")
+        panel.prompt = String(localized: "Импортировать")
         panel.canChooseFiles = true
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
@@ -62,16 +62,16 @@ enum OnwinPanels {
 
     /// Space archive (.onwinspace, a tar.gz).
     static func chooseArchive() -> URL? {
-        chooseFile(title: "Восстановление пространства",
-                   message: "Выберите архив пространства (.onwinspace)",
-                   prompt: "Восстановить")
+        chooseFile(title: String(localized: "Восстановление пространства"),
+                   message: String(localized: "Выберите архив пространства (.onwinspace)"),
+                   prompt: String(localized: "Восстановить"))
     }
 
     static func saveArchive(suggestedName: String) -> URL? {
         let panel = NSSavePanel()
-        panel.title = "Архивировать пространство"
-        panel.message = "Пространство будет упаковано в один файл — его можно перенести на другой Mac"
-        panel.prompt = "Архивировать"
+        panel.title = String(localized: "Архивировать пространство")
+        panel.message = String(localized: "Пространство будет упаковано в один файл — его можно перенести на другой Mac")
+        panel.prompt = String(localized: "Архивировать")
         panel.nameFieldStringValue = "\(suggestedName).onwinspace"
         panel.canCreateDirectories = true
         return panel.runModal() == .OK ? panel.url : nil

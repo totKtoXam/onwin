@@ -16,7 +16,7 @@ func findProgram(_ query: String, in b: Space) -> SpaceProgram {
                 .contains(unix.standardizedFileURL.path.lowercased())
         }
     guard let found else {
-        fail("в пространстве «\(b.name)» нет программы «\(query)». Список: onwinctl programs \(b.name)")
+        fail(String(localized: "в пространстве «\(b.name)» нет программы «\(query)». Список: onwinctl programs \(b.name)", bundle: .onwinctl))
     }
     return found
 }
@@ -28,7 +28,7 @@ func launcherCommand(_ command: String, _ arguments: [String]) async throws {
 
     switch command {
     case "pin":
-        guard args.count >= 2 else { fail("использование: onwinctl pin <пространство> <путь> [имя]") }
+        guard args.count >= 2 else { fail(String(localized: "использование: onwinctl pin <пространство> <путь> [имя]", bundle: .onwinctl)) }
         var b = space(args[0])
         let path = args[1]
         let windowsPath: String
@@ -38,73 +38,75 @@ func launcherCommand(_ command: String, _ arguments: [String]) async throws {
             windowsPath = b.windowsPath(forUnixPath: URL(fileURLWithPath: path))
         }
         guard let unix = b.unixPath(forWindowsPath: windowsPath), OnwinPaths.exists(unix) else {
-            fail("файл не найден: \(windowsPath)")
+            fail(String(localized: "файл не найден: \(windowsPath)", bundle: .onwinctl))
         }
         if let existing = b.config.programs.first(where: { $0.windowsPath.caseInsensitiveCompare(windowsPath) == .orderedSame }) {
-            print("Уже закреплена: \(existing.name)\t\(existing.id.uuidString)")
+            print(String(localized: "Уже закреплена: \(existing.name)\t\(existing.id.uuidString)", bundle: .onwinctl))
             return
         }
         let name = args.count > 2 ? args[2] : unix.deletingPathExtension().lastPathComponent
         let entry = ProgramEntry(name: name, windowsPath: windowsPath)
         b.config.programs.append(entry)
         try b.save()
-        print("Закреплена: \(name)\t\(entry.id.uuidString)")
+        print(String(localized: "Закреплена: \(name)\t\(entry.id.uuidString)", bundle: .onwinctl))
 
     case "unpin":
-        guard args.count >= 2 else { fail("использование: onwinctl unpin <пространство> <программа>") }
+        guard args.count >= 2 else { fail(String(localized: "использование: onwinctl unpin <пространство> <программа>", bundle: .onwinctl)) }
         var b = space(args[0])
         let program = findProgram(args[1], in: b)
-        guard case .pinned(let entryID) = program.source else { fail("«\(program.name)» не закреплена") }
+        guard case .pinned(let entryID) = program.source else { fail(String(localized: "«\(program.name)» не закреплена", bundle: .onwinctl)) }
         b.config.programs.removeAll { $0.id == entryID }
         try b.save()
-        print("Откреплена: \(program.name)")
+        print(String(localized: "Откреплена: \(program.name)", bundle: .onwinctl))
 
     case "launcher":
-        guard args.count >= 2 else { fail("использование: onwinctl launcher <пространство> <программа> [--dir папка]") }
+        guard args.count >= 2 else { fail(String(localized: "использование: onwinctl launcher <пространство> <программа> [--dir папка]", bundle: .onwinctl)) }
         let b = space(args[0])
         let program = findProgram(args[1], in: b)
         let app = try LauncherBuilder.create(for: program, in: b, root: root)
-        print("Ярлык: \(app.path)")
+        print(String(localized: "Ярлык: \(app.path)", bundle: .onwinctl))
 
     case "launcher-remove":
-        guard args.count >= 2 else { fail("использование: onwinctl launcher-remove <пространство> <программа> [--dir папка]") }
+        guard args.count >= 2 else { fail(String(localized: "использование: onwinctl launcher-remove <пространство> <программа> [--dir папка]", bundle: .onwinctl)) }
         let b = space(args[0])
         let program = findProgram(args[1], in: b)
         guard let launcher = LauncherBuilder.launcher(for: program, in: b, root: root) else {
-            fail("у программы «\(program.name)» нет ярлыка в \(root.path)")
+            fail(String(localized: "у программы «\(program.name)» нет ярлыка в \(root.path)", bundle: .onwinctl))
         }
         try LauncherBuilder.remove(launcher)
-        print("Ярлык перемещён в корзину: \(launcher.url.path)")
+        print(String(localized: "Ярлык перемещён в корзину: \(launcher.url.path)", bundle: .onwinctl))
 
     case "launchers":
         let list = args.first.map { LauncherBuilder.launchers(for: space($0).id, root: root) } ?? LauncherBuilder.launchers(root: root)
-        if list.isEmpty { print("Ярлыков нет (\(root.path))") }
+        if list.isEmpty { print(String(localized: "Ярлыков нет (\(root.path))", bundle: .onwinctl)) }
+        let automatic = String(localized: "авто", bundle: .onwinctl, comment: "The shortcut was made automatically")
+        let manual = String(localized: "вручную", bundle: .onwinctl, comment: "The shortcut was made by the user")
         for l in list {
-            print("\(l.name)\t\(l.isAutomatic ? "авто" : "вручную")\t\(l.url.path)")
+            print("\(l.name)\t\(l.isAutomatic ? automatic : manual)\t\(l.url.path)")
         }
 
     case "launchers-sync":
         guard let name = args.first(where: { !$0.hasPrefix("--") }) else {
-            fail("использование: onwinctl launchers-sync <пространство> [--rescan] [--dir папка]")
+            fail(String(localized: "использование: onwinctl launchers-sync <пространство> [--rescan] [--dir папка]", bundle: .onwinctl))
         }
         let b = space(name)
         if !b.config.autoLaunchers {
-            print("В пространстве «\(b.name)» выключено «Создавать ярлыки автоматически» (onwinctl set \(b.name) launchers on): только перенос ярлыков")
+            print(String(localized: "В пространстве «\(b.name)» выключено «Создавать ярлыки автоматически» (onwinctl set \(b.name) launchers on): только перенос ярлыков", bundle: .onwinctl))
         }
         if args.contains("--rescan") {
             print("winemenubuilder --cx-all-menus…")
             try await StartMenuHook.rescan(b)
         }
         let result = LauncherBuilder.sync(b, root: root)
-        for url in result.created { print("создан: \(url.path)") }
-        for url in result.removed { print("удалён: \(url.path)") }
-        for url in result.moved { print("перенесён: \(url.path)") }
-        for error in result.errors { print("ошибка: \(error)") }
-        if !result.changed && result.errors.isEmpty { print("Ярлыки в порядке") }
+        for url in result.created { print(String(localized: "создан: \(url.path)", bundle: .onwinctl, comment: "A shortcut was created")) }
+        for url in result.removed { print(String(localized: "удалён: \(url.path)", bundle: .onwinctl, comment: "A shortcut was removed")) }
+        for url in result.moved { print(String(localized: "перенесён: \(url.path)", bundle: .onwinctl, comment: "A shortcut was moved")) }
+        for error in result.errors { print(String(localized: "ошибка: \(error)", bundle: .onwinctl)) }
+        if !result.changed && result.errors.isEmpty { print(String(localized: "Ярлыки в порядке", bundle: .onwinctl)) }
 
     case "open-url":
         guard let text = args.first, let url = URL(string: text), let request = LaunchRequest(url: url) else {
-            fail("использование: onwinctl open-url 'onwin://run?space=<id>&program=<id>'")
+            fail(String(localized: "использование: onwinctl open-url 'onwin://run?space=<id>&program=<id>'", bundle: .onwinctl))
         }
         let (b, program) = try request.resolve()
         let runner = try WineRunner(space: b)
@@ -117,6 +119,6 @@ func launcherCommand(_ command: String, _ arguments: [String]) async throws {
         exit(result.status)
 
     default:
-        fail("неизвестная команда \(command)")
+        fail(String(localized: "неизвестная команда \(command)", bundle: .onwinctl))
     }
 }

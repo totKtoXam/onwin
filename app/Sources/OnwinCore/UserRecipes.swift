@@ -23,6 +23,7 @@ import Foundation
 /// A recipe written by the user. Tolerant to missing / unknown fields: older or hand-written files load.
 public struct UserRecipe: Codable, Hashable, Identifiable, Sendable {
     public static let schemaVersion = 1
+    /// Written into recipe files as `category`: the raw (Russian) value, never the localized title.
     public static let categoryName = AppRecipe.Category.user.rawValue
     public static let fileExtension = "onwinrecipe"
     public static let defaultSymbol = "app.fill"
@@ -235,7 +236,7 @@ public struct UserRecipe: Codable, Hashable, Identifiable, Sendable {
                 step = Component.Step(url.absoluteString, fileName: installer.effectiveFileName, arguments: installer.arguments)
             }
         }
-        return AppRecipe(id: id, name: name, summary: summary.isEmpty ? "Моё приложение" : summary, category: .user,
+        return AppRecipe(id: id, name: name, summary: summary.isEmpty ? String(localized: "Моё приложение", bundle: .onwinCore) : summary, category: .user,
                          installer: step, windowsVersion: windowsVersion, backend: backend, components: components,
                          launchPath: launchPath, launchArguments: launchArguments,
                          spaceName: spaceName.isEmpty ? name : spaceName, notes: notes, symbol: symbol,
@@ -328,7 +329,8 @@ public enum UserRecipes {
         do {
             return try decoder.decode(UserRecipe.self, from: data)
         } catch {
-            throw OnwinError("Файл рецепта повреждён или это не рецепт onwin: \(error.localizedDescription)")
+            throw OnwinError(String(localized: "Файл рецепта повреждён или это не рецепт onwin: \(error.localizedDescription)",
+                                    bundle: .onwinCore))
         }
     }
 
@@ -345,12 +347,13 @@ public enum UserRecipes {
     /// installer to exist (off for drafts whose file is chosen but not copied yet).
     public static func validate(_ recipe: UserRecipe, checkFiles: Bool = true) -> [String] {
         var problems: [String] = []
-        if recipe.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { problems.append("Укажите название программы") }
+        if recipe.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { problems.append(String(localized: "Укажите название программы", bundle: .onwinCore)) }
         if !recipe.id.isEmpty {
             if !isValidID(recipe.id) {
-                problems.append("Идентификатор «\(recipe.id)»: только латинские буквы, цифры, «-», «_» и «.»")
+                problems.append(String(localized: "Идентификатор «\(recipe.id)»: только латинские буквы, цифры, «-», «_» и «.»",
+                                       bundle: .onwinCore))
             } else if builtinIDs.contains(recipe.id.lowercased()) {
-                problems.append("Идентификатор «\(recipe.id)» занят встроенным рецептом каталога")
+                problems.append(String(localized: "Идентификатор «\(recipe.id)» занят встроенным рецептом каталога", bundle: .onwinCore))
             }
         }
         if let installer = recipe.installer {
@@ -358,46 +361,50 @@ public enum UserRecipes {
                 if let parsed = URL(string: url), parsed.scheme?.lowercased() == "https", parsed.host?.isEmpty == false {
                     // ok
                 } else {
-                    problems.append("Ссылка на установщик должна начинаться с https://")
+                    problems.append(String(localized: "Ссылка на установщик должна начинаться с https://", bundle: .onwinCore))
                 }
                 if let sha = installer.sha256, !isSHA256(sha) {
-                    problems.append("SHA-256 — это 64 шестнадцатеричных символа")
+                    problems.append(String(localized: "SHA-256 — это 64 шестнадцатеричных символа", bundle: .onwinCore))
                 }
                 if let name = installer.fileName, UserRecipe.safeFileName(name) != name {
-                    problems.append("Имя файла установщика «\(name)» — только имя файла, без папок")
+                    problems.append(String(localized: "Имя файла установщика «\(name)» — только имя файла, без папок", bundle: .onwinCore))
                 }
             } else if let file = installer.file {
                 if !file.hasPrefix("/"), UserRecipe.safeFileName(file) == nil {
-                    problems.append("Неверное имя файла установщика «\(file)»")
+                    problems.append(String(localized: "Неверное имя файла установщика «\(file)»", bundle: .onwinCore))
                 }
                 let ext = (file as NSString).pathExtension.lowercased()
                 if !["exe", "msi", "bat", "cmd"].contains(ext) {
-                    problems.append("Установщик должен быть файлом .exe или .msi")
+                    problems.append(String(localized: "Установщик должен быть файлом .exe или .msi", bundle: .onwinCore))
                 }
                 if checkFiles, recipe.isMissingInstallerFile {
-                    problems.append("Нет файла установщика \((file as NSString).lastPathComponent) — выберите его заново")
+                    let name = (file as NSString).lastPathComponent
+                    problems.append(String(localized: "Нет файла установщика \(name) — выберите его заново", bundle: .onwinCore))
                 }
             } else {
-                problems.append("Укажите ссылку на установщик или выберите файл")
+                problems.append(String(localized: "Укажите ссылку на установщик или выберите файл", bundle: .onwinCore))
             }
         } else {
-            problems.append("Укажите установщик: ссылку https:// или файл на Mac")
+            problems.append(String(localized: "Укажите установщик: ссылку https:// или файл на Mac", bundle: .onwinCore))
         }
         let space = recipe.spaceName.trimmingCharacters(in: .whitespacesAndNewlines)
-        if space.isEmpty { problems.append("Укажите пространство") }
-        if space.contains("/") || space.contains(":") { problems.append("В имени пространства нельзя использовать «/» и «:»") }
+        if space.isEmpty { problems.append(String(localized: "Укажите пространство", bundle: .onwinCore)) }
+        if space.contains("/") || space.contains(":") {
+            problems.append(String(localized: "В имени пространства нельзя использовать «/» и «:»", bundle: .onwinCore))
+        }
         for id in recipe.components where Catalog.component(id) == nil {
-            problems.append("Неизвестный компонент «\(id)»")
+            problems.append(String(localized: "Неизвестный компонент «\(id)»", bundle: .onwinCore))
         }
         if let path = recipe.launchPath {
             if !isWindowsPath(path) {
-                problems.append("Путь запуска — путь Windows, например C:\\Program Files\\Программа\\app.exe")
+                problems.append(String(localized: "Путь запуска — путь Windows, например C:\\Program Files\\Программа\\app.exe",
+                                       bundle: .onwinCore))
             } else if !["exe", "lnk", "bat", "cmd", "com"].contains((path.replacingOccurrences(of: "\\", with: "/") as NSString).pathExtension.lowercased()) {
-                problems.append("Путь запуска должен указывать на .exe (или .lnk, .bat)")
+                problems.append(String(localized: "Путь запуска должен указывать на .exe (или .lnk, .bat)", bundle: .onwinCore))
             }
         }
         for key in recipe.environment.keys where key.isEmpty || key.contains("=") || key.contains(" ") {
-            problems.append("Неверное имя переменной окружения «\(key)»")
+            problems.append(String(localized: "Неверное имя переменной окружения «\(key)»", bundle: .onwinCore))
         }
         return problems
     }
@@ -453,9 +460,11 @@ public enum UserRecipes {
         if r.spaceName.isEmpty { r.spaceName = r.name }
         if r.id.isEmpty { r.id = makeID(for: r.name) }
         r.schemaVersion = UserRecipe.schemaVersion
-        guard isValidID(r.id) else { throw OnwinError("Неверный идентификатор рецепта «\(r.id)»") }
+        guard isValidID(r.id) else {
+            throw OnwinError(String(localized: "Неверный идентификатор рецепта «\(r.id)»", bundle: .onwinCore))
+        }
         guard !builtinIDs.contains(r.id.lowercased()) else {
-            throw OnwinError("Идентификатор «\(r.id)» занят встроенным рецептом каталога")
+            throw OnwinError(String(localized: "Идентификатор «\(r.id)» занят встроенным рецептом каталога", bundle: .onwinCore))
         }
         let fm = FileManager.default
         try fm.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -464,7 +473,7 @@ public enum UserRecipes {
         if source == nil, let file = r.installer?.file, file.hasPrefix("/") { source = URL(fileURLWithPath: file) }
         if let source {
             guard OnwinPaths.exists(source), !OnwinPaths.isDirectory(source), UserRecipe.safeFileName(source.path) != nil else {
-                throw OnwinError("Нет файла \(source.path)")
+                throw OnwinError(String(localized: "Нет файла \(source.path)", bundle: .onwinCore))
             }
             let dir = filesDirectory(for: r.id)
             try fm.createDirectory(at: dir, withIntermediateDirectories: true)
@@ -503,7 +512,9 @@ public enum UserRecipes {
 
     /// Deletes the recipe and its copied files. Spaces installed from it stay.
     public static func remove(_ id: String) throws {
-        guard let r = recipe(id) else { throw OnwinError("Нет рецепта «\(id)». Список: onwinctl recipe list") }
+        guard let r = recipe(id) else {
+            throw OnwinError(String(localized: "Нет рецепта «\(id)». Список: onwinctl recipe list", bundle: .onwinCore))
+        }
         let fm = FileManager.default
         try fm.removeItem(at: fileURL(for: r.id))
         try? fm.removeItem(at: filesDirectory(for: r.id))
@@ -522,7 +533,7 @@ public enum UserRecipes {
     /// Writes the recipe as a .onwinrecipe file (JSON). The installer is never embedded: a local installer
     /// is referenced by its file name only (`exportNote` says what the receiver must do).
     public static func export(_ id: String, to destination: URL) throws {
-        guard var r = recipe(id) else { throw OnwinError("Нет рецепта «\(id)»") }
+        guard var r = recipe(id) else { throw OnwinError(String(localized: "Нет рецепта «\(id)»", bundle: .onwinCore)) }
         if var installer = r.installer, installer.isLocalFile, let file = installer.file {
             installer.file = (file as NSString).lastPathComponent
             r.installer = installer
@@ -533,8 +544,9 @@ public enum UserRecipes {
     /// Text for the user after exporting (nil when the recipe is self-contained).
     public static func exportNote(for recipe: UserRecipe) -> String? {
         guard let file = recipe.installer?.file, recipe.installer?.isLocalFile == true else { return nil }
-        return "Установщик не встроен в рецепт: передайте вместе с файлом рецепта и «\((file as NSString).lastPathComponent)» " +
-            "(положите их в одну папку — при импорте onwin заберёт установщик оттуда)."
+        let name = (file as NSString).lastPathComponent
+        return String(localized: "Установщик не встроен в рецепт: передайте вместе с файлом рецепта и «\(name)» (положите их в одну папку — при импорте onwin заберёт установщик оттуда).",
+                      bundle: .onwinCore)
     }
 
     /// Reads a .onwinrecipe file without saving it. A local installer lying next to the file is
@@ -542,10 +554,13 @@ public enum UserRecipes {
     public static func read(_ file: URL) throws -> (recipe: UserRecipe, installerFile: URL?) {
         let data: Data
         do { data = try Data(contentsOf: file) } catch {
-            throw OnwinError("Не удалось прочитать \(file.lastPathComponent): \(error.localizedDescription)")
+            throw OnwinError(String(localized: "Не удалось прочитать \(file.lastPathComponent): \(error.localizedDescription)",
+                                    bundle: .onwinCore))
         }
         var r = try decode(data)
-        guard !r.name.isEmpty else { throw OnwinError("В рецепте \(file.lastPathComponent) нет названия программы") }
+        guard !r.name.isEmpty else {
+            throw OnwinError(String(localized: "В рецепте \(file.lastPathComponent) нет названия программы", bundle: .onwinCore))
+        }
         var sibling: URL?
         if let installer = r.installer, installer.isLocalFile, let name = installer.file {
             // Only the file name counts, looked up next to the recipe file: an absolute path or "../x" in a
@@ -582,8 +597,8 @@ public enum UserRecipes {
                                      progress: @escaping ProgressHandler) async throws -> URL {
         if step.url.isFileURL {
             guard FileManager.default.fileExists(atPath: step.url.path) else {
-                throw OnwinError("Нет файла установщика \(step.url.lastPathComponent). Откройте рецепт «\(recipe.name)» " +
-                                 "в каталоге («Мои приложения» → «Изменить») и выберите файл заново.")
+                throw OnwinError(String(localized: "Нет файла установщика \(step.url.lastPathComponent). Откройте рецепт «\(recipe.name)» в каталоге («Мои приложения» → «Изменить») и выберите файл заново.",
+                                        bundle: .onwinCore))
             }
             return step.url
         }
@@ -591,7 +606,7 @@ public enum UserRecipes {
             return try await Downloader.fetch(step.url, fileName: step.fileName, progress: progress)
         }
         guard step.url.scheme?.lowercased() == "https" else {
-            throw OnwinError("Установщик рецепта «\(recipe.name)» можно скачивать только по https://")
+            throw OnwinError(String(localized: "Установщик рецепта «\(recipe.name)» можно скачивать только по https://", bundle: .onwinCore))
         }
         let digest = SHA256.hash(data: Data(step.url.absoluteString.utf8)).prefix(4).map { String(format: "%02x", $0) }.joined()
         let cacheName = "user-\(user.id)-\(digest)-\(step.fileName)"
@@ -607,10 +622,12 @@ public enum UserRecipes {
             }
             guard actual == expected else {
                 try? FileManager.default.removeItem(at: file)
-                throw OnwinError("Контрольная сумма \(step.fileName) не совпадает с рецептом.\nОжидалось: \(expected)\nПолучено: \(actual)\n" +
-                                 "Издатель мог обновить файл — проверьте ссылку и обновите SHA-256 в рецепте.")
+                throw OnwinError(String(localized: "Контрольная сумма \(step.fileName) не совпадает с рецептом.\nОжидалось: \(expected)\nПолучено: \(actual)\nИздатель мог обновить файл — проверьте ссылку и обновите SHA-256 в рецепте.",
+                                        bundle: .onwinCore))
             }
-            progress(InstallProgress(message: "SHA-256 \(step.fileName) совпадает", fraction: nil))
+            progress(InstallProgress(message: String(localized: "SHA-256 \(step.fileName) совпадает", bundle: .onwinCore),
+                                     fraction: nil))
+
         }
         return file
     }

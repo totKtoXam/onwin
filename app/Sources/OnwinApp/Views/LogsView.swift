@@ -67,7 +67,9 @@ enum LogsFileReader {
         for folder in folders {
             let files = (try? FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: keys,
                                                                        options: [.skipsHiddenFiles])) ?? []
-            let name = folder.standardizedFileURL.path == root ? "Общие" : folder.lastPathComponent
+            let name = folder.standardizedFileURL.path == root
+                ? String(localized: "Общие", comment: "Log group: logs not tied to a space")
+                : folder.lastPathComponent
             var entries: [LogsEntry] = []
             for file in files where logExtensions.contains(file.pathExtension.lowercased()) {
                 let values = try? file.resourceValues(forKeys: Set(keys))
@@ -251,7 +253,7 @@ struct LogsView: View {
         VStack(spacing: 0) {
             HStack(alignment: .center, spacing: 8) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(space.map { "Журналы «\($0.name)»" } ?? "Журналы")
+                    Text(space.map { String(localized: "Журналы «\($0.name)»") } ?? String(localized: "Журналы"))
                         .font(.title3.bold())
                         .lineLimit(1)
                     Text(countText)
@@ -334,10 +336,9 @@ struct LogsView: View {
 
     private var countText: String {
         let count = entries.count
-        if count == 0 { return "нет файлов" }
+        if count == 0 { return String(localized: "нет файлов") }
         let total = entries.reduce(Int64(0)) { $0 + $1.size }
-        return "\(count) " + CatalogView.plural(count, "файл", "файла", "файлов") +
-            " · " + LogsFileReader.formattedSize(total)
+        return String(localized: "\(count) файлов") + " · " + LogsFileReader.formattedSize(total)
     }
 
     private func openLogsFolder() {
@@ -458,10 +459,11 @@ struct LogsView: View {
             } else {
                 VStack(spacing: 0) {
                     if loaded.isTruncated {
+                        let fileSize = LogsFileReader.formattedSize(Int64(loaded.fileSize))
+                        let shownSize = LogsFileReader.formattedSize(Int64(LogsFileReader.tailLimit))
                         HStack(spacing: 6) {
                             Image(systemName: "scissors")
-                            Text("Файл большой (\(LogsFileReader.formattedSize(Int64(loaded.fileSize)))) — " +
-                                 "показаны последние \(LogsFileReader.formattedSize(Int64(LogsFileReader.tailLimit))).")
+                            Text("Файл большой (\(fileSize)) — показаны последние \(shownSize).")
                             Spacer(minLength: 0)
                             Button("Открыть целиком") {
                                 model.open(entry.url)

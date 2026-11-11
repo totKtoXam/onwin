@@ -20,7 +20,8 @@ struct ProgramGraphicsSection: View {
             Picker("Графика", selection: $selection) {
                 ForEach(GraphicsBackend.allCases) { backend in
                     let reason = unavailableReason(backend, engine: engine)
-                    Text(verbatim: reason == nil ? title(for: backend) : "\(title(for: backend)) — недоступно")
+                    Text(verbatim: reason == nil ? title(for: backend)
+                                                 : String(localized: "\(title(for: backend)) — недоступно"))
                         .tag(backend)
                         .disabled(reason != nil && backend != selection)
                 }
@@ -34,7 +35,7 @@ struct ProgramGraphicsSection: View {
     }
 
     private func title(for backend: GraphicsBackend) -> String {
-        backend == .auto ? "Автоматически" : backend.displayName
+        backend == .auto ? String(localized: "Автоматически", comment: "Graphics mode: onwin picks the translator") : backend.displayName
     }
 
     private func unavailableReason(_ backend: GraphicsBackend, engine: Engine?) -> String? {
@@ -43,18 +44,18 @@ struct ProgramGraphicsSection: View {
     }
 
     private func footer(engine: Engine?) -> String {
-        guard let engine else { return "Сначала установите движок Wine." }
+        guard let engine else { return String(localized: "Сначала установите движок Wine.") }
         let spaceBackend = GraphicsSupport.resolve(space.config.graphicsBackend, engine: engine)
         if selection == .auto {
             if let rule = CompatDB.rule(forExecutable: windowsPath), let backend = rule.backend,
                backend != .auto, GraphicsSupport.isAvailable(backend, engine: engine) {
-                return "Сейчас: \(backend.displayName). Для лаунчеров и их веб-окон onwin выбирает его сам: на Metal-трансляторах эти окна отображаются с ошибками. Игры, которые лаунчер запускает, получают графику пространства (\(spaceBackend.displayName))."
+                return String(localized: "Сейчас: \(backend.displayName). Для лаунчеров и их веб-окон onwin выбирает его сам: на Metal-трансляторах эти окна отображаются с ошибками. Игры, которые лаунчер запускает, получают графику пространства (\(spaceBackend.displayName)).")
             }
-            return "Сейчас: \(spaceBackend.displayName), как у пространства."
+            return String(localized: "Сейчас: \(spaceBackend.displayName), как у пространства.")
         }
         if let reason = unavailableReason(selection, engine: engine) {
-            return "\(selection.displayName) недоступен: \(reason). Программа получит \(spaceBackend.displayName)."
+            return String(localized: "\(selection.displayName) недоступен: \(reason). Программа получит \(spaceBackend.displayName).")
         }
-        return "\(selection.summary). Выбор привязан к этому exe: он действует и тогда, когда программу запускает лаунчер. При запуске отсюда тот же бэкенд получат и программы, которые она откроет."
+        return String(localized: "\(selection.summary). Выбор привязан к этому exe: он действует и тогда, когда программу запускает лаунчер. При запуске отсюда тот же бэкенд получат и программы, которые она откроет.")
     }
 }

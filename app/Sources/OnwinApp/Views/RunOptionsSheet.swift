@@ -67,7 +67,7 @@ struct RunOptionsSheet: View {
     @State private var programName = ""
     @State private var didLoad = false
 
-    private static let debugPresets: [(String, String)] = [
+    private static let debugPresets: [(LocalizedStringKey, String)] = [
         ("Ошибки и загрузка DLL", "+err,+warn,+seh,+loaddll"),
         ("Только загрузка DLL", "+loaddll"),
         ("Графика (D3D, DXGI)", "+d3d,+dxgi,+d3d11,+d3d12"),
@@ -228,7 +228,7 @@ struct RunOptionsSheet: View {
                 Text(verbatim: headerTitle)
                     .font(.title3.weight(.semibold))
                     .lineLimit(1)
-                Text(verbatim: "Пространство «\(space?.name ?? "—")»")
+                Text("Пространство «\(space?.name ?? "—")»")
                     .font(.callout)
                     .foregroundStyle(.secondary)
             }
@@ -239,8 +239,8 @@ struct RunOptionsSheet: View {
 
     private var headerTitle: String {
         switch mode {
-        case .command: return "Выполнить команду"
-        case .target(let t): return "Запустить «\(t.title)» с параметрами"
+        case .command: return String(localized: "Выполнить команду")
+        case .target(let t): return String(localized: "Запустить «\(t.title)» с параметрами")
         }
     }
 
@@ -264,14 +264,17 @@ struct RunOptionsSheet: View {
 
     private func backendTitle(_ b: GraphicsBackend, space: Space?) -> String {
         guard let space, let engine = model.engine(for: space) else { return b.displayName }
-        if b == .auto { return "Автоматически (\(GraphicsSupport.resolve(.auto, engine: engine).displayName))" }
-        return GraphicsSupport.isAvailable(b, engine: engine) ? b.displayName : "\(b.displayName) — недоступен"
+        if b == .auto {
+            return String(localized: "Автоматически (\(GraphicsSupport.resolve(.auto, engine: engine).displayName))")
+        }
+        return GraphicsSupport.isAvailable(b, engine: engine)
+            ? b.displayName : String(localized: "\(b.displayName) — недоступен")
     }
 
     private func resolvedHint(in space: Space) -> String? {
         guard let r = WindowsCommandLine.resolve(commandLine, in: space) else { return nil }
-        if let unix = r.unixPath { return "Запустится: \(space.windowsPath(forUnixPath: unix))" }
-        return "Запустится: \(r.program) (встроенная команда или программа из PATH Windows)"
+        if let unix = r.unixPath { return String(localized: "Запустится: \(space.windowsPath(forUnixPath: unix))") }
+        return String(localized: "Запустится: \(r.program) (встроенная команда или программа из PATH Windows)")
     }
 
     // MARK: Behaviour
@@ -323,7 +326,7 @@ struct RunOptionsSheet: View {
             commandRequest.arguments = []
             if r.saveAs?.isEmpty == true {
                 commandRequest.saveAs = WindowsCommandLine.resolve(commandLine, in: space)?
-                    .unixPath?.deletingPathExtension().lastPathComponent ?? "Программа"
+                    .unixPath?.deletingPathExtension().lastPathComponent ?? String(localized: "Программа")
             }
             model.runCommandLine(commandLine, in: space, request: commandRequest)
         case .target(let target):
@@ -333,8 +336,8 @@ struct RunOptionsSheet: View {
 
     private func chooseFile(_ space: Space?) {
         let panel = NSOpenPanel()
-        panel.title = "Выбрать программу"
-        panel.prompt = "Выбрать"
+        panel.title = String(localized: "Выбрать программу")
+        panel.prompt = String(localized: "Выбрать", comment: "Open panel button: choose the file")
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
         if let space { panel.directoryURL = space.driveC }

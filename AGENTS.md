@@ -68,6 +68,26 @@ onwin публичный. Любая ошибка здесь — юридиче�
 проверьте актуальный релиз. Исключения объясняйте пользователю: Wine Mono/Gecko должны точно совпадать с версией Wine
 (`dlls/appwiz.cpl/addons.c`); DXVK на Mac ограничен возможностями MoltenVK.
 
+## Языки интерфейса
+
+Приложение и onwinctl переведены на английский, упрощённый китайский и казахский; исходный язык — русский (русский
+текст в коде и есть ключ). Устройство описано в начале `app/Sources/OnwinCore/Localization.swift`. Коротко:
+
+- Тексты для людей: литералы SwiftUI (`Text("…")`, `Button("…")`) уже переводятся; всё, что имеет тип `String`, —
+  через `String(localized: "…")` в OnwinApp, `String(localized: "…", bundle: .onwinCore)` в OnwinCore,
+  `String(localized: "…", bundle: .onwinctl)` в onwinctl. Одно предложение — один ключ, без склейки кусков; числа с
+  существительным — ключ с `%lld` и формами множественного числа в каталоге. Не переводятся данные Wine/Windows
+  (реестр, пути, имена файлов), сохранённые значения и машинный вывод onwinctl.
+- Каталоги `app/Sources/{OnwinApp,OnwinCore,onwinctl}/Localizable.xcstrings` (формат Apple, открываются в Xcode),
+  строки Info.plist — `OnwinApp/InfoPlist.xcstrings`. Без Xcode их собирает плагин `CompileStringCatalogs`.
+- После изменения текстов: `scripts/l10n.py sync` (новые ключи из кода), перевести новые строки на все три языка,
+  `scripts/l10n.py check` (должно быть 0 проблем) и `scripts/l10n.py leftovers` (русские литералы мимо каталога).
+- Термины: пространство = space / 空间 / кеңістік, движок = engine / 引擎 / қозғалтқыш, ярлык = shortcut / 快捷方式 /
+  жарлық; общий словарь с сайтом — в заметках (`i18n-glossary.md`).
+- Проверка окон без записи экрана: `ONWIN_HOME=<временная папка> ONWIN_UI_SNAPSHOT=<папка> Onwin.app/Contents/MacOS/Onwin
+  -AppleLanguages '(en)'` — onwin работает в фоне (не забирает фокус), сохраняет PNG своих окон и закрывается
+  (`OnwinApp/UISnapshot.swift`). Не запускайте тестовый GUI без этого режима, пока пользователь работает или играет.
+
 ## Сборка и проверка
 
 ```bash

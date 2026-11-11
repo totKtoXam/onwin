@@ -11,24 +11,24 @@ func runWithAutoComponents(space start: Space, file: URL, arguments: [String], a
     let exe = auto ? AutoComponents.executable(for: file, in: b) : nil
 
     if let exe, AutoComponents.needsAnalysis(exe, in: b) {
-        print("onwin: проверяю, какие компоненты нужны \(exe.lastPathComponent)…")
+        print(String(localized: "onwin: проверяю, какие компоненты нужны \(exe.lastPathComponent)…", bundle: .onwinctl))
         let plan = AutoComponents.staticPlan(for: exe, in: b)
         var installed = true
         if !plan.install.isEmpty {
-            print("onwin: устанавливаю компоненты: \(plan.componentNames)")
+            print(String(localized: "onwin: устанавливаю компоненты: \(plan.componentNames)", bundle: .onwinctl))
             for line in AutoComponents.reasons(for: plan) { print("       \(line)") }
             do {
                 b = try await AutoComponents.install(plan.install, into: b, progress: printProgress)
             } catch {
                 installed = false
-                FileHandle.standardError.write(Data("onwinctl: \(error.localizedDescription)\nonwin: запускаю программу без них.\n".utf8))
+                let message = String(localized: "onwin: запускаю программу без них.", bundle: .onwinctl)
+                FileHandle.standardError.write(Data("onwinctl: \(error.localizedDescription)\n\(message)\n".utf8))
             }
         } else {
-            print("onwin: дополнительные компоненты не нужны")
+            print(String(localized: "onwin: дополнительные компоненты не нужны", bundle: .onwinctl))
         }
         if let d3dmetal = plan.d3dmetal {
-            print("onwin: \(d3dmetal.reason) D3DMetal ставится с вашим Apple ID: кнопкой «Установить D3DMetal» в onwin " +
-                  "(или onwinctl d3dmetal-fetch, если образ уже скачан).")
+            print(String(localized: "onwin: \(d3dmetal.reason) D3DMetal ставится с вашим Apple ID: кнопкой «Установить D3DMetal» в onwin (или onwinctl d3dmetal-fetch, если образ уже скачан).", bundle: .onwinctl))
         }
         // A failed install is retried at the next run.
         if installed { b = try AutoComponents.markAnalyzed(exe, in: b) }
@@ -39,16 +39,18 @@ func runWithAutoComponents(space start: Space, file: URL, arguments: [String], a
 
     let plan = AutoComponents.logPlan(logText: result.output, in: b)
     guard !plan.install.isEmpty else { return result.status }
-    print("\nonwin: программа завершилась с кодом \(result.status) — ей не хватает: \(plan.componentNames)")
+    print("\n" + String(localized: "onwin: программа завершилась с кодом \(Int(result.status)) — ей не хватает: \(plan.componentNames)", bundle: .onwinctl))
     for line in AutoComponents.reasons(for: plan) { print("       \(line)") }
     b = try await AutoComponents.install(plan.install, into: b, progress: printProgress)
-    print("onwin: компоненты установлены, запускаю программу ещё раз…\n")
+    print(String(localized: "onwin: компоненты установлены, запускаю программу ещё раз…", bundle: .onwinctl) + "\n")
     result = try await runOnce(b, file: file, arguments: arguments)
     if failed(result.status) {
         let left = AutoComponents.logPlan(logText: result.output, in: b)
-        let missing = left.install.isEmpty ? "" : " Всё ещё не хватает: \(left.componentNames)."
-        FileHandle.standardError.write(Data(("onwinctl: программа не запустилась и после установки компонентов " +
-                                             "(код \(result.status)).\(missing)\n").utf8))
+        let status = Int(result.status)
+        let message = left.install.isEmpty
+            ? String(localized: "программа не запустилась и после установки компонентов (код \(status)).", bundle: .onwinctl)
+            : String(localized: "программа не запустилась и после установки компонентов (код \(status)). Всё ещё не хватает: \(left.componentNames).", bundle: .onwinctl)
+        FileHandle.standardError.write(Data("onwinctl: \(message)\n".utf8))
     }
     return result.status
 }

@@ -36,6 +36,16 @@ public struct Component: Identifiable, Hashable, Sendable {
         case dotnet = ".NET"
         case other = "Прочее"
 
+        /// Localized name for the UI (the raw value is the Russian source text, kept for compatibility).
+        public var title: String {
+            switch self {
+            case .graphics: return String(localized: "Графика и DirectX", bundle: .onwinCore)
+            case .runtimes: return String(localized: "Библиотеки Visual C++", bundle: .onwinCore)
+            case .dotnet: return ".NET"
+            case .other: return String(localized: "Прочее", bundle: .onwinCore, comment: "Component category: everything else")
+            }
+        }
+
         public var symbol: String {
             switch self {
             case .graphics: return "cpu"
@@ -178,14 +188,11 @@ public struct Component: Identifiable, Hashable, Sendable {
             + requires.compactMap { Catalog.component($0) }.reduce(0) { $0 + $1.approximateDownloadBytes }
     }
 
-    /// "≈ 95 МБ"
+    /// "≈ 95 МБ" (at least 1 MB; the unit and number format follow the interface language)
     public var sizeDescription: String {
         let bytes = approximateDownloadBytes
-        if bytes <= 0 { return kind == .global ? "с сайта Apple" : "—" }
-        let mb = Double(bytes) / 1_048_576
-        if mb < 1 { return "≈ 1 МБ" }
-        if mb < 10 { return String(format: "≈ %.1f МБ", mb).replacingOccurrences(of: ".", with: ",") }
-        return "≈ \(Int(mb.rounded())) МБ"
+        if bytes <= 0 { return kind == .global ? String(localized: "с сайта Apple", bundle: .onwinCore) : "—" }
+        return "≈ " + max(bytes, 1_000_000).formatted(.byteCount(style: .file))
     }
 
     public func isInstalled(in config: SpaceConfig) -> Bool {
@@ -208,6 +215,16 @@ public struct AppRecipe: Identifiable, Hashable, Sendable {
         case utilities = "Утилиты"
         /// Recipes the user wrote (UserRecipes.swift); not part of the built-in list.
         case user = "Мои приложения"
+
+        /// Localized name for the UI. The raw value is written into user recipe files (`category`): keep it.
+        public var title: String {
+            switch self {
+            case .launchers: return String(localized: "Игровые лаунчеры", bundle: .onwinCore)
+            case .runtimes: return String(localized: "Компоненты", bundle: .onwinCore)
+            case .utilities: return String(localized: "Утилиты", bundle: .onwinCore)
+            case .user: return String(localized: "Мои приложения", bundle: .onwinCore)
+            }
+        }
     }
 
     public var id: String
@@ -255,8 +272,9 @@ public enum Catalog {
         // stored by Steam in HKCU\Software\Valve\Steam\GPUAccelWebViews. Off: the CEF web views render in
         // software, which together with the steamwebhelper switches in CompatDB keeps the window from
         // staying black under Wine on macOS (onwin test, Apple M5 / macOS 26.5, 11.11.2026).
-        Component(id: "steam-tweaks", name: "Настройки Steam для Mac",
-                  summary: "Программная отрисовка окон Steam: без чёрного окна и с работающим встроенным браузером",
+        Component(id: "steam-tweaks", name: String(localized: "Настройки Steam для Mac", bundle: .onwinCore),
+                  summary: String(localized: "Программная отрисовка окон Steam: без чёрного окна и с работающим встроенным браузером",
+                                  bundle: .onwinCore),
                   category: .other, symbol: "gamecontroller",
                   actions: [
                     .registry([
@@ -267,14 +285,17 @@ public enum Catalog {
         // ---- Graphics --------------------------------------------------------------------------
         Component(
             id: d3dmetalID, name: "D3DMetal (Game Porting Toolkit)",
-            summary: "DirectX 11/12 → Metal от Apple: нужен играм на DirectX 12. onwin сам скачает его с сайта Apple после входа с Apple ID",
+            summary: String(localized: "DirectX 11/12 → Metal от Apple: нужен играм на DirectX 12. onwin сам скачает его с сайта Apple после входа с Apple ID",
+                            bundle: .onwinCore),
             category: .graphics, kind: .global, symbol: "macbook",
             providesDLLs: ["d3d12", "d3d11", "dxgi", "nvngx (MetalFX)"],
             satisfiesImports: ["d3d12", "d3d12core"],
-            notes: "Один раз на все пространства. Нужна бесплатная учётная запись Apple Developer."),
+            notes: String(localized: "Один раз на все пространства. Нужна бесплатная учётная запись Apple Developer.",
+                          bundle: .onwinCore)),
         Component(
-            id: "directx-jun2010", name: "DirectX (июнь 2010)",
-            summary: "Оригинальные D3DX 9/10/11, XInput 1.3, XAudio2 и XACT из последнего DirectX End-User Runtime",
+            id: "directx-jun2010", name: String(localized: "DirectX (июнь 2010)", bundle: .onwinCore),
+            summary: String(localized: "Оригинальные D3DX 9/10/11, XInput 1.3, XAudio2 и XACT из последнего DirectX End-User Runtime",
+                            bundle: .onwinCore),
             category: .graphics, symbol: "gamecontroller.fill",
             downloads: [.init("https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe",
                               .sha256("053f76dcbb28802e23341b6a787e3b0791c0fa5c8d4d011b1044172dbf89c73b"), bytes: 100_275_120)],
@@ -284,10 +305,12 @@ public enum Catalog {
                            "xaudio2_0…2_7", "x3daudio1_*", "xapofx1_*", "xactengine*"],
             satisfiesImports: ["d3dx9_*", "d3dx10_*", "d3dx11_*", "d3dcompiler_43", "xinput1_1", "xinput1_2", "xinput1_3",
                                "xaudio2_[0-7]", "x3daudio1_*", "xapofx1_*", "xactengine*"],
-            notes: "64-битные XAudio/XACT не ставятся: в Wine они ломают звук (как в winetricks)."),
+            notes: String(localized: "64-битные XAudio/XACT не ставятся: в Wine они ломают звук (как в winetricks).",
+                          bundle: .onwinCore)),
         Component(
             id: "d3dcompiler_47", name: "D3DCompiler 47",
-            summary: "Компилятор шейдеров HLSL от Microsoft (из Windows SDK): нужен многим играм на Unity и Unreal",
+            summary: String(localized: "Компилятор шейдеров HLSL от Microsoft (из Windows SDK): нужен многим играм на Unity и Unreal",
+                            bundle: .onwinCore),
             category: .graphics, symbol: "function",
             downloads: [.init("https://download.microsoft.com/download/B/0/C/B0C80BA3-8AD6-4958-810B-6882485230B5/standalonesdk/Installers/2630bae9681db6a9f6722366f47d055c.cab",
                               fileName: "d3dcompiler_47-sdk-x86-2630bae9681db6a9f6722366f47d055c.cab", .cabinet, bytes: 1_488_323),
@@ -302,13 +325,14 @@ public enum Catalog {
                                renames: ["fil3585cb2ea5db13cc0838f8d06b5c9679": "d3dcompiler_47.dll"])),
             ],
             dllOverrides: ["d3dcompiler_47": "n"],
-            providesDLLs: ["d3dcompiler_47 (32 и 64 бит)"],
+            providesDLLs: [String(localized: "d3dcompiler_47 (32 и 64 бит)", bundle: .onwinCore)],
             satisfiesImports: ["d3dcompiler_47"]),
 
         // ---- Visual C++ ------------------------------------------------------------------------
         Component(
             id: "vcrun2026", name: "Visual C++ v14 (2015–2026)",
-            summary: "Последние библиотеки Microsoft Visual C++ 14.x — нужны почти всем современным играм и лаунчерам",
+            summary: String(localized: "Последние библиотеки Microsoft Visual C++ 14.x — нужны почти всем современным играм и лаунчерам",
+                            bundle: .onwinCore),
             category: .runtimes, symbol: "shippingbox.fill",
             downloads: [.init("https://aka.ms/vc14/vc_redist.x86.exe", fileName: "vc_redist_v14.x86.exe", .portableExecutable, bytes: 6_919_464),
                         .init("https://aka.ms/vc14/vc_redist.x64.exe", fileName: "vc_redist_v14.x64.exe", .portableExecutable, bytes: 18_863_624)],
@@ -359,17 +383,19 @@ public enum Catalog {
         // ---- .NET ------------------------------------------------------------------------------
         Component(
             id: "wine-mono", name: "Wine Mono \(wineMonoVersion)",
-            summary: "Открытая замена .NET Framework для программ на C#/.NET — ставится быстро, подходит большинству",
+            summary: String(localized: "Открытая замена .NET Framework для программ на C#/.NET — ставится быстро, подходит большинству",
+                            bundle: .onwinCore),
             category: .dotnet, symbol: "chevron.left.forwardslash.chevron.right",
             downloads: [.init("https://dl.winehq.org/wine/wine-mono/\(wineMonoVersion)/wine-mono-\(wineMonoVersion)-x86.msi",
                               .sha256(wineMonoSHA256), bytes: 85_504_000)],
             actions: [.run("wine-mono-\(wineMonoVersion)-x86.msi", arguments: ["/qn"])],
             providesDLLs: ["mscoree", "mscorlib", "System.*"],
             satisfiesImports: ["mscoree"],
-            notes: "Версия соответствует Wine 11.0."),
+            notes: String(localized: "Версия соответствует Wine 11.0.", bundle: .onwinCore)),
         Component(
             id: "dotnet48", name: ".NET Framework 4.8",
-            summary: "Настоящий .NET от Microsoft для программ, которым не хватает Wine Mono (установка долгая)",
+            summary: String(localized: "Настоящий .NET от Microsoft для программ, которым не хватает Wine Mono (установка долгая)",
+                            bundle: .onwinCore),
             category: .dotnet, symbol: "chevron.left.forwardslash.chevron.right",
             downloads: [.init("https://download.visualstudio.microsoft.com/download/pr/7afca223-55d2-470a-8edc-6a1739ae3252/abd170b4b0ec15ad0222a809b761a036/ndp48-x86-x64-allos-enu.exe",
                               .sha256("95889d6de3f2070c07790ad6cf2000d33d9a1bdfc6a381725ab82ab1c314fd53"), bytes: 72_721_568)],
@@ -384,10 +410,11 @@ public enum Catalog {
             satisfiesImports: ["mscoree"],
             requires: ["dotnet40"],
             replaces: ["wine-mono"],
-            notes: "Wine Mono будет удалён. Версия 4.8.1 в Wine зависает при установке, поэтому — 4.8."),
+            notes: String(localized: "Wine Mono будет удалён. Версия 4.8.1 в Wine зависает при установке, поэтому — 4.8.",
+                          bundle: .onwinCore)),
         Component(
             id: "dotnet40", name: ".NET Framework 4.0",
-            summary: "Нужен установщику .NET 4.8",
+            summary: String(localized: "Нужен установщику .NET 4.8", bundle: .onwinCore),
             category: .dotnet, symbol: "chevron.left.forwardslash.chevron.right",
             downloads: [.init("https://download.microsoft.com/download/9/5/A/95A9616B-7A37-4AF6-BC36-D6EA96C8DAAE/dotNetFx40_Full_x86_x64.exe",
                               .sha256("65e064258f2e418816b304f646ff9e87af101e4c9552ab064bb74d281c38659f"), bytes: 50_449_456)],
@@ -411,7 +438,7 @@ public enum Catalog {
         // ---- Other -----------------------------------------------------------------------------
         Component(
             id: "wine-gecko", name: "Wine Gecko \(wineGeckoVersion)",
-            summary: "Движок HTML для встроенных окон браузера: лаунчеры, справка, окна входа",
+            summary: String(localized: "Движок HTML для встроенных окон браузера: лаунчеры, справка, окна входа", bundle: .onwinCore),
             category: .other, symbol: "globe",
             downloads: [.init("https://dl.winehq.org/wine/wine-gecko/\(wineGeckoVersion)/wine-gecko-\(wineGeckoVersion)-x86_64.msi",
                               .sha256(wineGeckoX64SHA256), bytes: 53_898_752),
@@ -421,10 +448,11 @@ public enum Catalog {
                       .run("wine-gecko-\(wineGeckoVersion)-x86.msi", arguments: ["/qn"])],
             providesDLLs: ["mshtml (Gecko)"],
             satisfiesImports: ["mshtml"],
-            notes: "Версия соответствует Wine 11.0."),
+            notes: String(localized: "Версия соответствует Wine 11.0.", bundle: .onwinCore)),
         Component(
-            id: "corefonts", name: "Шрифты Microsoft Core Fonts",
-            summary: "Arial, Times New Roman, Courier New, Verdana, Georgia и другие — для правильного текста в играх и программах",
+            id: "corefonts", name: String(localized: "Шрифты Microsoft Core Fonts", bundle: .onwinCore),
+            summary: String(localized: "Arial, Times New Roman, Courier New, Verdana, Georgia и другие — для правильного текста в играх и программах",
+                            bundle: .onwinCore),
             category: .other, symbol: "textformat",
             downloads: coreFontFiles.map { .init("https://github.com/pushcx/corefonts/raw/master/\($0.0).exe",
                                                  fileName: "corefonts-\($0.0).exe", .sha256($0.1), bytes: $0.2) },
@@ -434,7 +462,7 @@ public enum Catalog {
                            "Comic Sans MS", "Impact", "Andale Mono", "Webdings"]),
         Component(
             id: "physx", name: "NVIDIA PhysX (System Software 9.23)",
-            summary: "Старый PhysX для игр 2008–2015 годов, которые ищут PhysXLoader.dll",
+            summary: String(localized: "Старый PhysX для игр 2008–2015 годов, которые ищут PhysXLoader.dll", bundle: .onwinCore),
             category: .other, symbol: "atom",
             downloads: [.init("https://us.download.nvidia.com/Windows/9.23.1019/PhysX_9.23.1019_SystemSoftware.exe",
                               .sha256("9b42b84e881769d681e09f62a1b51532616b2e6a2d5d99d0ccae6eb5fbbc208c"), bytes: 29_417_888)],
@@ -442,12 +470,12 @@ public enum Catalog {
             providesDLLs: ["PhysXLoader", "PhysXCore", "PhysXCooking", "PhysXDevice", "cudart"],
             satisfiesImports: ["physxloader", "physxloader64", "physxcore", "physxcore64", "physxcooking", "physxcooking64",
                                "physxdevice", "physxdevice64", "nxcooking", "nxcharacter", "physxextensions"],
-            notes: "Расчёт идёт на процессоре: видеокарт NVIDIA в Mac нет."),
+            notes: String(localized: "Расчёт идёт на процессоре: видеокарт NVIDIA в Mac нет.", bundle: .onwinCore)),
     ]
 
     /// Built-in recipes; `Catalog.apps` (UserRecipes.swift) adds the user's own ones.
     public static let builtinApps: [AppRecipe] = [
-        AppRecipe(id: "steam", name: "Steam", summary: "Магазин и лаунчер игр Valve",
+        AppRecipe(id: "steam", name: "Steam", summary: String(localized: "Магазин и лаунчер игр Valve", bundle: .onwinCore),
                   category: .launchers,
                   installer: .init("https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe", arguments: ["/S"]),
                   windowsVersion: .win10, backend: .auto, components: ["steam-tweaks"],
@@ -455,11 +483,13 @@ public enum Catalog {
                   // ANGLE gets only GLES 2 on WineD3D and EGL_BAD_ALLOC on DXMT). Games are unaffected.
                   launchPath: #"C:\Program Files (x86)\Steam\steam.exe"#,
                   launchArguments: ["-cef-disable-gpu", "-cef-disable-gpu-compositing"],
-                  spaceName: "Steam", notes: "После установки Steam обновится и попросит войти в аккаунт.",
+                  spaceName: "Steam",
+                  notes: String(localized: "После установки Steam обновится и попросит войти в аккаунт.", bundle: .onwinCore),
                   symbol: "gamecontroller",
                   // Valve's 512×512 Steam logo on its store CDN (steamstatic.com, the installer's host too).
                   iconURL: URL(string: "https://store.akamai.steamstatic.com/public/shared/images/responsive/share_steam_logo.png")),
-        AppRecipe(id: "epic", name: "Epic Games Launcher", summary: "Лаунчер Epic Games Store",
+        AppRecipe(id: "epic", name: "Epic Games Launcher",
+                  summary: String(localized: "Лаунчер Epic Games Store", bundle: .onwinCore),
                   category: .launchers,
                   installer: .init("https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/installer/download/EpicGamesLauncherInstaller.msi",
                                    arguments: ["/qn"]),
@@ -469,14 +499,14 @@ public enum Catalog {
                   // OpenGL UI renderer, skip the bundled VC++ prerequisite installer.
                   launchArguments: ["-opengl", "-SkipBuildPatchPrereq"],
                   spaceName: "Epic Games", notes: "", symbol: "bolt.horizontal"),
-        AppRecipe(id: "gog", name: "GOG Galaxy", summary: "Лаунчер GOG.com",
+        AppRecipe(id: "gog", name: "GOG Galaxy", summary: String(localized: "Лаунчер GOG.com", bundle: .onwinCore),
                   category: .launchers,
                   installer: .init("https://webinstallers.gog-statics.com/download/GOG_Galaxy_2.0.exe", arguments: []),
                   windowsVersion: .win10, backend: .auto, components: [],
                   launchPath: #"C:\Program Files (x86)\GOG Galaxy\GalaxyClient.exe"#, launchArguments: [],
                   spaceName: "GOG Galaxy", notes: "", symbol: "circle.hexagongrid",
                   iconURL: URL(string: "https://www.gog.com/apple-touch-icon-180x180.png")),
-        AppRecipe(id: "battlenet", name: "Battle.net", summary: "Лаунчер Blizzard",
+        AppRecipe(id: "battlenet", name: "Battle.net", summary: String(localized: "Лаунчер Blizzard", bundle: .onwinCore),
                   category: .launchers,
                   installer: .init("https://downloader.battle.net/download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live",
                                    fileName: "Battle.net-Setup.exe", arguments: []),
@@ -520,9 +550,10 @@ public enum Catalog {
                                  x86: (String, String, Int64), x64: (String, String, Int64),
                                  dlls: [String], extra: [String]) -> Component {
         let f86 = "vcredist\(year)_x86.exe", f64 = "vcredist\(year)_x64.exe"
+        let runtimes = dlls.filter { $0.hasPrefix("msvc") }.joined(separator: ", ")
         return Component(
             id: "vcrun\(year)", name: "Visual C++ \(year) (\(version))",
-            summary: "Библиотеки Visual C++ \(year) для игр того времени (\(dlls.filter { $0.hasPrefix("msvc") }.joined(separator: ", ")))",
+            summary: String(localized: "Библиотеки Visual C++ \(year) для игр того времени (\(runtimes))", bundle: .onwinCore),
             category: .runtimes, symbol: "shippingbox",
             downloads: [.init(x86.0, fileName: f86, .sha256(x86.1), bytes: x86.2),
                         .init(x64.0, fileName: f64, .sha256(x64.1), bytes: x64.2)],
@@ -609,27 +640,42 @@ public enum Glob {
 }
 
 extension Component.Action {
-    /// One line in Russian, for `onwinctl component-info` and tooltips.
+    /// One line in the interface language, for `onwinctl component-info` and tooltips.
     public var summary: String {
         switch self {
         case .run(let file, let arguments, let overrides):
             let extra = overrides.isEmpty ? "" : " (WINEDLLOVERRIDES " + overrides.map { "\($0.key)=\($0.value)" }.joined(separator: ";") + ")"
-            return "запустить \(file) \(arguments.joined(separator: " "))\(extra)"
+            let command = "\(file) \(arguments.joined(separator: " "))\(extra)"
+            return String(localized: "запустить \(command)", bundle: .onwinCore)
         case .extract(let e):
-            let via = e.cabinets.isEmpty ? "" : " через вложенные \(e.cabinets.joined(separator: ", "))"
-            return "достать \(e.files.joined(separator: ", ")) из \(e.source)\(via) → \(e.destination.rawValue)\(e.optional ? " (если есть)" : "")"
+            let files = e.files.joined(separator: ", "), cabinets = e.cabinets.joined(separator: ", ")
+            let to = e.destination.rawValue
+            switch (e.cabinets.isEmpty, e.optional) {
+            case (true, false):
+                return String(localized: "достать \(files) из \(e.source) → \(to)", bundle: .onwinCore)
+            case (true, true):
+                return String(localized: "достать \(files) из \(e.source) → \(to) (если есть)", bundle: .onwinCore)
+            case (false, false):
+                return String(localized: "достать \(files) из \(e.source) через вложенные \(cabinets) → \(to)", bundle: .onwinCore)
+            case (false, true):
+                return String(localized: "достать \(files) из \(e.source) через вложенные \(cabinets) → \(to) (если есть)",
+                              bundle: .onwinCore)
+            }
         case .registry(let values):
-            return "записать в реестр: " + values.map { "\($0.key)\\\($0.name)" }.joined(separator: ", ")
+            let list = values.map { "\($0.key)\\\($0.name)" }.joined(separator: ", ")
+            return String(localized: "записать в реестр: \(list)", bundle: .onwinCore)
         case .registerFonts(let fonts):
-            return "зарегистрировать шрифты (\(fonts.count))"
+            return String(localized: "зарегистрировать шрифты (\(fonts.count))", bundle: .onwinCore)
         case .registerServers(let patterns, let destination):
-            return "regsvr32 \(patterns.joined(separator: " ")) в \(destination.rawValue)"
+            let list = patterns.joined(separator: " ")
+            return String(localized: "regsvr32 \(list) в \(destination.rawValue)", bundle: .onwinCore)
         case .removeWineMono:
-            return "удалить Wine Mono"
+            return String(localized: "удалить Wine Mono", bundle: .onwinCore)
         case .setWindowsVersion(let v):
-            return "временно включить \(v.displayName)"
+            return String(localized: "временно включить \(v.displayName)", bundle: .onwinCore)
         case .restoreWindowsVersion:
-            return "вернуть версию Windows пространства"
+            return String(localized: "вернуть версию Windows пространства", bundle: .onwinCore)
         }
     }
+
 }

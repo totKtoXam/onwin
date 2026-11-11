@@ -38,11 +38,16 @@ struct RestartSensitiveChange: Equatable, Sendable {
 
     /// "Перезапустить пространство и включить MSync"
     var actionTitle: String {
-        var parts: [String] = []
-        if let msync { parts.append(msync ? "включить MSync" : "выключить MSync") }
-        if let highResolution { parts.append(highResolution ? "включить режим Retina" : "выключить режим Retina") }
-        if let linkMacFolders { parts.append(linkMacFolders ? "связать папки с Mac" : "сделать папки отдельными") }
-        return "Перезапустить пространство и " + parts.joined(separator: ", ")
+        // One full sentence per setting (no glued fragments, for translations); several at once: a general one.
+        switch (msync, highResolution, linkMacFolders) {
+        case (true?, nil, nil): return String(localized: "Перезапустить пространство и включить MSync")
+        case (false?, nil, nil): return String(localized: "Перезапустить пространство и выключить MSync")
+        case (nil, true?, nil): return String(localized: "Перезапустить пространство и включить режим Retina")
+        case (nil, false?, nil): return String(localized: "Перезапустить пространство и выключить режим Retina")
+        case (nil, nil, true?): return String(localized: "Перезапустить пространство и связать папки с Mac")
+        case (nil, nil, false?): return String(localized: "Перезапустить пространство и сделать папки отдельными")
+        default: return String(localized: "Перезапустить пространство и применить настройки")
+        }
     }
 }
 
@@ -59,12 +64,12 @@ extension AppModel {
     /// Soft shutdown used by every "Завершить всё" (`quitAll` calls it).
     func softShutdown(_ space: Space) async {
         let current = self.space(id: space.id) ?? space
-        backgroundActivity = "Завершаю программы «\(current.name)»…"
+        backgroundActivity = String(localized: "Завершаю программы «\(current.name)»…")
         defer { backgroundActivity = nil }
         do {
             let runner = try WineRunner(space: current)
             if try await runner.shutdown() == .refused {
-                report("Программа в пространстве «\(current.name)» отказалась завершаться — возможно, она спрашивает, сохранить ли изменения. Ответьте ей или выберите «Принудительно».")
+                report(String(localized: "Программа в пространстве «\(current.name)» отказалась завершаться — возможно, она спрашивает, сохранить ли изменения. Ответьте ей или выберите «Принудительно»."))
             }
         } catch {
             report(error)
@@ -85,17 +90,17 @@ extension AppModel {
     func restartSpace(_ spaceID: UUID, applying change: RestartSensitiveChange) async {
         guard let space = space(id: spaceID), !change.isEmpty else { return }
         let name = space.name
-        _ = await performTask("Перезапуск пространства «\(name)»", autoClose: true) { [self] context in
-            context.status("Закрываю программы пространства…")
+        _ = await performTask(String(localized: "Перезапуск пространства «\(name)»"), autoClose: true) { [self] context in
+            context.status(String(localized: "Закрываю программы пространства…"))
             let runner = try WineRunner(space: space)
             let outcome = try await runner.shutdown(onOutput: context.log)
             if outcome == .refused {
-                throw OnwinError("Программа в пространстве «\(name)» отказалась завершаться (например, ждёт ответа «Сохранить изменения?»). Ответьте ей и повторите, или завершите пространство принудительно. Настройка не изменена.")
+                throw OnwinError(String(localized: "Программа в пространстве «\(name)» отказалась завершаться (например, ждёт ответа «Сохранить изменения?»). Ответьте ей и повторите, или завершите пространство принудительно. Настройка не изменена."))
             }
-            if outcome == .forced { context.log("Часть программ пришлось завершить принудительно.\n") }
-            context.status("Сохраняю настройки…")
+            if outcome == .forced { context.log(String(localized: "Часть программ пришлось завершить принудительно.") + "\n") }
+            context.status(String(localized: "Сохраняю настройки…"))
             self.updateConfig(of: spaceID) { change.apply(to: &$0) }
-            context.status("Пространство перезапущено. Запустите программы снова — настройка уже действует.")
+            context.status(String(localized: "Пространство перезапущено. Запустите программы снова — настройка уже действует."))
         }
     }
 }

@@ -82,7 +82,7 @@ struct RosettaInstallSheet: View {
 
             if phase == .installing || !output.isEmpty {
                 ScrollView {
-                    Text(verbatim: output.isEmpty ? "Запускаю softwareupdate…" : output)
+                    Text(verbatim: output.isEmpty ? String(localized: "Запускаю softwareupdate…") : output)
                         .font(.system(.caption, design: .monospaced))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .textSelection(.enabled)
@@ -129,22 +129,22 @@ struct RosettaInstallSheet: View {
 
     private var title: String {
         switch phase {
-        case .done: return "Rosetta 2 установлена"
-        case .failed: return "Rosetta 2 не установилась"
-        default: return "Для onwin нужна Rosetta 2"
+        case .done: return String(localized: "Rosetta 2 установлена")
+        case .failed: return String(localized: "Rosetta 2 не установилась")
+        default: return String(localized: "Для onwin нужна Rosetta 2")
         }
     }
 
     private var message: String {
         switch phase {
         case .ask:
-            return "Движок onwin (Wine) собран для процессоров Intel. На Mac с Apple Silicon без Rosetta 2 не запустится ни одна Windows-программа. Установить её сейчас?"
+            return String(localized: "Движок onwin (Wine) собран для процессоров Intel. На Mac с Apple Silicon без Rosetta 2 не запустится ни одна Windows-программа. Установить её сейчас?")
         case .installing:
-            return "Если macOS попросит пароль администратора или подтверждение — подтвердите в её окне."
+            return String(localized: "Если macOS попросит пароль администратора или подтверждение — подтвердите в её окне.")
         case .done:
-            return "Можно запускать Windows-программы."
+            return String(localized: "Можно запускать Windows-программы.")
         case .failed(let reason):
-            return "\(reason)\nМожно установить вручную в Терминале: softwareupdate --install-rosetta --agree-to-license"
+            return String(localized: "\(reason)\nМожно установить вручную в Терминале: softwareupdate --install-rosetta --agree-to-license")
         }
     }
 

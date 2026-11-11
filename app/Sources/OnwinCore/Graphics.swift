@@ -91,13 +91,13 @@ public enum GraphicsSupport {
     public static func importD3DMetal(from source: URL) throws {
         let fm = FileManager.default
         guard let framework = findItem(named: "D3DMetal.framework", under: source, maxDepth: 6) else {
-            throw OnwinError("Не нашёл D3DMetal.framework в \(source.path). Укажите том Game Porting Toolkit (папку redist).")
+            throw OnwinError(String(localized: "Не нашёл D3DMetal.framework в \(source.path). Укажите том Game Porting Toolkit (папку redist).", bundle: .onwinCore))
         }
         let external = framework.deletingLastPathComponent()           // .../lib/external
         let libRoot = external.deletingLastPathComponent()             // .../lib
         let wineSrc = libRoot.appendingPathComponent("wine", isDirectory: true)
         guard OnwinPaths.exists(wineSrc.appendingPathComponent("x86_64-windows")) else {
-            throw OnwinError("Рядом с D3DMetal.framework нет папки wine/x86_64-windows (\(wineSrc.path))")
+            throw OnwinError(String(localized: "Рядом с D3DMetal.framework нет папки wine/x86_64-windows (\(wineSrc.path))", bundle: .onwinCore))
         }
         try OnwinPaths.ensureLayout()
         let staging = OnwinPaths.graphics.appendingPathComponent(".D3DMetal-import", isDirectory: true)

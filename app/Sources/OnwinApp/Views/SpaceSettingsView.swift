@@ -53,11 +53,11 @@ enum SpaceSettingsDLLMode: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .nativeThenBuiltin: return "Сначала родная, потом встроенная (n,b)"
-        case .builtinThenNative: return "Сначала встроенная, потом родная (b,n)"
-        case .native: return "Только родная Windows-библиотека (n)"
-        case .builtin: return "Только встроенная библиотека Wine (b)"
-        case .disabled: return "Отключить"
+        case .nativeThenBuiltin: return String(localized: "Сначала родная, потом встроенная (n,b)")
+        case .builtinThenNative: return String(localized: "Сначала встроенная, потом родная (b,n)")
+        case .native: return String(localized: "Только родная Windows-библиотека (n)")
+        case .builtin: return String(localized: "Только встроенная библиотека Wine (b)")
+        case .disabled: return String(localized: "Отключить", comment: "DLL override mode: disable the library")
         }
     }
 
@@ -67,7 +67,7 @@ enum SpaceSettingsDLLMode: String, CaseIterable, Identifiable {
         case .builtinThenNative: return "b,n"
         case .native: return "n"
         case .builtin: return "b"
-        case .disabled: return "отключена"
+        case .disabled: return String(localized: "отключена", comment: "DLL override mode, short: the library is disabled")
         }
     }
 
@@ -265,14 +265,14 @@ struct SpaceSettingsForm: View {
             }
         } else {
             Picker("Движок", selection: $draft.engineID) {
-                Text("Как в настройках onwin (\(model.defaultEngine?.info.displayName ?? "нет"))")
+                Text("Как в настройках onwin (\(model.defaultEngine?.info.displayName ?? String(localized: "нет", comment: "No default engine")))")
                     .tag(String?.none)
                 if let id = draft.engineID, !model.engines.contains(where: { $0.id == id }) {
                     Text("\(id) — не найден")
                         .tag(Optional(id))
                 }
                 ForEach(model.engines, id: \.root) { engine in
-                    Text("\(engine.info.displayName) — Wine \(engine.info.wineVersion)")
+                    Text(verbatim: "\(engine.info.displayName) — Wine \(engine.info.wineVersion)")
                         .tag(Optional(engine.id))
                 }
             }
@@ -309,7 +309,7 @@ struct SpaceSettingsForm: View {
             Toggle(isOn: $draft.dxrRaytracing) {
                 optionLabel("Трассировка лучей (DXR)",
                             "DirectX 12 Raytracing через D3DMetal. Аппаратная трассировка лучей есть в чипах M3 и новее",
-                            warning: HostSupport.raytracingUnsupportedReason(.d3dmetal).map { "Недоступно: \($0)" }
+                            warning: HostSupport.raytracingUnsupportedReason(.d3dmetal).map { String(localized: "Недоступно: \($0)") }
                                 ?? onlyWithWarning(.d3dmetal))
             }
             .disabled(HostSupport.raytracingUnsupportedReason(.d3dmetal) != nil && !draft.dxrRaytracing)
@@ -332,9 +332,9 @@ struct SpaceSettingsForm: View {
                                                                          d3dmetalInstalled: model.isD3DMetalInstalled)
         else { return nil }
         if let resolvedBackend {
-            return "\(draft.graphicsBackend.displayName) недоступен (\(reason)). Сейчас будет использован \(resolvedBackend.displayName)."
+            return String(localized: "\(draft.graphicsBackend.displayName) недоступен (\(reason)). Сейчас будет использован \(resolvedBackend.displayName).")
         }
-        return "\(draft.graphicsBackend.displayName) недоступен: \(reason)."
+        return String(localized: "\(draft.graphicsBackend.displayName) недоступен: \(reason).")
     }
 
     /// Why DLSS → MetalFX cannot work on this Mac with the backend in use (nil = it can, or unknown).
@@ -345,17 +345,17 @@ struct SpaceSettingsForm: View {
     }
 
     private var metalFXWarning: String? {
-        if let metalFXHostReason { return "Недоступно: \(metalFXHostReason)" }
-        guard let resolvedBackend else { return "Работает только с D3DMetal и DXMT" }
+        if let metalFXHostReason { return String(localized: "Недоступно: \(metalFXHostReason)") }
+        guard let resolvedBackend else { return String(localized: "Работает только с D3DMetal и DXMT") }
         if resolvedBackend == .d3dmetal || resolvedBackend == .dxmt { return nil }
-        return "Работает только с D3DMetal и DXMT — сейчас используется \(resolvedBackend.displayName)"
+        return String(localized: "Работает только с D3DMetal и DXMT — сейчас используется \(resolvedBackend.displayName)")
     }
 
     /// Warning for options that only work with one backend; nil when that backend is active.
     private func onlyWithWarning(_ backend: GraphicsBackend) -> String? {
-        guard let resolvedBackend else { return "Работает только с \(backend.displayName)" }
+        guard let resolvedBackend else { return String(localized: "Работает только с \(backend.displayName)") }
         if resolvedBackend == backend { return nil }
-        return "Работает только с \(backend.displayName) — сейчас используется \(resolvedBackend.displayName)"
+        return String(localized: "Работает только с \(backend.displayName) — сейчас используется \(resolvedBackend.displayName)")
     }
 
     private var d3dmetalCallToAction: some View {
@@ -434,7 +434,7 @@ struct SpaceSettingsForm: View {
             }
 
             HStack(spacing: 8) {
-                TextField("Каналы WINEDEBUG", text: $channelsDraft, prompt: Text("+err,+warn"))
+                TextField("Каналы WINEDEBUG", text: $channelsDraft, prompt: Text(verbatim: "+err,+warn"))
                     .font(.system(.body, design: .monospaced))
                     .focused($focus, equals: .channels)
                     .onSubmit { commitTextFields() }
@@ -472,7 +472,7 @@ struct SpaceSettingsForm: View {
         }
     }
 
-    private func channelPreset(_ title: String, _ channels: String) -> some View {
+    private func channelPreset(_ title: LocalizedStringKey, _ channels: String) -> some View {
         Button(title) {
             channelsDraft = channels
             commitTextFields()
@@ -491,7 +491,7 @@ struct SpaceSettingsForm: View {
                 HStack(spacing: 6) {
                     Text(key)
                         .font(.system(.body, design: .monospaced))
-                    Text("=")
+                    Text(verbatim: "=")
                         .foregroundStyle(.secondary)
                     Text(draft.environment[key] ?? "")
                         .font(.system(.body, design: .monospaced))
@@ -526,7 +526,7 @@ struct SpaceSettingsForm: View {
                     .font(.system(.body, design: .monospaced))
                     .focused($focus, equals: .envKey)
                     .onSubmit { focus = .envValue }
-                Text("=")
+                Text(verbatim: "=")
                     .foregroundStyle(.secondary)
                 TextField("Значение", text: $newEnvValue, prompt: Text("значение"))
                     .labelsHidden()
@@ -536,7 +536,7 @@ struct SpaceSettingsForm: View {
                 Button {
                     addEnvironmentVariable()
                 } label: {
-                    Text(draft.environment[trimmedEnvKey] == nil ? "Добавить" : "Заменить")
+                    draft.environment[trimmedEnvKey] == nil ? Text("Добавить") : Text("Заменить")
                 }
                 .disabled(trimmedEnvKey.isEmpty || envKeyProblem != nil)
             }
@@ -559,12 +559,12 @@ struct SpaceSettingsForm: View {
 
     private var envKeyProblem: String? {
         let key = trimmedEnvKey
-        if key.isEmpty { return "Укажите имя переменной" }
+        if key.isEmpty { return String(localized: "Укажите имя переменной") }
         if key.contains("=") || key.rangeOfCharacter(from: .whitespacesAndNewlines) != nil {
-            return "Имя переменной не может содержать пробелы и знак «=»"
+            return String(localized: "Имя переменной не может содержать пробелы и знак «=»")
         }
         if let first = key.unicodeScalars.first, CharacterSet.decimalDigits.contains(first) {
-            return "Имя переменной не может начинаться с цифры"
+            return String(localized: "Имя переменной не может начинаться с цифры")
         }
         return nil
     }
@@ -611,7 +611,7 @@ struct SpaceSettingsForm: View {
             }
 
             HStack(spacing: 8) {
-                TextField("Библиотека", text: $newDLLName, prompt: Text("d3dx9_43"))
+                TextField("Библиотека", text: $newDLLName, prompt: Text(verbatim: "d3dx9_43"))
                     .labelsHidden()
                     .font(.system(.body, design: .monospaced))
                     .focused($focus, equals: .dllName)
@@ -626,7 +626,7 @@ struct SpaceSettingsForm: View {
                 Button {
                     addDLLOverride()
                 } label: {
-                    Text(draft.dllOverrides[normalizedDLLName] == nil ? "Добавить" : "Заменить")
+                    draft.dllOverrides[normalizedDLLName] == nil ? Text("Добавить") : Text("Заменить")
                 }
                 .disabled(dllNameProblem != nil)
             }
@@ -651,10 +651,10 @@ struct SpaceSettingsForm: View {
 
     private var dllNameProblem: String? {
         let name = normalizedDLLName
-        if name.isEmpty { return "Укажите имя библиотеки" }
+        if name.isEmpty { return String(localized: "Укажите имя библиотеки") }
         let forbidden = CharacterSet(charactersIn: "=;,").union(.whitespacesAndNewlines)
         if name.rangeOfCharacter(from: forbidden) != nil {
-            return "Имя библиотеки не может содержать пробелы и символы «=», «;», «,»"
+            return String(localized: "Имя библиотеки не может содержать пробелы и символы «=», «;», «,»")
         }
         return nil
     }
@@ -680,9 +680,9 @@ struct SpaceSettingsForm: View {
         Section {
             Toggle(isOn: autoComponents) {
                 optionLabel("Устанавливать нужные компоненты автоматически",
-                            "Перед первым запуском программы onwin сам поставит Visual C++, DirectX, .NET и другое, что ей нужно, " +
-                            "а если она не запустится из-за нехватки библиотеки — поставит и перезапустит. " +
-                            (draft.autoInstallComponents == nil ? "Как в настройках onwin" : "Своя настройка этого пространства"))
+                            draft.autoInstallComponents == nil
+                                ? "Перед первым запуском программы onwin сам поставит Visual C++, DirectX, .NET и другое, что ей нужно, а если она не запустится из-за нехватки библиотеки — поставит и перезапустит. Как в настройках onwin"
+                                : "Перед первым запуском программы onwin сам поставит Visual C++, DirectX, .NET и другое, что ей нужно, а если она не запустится из-за нехватки библиотеки — поставит и перезапустит. Своя настройка этого пространства")
             }
 
             ForEach(Catalog.listedComponents.filter { $0.kind == .space }) { component in
@@ -708,9 +708,9 @@ struct SpaceSettingsForm: View {
             if !model.hasEngine {
                 Text("Чтобы устанавливать компоненты, нужен движок Wine.")
             } else {
-                Text(autoComponents.wrappedValue
-                     ? "Компоненты скачиваются с сайтов Microsoft и других авторов и ставятся тихо, без вопросов. D3DMetal onwin только предложит: для него нужен вход с Apple ID."
-                     : "Автоматическая установка выключена: onwin только подскажет на странице пространства, чего не хватает. Компоненты скачиваются из интернета и устанавливаются в это пространство.")
+                autoComponents.wrappedValue
+                    ? Text("Компоненты скачиваются с сайтов Microsoft и других авторов и ставятся тихо, без вопросов. D3DMetal onwin только предложит: для него нужен вход с Apple ID.")
+                    : Text("Автоматическая установка выключена: onwin только подскажет на странице пространства, чего не хватает. Компоненты скачиваются из интернета и устанавливаются в это пространство.")
             }
         }
     }
@@ -727,7 +727,7 @@ struct SpaceSettingsForm: View {
                 .frame(width: 22)
             VStack(alignment: .leading, spacing: 2) {
                 Text(component.name)
-                Text("\(component.summary) · \(component.sizeDescription)")
+                Text(verbatim: "\(component.summary) · \(component.sizeDescription)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -736,7 +736,7 @@ struct SpaceSettingsForm: View {
                 let target = space
                 Task { await model.install(component: component, into: target) }
             } label: {
-                Text(installed ? "Переустановить" : "Установить")
+                installed ? Text("Переустановить") : Text("Установить")
             }
             .disabled(!model.hasEngine || !space.isInitialized || isBusy)
         }
@@ -780,7 +780,7 @@ struct SpaceSettingsForm: View {
         }
     }
 
-    private func dangerRow<Action: View>(_ title: String, _ detail: String, symbol: String,
+    private func dangerRow<Action: View>(_ title: LocalizedStringKey, _ detail: LocalizedStringKey, symbol: String,
                                          tint: Color = Color.secondary,
                                          @ViewBuilder action: () -> Action) -> some View {
         HStack(spacing: 12) {
@@ -801,7 +801,7 @@ struct SpaceSettingsForm: View {
 
     // MARK: Helpers
 
-    private func optionLabel(_ title: String, _ detail: String, warning: String? = nil) -> some View {
+    private func optionLabel(_ title: LocalizedStringKey, _ detail: LocalizedStringKey, warning: String? = nil) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
             Text(detail)
@@ -896,19 +896,19 @@ struct SpaceSettingsForm: View {
             return
         }
         if name.isEmpty {
-            nameProblem = "Имя пространства не может быть пустым"
+            nameProblem = String(localized: "Имя пространства не может быть пустым")
             return
         }
         if name.hasPrefix(".") {
-            nameProblem = "Имя не может начинаться с точки"
+            nameProblem = String(localized: "Имя не может начинаться с точки")
             return
         }
         if model.spaces.contains(where: { $0.id != space.id && $0.name.caseInsensitiveCompare(name) == .orderedSame }) {
-            nameProblem = "Пространство «\(name)» уже есть"
+            nameProblem = String(localized: "Пространство «\(name)» уже есть")
             return
         }
         if isRunning {
-            nameProblem = "Закройте программы пространства, чтобы переименовать его"
+            nameProblem = String(localized: "Закройте программы пространства, чтобы переименовать его")
             return
         }
         nameProblem = nil
@@ -930,13 +930,13 @@ enum SettingsBackendAvailability {
         case .auto, .wined3d:
             return nil
         case .d3dmetal:
-            return d3dmetalInstalled ? nil : "нужно импортировать D3DMetal из Game Porting Toolkit"
+            return d3dmetalInstalled ? nil : String(localized: "нужно импортировать D3DMetal из Game Porting Toolkit")
         case .dxmt:
-            guard let engine else { return "сначала установите движок Wine" }
-            return engine.hasDXMT ? nil : "в движке «\(engine.info.displayName)» нет DXMT"
+            guard let engine else { return String(localized: "сначала установите движок Wine") }
+            return engine.hasDXMT ? nil : String(localized: "в движке «\(engine.info.displayName)» нет DXMT")
         case .dxvk:
-            guard let engine else { return "сначала установите движок Wine" }
-            return engine.hasDXVK ? nil : "в движке «\(engine.info.displayName)» нет DXVK"
+            guard let engine else { return String(localized: "сначала установите движок Wine") }
+            return engine.hasDXVK ? nil : String(localized: "в движке «\(engine.info.displayName)» нет DXVK")
         }
     }
 
