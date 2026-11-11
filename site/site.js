@@ -318,23 +318,26 @@
       container.appendChild(emptyNote());
       return;
     }
-    if (m.links.length) {
-      var row = el("div", "donate-links");
-      m.links.forEach(function (link, i) { row.appendChild(linkButton(link, i === 0)); });
-      container.appendChild(row);
+    var row = el("div", "donate-links");
+    m.links.forEach(function (link, i) { row.appendChild(linkButton(link, i === 0)); });
+    if (m.wallets.length && mode !== "full") {
+      // Compact: one button the size of the others; addresses are on donate.html#crypto.
+      var coins = [];
+      m.wallets.forEach(function (w) {
+        var c = String(w.label).split(/[\s(]/)[0].replace(/^Bitcoin$/i, "BTC");
+        if (c && coins.indexOf(c) < 0) coins.push(c);
+      });
+      var a = el("a", "btn btn-secondary btn-sub");
+      a.href = "donate.html#crypto";
+      a.innerHTML = ICONS.coin;
+      var label = el("span", null, "Криптовалюта");
+      label.appendChild(el("small", null, coins.join(" · ")));
+      a.appendChild(label);
+      row.appendChild(a);
     }
-    if (m.wallets.length) {
-      if (mode === "full") {
-        m.wallets.forEach(function (w) { container.appendChild(walletRow(w)); });
-      } else {
-        var a = el("a", "btn btn-secondary");
-        a.href = "donate.html#crypto";
-        a.innerHTML = ICONS.coin;
-        a.appendChild(el("span", null, "Криптовалютой: " + m.wallets.map(function (w) { return w.label; }).join(", ")));
-        var wrap = el("div", "donate-links");
-        wrap.appendChild(a);
-        container.appendChild(wrap);
-      }
+    if (row.childNodes.length) container.appendChild(row);
+    if (m.wallets.length && mode === "full") {
+      m.wallets.forEach(function (w) { container.appendChild(walletRow(w)); });
     }
   }
 

@@ -630,3 +630,6 @@ html { scroll-behavior: smooth; }
 
 #support-home, #support { scroll-margin-top: 84px; }
 #support-home:target .card, #support:target .card { animation: donate-glow 1.6s ease-out 0.3s 1; }
+
+.btn-sub span { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.btn-sub small { font-size: 0.75rem; font-weight: 500; color: var(--muted); }
