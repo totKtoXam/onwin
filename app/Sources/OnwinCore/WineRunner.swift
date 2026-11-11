@@ -240,5 +240,5 @@ public struct WineRunner: Sendable {
 }
 
 public enum OnwinVersion {
-    public static let string = "0.1.1"
+    public static let string = "0.1.2"
 }
