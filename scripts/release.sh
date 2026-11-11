@@ -16,7 +16,8 @@
 # App release (latest):
 #   Onwin-<version>.dmg        Onwin.app with the engine inside (drag to Applications)
 #   Onwin-<version>-app.zip    Onwin.app without the engine (used by install.sh)
-#   onwin-release.json         what install.sh reads: version, build, app/dmg/engine URLs, sha256, sizes
+#   onwin-release.json         what install.sh and the app's updater (Updater.swift) read: version, build,
+#                              app/dmg/engine URLs, sha256, sizes
 #   install.sh                 the installer with this repository filled in
 #
 # The app version is OnwinVersion.string (app/Sources/OnwinCore/WineRunner.swift); bump it before `app`.

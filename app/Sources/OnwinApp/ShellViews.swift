@@ -20,6 +20,9 @@ struct ShellDetail: View {
                     ShellEngineBanner()
                 }
             }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                UpdateBanner()   // «Доступна onwin X» (Views/UpdateViews.swift)
+            }
             .overlay {
                 if isDropTarget {
                     ShellDropOverlay(spaceName: model.selectedSpace?.name)

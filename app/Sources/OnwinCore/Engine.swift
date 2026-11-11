@@ -162,10 +162,18 @@ public struct Settings: Codable, Sendable {
     /// run that failed for a missing library (AutoComponents.swift). A space may override it
     /// (`SpaceConfig.autoInstallComponents`).
     public var autoInstallComponents = true
+    /// «Проверять обновления автоматически»: at launch, at most once a day (Updater.swift).
+    public var checkForUpdates = true
+    /// Last successful check for a new onwin release.
+    public var lastUpdateCheck: Date?
+    /// «Пропустить эту версию»: the automatic check stays quiet about this version.
+    public var skippedUpdateVersion: String?
 
     public init() {}
 
-    private enum CodingKeys: String, CodingKey { case defaultEngineID, defaultBackend, autoInstallComponents }
+    private enum CodingKeys: String, CodingKey {
+        case defaultEngineID, defaultBackend, autoInstallComponents, checkForUpdates, lastUpdateCheck, skippedUpdateVersion
+    }
 
     // Tolerant decoding: a settings file written before a key existed keeps its other values.
     public init(from decoder: Decoder) throws {
@@ -173,6 +181,9 @@ public struct Settings: Codable, Sendable {
         defaultEngineID = try? c.decodeIfPresent(String.self, forKey: .defaultEngineID)
         defaultBackend = (try? c.decodeIfPresent(GraphicsBackend.self, forKey: .defaultBackend)) ?? .auto
         autoInstallComponents = (try? c.decodeIfPresent(Bool.self, forKey: .autoInstallComponents)) ?? true
+        checkForUpdates = (try? c.decodeIfPresent(Bool.self, forKey: .checkForUpdates)) ?? true
+        lastUpdateCheck = try? c.decodeIfPresent(Date.self, forKey: .lastUpdateCheck)
+        skippedUpdateVersion = try? c.decodeIfPresent(String.self, forKey: .skippedUpdateVersion)
     }
 
     public static func load() -> Settings {

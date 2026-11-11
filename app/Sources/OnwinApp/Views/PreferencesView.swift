@@ -162,6 +162,8 @@ struct PreferencesGeneralTab: View {
                 Text("D3DMetal onwin только предложит — для него нужен вход с Apple ID. У каждого пространства это можно поменять в его настройках. Если выключить, onwin будет лишь подсказывать, чего не хватает.")
             }
 
+            PreferencesUpdatesSection()   // Views/UpdateViews.swift
+
             Section {
                 PreferencesPathRow("Данные onwin", symbol: "externaldrive", url: OnwinPaths.root)
                 PreferencesPathRow("Пространства", symbol: "shippingbox", url: OnwinPaths.spaces)
