@@ -65,7 +65,7 @@ public struct LaunchRequest: Hashable, Sendable {
         let found = spaces.first { $0.id.uuidString.caseInsensitiveCompare(space) == .orderedSame }
             ?? spaces.first { $0.name.localizedCaseInsensitiveCompare(space) == .orderedSame }
         guard let found else {
-            throw OnwinError("Пространство ярлыка не найдено (\(space)). Возможно, его удалили — удалите и ярлык.")
+            throw OnwinError(String(localized: "Пространство ярлыка не найдено (\(space)). Возможно, его удалили — удалите и ярлык.", bundle: .onwinCore))
         }
         let list = programs(found)
         if let program, let match = list.first(where: { $0.id == program }) { return (found, match) }
@@ -75,7 +75,7 @@ public struct LaunchRequest: Hashable, Sendable {
                 return (found, match)
             }
         }
-        throw OnwinError("Программы ярлыка больше нет в пространстве «\(found.name)». Возможно, её удалили — удалите и ярлык.")
+        throw OnwinError(String(localized: "Программы ярлыка больше нет в пространстве «\(found.name)». Возможно, её удалили — удалите и ярлык.", bundle: .onwinCore))
     }
 }
 
@@ -369,7 +369,7 @@ public enum LauncherBuilder {
             "LSUIElement": true,
             "NSHighResolutionCapable": true,
             "LSApplicationCategoryType": "public.app-category.games",
-            "NSHumanReadableCopyright": "Ярлык onwin: «\(name)» в пространстве «\(space.name)»",
+            "NSHumanReadableCopyright": String(localized: "Ярлык onwin: «\(name)» в пространстве «\(space.name)»", bundle: .onwinCore),
             infoKey: launcher,
         ]
         if hasIcon { plist["CFBundleIconFile"] = "AppIcon" }

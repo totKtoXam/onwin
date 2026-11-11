@@ -291,7 +291,7 @@ struct RecipeEditorSheet: View {
         Section {
             ForEach(componentCategories, id: \.self) { category in
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(category.rawValue)
+                    Text(category.title)
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
                     ForEach(selectableComponents.filter { $0.category == category }) { component in

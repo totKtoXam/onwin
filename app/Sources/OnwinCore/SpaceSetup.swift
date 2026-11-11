@@ -9,25 +9,25 @@ public enum SpaceSetup {
     public static func initialize(_ space: Space, engine: Engine,
                                   log: @escaping @Sendable (String) -> Void) async throws {
         let runner = try WineRunner(space: space, engine: engine)
-        log("Создаю окружение Windows (wineboot)…\n")
+        log(String(localized: "Создаю окружение Windows (wineboot)…", bundle: .onwinCore) + "\n")
         let boot = try await runner.runAndWait(["wineboot", "--init"], extraOverrides: engine.addonInstallOverrides, onOutput: log)
         try await runner.waitForServer()
         guard boot.status == 0, space.isInitialized else {
-            throw OnwinError("wineboot завершился с кодом \(boot.status):\n\(boot.output.suffix(2000))")
+            throw OnwinError(String(localized: "wineboot завершился с кодом \(Int(boot.status)):\n\(String(boot.output.suffix(2000)))", bundle: .onwinCore))
         }
         try await applyWindowsVersion(space, runner: runner, log: log)
         try await applyRegistrySettings(space, runner: runner, log: log)
         try await runner.waitForServer()
-        log("Готово.\n")
+        log(String(localized: "Готово.", bundle: .onwinCore) + "\n")
     }
 
     public static func applyWindowsVersion(_ space: Space, runner: WineRunner? = nil,
                                            log: @escaping @Sendable (String) -> Void = { _ in }) async throws {
         let runner = try runner ?? WineRunner(space: space)
-        log("Версия Windows: \(space.config.windowsVersion.displayName)\n")
+        log(String(localized: "Версия Windows: \(space.config.windowsVersion.displayName)", bundle: .onwinCore) + "\n")
         let r = try await runner.runAndWait(["winecfg", "-v", space.config.windowsVersion.winecfgName])
         try await runner.waitForServer()
-        if r.status != 0 { log("winecfg -v вернул \(r.status): \(r.output.suffix(500))\n") }
+        if r.status != 0 { log(String(localized: "winecfg -v вернул \(Int(r.status)): \(String(r.output.suffix(500)))", bundle: .onwinCore) + "\n") }
     }
 
     /// Settings stored in the registry: Retina mode / DPI and a couple of Mac driver defaults.
@@ -40,7 +40,7 @@ public enum SpaceSetup {
             .set(#"HKEY_CURRENT_USER\Control Panel\Desktop"#, "LogPixels", .dword(c.highResolution ? 192 : 96))
             .set(#"HKEY_CURRENT_USER\Software\Wine\Fonts"#, "LogPixels", .dword(c.highResolution ? 192 : 96))
         try await Registry.importReg(reg, runner: runner)
-        log("Настройки реестра применены.\n")
+        log(String(localized: "Настройки реестра применены.", bundle: .onwinCore) + "\n")
     }
 }
 
@@ -98,7 +98,7 @@ public enum Registry {
         defer { try? FileManager.default.removeItem(at: file) }
         let r = try await runner.runAndWait(["regedit", "/S", WineRunner.dosPath(file)])
         try await runner.waitForServer()
-        if r.status != 0 { throw OnwinError("regedit вернул \(r.status): \(r.output.suffix(500))") }
+        if r.status != 0 { throw OnwinError(String(localized: "regedit вернул \(Int(r.status)): \(String(r.output.suffix(500)))", bundle: .onwinCore)) }
     }
 
     /// Reads a value with `reg query`. Returns nil if it does not exist.

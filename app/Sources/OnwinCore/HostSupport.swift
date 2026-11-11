@@ -42,7 +42,7 @@ public enum HostSupport {
                                             onOutput: onOutput)
         guard r.status == 0, isRosettaInstalled() else {
             let tail = r.output.split(separator: "\n").suffix(3).joined(separator: "\n")
-            throw OnwinError("Не удалось установить Rosetta 2 (код \(r.status)). \(tail)")
+            throw OnwinError(String(localized: "Не удалось установить Rosetta 2 (код \(Int(r.status))). \(tail)", bundle: .onwinCore))
         }
     }
 
@@ -68,8 +68,8 @@ public enum HostSupport {
         case .auto, .wined3d, .dxvk:
             return nil
         case .d3dmetal, .dxmt:
-            if !isAppleSilicon { return "нужен Mac с Apple Silicon" }
-            if !isOS(atLeast: 14) { return "нужна macOS 14 Sonoma или новее" }
+            if !isAppleSilicon { return String(localized: "нужен Mac с Apple Silicon", bundle: .onwinCore) }
+            if !isOS(atLeast: 14) { return String(localized: "нужна macOS 14 Sonoma или новее", bundle: .onwinCore) }
             return nil
         }
     }
@@ -80,18 +80,18 @@ public enum HostSupport {
         switch backend {
         case .d3dmetal:
             if let r = unsupportedReason(.d3dmetal) { return r }
-            return isOS(atLeast: 26) ? nil : "для D3DMetal нужна macOS 26 Tahoe или новее"
+            return isOS(atLeast: 26) ? nil : String(localized: "для D3DMetal нужна macOS 26 Tahoe или новее", bundle: .onwinCore)
         case .dxmt:
             return unsupportedReason(.dxmt)
         case .auto, .dxvk, .wined3d:
-            return "работает только с D3DMetal и DXMT"
+            return String(localized: "работает только с D3DMetal и DXMT", bundle: .onwinCore)
         }
     }
 
     /// Why DXR cannot work with `backend` on this Mac, or nil.
     public static func raytracingUnsupportedReason(_ backend: GraphicsBackend) -> String? {
-        guard backend == .d3dmetal else { return "работает только с D3DMetal" }
+        guard backend == .d3dmetal else { return String(localized: "работает только с D3DMetal", bundle: .onwinCore) }
         if let r = unsupportedReason(.d3dmetal) { return r }
-        return supportsHardwareRaytracing ? nil : "нужен чип M3 или новее (аппаратная трассировка лучей)"
+        return supportsHardwareRaytracing ? nil : String(localized: "нужен чип M3 или новее (аппаратная трассировка лучей)", bundle: .onwinCore)
     }
 }

@@ -10,7 +10,7 @@ public struct InstalledApplication: Identifiable, Hashable, Sendable {
         public var displayName: String {
             switch self {
             case .machine: return "HKLM"
-            case .machine32: return "HKLM (32-бит)"
+            case .machine32: return String(localized: "HKLM (32-бит)", bundle: .onwinCore)
             case .user: return "HKCU"
             }
         }

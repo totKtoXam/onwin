@@ -57,7 +57,7 @@ public struct Engine: Identifiable, Hashable, Sendable {
         self.root = root
         let wine = root.appendingPathComponent("bin/wine")
         guard OnwinPaths.exists(wine) else {
-            throw OnwinError("В \(root.path) нет bin/wine — это не движок Wine")
+            throw OnwinError(String(localized: "В \(root.path) нет bin/wine — это не движок Wine", bundle: .onwinCore))
         }
         let infoURL = root.appendingPathComponent("onwin-engine.json")
         if let data = try? Data(contentsOf: infoURL) {
@@ -116,7 +116,9 @@ public enum EngineManager {
             return match
         }
         if let first = engines.first { return first }
-        throw OnwinError("Движок Wine не установлен. Соберите его (engine/build.sh) или установите в \(OnwinPaths.engines.path)")
+        throw OnwinError(String(localized: "Движок Wine не установлен. Соберите его (engine/build.sh) или установите в \(OnwinPaths.engines.path)",
+                                bundle: .onwinCore))
+
     }
 
     /// The DMG build ships the engine inside Onwin.app. When the DMG was downloaded in a browser, macOS

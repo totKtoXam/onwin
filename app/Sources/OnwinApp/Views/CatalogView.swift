@@ -48,7 +48,7 @@ struct CatalogView: View {
                 }
 
                 ForEach(visibleCategories, id: \.self) { category in
-                    CatalogSection(title: category.rawValue, symbol: CatalogView.symbol(for: category)) {
+                    CatalogSection(title: category.title, symbol: CatalogView.symbol(for: category)) {
                         LazyVGrid(columns: columns, alignment: .leading, spacing: 14) {
                             ForEach(apps(in: category)) { recipe in
                                 CatalogRecipeCard(recipe: recipe,
@@ -77,7 +77,7 @@ struct CatalogView: View {
                             }
                             ForEach(visibleComponentCategories, id: \.self) { category in
                                 VStack(alignment: .leading, spacing: 10) {
-                                    Label(category.rawValue, systemImage: category.symbol)
+                                    Label(category.title, systemImage: category.symbol)
                                         .font(.headline)
                                         .foregroundStyle(.secondary)
                                     LazyVGrid(columns: columns, alignment: .leading, spacing: 14) {
@@ -199,7 +199,7 @@ struct CatalogView: View {
 
     private func recipeMatches(_ recipe: AppRecipe) -> Bool {
         let componentNames = recipe.components.compactMap { Catalog.component($0)?.name }
-        return matches([recipe.name, recipe.summary, recipe.notes, recipe.category.rawValue, recipe.spaceName]
+        return matches([recipe.name, recipe.summary, recipe.notes, recipe.category.title, recipe.spaceName]
                        + componentNames)
     }
 
@@ -214,7 +214,7 @@ struct CatalogView: View {
 
     private var visibleComponents: [Component] {
         Catalog.listedComponents.filter {
-            matches([$0.name, $0.summary, $0.id, $0.category.rawValue, "компонент"] + $0.providesDLLs + $0.satisfiesImports)
+            matches([$0.name, $0.summary, $0.id, $0.category.title, "компонент"] + $0.providesDLLs + $0.satisfiesImports)
         }
     }
 

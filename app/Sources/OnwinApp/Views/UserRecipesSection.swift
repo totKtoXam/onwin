@@ -19,7 +19,7 @@ struct UserRecipesSection: View {
 
     var body: some View {
         if isVisible {
-            CatalogSection(title: AppRecipe.Category.user.rawValue, symbol: "person.crop.square",
+            CatalogSection(title: AppRecipe.Category.user.title, symbol: "person.crop.square",
                            subtitle: "Программы, которых нет в каталоге: свои рецепты установки") {
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 14) {
                     ForEach(visibleRecipes) { recipe in
@@ -67,7 +67,7 @@ struct UserRecipesSection: View {
 
     var visibleRecipes: [UserRecipe] {
         store.recipes.filter { r in
-            matches([r.name, r.summary, r.notes, r.spaceName, r.id, AppRecipe.Category.user.rawValue]
+            matches([r.name, r.summary, r.notes, r.spaceName, r.id, AppRecipe.Category.user.title]
                     + r.components.compactMap { Catalog.component($0)?.name })
         }
     }

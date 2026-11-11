@@ -39,7 +39,7 @@ public enum GraphicsBackend: String, Codable, CaseIterable, Identifiable, Sendab
 
     public var displayName: String {
         switch self {
-        case .auto: return "Автоматически"
+        case .auto: return String(localized: "Автоматически", bundle: .onwinCore, comment: "Graphics mode: onwin picks the translator")
         case .d3dmetal: return "D3DMetal"
         case .dxmt: return "DXMT"
         case .dxvk: return "DXVK"
@@ -49,11 +49,11 @@ public enum GraphicsBackend: String, Codable, CaseIterable, Identifiable, Sendab
 
     public var summary: String {
         switch self {
-        case .auto: return "onwin сам выберет лучший вариант"
-        case .d3dmetal: return "DirectX 11/12 → Metal, лучший для новых игр"
-        case .dxmt: return "DirectX 10/11 → Metal, открытый"
+        case .auto: return String(localized: "onwin сам выберет лучший вариант", bundle: .onwinCore)
+        case .d3dmetal: return String(localized: "DirectX 11/12 → Metal, лучший для новых игр", bundle: .onwinCore)
+        case .dxmt: return String(localized: "DirectX 10/11 → Metal, открытый", bundle: .onwinCore)
         case .dxvk: return "DirectX 9–11 → Vulkan → Metal"
-        case .wined3d: return "DirectX → OpenGL, самый совместимый"
+        case .wined3d: return String(localized: "DirectX → OpenGL, самый совместимый", bundle: .onwinCore)
         }
     }
 }

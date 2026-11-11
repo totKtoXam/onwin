@@ -44,104 +44,110 @@ public struct ProblemReport: Sendable {
             out.append("== \(title) ==")
         }
         func line(_ label: String, _ value: String) { out.append("\(label): \(value)") }
+        let on = String(localized: "вкл", bundle: .onwinCore, comment: "Problem report: a setting is on")
+        let off = String(localized: "выкл", bundle: .onwinCore, comment: "Problem report: a setting is off")
 
-        out.append("Отчёт о проблеме onwin — \(dateFormatter.string(from: Date()))")
+        out.append(L("Отчёт о проблеме onwin — \(dateFormatter.string(from: Date()))"))
 
         let text = userText.trimmingCharacters(in: .whitespacesAndNewlines)
-        section("Что случилось")
-        out.append(text.isEmpty ? "(не описано)" : text)
+        section(L("Что случилось"))
+        out.append(text.isEmpty ? L("(не описано)") : text)
         if let message = subject.errorMessage?.trimmingCharacters(in: .whitespacesAndNewlines), !message.isEmpty {
-            line("Сообщение onwin", message)
+            line(L("Сообщение onwin"), message)
         }
 
         // onwin
         section("onwin")
-        line("Версия", OnwinVersion.string)
-        line("Сборка", bundleBuild ?? "нет (запущено не из Onwin.app)")
+        line(L("Версия"), OnwinVersion.string)
+        line(L("Сборка"), bundleBuild ?? L("нет (запущено не из Onwin.app)"))
 
         // Mac
         section("Mac")
         line("macOS", ProcessInfo.processInfo.operatingSystemVersionString)
-        line("Модель", sysctlString("hw.model") ?? "неизвестно")
-        line("Процессор", sysctlString("machdep.cpu.brand_string") ?? (HostSupport.isAppleSilicon ? "Apple Silicon" : "Intel"))
-        if let gpu = HostSupport.gpuName { line("Видеокарта", gpu) }
-        line("Память", ByteCountFormatter.string(fromByteCount: Int64(ProcessInfo.processInfo.physicalMemory), countStyle: .memory))
-        line("Rosetta 2", !HostSupport.isAppleSilicon ? "не нужна (Intel)" : HostSupport.isRosettaInstalled() ? "установлена" : "НЕ установлена")
+        line(L("Модель"), sysctlString("hw.model") ?? L("неизвестно"))
+        line(L("Процессор"), sysctlString("machdep.cpu.brand_string") ?? (HostSupport.isAppleSilicon ? "Apple Silicon" : "Intel"))
+        if let gpu = HostSupport.gpuName { line(L("Видеокарта"), gpu) }
+        line(L("Память"), ByteCountFormatter.string(fromByteCount: Int64(ProcessInfo.processInfo.physicalMemory), countStyle: .memory))
+        line("Rosetta 2", !HostSupport.isAppleSilicon ? L("не нужна (Intel)")
+             : HostSupport.isRosettaInstalled() ? L("установлена") : L("НЕ установлена"))
 
         // Engine and graphics
-        section("Движок")
+        section(L("Движок"))
         let engine = try? EngineManager.engine(for: subject.space?.config)
         if let engine {
-            line("Движок", "\(engine.info.displayName) [\(engine.id)]")
+            line(L("Движок"), "\(engine.info.displayName) [\(engine.id)]")
             line("Wine", engine.info.wineVersion)
-            if let cx = engine.info.crossoverSourceVersion { line("Исходники CodeWeavers", cx) }
-            line("Состав", [engine.hasDXMT ? "DXMT" : nil, engine.hasDXVK ? "DXVK" : nil,
-                            engine.hasMoltenVK ? "MoltenVK" : nil,
-                            engine.hasBundledAddons ? "Wine Mono/Gecko" : nil].compactMap { $0 }.joined(separator: ", "))
+            if let cx = engine.info.crossoverSourceVersion { line(L("Исходники CodeWeavers"), cx) }
+            line(L("Состав"), [engine.hasDXMT ? "DXMT" : nil, engine.hasDXVK ? "DXVK" : nil,
+                               engine.hasMoltenVK ? "MoltenVK" : nil,
+                               engine.hasBundledAddons ? "Wine Mono/Gecko" : nil].compactMap { $0 }.joined(separator: ", "))
         } else {
-            line("Движок", "не установлен")
+            line(L("Движок"), L("не установлен"))
         }
-        line("D3DMetal", GraphicsSupport.isD3DMetalInstalled ? "установлен" : "не установлен")
+        line("D3DMetal", GraphicsSupport.isD3DMetalInstalled ? L("установлен") : L("не установлен"))
         let otherEngines = EngineManager.installedEngines().map(\.id).filter { $0 != engine?.id }
-        if !otherEngines.isEmpty { line("Другие движки", otherEngines.joined(separator: ", ")) }
+        if !otherEngines.isEmpty { line(L("Другие движки"), otherEngines.joined(separator: ", ")) }
 
         // Space
         if let space = subject.space {
             let config = space.config
-            section("Пространство")
-            line("Имя", space.name)
-            line("Версия Windows", config.windowsVersion.displayName)
+            section(L("Пространство"))
+            line(L("Имя"), space.name)
+            line(L("Версия Windows"), config.windowsVersion.displayName)
             var graphics = config.graphicsBackend.displayName
             if let engine {
                 let resolved = GraphicsSupport.resolve(config.graphicsBackend, engine: engine)
                 if resolved != config.graphicsBackend { graphics += " → \(resolved.displayName)" }
             }
-            line("Графика", graphics)
-            line("MSync", onOff(config.msync))
-            line("Retina", onOff(config.highResolution))
-            line("AVX для игр", onOff(config.advertiseAVX))
-            if config.metalHUD { line("Metal HUD", "вкл") }
-            if config.dxrRaytracing { line("DXR", "вкл") }
-            if config.metalFX { line("DLSS → MetalFX", "вкл") }
-            line("Подробный журнал", config.debugLogging ? "вкл (\(config.wineDebugChannels))" : "выкл")
+            line(L("Графика"), graphics)
+            line("MSync", config.msync ? on : off)
+            line("Retina", config.highResolution ? on : off)
+            line(L("AVX для игр"), config.advertiseAVX ? on : off)
+            if config.metalHUD { line("Metal HUD", on) }
+            if config.dxrRaytracing { line("DXR", on) }
+            if config.metalFX { line("DLSS → MetalFX", on) }
+            line(L("Подробный журнал"), config.debugLogging ? L("вкл (\(config.wineDebugChannels))") : off)
             let components = config.installedComponents.map { id in Catalog.component(id).map { "\($0.name) [\(id)]" } ?? id }
-            line("Компоненты", components.isEmpty ? "нет" : components.joined(separator: ", "))
+            let none = String(localized: "нет", bundle: .onwinCore, comment: "Problem report: no components")
+            line(L("Компоненты"), components.isEmpty ? none : components.joined(separator: ", "))
             if !config.dllOverrides.isEmpty {
-                line("Замены DLL", config.dllOverrides.sorted { $0.key < $1.key }
-                    .map { "\($0.key)=\($0.value.isEmpty ? "откл" : $0.value)" }.joined(separator: ", "))
+                let disabled = String(localized: "откл", bundle: .onwinCore, comment: "Problem report: DLL override that disables the library")
+                line(L("Замены DLL"), config.dllOverrides.sorted { $0.key < $1.key }
+                    .map { "\($0.key)=\($0.value.isEmpty ? disabled : $0.value)" }.joined(separator: ", "))
             }
             // Only variable names: values may hold paths or keys.
             if !config.environment.isEmpty {
-                line("Свои переменные", config.environment.keys.sorted().joined(separator: ", "))
+                line(L("Свои переменные"), config.environment.keys.sorted().joined(separator: ", "))
             }
-            line("Подготовлено", space.isInitialized ? "да" : "нет (wineboot не выполнялся)")
+            let yes = String(localized: "да", bundle: .onwinCore, comment: "Problem report: yes")
+            line(L("Подготовлено"), space.isInitialized ? yes : L("нет (wineboot не выполнялся)"))
         }
 
         // Program and log
         let log = subject.logURL.map { readLog($0, lines: logLines) }
         let program = subject.programFile.map { fileName(of: $0) } ?? log?.programFile
         if program != nil || log != nil {
-            section("Программа")
-            if let program { line("Файл", program) }
-            if let date = log?.modified { line("Последняя запись в журнал", dateFormatter.string(from: date)) }
-            if let status = subject.exitStatus { line("Код завершения", "\(status)") }
+            section(L("Программа"))
+            if let program { line(L("Файл"), program) }
+            if let date = log?.modified { line(L("Последняя запись в журнал"), dateFormatter.string(from: date)) }
+            if let status = subject.exitStatus { line(L("Код завершения"), "\(status)") }
         }
 
         if includeLog {
-            section("Журнал запуска")
+            section(L("Журнал запуска"))
             if let log {
                 if let error = log.error {
-                    out.append("(не удалось прочитать: \(error))")
+                    out.append(L("(не удалось прочитать: \(error))"))
                 } else {
                     if !log.header.isEmpty {
                         out.append(contentsOf: log.header)
                         out.append("…")
                     }
-                    if log.truncated { out.append("(последние \(log.body.count) строк из журнала)") }
-                    out.append(contentsOf: log.body.isEmpty ? ["(пусто)"] : log.body)
+                    if log.truncated { out.append(L("(последние \(log.body.count) строк из журнала)")) }
+                    out.append(contentsOf: log.body.isEmpty ? [L("(пусто)")] : log.body)
                 }
             } else {
-                out.append("(журнала нет)")
+                out.append(L("(журнала нет)"))
             }
         }
 
@@ -272,6 +278,7 @@ public struct ProblemReport: Sendable {
 
     static func redact(_ text: String, identity: Identity) -> String {
         var s = text
+        let hidden = NSRegularExpression.escapedTemplate(for: L("<скрыто>"))
 
         // 1. Home folder, as a Unix path and as Wine shows it (Z:\Users\name, with either slash).
         var homes = [identity.home]
@@ -288,8 +295,10 @@ public struct ProblemReport: Sendable {
 
         // 2. User, full and computer names as whole words (Wine's C:\users\<name>, host names in logs).
         //    Computer names first: they often contain the user's name ("Dianas-MacBook-Pro").
-        let names: [(String, String)] = identity.computerNames.map { ($0, "<компьютер>") }
-            + [(identity.fullName, "<пользователь>"), (identity.userName, "<пользователь>")]
+        let computer = NSRegularExpression.escapedTemplate(for: L("<компьютер>"))
+        let user = NSRegularExpression.escapedTemplate(for: L("<пользователь>"))
+        let names: [(String, String)] = identity.computerNames.map { ($0, computer) }
+            + [(identity.fullName, user), (identity.userName, user)]
         for (name, replacement) in names.sorted(by: { $0.0.count > $1.0.count }) where name.count >= 2 {
             s = replace(s, #"(?<![\p{L}\p{N}_])"# + NSRegularExpression.escapedPattern(for: name) + #"(?![\p{L}\p{N}_])"#,
                         with: replacement, caseInsensitive: true)
@@ -301,14 +310,16 @@ public struct ProblemReport: Sendable {
         // 4. Steam: 64-bit SteamIDs (7656119…), steamid=…, account names.
         s = replace(s, #"\b7656119\d{10}\b"#, with: "<steamid>")
         s = replace(s, #"(?i)(steam_?id(?:64)?|account_?id|account_?name|accountname|persona_?name|login|user_?name)(\s*[=:]\s*"?|"\s+")[^\s"&;,]+"#,
-                    with: "$1$2<скрыто>")
+                    with: "$1$2" + hidden)
 
         // 5. Tokens, passwords, keys: key=value / key: value / "key" "value", also in URL query strings.
-        s = replace(s, #"(?i)\bBearer\s+[A-Za-z0-9._~+/\-]+=*"#, with: "<скрыто>")
+        s = replace(s, #"(?i)\bBearer\s+[A-Za-z0-9._~+/\-]+=*"#, with: hidden)
         s = replace(s, #"(?i)\b([\w.\-]*?(?:token|password|passwd|pwd|secret|api_?key|access_?key|auth|authorization|cookie|session_?id|sessionid|ticket|signature))\b(\s*[=:]\s*"?|"\s+")[^\s"&;,]+"#,
-                    with: "$1$2<скрыто>")
+                    with: "$1$2" + hidden)
         // JSON Web Tokens.
-        s = replace(s, #"\beyJ[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}"#, with: "<токен>")
+        s = replace(s, #"\beyJ[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}"#,
+                    with: NSRegularExpression.escapedTemplate(for: L("<токен>")))
+
 
         return s
     }
@@ -323,7 +334,10 @@ public struct ProblemReport: Sendable {
 
     // MARK: Helpers
 
-    private static func onOff(_ value: Bool) -> String { value ? "вкл" : "выкл" }
+    /// OnwinCore lookup for the report's labels and values (literals passed here are extracted as keys).
+    private static func L(_ key: String.LocalizationValue) -> String {
+        String(localized: key, bundle: .onwinCore)
+    }
 
     private static var bundleBuild: String? {
         guard Bundle.main.bundleURL.pathExtension == "app" else { return nil }

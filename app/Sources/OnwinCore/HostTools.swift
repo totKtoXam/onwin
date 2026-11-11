@@ -17,8 +17,7 @@ public enum HostTools {
 
     public static func requireCabextract() throws -> URL {
         if let tool = cabextract { return tool }
-        throw OnwinError("Не найден cabextract — он нужен, чтобы достать DLL из архивов Microsoft. " +
-                         "Соберите его: scripts/build-cabextract.sh (или пересоберите Onwin.app скриптом scripts/build-app.sh).")
+        throw OnwinError(String(localized: "Не найден cabextract — он нужен, чтобы достать DLL из архивов Microsoft. Соберите его: scripts/build-cabextract.sh (или пересоберите Onwin.app скриптом scripts/build-app.sh).", bundle: .onwinCore))
     }
 
     static func find(_ name: String, environmentKey: String) -> URL? {

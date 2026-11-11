@@ -47,15 +47,15 @@ public enum D3DMetalImporter {
     @discardableResult
     public static func run(options: Options = Options(), progress: @escaping ProgressHandler) async throws -> Found {
         if let found = find(options: options) {
-            progress(.status("Нашёл \(found.url.lastPathComponent) — импортирую"))
+            progress(.status(String(localized: "Нашёл \(found.url.lastPathComponent) — импортирую", bundle: .onwinCore)))
             try await importFound(found, progress: progress)
             return found
         }
         if options.openBrowser {
-            progress(.status("Открываю страницу загрузки Apple: войдите с Apple ID и скачайте Game Porting Toolkit (.dmg)"))
+            progress(.status(String(localized: "Открываю страницу загрузки Apple: войдите с Apple ID и скачайте Game Porting Toolkit (.dmg)", bundle: .onwinCore)))
             openInBrowser(Catalog.gameportingToolkitURL)
         } else {
-            progress(.status("Жду Game_Porting_Toolkit_*.dmg в «Загрузках». Проще всего: onwin → Каталог → D3DMetal → «Установить D3DMetal»."))
+            progress(.status(String(localized: "Жду Game_Porting_Toolkit_*.dmg в «Загрузках». Проще всего: onwin → Каталог → D3DMetal → «Установить D3DMetal».", bundle: .onwinCore)))
         }
         let deadline = Date().addingTimeInterval(options.timeout)
         var lastSizes: [URL: Int64] = [:]
@@ -68,24 +68,23 @@ public enum D3DMetalImporter {
                     let size = fileSize(url)
                     defer { lastSizes[url] = size }
                     guard size > 0, lastSizes[url] == size else {
-                        progress(.status("Вижу \(url.lastPathComponent), жду окончания загрузки…"))
+                        progress(.status(String(localized: "Вижу \(url.lastPathComponent), жду окончания загрузки…", bundle: .onwinCore)))
                         try await Task.sleep(nanoseconds: UInt64(options.pollInterval * 1_000_000_000))
                         continue
                     }
                 }
-                progress(.status("Нашёл \(found.url.lastPathComponent)"))
+                progress(.status(String(localized: "Нашёл \(found.url.lastPathComponent)", bundle: .onwinCore)))
                 try await importFound(found, progress: progress)
                 return found
             }
             if Date().timeIntervalSince(lastNotice) > 30 {
                 let left = Int(deadline.timeIntervalSinceNow / 60)
-                progress(.status("Жду файл Game_Porting_Toolkit_*.dmg в «Загрузках» (ещё до \(max(left, 1)) мин)…"))
+                progress(.status(String(localized: "Жду файл Game_Porting_Toolkit_*.dmg в «Загрузках» (ещё до \(max(left, 1)) мин)…", bundle: .onwinCore)))
                 lastNotice = Date()
             }
             try await Task.sleep(nanoseconds: UInt64(options.pollInterval * 1_000_000_000))
         }
-        throw OnwinError("Не дождался загрузки Game Porting Toolkit. Скачайте .dmg с developer.apple.com и запустите импорт ещё раз " +
-                         "(или укажите том вручную: onwinctl d3dmetal-import <путь>).")
+        throw OnwinError(String(localized: "Не дождался загрузки Game Porting Toolkit. Скачайте .dmg с developer.apple.com и запустите импорт ещё раз (или укажите том вручную: onwinctl d3dmetal-import <путь>).", bundle: .onwinCore))
     }
 
     /// The newest GPTK disk image in the download folders, or a mounted GPTK volume.
@@ -120,18 +119,18 @@ public enum D3DMetalImporter {
             case .mountedVolume(let volume):
                 root = volume
             case .diskImage(let image):
-                progress(.status("Подключаю \(image.lastPathComponent)…"))
+                progress(.status(String(localized: "Подключаю \(image.lastPathComponent)…", bundle: .onwinCore)))
                 root = try await attach(image)
                 mounted.append(root)
             }
             if GraphicsSupport.findItem(named: "D3DMetal.framework", under: root, maxDepth: 6) == nil,
                let inner = innerImage(in: root) {
-                progress(.status("Подключаю вложенный образ \(inner.lastPathComponent)…"))
+                progress(.status(String(localized: "Подключаю вложенный образ \(inner.lastPathComponent)…", bundle: .onwinCore)))
                 root = try await attach(inner)
                 mounted.append(root)
             }
             try Task.checkCancellation()
-            progress(.status("Копирую D3DMetal из «\(root.lastPathComponent)»…"))
+            progress(.status(String(localized: "Копирую D3DMetal из «\(root.lastPathComponent)»…", bundle: .onwinCore)))
             let source = root
             try await Task.detached { try GraphicsSupport.importD3DMetal(from: source) }.value
         } catch {
@@ -139,13 +138,13 @@ public enum D3DMetalImporter {
             throw error
         }
         for volume in mounted.reversed() {
-            progress(.status("Отключаю \(volume.lastPathComponent)…"))
+            progress(.status(String(localized: "Отключаю \(volume.lastPathComponent)…", bundle: .onwinCore)))
             await detach(volume)
         }
         guard GraphicsSupport.isD3DMetalInstalled else {
-            throw OnwinError("Копирование закончилось, но D3DMetal не найден в \(OnwinPaths.d3dmetal.path)")
+            throw OnwinError(String(localized: "Копирование закончилось, но D3DMetal не найден в \(OnwinPaths.d3dmetal.path)", bundle: .onwinCore))
         }
-        progress(InstallProgress(message: "D3DMetal импортирован в \(OnwinPaths.d3dmetal.path)", fraction: 1))
+        progress(InstallProgress(message: String(localized: "D3DMetal импортирован в \(OnwinPaths.d3dmetal.path)", bundle: .onwinCore), fraction: 1))
     }
 
     /// "Evaluation environment for Windows games 3.0.dmg" inside the outer GPTK volume.
@@ -162,7 +161,7 @@ public enum D3DMetalImporter {
     public static func attach(_ image: URL) async throws -> URL {
         let r = try await hdiutil(["attach", "-nobrowse", "-readonly", "-noautoopen", "-plist", image.path], input: "Y\n")
         guard r.status == 0 else {
-            throw OnwinError("hdiutil не смог подключить \(image.lastPathComponent) (код \(r.status)): \(r.errors.suffix(400))")
+            throw OnwinError(String(localized: "hdiutil не смог подключить \(image.lastPathComponent) (код \(Int(r.status))): \(String(r.errors.suffix(400)))", bundle: .onwinCore))
         }
         guard let start = r.output.range(of: "<?xml"),
               let plist = try? PropertyListSerialization.propertyList(from: Data(r.output[start.lowerBound...].utf8), format: nil) as? [String: Any],
@@ -175,7 +174,7 @@ public enum D3DMetalImporter {
                let device = entities.compactMap({ $0["dev-entry"] as? String }).min(by: { $0.count < $1.count }) {
                 await detach(URL(fileURLWithPath: device))
             }
-            throw OnwinError("hdiutil подключил \(image.lastPathComponent), но не сообщил точку монтирования")
+            throw OnwinError(String(localized: "hdiutil подключил \(image.lastPathComponent), но не сообщил точку монтирования", bundle: .onwinCore))
         }
         return URL(fileURLWithPath: mount, isDirectory: true)
     }

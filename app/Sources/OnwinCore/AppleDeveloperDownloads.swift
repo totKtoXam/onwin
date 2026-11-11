@@ -40,11 +40,11 @@ public enum AppleDeveloperDownloads {
         public var errorDescription: String? {
             switch self {
             case .notSignedIn:
-                return "Вход в Apple ID не выполнен или устарел. Войдите ещё раз в окне onwin."
+                return String(localized: "Вход в Apple ID не выполнен или устарел. Войдите ещё раз в окне onwin.", bundle: .onwinCore)
             case .agreementRequired(let text):
-                return "Apple просит принять соглашение Apple Developer: откройте developer.apple.com/account и примите его. (\(text))"
+                return String(localized: "Apple просит принять соглашение Apple Developer: откройте developer.apple.com/account и примите его. (\(text))", bundle: .onwinCore)
             case .service(let text):
-                return "Сервис загрузок Apple ответил ошибкой: \(text)"
+                return String(localized: "Сервис загрузок Apple ответил ошибкой: \(text)", bundle: .onwinCore)
             }
         }
     }
@@ -121,11 +121,11 @@ public enum AppleDeveloperDownloads {
         do {
             response = try JSONDecoder().decode(ListResponse.self, from: data)
         } catch {
-            throw Failure.service("непонятный ответ (\(data.count) байт)")
+            throw Failure.service(String(localized: "непонятный ответ (\(data.count) байт)", bundle: .onwinCore))
         }
         let code = response.resultCode ?? 0
         if code != 0 {
-            let text = response.userString ?? response.resultString ?? "код \(code)"
+            let text = response.userString ?? response.resultString ?? String(localized: "код \(code)", bundle: .onwinCore)
             let lower = text.lowercased()
             if code == 1100 || lower.contains("log in") || lower.contains("sign in") || lower.contains("session has expired") {
                 throw Failure.notSignedIn
@@ -133,9 +133,9 @@ public enum AppleDeveloperDownloads {
             if lower.contains("agree") || lower.contains("agreement") || lower.contains("terms") {
                 throw Failure.agreementRequired(text)
             }
-            throw Failure.service("\(text) (код \(code))")
+            throw Failure.service(String(localized: "\(text) (код \(code))", bundle: .onwinCore))
         }
-        guard let downloads = response.downloads else { throw Failure.service("в ответе нет списка загрузок") }
+        guard let downloads = response.downloads else { throw Failure.service(String(localized: "в ответе нет списка загрузок", bundle: .onwinCore)) }
         return downloads
     }
 
@@ -256,7 +256,7 @@ public enum AppleDeveloperDownloads {
         let destination = directory.appendingPathComponent(release.fileName)
         let part = directory.appendingPathComponent(release.fileName + ".part")
         if let expected = release.fileSize, fileSize(destination) == expected {
-            progress(.status("\(release.fileName) уже скачан", fraction: 1))
+            progress(.status(String(localized: "\(release.fileName) уже скачан", bundle: .onwinCore), fraction: 1))
             return destination
         }
         if !fm.fileExists(atPath: part.path) { fm.createFile(atPath: part.path, contents: nil) }
@@ -267,9 +267,9 @@ public enum AppleDeveloperDownloads {
         request.setValue("*/*", forHTTPHeaderField: "Accept")
         if offset > 0 {
             request.setValue("bytes=\(offset)-", forHTTPHeaderField: "Range")
-            progress(.status("Продолжаю загрузку \(release.fileName) с \(megabytes(offset))…"))
+            progress(.status(String(localized: "Продолжаю загрузку \(release.fileName) с \(megabytes(offset))…", bundle: .onwinCore)))
         } else {
-            progress(.status("Скачиваю \(release.fileName)…", fraction: 0))
+            progress(.status(String(localized: "Скачиваю \(release.fileName)…", bundle: .onwinCore), fraction: 0))
         }
         let receiver = try PartFileReceiver(part: part, offset: offset, expected: release.fileSize,
                                             name: release.fileName, progress: progress)
@@ -284,15 +284,14 @@ public enum AppleDeveloperDownloads {
                 task.cancel()
             }
         } catch let error as URLError {
-            throw OnwinError("Загрузка \(release.fileName) прервалась (\(megabytes(fileSize(part))) скачано): " +
-                             "\(error.localizedDescription) Запустите установку ещё раз — загрузка продолжится с этого места.")
+            let downloaded = megabytes(fileSize(part))
+            throw OnwinError(String(localized: "Загрузка \(release.fileName) прервалась (\(downloaded) скачано): \(error.localizedDescription) Запустите установку ещё раз — загрузка продолжится с этого места.", bundle: .onwinCore))
         }
 
         let size = fileSize(part)
         let expected = release.fileSize ?? receiver.totalSize
         if let expected, size != expected {
-            throw OnwinError("Загрузка \(release.fileName) оборвалась: \(megabytes(size)) из \(megabytes(expected)). " +
-                             "Запустите установку ещё раз — загрузка продолжится с этого места.")
+            throw OnwinError(String(localized: "Загрузка \(release.fileName) оборвалась: \(megabytes(size)) из \(megabytes(expected)). Запустите установку ещё раз — загрузка продолжится с этого места.", bundle: .onwinCore))
         }
         if looksLikeHTML(part) {
             try? fm.removeItem(at: part)
@@ -300,7 +299,7 @@ public enum AppleDeveloperDownloads {
         }
         try? fm.removeItem(at: destination)
         try fm.moveItem(at: part, to: destination)
-        progress(.status("\(release.fileName) скачан (\(megabytes(size)))", fraction: 1))
+        progress(.status(String(localized: "\(release.fileName) скачан (\(megabytes(size)))", bundle: .onwinCore), fraction: 1))
         return destination
     }
 
@@ -311,7 +310,7 @@ public enum AppleDeveloperDownloads {
     }
 
     static func megabytes(_ bytes: Int64) -> String {
-        String(format: "%.1f МБ", Double(bytes) / 1_048_576)
+        bytes.formatted(.byteCount(style: .file))
     }
 
     static func looksLikeHTML(_ url: URL) -> Bool {
@@ -371,7 +370,7 @@ final class PartFileReceiver: NSObject, URLSessionDataDelegate, @unchecked Senda
     func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse,
                     newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
         guard AppleDeveloperDownloads.isAllowedRedirect(request.url) else {
-            fail(OnwinError("Сервер Apple перенаправил загрузку \(name) на небезопасный адрес — загрузка остановлена"))
+            fail(OnwinError(String(localized: "Сервер Apple перенаправил загрузку \(name) на небезопасный адрес — загрузка остановлена", bundle: .onwinCore)))
             completionHandler(nil)
             task.cancel()
             return
@@ -382,7 +381,7 @@ final class PartFileReceiver: NSObject, URLSessionDataDelegate, @unchecked Senda
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse,
                     completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         guard let http = response as? HTTPURLResponse else {
-            fail(OnwinError("Сервер Apple прислал не HTTP-ответ на загрузку \(name)")); completionHandler(.cancel); return
+            fail(OnwinError(String(localized: "Сервер Apple прислал не HTTP-ответ на загрузку \(name)", bundle: .onwinCore))); completionHandler(.cancel); return
         }
         if http.url?.lastPathComponent == "unauthorized" || (http.mimeType ?? "").lowercased().contains("html") {
             fail(AppleDeveloperDownloads.Failure.notSignedIn); completionHandler(.cancel); return
@@ -405,7 +404,7 @@ final class PartFileReceiver: NSObject, URLSessionDataDelegate, @unchecked Senda
         case 401, 403:
             fail(AppleDeveloperDownloads.Failure.notSignedIn); completionHandler(.cancel); return
         default:
-            fail(OnwinError("Сервер Apple ответил HTTP \(http.statusCode) на загрузку \(name)")); completionHandler(.cancel); return
+            fail(OnwinError(String(localized: "Сервер Apple ответил HTTP \(http.statusCode) на загрузку \(name)", bundle: .onwinCore))); completionHandler(.cancel); return
         }
         completionHandler(.allow)
     }
@@ -421,10 +420,10 @@ final class PartFileReceiver: NSObject, URLSessionDataDelegate, @unchecked Senda
         guard now.timeIntervalSince(lastReport) > 0.25 else { return }
         lastReport = now
         if let total = totalSize, total > 0 {
-            progress(.status("Скачиваю \(name): \(AppleDeveloperDownloads.megabytes(written)) из \(AppleDeveloperDownloads.megabytes(total))",
+            progress(.status(String(localized: "Скачиваю \(name): \(AppleDeveloperDownloads.megabytes(written)) из \(AppleDeveloperDownloads.megabytes(total))", bundle: .onwinCore),
                              fraction: min(Double(written) / Double(total), 1)))
         } else {
-            progress(.status("Скачиваю \(name): \(AppleDeveloperDownloads.megabytes(written))"))
+            progress(.status(String(localized: "Скачиваю \(name): \(AppleDeveloperDownloads.megabytes(written))", bundle: .onwinCore)))
         }
     }
 

@@ -12,20 +12,23 @@ public struct Suggestion: Identifiable, Hashable, Sendable {
     /// Catalog component id; nil for a hint that has no installable component.
     public var componentID: String?
     public var title: String
-    /// Russian, one sentence.
+    /// Localized, one sentence.
     public var reason: String
     /// What we saw: "Game.exe → d3dx9_43.dll", a log line...
     public var evidence: [String]
     public var source: Source
     /// Higher first. 3 = the program cannot start without it, 2 = likely needed, 1 = may help.
     public var priority: Int
+    /// Stable id of a hint (the title is localized; dismissed suggestions are stored by `id`).
+    public var hintKey: String?
 
-    public var id: String { componentID ?? "hint:\(title)" }
+    public var id: String { componentID ?? "hint:\(hintKey ?? title)" }
     public var component: Component? { componentID.flatMap(Catalog.component) }
 
-    public init(componentID: String?, title: String, reason: String, evidence: [String], source: Source, priority: Int) {
+    public init(componentID: String?, title: String, reason: String, evidence: [String], source: Source, priority: Int,
+                hintKey: String? = nil) {
         self.componentID = componentID; self.title = title; self.reason = reason
-        self.evidence = evidence; self.source = source; self.priority = priority
+        self.evidence = evidence; self.source = source; self.priority = priority; self.hintKey = hintKey
     }
 }
 
@@ -78,7 +81,7 @@ public enum DependencyAdvisor {
         }
 
         var findings: [String: (dlls: Set<String>, evidence: [String])] = [:]   // component id → ...
-        var hints: [String: [String]] = [:]
+        var hints: [Hint: [String]] = [:]
         var dotNetEvidence: [String] = []
         for file in files {
             guard let image = file == exe ? main : PEImage.read(file) else { continue }
@@ -86,20 +89,22 @@ public enum DependencyAdvisor {
             // Only a .NET *program* (or a mixed C++/CLI DLL) needs a .NET runtime in the space: pure
             // IL DLLs next to a native exe (Unity's <Game>_Data/Managed/*.dll) run on the engine's own Mono.
             let needsCLR = image.isDotNet && (!image.isDLL || !image.isILOnly)
-            if needsCLR { dotNetEvidence.append("\(label) — сборка .NET") }
+            if needsCLR { dotNetEvidence.append(String(localized: "\(label) — сборка .NET", bundle: .onwinCore)) }
             for dll in image.allImports {
                 let name = Catalog.normalizedDLLName(dll)
                 if name.hasPrefix("api-ms-win-") || name.hasPrefix("ext-ms-") { continue }
                 if shipped.contains(name) { continue }
                 if let space, hasNativeCopy(name, is64: image.is64Bit, in: space) { continue }
                 let delayed = image.delayImports.contains(dll) && !image.imports.contains(dll)
-                let line = "\(label) → \(name).dll" + (delayed ? " (отложенная загрузка)" : "")
+                let line = delayed
+                    ? String(localized: "\(label) → \(name).dll (отложенная загрузка)", bundle: .onwinCore)
+                    : "\(label) → \(name).dll"
                 if name == "mscoree" { if needsCLR { dotNetEvidence.append(line) }; continue }
                 guard let component = Catalog.components(satisfying: name).first else {
                     if let hint = staticHint(for: name) {
                         hints[hint, default: []].append(line)
                     } else if !builtins.isEmpty, !builtins.contains(name), !name.hasPrefix("steam") {
-                        hints["Отсутствующие DLL", default: []].append(line)
+                        hints[.missingDLLs, default: []].append(line)
                     }
                     continue
                 }
@@ -119,9 +124,10 @@ public enum DependencyAdvisor {
            let s = dotNetSuggestion(evidence: Array(dotNetEvidence.prefix(6)), source: .imports, space: space) {
             result.append(s)
         }
-        for (title, evidence) in hints {
-            result.append(Suggestion(componentID: nil, title: title, reason: hintReason(title),
-                                     evidence: Array(evidence.prefix(6)), source: .imports, priority: 1))
+        for (hint, evidence) in hints {
+            result.append(Suggestion(componentID: nil, title: hint.title, reason: hint.reason,
+                                     evidence: Array(evidence.prefix(6)), source: .imports, priority: 1,
+                                     hintKey: hint.rawValue))
         }
         return finalize(result, space: space)
     }
@@ -131,30 +137,30 @@ public enum DependencyAdvisor {
         switch c.id {
         case Catalog.d3dmetalID:
             return Suggestion(componentID: c.id, title: c.name,
-                              reason: "Игра использует DirectX 12 (\(list)) — лучше всего его переводит в Metal D3DMetal от Apple.",
+                              reason: String(localized: "Игра использует DirectX 12 (\(list)) — лучше всего его переводит в Metal D3DMetal от Apple.", bundle: .onwinCore),
                               evidence: evidence, source: .imports, priority: 2)
         case "directx-jun2010":
             return Suggestion(componentID: c.id, title: c.name,
-                              reason: "Игре нужны библиотеки старого DirectX (\(list)). В Wine есть свои замены, но с оригинальными игры работают надёжнее.",
+                              reason: String(localized: "Игре нужны библиотеки старого DirectX (\(list)). В Wine есть свои замены, но с оригинальными игры работают надёжнее.", bundle: .onwinCore),
                               evidence: evidence, source: .imports, priority: 2)
         case "physx":
             return Suggestion(componentID: c.id, title: c.name,
-                              reason: "Игра загружает NVIDIA PhysX (\(list)), а рядом с ней этих файлов нет.",
+                              reason: String(localized: "Игра загружает NVIDIA PhysX (\(list)), а рядом с ней этих файлов нет.", bundle: .onwinCore),
                               evidence: evidence, source: .imports, priority: 3)
         case "wine-gecko":
             return Suggestion(componentID: c.id, title: c.name,
-                              reason: "Программа показывает веб-страницы через \(list) — без Wine Gecko эти окна будут пустыми.",
+                              reason: String(localized: "Программа показывает веб-страницы через \(list) — без Wine Gecko эти окна будут пустыми.", bundle: .onwinCore),
                               evidence: evidence, source: .imports, priority: 1)
         case "d3dcompiler_47":
             return Suggestion(componentID: c.id, title: c.name,
-                              reason: "Игра компилирует шейдеры через \(list). Оригинальный компилятор Microsoft справляется со всеми шейдерами, встроенный в Wine — не всегда.",
+                              reason: String(localized: "Игра компилирует шейдеры через \(list). Оригинальный компилятор Microsoft справляется со всеми шейдерами, встроенный в Wine — не всегда.", bundle: .onwinCore),
                               evidence: evidence, source: .imports, priority: 1)
         default:
             let reason: String
             if c.category == .runtimes {
-                reason = "Программе нужны библиотеки \(c.name): \(list). Встроенные замены Wine неполные — лучше поставить оригинальные."
+                reason = String(localized: "Программе нужны библиотеки \(c.name): \(list). Встроенные замены Wine неполные — лучше поставить оригинальные.", bundle: .onwinCore)
             } else {
-                reason = "Программа использует \(list) из пакета \(c.name)."
+                reason = String(localized: "Программа использует \(list) из пакета \(c.name).", bundle: .onwinCore)
             }
             return Suggestion(componentID: c.id, title: c.name, reason: reason, evidence: evidence, source: .imports,
                               priority: c.category == .runtimes ? 2 : 1)
@@ -171,30 +177,48 @@ public enum DependencyAdvisor {
         if hasMono {
             guard source == .log else { return nil }
             return Suggestion(componentID: "dotnet48", title: Catalog.component("dotnet48")?.name ?? ".NET Framework 4.8",
-                              reason: "Программе на .NET не хватило Wine Mono — попробуйте настоящий .NET Framework 4.8.",
+                              reason: String(localized: "Программе на .NET не хватило Wine Mono — попробуйте настоящий .NET Framework 4.8.", bundle: .onwinCore),
                               evidence: evidence, source: source, priority: 2)
         }
         return Suggestion(componentID: "wine-mono", title: Catalog.component("wine-mono")?.name ?? "Wine Mono",
-                          reason: "Это программа на .NET: ей нужна среда .NET. Начните с Wine Mono; если не хватит — .NET Framework 4.8.",
+                          reason: String(localized: "Это программа на .NET: ей нужна среда .NET. Начните с Wine Mono; если не хватит — .NET Framework 4.8.", bundle: .onwinCore),
                           evidence: evidence, source: source, priority: 3)
     }
 
-    /// Imports without a component that are still worth telling about.
-    private static func staticHint(for dll: String) -> String? {
-        if dll.hasPrefix("steam_api") { return "Steam" }
-        if dll == "nvapi" || dll == "nvapi64" { return "NVIDIA NVAPI" }
-        if dll.hasPrefix("eossdk") { return "Epic Online Services" }
-        return nil
+    /// Hints without an installable component. Raw values are stable ids (part of `Suggestion.id`, which
+    /// is stored for dismissed suggestions) — keep them as they are.
+    enum Hint: String {
+        case steam = "Steam"
+        case nvapi = "NVIDIA NVAPI"
+        case epicOnlineServices = "Epic Online Services"
+        case missingDLLs = "Отсутствующие DLL"
+        case crash = "Сбой программы"
+
+        var title: String {
+            switch self {
+            case .steam, .nvapi, .epicOnlineServices: return rawValue
+            case .missingDLLs: return String(localized: "Отсутствующие DLL", bundle: .onwinCore)
+            case .crash: return String(localized: "Сбой программы", bundle: .onwinCore)
+            }
+        }
+
+        var reason: String {
+            switch self {
+            case .steam: return String(localized: "Игра ищет Steam (steam_api.dll не рядом с ней): запускайте её через Steam в этом пространстве.", bundle: .onwinCore)
+            case .nvapi: return String(localized: "Игра обращается к NVAPI видеокарт NVIDIA — в Mac его нет, обычно это не мешает (включите D3DMetal для DLSS → MetalFX).", bundle: .onwinCore)
+            case .epicOnlineServices: return String(localized: "Игре нужен Epic Games Launcher: установите его из каталога в это пространство.", bundle: .onwinCore)
+            case .missingDLLs: return String(localized: "Этих DLL нет ни рядом с игрой, ни в Wine. Проверьте, что игра установлена полностью.", bundle: .onwinCore)
+            case .crash: return String(localized: "Программа упала (Unhandled page fault / exception). Попробуйте другой графический режим в настройках пространства или включите журнал отладки.", bundle: .onwinCore)
+            }
+        }
     }
 
-    private static func hintReason(_ title: String) -> String {
-        switch title {
-        case "Steam": return "Игра ищет Steam (steam_api.dll не рядом с ней): запускайте её через Steam в этом пространстве."
-        case "NVIDIA NVAPI": return "Игра обращается к NVAPI видеокарт NVIDIA — в Mac его нет, обычно это не мешает (включите D3DMetal для DLSS → MetalFX)."
-        case "Epic Online Services": return "Игре нужен Epic Games Launcher: установите его из каталога в это пространство."
-        case "Отсутствующие DLL": return "Этих DLL нет ни рядом с игрой, ни в Wine. Проверьте, что игра установлена полностью."
-        default: return title
-        }
+    /// Imports without a component that are still worth telling about.
+    private static func staticHint(for dll: String) -> Hint? {
+        if dll.hasPrefix("steam_api") { return .steam }
+        if dll == "nvapi" || dll == "nvapi64" { return .nvapi }
+        if dll.hasPrefix("eossdk") { return .epicOnlineServices }
+        return nil
     }
 
     // MARK: Dynamic (Wine log)
@@ -207,7 +231,7 @@ public enum DependencyAdvisor {
     public static func analyze(logText text: String, space: Space?) -> [Suggestion] {
         var byComponent: [String: [String]] = [:]
         var missingByComponent: [String: [String]] = [:]
-        var hints: [String: [String]] = [:]
+        var hints: [Hint: [String]] = [:]
         var dotNet: [String] = []
         var seenLines = Set<String>()
 
@@ -229,7 +253,7 @@ public enum DependencyAdvisor {
                         add(c.id, shorten(line))
                         if !missingByComponent[c.id, default: []].contains(name) { missingByComponent[c.id, default: []].append(name) }
                     }
-                    else if !name.hasPrefix("api-ms-") { hints["Отсутствующие DLL", default: []].append(shorten(line)) }
+                    else if !name.hasPrefix("api-ms-") { hints[.missingDLLs, default: []].append(shorten(line)) }
                     continue
                 }
             }
@@ -254,7 +278,7 @@ public enum DependencyAdvisor {
                 continue
             }
             if lower.contains("unhandled page fault") || lower.contains("unhandled exception") {
-                if hints["Сбой программы", default: []].count < 3 { hints["Сбой программы", default: []].append(shorten(line)) }
+                if hints[.crash, default: []].count < 3 { hints[.crash, default: []].append(shorten(line)) }
             }
         }
 
@@ -263,27 +287,27 @@ public enum DependencyAdvisor {
             guard let c = Catalog.component(id) else { continue }
             let reason: String
             switch id {
-            case Catalog.d3dmetalID: reason = "Игра не смогла создать устройство DirectX 12 — установите D3DMetal."
-            case "wine-gecko": reason = "Программа пыталась показать веб-страницу, но Wine Gecko не установлен."
-            case "d3dcompiler_47": reason = "Ошибка компиляции шейдеров — оригинальный d3dcompiler_47 часто это исправляет."
+            case Catalog.d3dmetalID: reason = String(localized: "Игра не смогла создать устройство DirectX 12 — установите D3DMetal.", bundle: .onwinCore)
+            case "wine-gecko": reason = String(localized: "Программа пыталась показать веб-страницу, но Wine Gecko не установлен.", bundle: .onwinCore)
+            case "d3dcompiler_47": reason = String(localized: "Ошибка компиляции шейдеров — оригинальный d3dcompiler_47 часто это исправляет.", bundle: .onwinCore)
             default:
                 let missing = (missingByComponent[id] ?? []).prefix(4).map { $0 + ".dll" }
                 let names = missing.joined(separator: ", ")
                 reason = names.isEmpty
-                    ? "Программа не запустилась: не нашлась библиотека из пакета \(c.name)."
-                    : "Программа не запустилась: нет \(names) — \(missing.count == 1 ? "эта библиотека входит" : "эти библиотеки входят") в \(c.name)."
+                    ? String(localized: "Программа не запустилась: не нашлась библиотека из пакета \(c.name).", bundle: .onwinCore)
+                    : missing.count == 1
+                        ? String(localized: "Программа не запустилась: нет \(names) — эта библиотека входит в \(c.name).", bundle: .onwinCore)
+                        : String(localized: "Программа не запустилась: нет \(names) — эти библиотеки входят в \(c.name).", bundle: .onwinCore)
             }
             result.append(Suggestion(componentID: id, title: c.name, reason: reason, evidence: evidence, source: .log, priority: 3))
         }
         if !dotNet.isEmpty, let s = dotNetSuggestion(evidence: Array(dotNet.prefix(6)), source: .log, space: space) {
             result.append(s)
         }
-        for (title, evidence) in hints {
-            let reason = title == "Сбой программы"
-                ? "Программа упала (Unhandled page fault / exception). Попробуйте другой графический режим в настройках пространства или включите журнал отладки."
-                : hintReason(title)
-            result.append(Suggestion(componentID: nil, title: title, reason: reason,
-                                     evidence: Array(evidence.prefix(6)), source: .log, priority: title == "Сбой программы" ? 1 : 2))
+        for (hint, evidence) in hints {
+            result.append(Suggestion(componentID: nil, title: hint.title, reason: hint.reason,
+                                     evidence: Array(evidence.prefix(6)), source: .log, priority: hint == .crash ? 1 : 2,
+                                     hintKey: hint.rawValue))
         }
         return finalize(result, space: space)
     }

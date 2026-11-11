@@ -89,18 +89,18 @@ extension WineRunner {
         while Date() < deadline {
             if !isServerRunning { break }
             if !process.isRunning && process.terminationStatus != 0 {
-                onOutput?("Программа отказалась завершаться (wineboot: \(process.terminationStatus)).\n")
+                onOutput?(String(localized: "Программа отказалась завершаться (wineboot: \(Int(process.terminationStatus))).", bundle: .onwinCore) + "\n")
                 return .refused
             }
             try? await Task.sleep(for: .milliseconds(250))
         }
         if process.isRunning { process.terminate() }
         guard isServerRunning else {
-            onOutput?("Все программы пространства закрылись сами.\n")
+            onOutput?(String(localized: "Все программы пространства закрылись сами.", bundle: .onwinCore) + "\n")
             return .clean
         }
 
-        onOutput?("Не все программы закрылись за \(Int(timeout)) с — wineserver -k\n")
+        onOutput?(String(localized: "Не все программы закрылись за \(Int(timeout)) с — wineserver -k", bundle: .onwinCore) + "\n")
         try await killAll()
         // wineserver -k returns once the server got SIGINT/SIGKILL; give it a moment to release the lock.
         for _ in 0..<20 where isServerRunning {

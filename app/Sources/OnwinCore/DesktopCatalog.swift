@@ -28,12 +28,12 @@ public struct DesktopItem: Identifiable, Hashable, Sendable {
 
         public var displayName: String {
             switch self {
-            case .recipe: return "Каталог"
-            case .userRecipe: return "Мои приложения"
-            case .pinned: return "Закреплена"
+            case .recipe: return String(localized: "Каталог", bundle: .onwinCore)
+            case .userRecipe: return String(localized: "Мои приложения", bundle: .onwinCore)
+            case .pinned: return String(localized: "Закреплена", bundle: .onwinCore, comment: "Source of a program tile: the program was pinned by the user")
             case .steam: return "Steam"
-            case .startMenu: return "Меню «Пуск»"
-            case .desktopShortcut: return "Ярлык рабочего стола"
+            case .startMenu: return String(localized: "Меню «Пуск»", bundle: .onwinCore)
+            case .desktopShortcut: return String(localized: "Ярлык рабочего стола", bundle: .onwinCore)
             }
         }
 
@@ -90,8 +90,8 @@ public struct DesktopItem: Identifiable, Hashable, Sendable {
     /// "Загружается" / "Нужно обновление" for Steam games, nil otherwise.
     public var statusText: String? {
         guard case .steamGame(let g) = kind else { return nil }
-        if !g.isFullyInstalled { return "Загружается" }
-        if g.isBusy { return "Нужно обновление" }
+        if !g.isFullyInstalled { return String(localized: "Загружается", bundle: .onwinCore, comment: "Steam game status: still being downloaded") }
+        if g.isBusy { return String(localized: "Нужно обновление", bundle: .onwinCore) }
         return nil
     }
 

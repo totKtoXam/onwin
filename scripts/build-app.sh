@@ -104,11 +104,28 @@ if [ -x "$CABEXTRACT" ]; then
     chmod 755 "$APP/Contents/MacOS/cabextract"
 fi
 
-# SwiftPM resource bundles (none today, but keep them if a target gains resources).
+# --- Translations ------------------------------------------------------------------------------
+# The CompileStringCatalogs plugin turns each target's Localizable.xcstrings into <lang>.lproj inside
+# SwiftPM resource bundles (onwin_<Target>.bundle). OnwinApp's strings go into the app's own
+# Contents/Resources/<lang>.lproj: SwiftUI's Text("…") and String(localized:) look them up in
+# Bundle.main. The other bundles (OnwinCore, onwinctl) are copied to Contents/Resources, where
+# OnwinResources (OnwinCore/Localization.swift) finds them — SwiftPM's Bundle.module would look at the
+# root of the .app, which code signing does not allow.
+LANGUAGES="ru en zh-Hans kk"   # also: CFBundleLocalizations below, OnwinLanguage, the plugin, scripts/l10n.py
+APP_BUNDLE="$BIN_DIR/onwin_OnwinApp.bundle"
+[ -d "$APP_BUNDLE" ] || die "не найден $APP_BUNDLE (переводы интерфейса)"
+for lang in $LANGUAGES; do
+    # SwiftPM writes the folder names in lower case (zh-hans.lproj); keep Apple's spelling in the app.
+    src="$APP_BUNDLE/$lang.lproj"
+    [ -d "$src" ] || src="$APP_BUNDLE/$(echo "$lang" | tr '[:upper:]' '[:lower:]').lproj"
+    [ -d "$src" ] || die "в $APP_BUNDLE нет перевода $lang"
+    mkdir -p "$APP/Contents/Resources/$lang.lproj"
+    ditto "$src" "$APP/Contents/Resources/$lang.lproj"
+done
 for bundle in "$BIN_DIR"/*.bundle; do
     [ -e "$bundle" ] || continue
+    [ "$bundle" = "$APP_BUNDLE" ] && continue
     ditto "$bundle" "$APP/Contents/Resources/$(basename "$bundle")"
-    warn "скопирован ресурсный бандл $(basename "$bundle") — проверьте, что Bundle.module его находит"
 done
 
 # --- Licenses ----------------------------------------------------------------------------------
@@ -162,6 +179,13 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 <dict>
     <key>CFBundleDevelopmentRegion</key>
     <string>ru</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>ru</string>
+        <string>en</string>
+        <string>zh-Hans</string>
+        <string>kk</string>
+    </array>
     <key>CFBundleExecutable</key>
     <string>Onwin</string>
     <key>CFBundleIdentifier</key>

@@ -46,7 +46,7 @@ extension WineRunner {
         return true
     }
 
-    static let prefixUpdateMessage = "onwin: движок изменился — обновляю окружение Windows (wineboot -u, без установщиков Wine Mono/Gecko)…"
+    static let prefixUpdateMessage = String(localized: "onwin: движок изменился — обновляю окружение Windows (wineboot -u, без установщиков Wine Mono/Gecko)…", bundle: .onwinCore)
 
     /// For the synchronous `launch`: when an update is pending, runs the program through /bin/sh,
     /// which performs the update first and then `exec`s wine (same PID, so tracking is unaffected).

@@ -26,7 +26,7 @@ public enum MacFolders {
         public let path: String
         /// Folder in the Mac home directory the link points to.
         public let macName: String
-        /// Name shown to the user.
+        /// Name shown to the user (localized; `path` is the real folder name).
         public let title: String
     }
 
@@ -35,12 +35,12 @@ public enum MacFolders {
     static let userName = "crossover"
 
     public static let folders: [Folder] = [
-        Folder(path: "Documents", macName: "Documents", title: "Документы"),
-        Folder(path: "Downloads", macName: "Downloads", title: "Загрузки"),
-        Folder(path: "Music", macName: "Music", title: "Музыка"),
-        Folder(path: "Pictures", macName: "Pictures", title: "Изображения"),
-        Folder(path: "Videos", macName: "Movies", title: "Видео"),
-        Folder(path: "Desktop/My Mac Desktop", macName: "Desktop", title: "Рабочий стол Mac"),
+        Folder(path: "Documents", macName: "Documents", title: String(localized: "Документы", bundle: .onwinCore)),
+        Folder(path: "Downloads", macName: "Downloads", title: String(localized: "Загрузки", bundle: .onwinCore)),
+        Folder(path: "Music", macName: "Music", title: String(localized: "Музыка", bundle: .onwinCore)),
+        Folder(path: "Pictures", macName: "Pictures", title: String(localized: "Изображения", bundle: .onwinCore)),
+        Folder(path: "Videos", macName: "Movies", title: String(localized: "Видео", bundle: .onwinCore)),
+        Folder(path: "Desktop/My Mac Desktop", macName: "Desktop", title: String(localized: "Рабочий стол Mac", bundle: .onwinCore)),
     ]
 
     /// The Desktop link lives inside a real Desktop folder and is only a shortcut: in an isolated space it
@@ -96,7 +96,7 @@ public enum MacFolders {
                 continue
             case .link:
                 guard unlink(url.path) == 0 else {
-                    throw OnwinError("Не удалось убрать ссылку «\(folder.title)» (\(url.path)): \(String(cString: strerror(errno)))")
+                    throw OnwinError(String(localized: "Не удалось убрать ссылку «\(folder.title)» (\(url.path)): \(String(cString: strerror(errno)))", bundle: .onwinCore))
                 }
                 unlinked.append(folder)
             case .missing:
@@ -202,12 +202,12 @@ public enum MacFolders {
         public var unlinked: [Folder] = []
         public var kept: [KeptFolder] = []
 
-        /// Russian explanation of the folders set aside, nil when there were none.
+        /// Localized explanation of the folders set aside, nil when there were none.
         public var keptMessage: String? {
             guard !kept.isEmpty else { return nil }
             let list = kept.map { "«\($0.folder.title)» → C:\\users\\crossover\\\($0.keptAt.lastPathComponent)" }
-            return "В пространстве уже были файлы в этих папках. Они не удалены и не перенесены в папки Mac, а сохранены рядом под новым именем:\n"
-                + list.joined(separator: "\n")
+            let folders = list.joined(separator: "\n")
+            return String(localized: "В пространстве уже были файлы в этих папках. Они не удалены и не перенесены в папки Mac, а сохранены рядом под новым именем:\n\(folders)", bundle: .onwinCore)
         }
     }
 
@@ -215,7 +215,7 @@ public enum MacFolders {
     /// not be running: a running program could be writing into a folder that is being replaced.
     public static func apply(linked: Bool, to space: Space) throws -> Outcome {
         if let runner = try? WineRunner(space: space), runner.isServerRunning {
-            throw OnwinError("Пространство «\(space.name)» запущено. Закройте его программы, чтобы изменить папки.")
+            throw OnwinError(String(localized: "Пространство «\(space.name)» запущено. Закройте его программы, чтобы изменить папки.", bundle: .onwinCore))
         }
         var outcome = Outcome()
         if linked {

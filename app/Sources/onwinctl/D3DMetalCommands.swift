@@ -17,19 +17,19 @@ func d3dmetalFetch(_ arguments: [String]) async throws -> URL {
     options.openBrowser = rest.contains("--browser")
 
     if let found = D3DMetalImporter.find(options: options) {
-        print("Нашёл \(found.url.path)")
+        print(String(localized: "Нашёл \(found.url.path)", bundle: .onwinctl))
         try await D3DMetalImporter.importFound(found, progress: printProgress)
         return found.url
     }
     guard wait else {
-        print("""
+        print(String(localized: """
         Game Porting Toolkit не найден ни в «Загрузках», ни в кэше onwin, ни среди подключённых дисков.
         Apple отдаёт его только после входа с Apple ID, а вход возможен только в приложении:
           onwin → Каталог → D3DMetal → «Установить D3DMetal» (вход, загрузка и установка — внутри onwin).
         Или скачайте .dmg сами (\(Catalog.gameportingToolkitURL.absoluteString)) и запустите
           onwinctl d3dmetal-fetch            — onwin найдёт его в «Загрузках»
           onwinctl d3dmetal-fetch --wait     — ждать появления .dmg (--browser — ещё и открыть страницу Apple)
-        """)
+        """, bundle: .onwinctl))
         exit(1)
     }
     let found = try await D3DMetalImporter.run(options: options, progress: printProgress)
