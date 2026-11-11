@@ -447,3 +447,43 @@ td .muted { display: block; font-size: 0.86rem; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+
+/* ---------- Полоса «Поддержать» над шапкой ---------- */
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+.donate-bar {
+  background: linear-gradient(90deg, var(--accent-soft), color-mix(in srgb, var(--accent) 22%, transparent), var(--accent-soft));
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+@supports not (background: color-mix(in srgb, red 50%, blue)) {
+  .donate-bar { background: var(--accent-soft); }
+}
+.donate-bar .wrap {
+  display: flex; align-items: center; justify-content: center; gap: 6px 16px;
+  min-height: 40px; padding-block: 6px; flex-wrap: wrap; text-align: center;
+}
+.donate-bar-text { display: inline-flex; align-items: center; gap: 8px; margin: 0; color: var(--text); }
+.donate-bar-heart { width: 16px; height: 16px; flex: none; fill: #e5484d; }
+.donate-bar-link {
+  display: inline-block; padding: 4px 14px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-weight: 600; text-decoration: none; white-space: nowrap;
+}
+.donate-bar-link:hover { filter: brightness(1.08); }
+@media (prefers-color-scheme: dark) { .donate-bar-link { color: #06232a; } }
+@media (max-width: 600px) { .donate-bar-more { display: none; } }
+
+/* Цель перехода: не прячется под липкой шапкой и коротко подсвечивается. */
+#donate, #crypto { scroll-margin-top: 84px; }
+#donate:target .donate-block, #crypto:target { animation: donate-glow 1.6s ease-out 0.3s 1; }
+@keyframes donate-glow {
+  0%   { box-shadow: 0 0 0 0 var(--accent-ring); }
+  35%  { box-shadow: 0 0 0 6px var(--accent-ring); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #donate:target .donate-block, #crypto:target { animation: none; outline: 2px solid var(--accent-ring); }
+}
