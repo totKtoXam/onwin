@@ -129,6 +129,12 @@ struct ShellAlerts: ViewModifier {
                     model.clearError()
                 }
             }
+            Button("Сообщить о проблеме…") {
+                let message = model.lastError
+                let log = model.lastErrorLog
+                model.clearError()
+                model.reportProblem(log: log, error: message)
+            }
             Button("OK", role: .cancel) {
                 model.clearError()
             }

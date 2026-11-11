@@ -65,6 +65,11 @@ onwinctl \(OnwinVersion.string) — запуск Windows-программ на M
   onwinctl advise <пространство|-> <файл.exe> [--no-folder] [--wine-dlls папка]...
                                            каких компонентов не хватает программе (по таблице импорта)
   onwinctl advise-log <журнал.log> [--space имя]             что советует журнал неудачного запуска
+
+Поддержка:
+  onwinctl report <пространство> [программа.exe] [--log журнал.log] [--no-log] [--output файл]
+                                           отчёт о проблеме для чата поддержки: Mac, движок, настройки
+                                           пространства и конец последнего журнала запуска (без личных данных)
 """
 
 func fail(_ message: String) -> Never {
@@ -426,6 +431,31 @@ do {
         let b = option("--space", in: &rest).map { space($0) }
         guard let path = rest.first else { fail("использование: onwinctl advise-log <журнал.log> [--space имя]") }
         printSuggestions(DependencyAdvisor.analyze(log: URL(fileURLWithPath: path), space: b))
+
+    case "report":
+        var rest = args
+        let output = option("--output", in: &rest)
+        let logPath = option("--log", in: &rest)
+        let includeLog = !rest.contains("--no-log")
+        rest.removeAll { $0 == "--no-log" }
+        guard let name = rest.first else {
+            fail("использование: onwinctl report <пространство> [программа.exe] [--log журнал.log] [--no-log] [--output файл]")
+        }
+        let b = space(name)
+        let program = rest.count > 1 ? rest[1] : nil
+        let log = logPath.map { URL(fileURLWithPath: ($0 as NSString).expandingTildeInPath) }
+            ?? ProblemReport.latestLog(in: b, program: program)
+        if let program, logPath == nil, log == nil {
+            FileHandle.standardError.write(Data("onwinctl: журнала запуска «\(program)» в «\(b.name)» нет — отчёт без журнала\n".utf8))
+        }
+        let text = ProblemReport.build(.init(space: b, logURL: log, programFile: program), includeLog: includeLog)
+        if let output {
+            let url = URL(fileURLWithPath: (output as NSString).expandingTildeInPath)
+            try text.write(to: url, atomically: true, encoding: .utf8)
+            print("Отчёт сохранён: \(ProblemReport.redact(url.path))")
+        } else {
+            print(text, terminator: "")
+        }
 
     default:
         if try await runProgramCommand(command, args) { break }   // ProgramCommands.swift

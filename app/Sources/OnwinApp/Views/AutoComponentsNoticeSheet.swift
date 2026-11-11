@@ -81,6 +81,11 @@ struct AutoComponentsNoticeSheet: View {
                 Button("Показать в Finder") {
                     model.revealInFinder(failure.logURL)
                 }
+                Button("Сообщить о проблеме…") {
+                    model.autoComponentsNotice = nil
+                    model.reportProblem(log: failure.logURL, title: failure.programTitle, exitStatus: failure.exitStatus)
+                }
+                .help("Собрать сведения для чата поддержки вместе с журналом запуска")
                 Spacer()
                 Button {
                     model.open(failure.logURL)

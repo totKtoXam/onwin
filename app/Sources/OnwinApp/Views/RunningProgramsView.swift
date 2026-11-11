@@ -336,6 +336,16 @@ struct RunningProgramRow: View {
         .buttonStyle(.borderless)
         .help("Показать журнал")
 
+        if !program.isRunning && !isSuccess {
+            Button {
+                model.reportProblem(for: program)
+            } label: {
+                Image(systemName: "ladybug")
+            }
+            .buttonStyle(.borderless)
+            .help("Сообщить о проблеме: собрать сведения для чата поддержки")
+        }
+
         if program.isRunning {
             Menu {
                 Button("Завершить (SIGTERM)") {
@@ -380,6 +390,11 @@ struct RunningProgramRow: View {
             model.revealInFinder(program.logURL)
         } label: {
             Label("Показать журнал в Finder", systemImage: "folder")
+        }
+        Button {
+            model.reportProblem(for: program)
+        } label: {
+            Label("Сообщить о проблеме…", systemImage: "ladybug")
         }
         if model.space(id: program.spaceID) != nil {
             Divider()

@@ -32,6 +32,7 @@ struct OnwinRootView: View {
             .tint(OnwinTheme.accent)
             .onwinRosettaCheck()   // Views/RosettaCheck.swift
             .onwinUserRecipes()    // recipe editor «Мои приложения» (AppModel+UserRecipes.swift)
+            .onwinProblemReport()  // «Сообщить о проблеме» (Views/ProblemReportSheet.swift)
             .onOpenURL { url in
                 AppModel.shared.handleOpened([url])   // onwin:// launchers, .onwinspace, .onwinrecipe, exe/msi/lnk
             }
@@ -164,6 +165,12 @@ struct OnwinCommands: Commands {
                 model.reload()
             }
             .keyboardShortcut("r", modifiers: .command)
+        }
+
+        CommandGroup(after: .help) {
+            Button("Сообщить о проблеме…") {
+                model.reportProblemFromMenu()   // Views/ProblemReportSheet.swift
+            }
         }
     }
 }
