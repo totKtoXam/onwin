@@ -41,6 +41,13 @@ struct ComponentSuggestionsBanner: View {
                     }
                     .help(failure.logURL.lastPathComponent)
                     Button {
+                        model.reportProblem(space: space, log: failure.logURL, title: failure.programTitle,
+                                            exitStatus: failure.exitStatus)
+                    } label: {
+                        Label("Сообщить о проблеме", systemImage: "ladybug")
+                    }
+                    .help("Собрать сведения для чата поддержки вместе с журналом запуска")
+                    Button {
                         model.clearFailureAdvice(for: space.id)
                     } label: {
                         Image(systemName: "xmark")

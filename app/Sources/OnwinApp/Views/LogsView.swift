@@ -422,6 +422,13 @@ struct LogsView: View {
                 Label("В Finder", systemImage: "folder")
             }
             .help("Показать файл в Finder")
+
+            Button {
+                reportProblem(entry)
+            } label: {
+                Label("Сообщить о проблеме", systemImage: "ladybug")
+            }
+            .help("Собрать сведения для чата поддержки вместе с этим журналом (личные данные убираются)")
         }
         .labelStyle(.titleAndIcon)
         .controlSize(.small)
@@ -475,6 +482,16 @@ struct LogsView: View {
             ProgressView()
                 .controlSize(.small)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    /// «Сообщить о проблеме» with this log; a program started from this onwin also knows its exit code.
+    private func reportProblem(_ entry: LogsEntry) {
+        let path = entry.url.standardizedFileURL.path
+        if let program = ProcessTracker.shared.programs.last(where: { $0.logURL.standardizedFileURL.path == path }) {
+            model.reportProblem(for: program)
+        } else {
+            model.reportProblem(space: space, log: entry.url, title: entry.title)
         }
     }
 
