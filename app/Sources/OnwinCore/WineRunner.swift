@@ -145,6 +145,7 @@ public struct WineRunner: Sendable {
                            extraOverrides: [String: String] = [:],
                            currentDirectory: URL? = nil,
                            onOutput: (@Sendable (String) -> Void)? = nil) async throws -> ProcessRunner.Result {
+        prepareProfileFolders()
         // A pending prefix update would open the Wine Mono / Gecko installers (+PrefixUpdate).
         try await updatePrefixIfNeeded(onOutput: onOutput)
         return try await ProcessRunner.run(engine.wine, arguments: wineArguments,
@@ -197,6 +198,7 @@ public struct WineRunner: Sendable {
         """
         logHandle.write(Data(header.utf8))
 
+        prepareProfileFolders()
         let process = Process()
         // Pending prefix update (new engine): run it without the Mono/Gecko dialogs first (+PrefixUpdate).
         configureLaunch(process, wineArguments: wineArguments, environment: env)

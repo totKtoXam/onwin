@@ -108,6 +108,7 @@ func launcherCommand(_ command: String, _ arguments: [String]) async throws {
         }
         let (b, program) = try request.resolve()
         let runner = try WineRunner(space: b)
+        runner.prepareProfileFolders()
         let result = try await ProcessRunner.run(runner.engine.wine,
                                                  arguments: WineRunner.command(for: program.launchFile, arguments: program.arguments),
                                                  environment: runner.environment(extraEnvironment: program.environment),
