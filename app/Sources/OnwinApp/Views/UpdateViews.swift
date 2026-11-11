@@ -367,6 +367,39 @@ struct UpdateBanner: View {
 // MARK: - Preferences
 
 /// «Обновления» in Preferences → Основные.
+/// Preferences → «Обновления»: installed version, the check, the automatic-check switch.
+@MainActor
+struct PreferencesUpdatesTab: View {
+    @Environment(AppModel.self) private var model
+
+    var body: some View {
+        Form {
+            Section {
+                LabeledContent("Версия onwin", value: OnwinVersion.displayString)
+                LabeledContent("Сборка", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—")
+                LabeledContent("Движок Wine", value: engineText)
+            } header: {
+                Text("Установлено")
+            } footer: {
+                if OnwinVersion.isBeta {
+                    Text("Все версии onwin до 1.0 — бета: многое уже работает, но возможны ошибки.")
+                }
+            }
+            PreferencesUpdatesSection()
+        }
+        .formStyle(.grouped)
+    }
+
+    private var engineText: String {
+        guard let engine = model.defaultEngine else { return "не установлен" }
+        var text = "Wine \(engine.info.wineVersion)"
+        if let built = engine.info.built {
+            text += " · собран \(built.formatted(.dateTime.day().month(.wide).year().locale(Locale(identifier: "ru_RU"))))"
+        }
+        return text
+    }
+}
+
 @MainActor
 struct PreferencesUpdatesSection: View {
     @Environment(AppModel.self) private var model

@@ -150,28 +150,50 @@ struct ShellSpaceRow: View {
 @MainActor
 struct ShellSidebarFooter: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.openSettings) private var openSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Divider()
-            HStack(spacing: 14) {
-                Link(destination: OnwinLinks.documentation) {
-                    Label("Документация", systemImage: "book")
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: 14) {
+                    Button {
+                        PreferencesTab.select(.general)
+                        openSettings()
+                    } label: {
+                        Label("Настройки", systemImage: "gearshape")
+                    }
+                    .help("Настройки onwin (⌘,)")
+                    Button {
+                        PreferencesTab.select(.updates)
+                        openSettings()
+                    } label: {
+                        Label("Обновления", systemImage: "arrow.triangle.2.circlepath")
+                    }
+                    .help("Версия onwin и проверка обновлений")
                 }
-                .help("Открыть документацию onwin на сайте")
-                Button {
-                    model.reportProblemFromMenu()
-                } label: {
-                    Label("Сообщить о проблеме", systemImage: "exclamationmark.bubble")
+                HStack(spacing: 14) {
+                    Link(destination: OnwinLinks.documentation) {
+                        Label("Документация", systemImage: "book")
+                    }
+                    .help("Открыть документацию onwin на сайте")
+                    Button {
+                        model.reportProblemFromMenu()
+                    } label: {
+                        Label("Сообщить о проблеме", systemImage: "exclamationmark.bubble")
+                    }
+                    .help("Собрать сведения о проблеме и открыть чат поддержки")
                 }
-                .buttonStyle(.link)
-                .help("Собрать сведения о проблеме и открыть чат поддержки")
             }
+            .buttonStyle(.link)
             .font(.callout)
             .labelStyle(.titleAndIcon)
             .tint(OnwinTheme.accent)
             .padding(.top, 4)
             .padding(.bottom, 2)
+            Text("onwin \(OnwinVersion.displayString)")
+                .lineLimit(1)
+                .help("Установленная версия onwin")
             HStack(spacing: 6) {
                 Image(systemName: model.hasEngine ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
                     .foregroundStyle(model.hasEngine ? OnwinTheme.accent : Color.orange)

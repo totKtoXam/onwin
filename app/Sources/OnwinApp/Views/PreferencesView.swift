@@ -7,18 +7,39 @@ import OnwinCore
 /// main window; a short status line is mirrored at the top of each tab.
 @MainActor
 struct PreferencesView: View {
+    /// The open tab; the sidebar's «Обновления» opens the window straight on `.updates`.
+    @AppStorage(PreferencesTab.storageKey) private var tab: PreferencesTab = .general
+
     init() {}
 
     var body: some View {
-        TabView {
+        TabView(selection: $tab) {
             PreferencesGeneralTab()
                 .tabItem { Label("Основные", systemImage: "gearshape") }
+                .tag(PreferencesTab.general)
+            PreferencesUpdatesTab()   // Views/UpdateViews.swift
+                .tabItem { Label("Обновления", systemImage: "arrow.triangle.2.circlepath") }
+                .tag(PreferencesTab.updates)
             PreferencesEnginesTab()
                 .tabItem { Label("Движки", systemImage: "cpu") }
+                .tag(PreferencesTab.engines)
             PreferencesD3DMetalTab()
                 .tabItem { Label("D3DMetal", systemImage: "cube.transparent") }
+                .tag(PreferencesTab.d3dMetal)
         }
         .frame(width: 620, height: 560)
+    }
+}
+
+/// Tabs of the preferences window (stored in UserDefaults, so it reopens where it was left).
+enum PreferencesTab: String {
+    case general, updates, engines, d3dMetal
+
+    static let storageKey = "onwin.preferencesTab"
+
+    /// Makes the next opening of the preferences window show this tab.
+    static func select(_ tab: PreferencesTab) {
+        UserDefaults.standard.set(tab.rawValue, forKey: storageKey)
     }
 }
 
@@ -161,8 +182,6 @@ struct PreferencesGeneralTab: View {
             } footer: {
                 Text("D3DMetal onwin только предложит — для него нужен вход с Apple ID. У каждого пространства это можно поменять в его настройках. Если выключить, onwin будет лишь подсказывать, чего не хватает.")
             }
-
-            PreferencesUpdatesSection()   // Views/UpdateViews.swift
 
             Section {
                 PreferencesPathRow("Данные onwin", symbol: "externaldrive", url: OnwinPaths.root)
