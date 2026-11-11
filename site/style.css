@@ -619,10 +619,14 @@ html { scroll-behavior: smooth; }
 .release .command code { min-width: 0; overflow-wrap: anywhere; }
 .release-empty { color: var(--muted); }
 
-.beta-note { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+.beta-note { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+.beta-note .badge { margin-right: 8px; vertical-align: 1px; }
 .badge-beta { background: rgba(255, 159, 10, 0.16); color: #a35a00; }
 @media (prefers-color-scheme: dark) { .badge-beta { color: #ffb340; } }
 
 .svc-logo { width: 22px; height: 22px; flex: none; }
 .support-gh span { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
 .support-gh small { font-size: 0.75rem; font-weight: 500; color: var(--muted); }
+
+#support-home, #support { scroll-margin-top: 84px; }
+#support-home:target .card, #support:target .card { animation: donate-glow 1.6s ease-out 0.3s 1; }
