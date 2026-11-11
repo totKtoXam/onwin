@@ -83,7 +83,7 @@ fetch_source() {  # fetch_source <url> <file>: official source archive, download
     local dir="$SOURCES/release"
     mkdir -p "$dir"
     if [ ! -s "$dir/$2" ]; then
-        note "скачиваю исходники $2"
+        note "скачиваю исходники $2" >&2   # stdout of this function is the path
         /usr/bin/curl -fL --retry 3 -o "$dir/$2.part" "$1" || die "не удалось скачать $1"
         mv "$dir/$2.part" "$dir/$2"
     fi
@@ -224,7 +224,8 @@ release_app() {
   }
 }
 JSON
-    /usr/bin/plutil -lint "$out/onwin-release.json" >/dev/null || die "onwin-release.json невалиден"
+    # The same parser install.sh uses (plutil -lint does not read JSON).
+    [ "$(json_get "$out/onwin-release.json" engine.id)" = "$ENGINE_ID" ] || die "onwin-release.json невалиден"
 
     local notes="$out/notes.md"
     cat > "$notes" <<MD
