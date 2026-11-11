@@ -54,6 +54,7 @@ final class OnwinAppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         _ = AppModel.shared
+        UpdateController.shared.checkAtLaunchIfNeeded()   // Views/UpdateViews.swift
         NSApplication.shared.activate(ignoringOtherApps: true)
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 150_000_000)
@@ -77,6 +78,18 @@ final class OnwinAppDelegate: NSObject, NSApplicationDelegate {
 struct OnwinCommands: Commands {
     var body: some Commands {
         let model = AppModel.shared
+
+        CommandGroup(replacing: .appInfo) {
+            Button("О программе onwin") {
+                // The standard panel, with the beta mark next to the version («0.1.0 (бета)»).
+                NSApplication.shared.orderFrontStandardAboutPanel(options: [
+                    .applicationVersion: OnwinVersion.displayString,
+                ])
+            }
+            Button("Проверить обновления…") {
+                Task { await UpdateController.shared.check(userInitiated: true) }   // Views/UpdateViews.swift
+            }
+        }
 
         CommandGroup(replacing: .newItem) {
             Button("Новое пространство…") {

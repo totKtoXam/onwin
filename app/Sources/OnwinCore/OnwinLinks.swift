@@ -22,4 +22,7 @@ public enum OnwinLinks {
 
     /// True when `supportDestination` is a real chat (not the fallback page).
     public static var hasSupportChat: Bool { supportDestination != troubleshooting }
+
+    /// GitHub repository of onwin ("owner/name"): releases, the updater's onwin-release.json.
+    public static let repository = "totKtoXam/onwin"
 }

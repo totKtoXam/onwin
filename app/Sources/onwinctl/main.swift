@@ -6,7 +6,7 @@ import OnwinCore
 setvbuf(stdout, nil, _IONBF, 0)
 
 let usage = """
-onwinctl \(OnwinVersion.string) — запуск Windows-программ на Mac
+onwinctl \(OnwinVersion.displayString) — запуск Windows-программ на Mac
 
 Движки и графика:
   onwinctl engines                         список движков Wine
@@ -16,6 +16,8 @@ onwinctl \(OnwinVersion.string) — запуск Windows-программ на M
                                            импортировать уже скачанный Game Porting Toolkit (.dmg из «Загрузок»
                                            или кэша onwin); вход с Apple ID и загрузка — в приложении onwin
   onwinctl status                          что установлено
+  onwinctl update [--check] [--version X]  обновить onwin и движок до последнего выпуска (--check — только
+                                           проверить, --version — поставить определённую версию)
 
 Пространства:
   onwinctl spaces                         список пространств
@@ -459,6 +461,7 @@ do {
 
     default:
         if try await runProgramCommand(command, args) { break }   // ProgramCommands.swift
+        if try await runUpdateCommand(command, args) { break }    // UpdateCommands.swift
         if await runIconCommand(command, args) { break }           // IconCommands.swift
         if runDesktopCommand(command, args) { break }               // DesktopCommands.swift
         fail("неизвестная команда \(command)\n\n\(usage)\(programCommandsUsage)\(recipeCommandsUsage)\(iconCommandsUsage)\(desktopCommandsUsage)")
