@@ -487,3 +487,19 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   #donate:target .donate-block, #crypto:target { animation: none; outline: 2px solid var(--accent-ring); }
 }
+
+
+/* ---------- Первый экран простыми словами ---------- */
+
+.hero-simple .hero-intro { max-width: 760px; }
+.hero-brand { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 14px; font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--text); }
+.hero-brand svg { width: 36px; height: 36px; }
+.hero-simple h1 { display: block; font-size: clamp(2.1rem, 5.4vw, 3.4rem); margin-bottom: 16px; }
+.hero-simple .pitch { font-weight: 500; color: var(--muted); max-width: 680px; }
+.why-title { margin: clamp(40px, 6vw, 64px) 0 18px; font-size: clamp(1.35rem, 3vw, 1.7rem); }
+.why-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 16px; }
+.why { padding: 22px; }
+.why h3 { font-size: 1.08rem; margin-bottom: 8px; }
+.why p { margin: 0; color: var(--muted); font-size: 0.97rem; }
+.why-honest { margin-top: 20px; font-size: 0.97rem; }
+@media (max-width: 600px) { .hero-brand { display: none; } }
