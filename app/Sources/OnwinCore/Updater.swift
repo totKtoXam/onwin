@@ -39,6 +39,17 @@ extension OnwinLinks {
     }
 }
 
+extension OnwinVersion {
+    /// How a version is shown to people: every version below 1.0 is a beta, «0.1.1 (бета)».
+    public static func display(_ version: String) -> String {
+        let major = Int(version.split(separator: ".").first ?? "") ?? 0
+        return major < 1 ? "\(version) (бета)" : version
+    }
+
+    /// The running onwin, «0.1.0 (бета)».
+    public static var displayString: String { display(string) }
+}
+
 /// onwin-release.json, schema 1.
 public struct ReleaseManifest: Codable, Sendable, Equatable {
     public struct Asset: Codable, Sendable, Equatable {
@@ -107,7 +118,7 @@ public struct InstalledApp: Sendable {
         try? Engine(root: url.appendingPathComponent("Contents/SharedSupport/Engine", isDirectory: true))
     }
 
-    public var displayVersion: String { version ?? "?" }
+    public var displayVersion: String { version.map(OnwinVersion.display) ?? "?" }
 }
 
 /// What an update would change.

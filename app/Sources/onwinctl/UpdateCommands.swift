@@ -30,7 +30,7 @@ func runUpdateCommand(_ command: String, _ arguments: [String]) async throws -> 
     } else {
         print("Движок:      \(manifest.engine.id) не установлен")
     }
-    print("\(version == nil ? "Последний выпуск" : "Выпуск"): onwin \(manifest.version) (сборка \(manifest.build)), " +
+    print("\(version == nil ? "Последний выпуск" : "Выпуск"): onwin \(OnwinVersion.display(manifest.version)) (сборка \(manifest.build)), " +
           "движок \(manifest.engine.id) от \(manifest.engine.built)")
     print("Что нового:  \(manifest.releasePage.absoluteString)")
 
@@ -39,7 +39,7 @@ func runUpdateCommand(_ command: String, _ arguments: [String]) async throws -> 
         return true
     }
     print("Нужно:")
-    if plan.appNeedsUpdate { print("  • приложение onwin \(manifest.version), \(Updater.sizeText(manifest.app.size))") }
+    if plan.appNeedsUpdate { print("  • приложение onwin \(OnwinVersion.display(manifest.version)), \(Updater.sizeText(manifest.app.size))") }
     switch plan.engine {
     case .none: break
     case .download: print("  • движок Wine \(manifest.engine.id), \(Updater.sizeText(manifest.engine.size))")
@@ -80,6 +80,6 @@ func runUpdateCommand(_ command: String, _ arguments: [String]) async throws -> 
         print("Приложение установлено: \(target.path)")
     }
     Updater.cleanUpDownloads()
-    print("Готово: onwin \(manifest.version).")
+    print("Готово: onwin \(OnwinVersion.display(manifest.version)).")
     return true
 }

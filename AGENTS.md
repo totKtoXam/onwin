@@ -105,6 +105,8 @@ engine/build-libs.sh && engine/build.sh    # движок → engine/dist/onwin-
 - Встроенное обновление (`app/Sources/OnwinCore/Updater.swift`: меню «Проверить обновления…», баннер, `onwinctl update`)
   читает тот же `onwin-release.json`, что и `install.sh`: формат меняйте только вместе с ним (поле `schema`). Репозиторий
   задаёт `OnwinLinks.repository`. Сравнивается `build` с CFBundleVersion и `engine.built` с `onwin-engine.json`.
+  Автопроверка — только с согласия: при первом запуске onwin один раз спрашивает, до ответа в сеть не ходит.
+- Версии ниже 1.0 — бета: людям версия показывается как «0.1.1 (бета)» (`OnwinVersion.display`).
 - Версия приложения — `OnwinVersion.string` в `app/Sources/OnwinCore/WineRunner.swift`.
 - Приложение не нотаризовано (нет Apple Developer ID). Не обещайте пользователям обратного.
 - Подпись: собственный самоподписанный сертификат «onwin Code Signing» в связке ключей автора

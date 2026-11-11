@@ -6,7 +6,7 @@ import OnwinCore
 setvbuf(stdout, nil, _IONBF, 0)
 
 let usage = """
-onwinctl \(OnwinVersion.string) — запуск Windows-программ на Mac
+onwinctl \(OnwinVersion.displayString) — запуск Windows-программ на Mac
 
 Движки и графика:
   onwinctl engines                         список движков Wine

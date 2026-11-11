@@ -78,7 +78,13 @@ struct OnwinCommands: Commands {
     var body: some Commands {
         let model = AppModel.shared
 
-        CommandGroup(after: .appInfo) {
+        CommandGroup(replacing: .appInfo) {
+            Button("О программе onwin") {
+                // The standard panel, with the beta mark next to the version («0.1.0 (бета)»).
+                NSApplication.shared.orderFrontStandardAboutPanel(options: [
+                    .applicationVersion: OnwinVersion.displayString,
+                ])
+            }
             Button("Проверить обновления…") {
                 Task { await UpdateController.shared.check(userInitiated: true) }   // Views/UpdateViews.swift
             }

@@ -38,15 +38,35 @@ final class UpdateController {
 
     // MARK: Checking
 
-    /// At launch: when enabled in Preferences and the last check was more than a day ago.
+    /// At launch: the first time asks whether to check automatically (opt-in, nothing is sent before the
+    /// answer); afterwards checks when enabled and the last check was more than a day ago.
     func checkAtLaunchIfNeeded() {
         let settings = OnwinSettings.load()
-        guard settings.checkForUpdates, Self.runningApp != nil else { return }
+        guard Self.runningApp != nil else { return }
+        guard let enabled = settings.checkForUpdates else {
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 2_000_000_000)   // after the main window has appeared
+                self.askAboutAutomaticChecks()
+            }
+            return
+        }
+        guard enabled else { return }
         if let last = settings.lastUpdateCheck, Date().timeIntervalSince(last) < 24 * 3600, last <= Date() { return }
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 4_000_000_000)   // let the window and the engine scan settle
             await self.check(userInitiated: false)
         }
+    }
+
+    /// The one-time question of the first launch; the answer can be changed in Preferences.
+    private func askAboutAutomaticChecks() {
+        guard OnwinSettings.load().checkForUpdates == nil else { return }
+        let answer = Self.alert("Проверять обновления onwin автоматически?",
+                                "onwin раз в день спросит у GitHub, вышла ли новая версия. Ничего не скачивается без вашего согласия.\n\nЭто можно поменять в любой момент в настройках onwin.",
+                                buttons: ["Проверять", "Не проверять"])
+        let yes = answer == .alertFirstButtonReturn
+        AppModel.shared.updateSettings { $0.checkForUpdates = yes }
+        if yes { Task { await self.check(userInitiated: false) } }
     }
 
     /// «Проверить обновления…». `userInitiated` also reports «нет обновлений» and errors; the automatic
@@ -66,14 +86,14 @@ final class UpdateController {
                 plan = nil
                 if userInitiated {
                     Self.alert("У вас последняя версия onwin",
-                               "Установлена onwin \(OnwinVersion.string). Новее пока ничего не выходило.")
+                               "Установлена onwin \(OnwinVersion.displayString). Новее пока ничего не выходило.")
                 }
                 return
             }
             guard manifest.supportsThisMac else {
                 plan = nil
                 if userInitiated {
-                    Self.alert("Вышла onwin \(manifest.version)",
+                    Self.alert("Вышла onwin \(OnwinVersion.display(manifest.version))",
                                UpdateError.unsupportedMac(manifest.minimumMacOS ?? "?").errorDescription ?? "")
                 }
                 return
@@ -92,7 +112,7 @@ final class UpdateController {
     /// The banner lives in the main window; without one (all windows closed) ask in an alert instead.
     private func presentFound(_ found: UpdatePlan) {
         if showMainWindow() { return }
-        let answer = Self.alert("Доступна onwin \(found.manifest.version)", Self.sizeLine(found),
+        let answer = Self.alert("Доступна onwin \(OnwinVersion.display(found.manifest.version))", Self.sizeLine(found),
                                 buttons: ["Обновить", "Позже", "Пропустить эту версию"])
         switch answer {
         case .alertFirstButtonReturn: update()
@@ -289,7 +309,7 @@ struct UpdateBanner: View {
             switch updates.phase {
             case .working(let message, let fraction):
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Обновляю onwin до \(plan.manifest.version)")
+                    Text("Обновляю onwin до \(OnwinVersion.display(plan.manifest.version))")
                         .font(.callout.weight(.semibold))
                     if let fraction {
                         ProgressView(value: fraction)
@@ -312,7 +332,7 @@ struct UpdateBanner: View {
                 Spacer()
             default:
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Доступна onwin \(plan.manifest.version)")
+                    Text("Доступна onwin \(OnwinVersion.display(plan.manifest.version))")
                         .font(.callout.weight(.semibold))
                     HStack(spacing: 8) {
                         Text(UpdateController.sizeLine(plan))
@@ -325,7 +345,7 @@ struct UpdateBanner: View {
                 Button("Пропустить эту версию") { updates.skip() }
                     .buttonStyle(.link)
                     .font(.callout)
-                    .help("Не напоминать об onwin \(plan.manifest.version). Проверить вручную можно в меню onwin.")
+                    .help("Не напоминать об onwin \(OnwinVersion.display(plan.manifest.version)). Проверить вручную можно в меню onwin.")
                 Button("Позже") { updates.later() }
                 Button("Обновить") { updates.update() }
                     .buttonStyle(.borderedProminent)
@@ -354,11 +374,11 @@ struct PreferencesUpdatesSection: View {
     var body: some View {
         let updates = UpdateController.shared
         Section {
-            Toggle(isOn: Binding(get: { model.settings.checkForUpdates },
+            Toggle(isOn: Binding(get: { model.settings.checkForUpdates ?? false },
                                  set: { value in model.updateSettings { $0.checkForUpdates = value } })) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Проверять обновления автоматически")
-                    Text("Раз в день при запуске onwin смотрит, не вышла ли новая версия. Скачивается и ставится она только когда вы нажмёте «Обновить».")
+                    Text("Раз в день onwin спрашивает у GitHub, вышла ли новая версия. Ничего не скачивается без вашего согласия: новая версия ставится, только когда вы нажмёте «Обновить». Меню onwin → «Проверить обновления…» работает всегда.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -366,7 +386,7 @@ struct PreferencesUpdatesSection: View {
             }
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Установлена onwin \(OnwinVersion.string)")
+                    Text("Установлена onwin \(OnwinVersion.displayString)")
                     if let last = model.settings.lastUpdateCheck {
                         Text("Последняя проверка: \(last.formatted(.dateTime.day().month(.wide).hour().minute().locale(Locale(identifier: "ru_RU"))))")
                             .font(.caption)
