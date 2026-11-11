@@ -65,6 +65,18 @@ enum UISnapshot {
             guard let view = window.contentView?.superview ?? window.contentView else { continue }
             let name = "\(index)-" + (window.title.isEmpty ? "window" : window.title).replacingOccurrences(of: "/", with: "-")
             save(view, to: folder.appending(path: "\(name).png"))
+            // AppKit-backed areas (sidebar list, scroll views) come out blank in the layer rendering above;
+            // the classic view drawing shows them, so save that too.
+            saveDrawn(view, to: folder.appending(path: "\(name)-drawn.png"))
+            for (number, scroll) in scrollViews(in: view).enumerated() where scroll.bounds.width > 150 {
+                guard let document = (scroll as? NSScrollView)?.documentView else { continue }
+                // A list (the sidebar) draws itself; SwiftUI content of a scroll view needs its layer.
+                if document is NSTableView {
+                    saveDrawn(document, to: folder.appending(path: "\(name)-scroll\(number + 1).png"))
+                } else {
+                    save(document, to: folder.appending(path: "\(name)-scroll\(number + 1).png"), flip: document.isFlipped)
+                }
+            }
             // Split views (sidebar | detail) host their columns in nested SwiftUI views: save the large
             // ones separately too, in case the window-level image leaves them blank.
             var part = 0
@@ -75,12 +87,12 @@ enum UISnapshot {
         }
     }
 
-    private static func save(_ view: NSView, to file: URL) {
+    private static func save(_ view: NSView, to file: URL, flip: Bool = false) {
         guard let rep = view.bitmapImageRepForCachingDisplay(in: view.bounds) else { return }
         // Layer rendering also draws SwiftUI's layer-backed content, which cacheDisplay(in:to:) leaves blank.
         if let layer = view.layer, let context = NSGraphicsContext(bitmapImageRep: rep) {
             let cg = context.cgContext
-            if layer.isGeometryFlipped {
+            if layer.isGeometryFlipped || flip {
                 cg.translateBy(x: 0, y: view.bounds.height)
                 cg.scaleBy(x: 1, y: -1)
             }
@@ -89,6 +101,20 @@ enum UISnapshot {
             view.cacheDisplay(in: view.bounds, to: rep)
         }
         try? rep.representation(using: .png, properties: [:])?.write(to: file)
+    }
+
+    private static func saveDrawn(_ view: NSView, to file: URL) {
+        guard let rep = view.bitmapImageRepForCachingDisplay(in: view.bounds) else { return }
+        view.cacheDisplay(in: view.bounds, to: rep)
+        try? rep.representation(using: .png, properties: [:])?.write(to: file)
+    }
+
+    private static func scrollViews(in view: NSView) -> [NSView] {
+        var found: [NSView] = []
+        for subview in view.subviews {
+            if subview is NSScrollView { found.append(subview) } else { found += scrollViews(in: subview) }
+        }
+        return found
     }
 
     private static func hostingViews(in view: NSView) -> [NSView] {
