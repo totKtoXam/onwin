@@ -36,21 +36,22 @@ public struct Engine: Identifiable, Hashable, Sendable {
     public var hasDXMT: Bool { OnwinPaths.exists(dxmtDir.appendingPathComponent("x86_64-windows/d3d11.dll")) }
     public var hasMoltenVK: Bool { OnwinPaths.exists(externalLib.appendingPathComponent("libMoltenVK.dylib")) }
 
-    /// Wine Mono and Wine Gecko shipped inside the engine (share/wine/{mono,gecko}).
-    /// Wine then uses these shared copies directly: no installer dialog, nothing to download.
-    public var hasBundledAddons: Bool {
-        func hasEntry(_ dir: String, prefix: String) -> Bool {
-            let url = root.appendingPathComponent("share/wine/\(dir)")
-            let entries = (try? FileManager.default.contentsOfDirectory(atPath: url.path)) ?? []
-            return entries.contains { $0.hasPrefix(prefix) }
-        }
-        return hasEntry("mono", prefix: "wine-mono-") && hasEntry("gecko", prefix: "wine-gecko-")
-    }
+    /// Wine Mono inside the engine (share/wine/mono): shipped in the offline DMG's engine, or added on
+    /// demand (EngineAddons.swift). Wine then uses this shared copy: no installer dialog.
+    public var hasMono: Bool { EngineAddon.mono.isInstalled(in: self) }
+    /// Wine Gecko for both architectures inside the engine (share/wine/gecko).
+    public var hasGecko: Bool { EngineAddon.gecko.allSatisfy { $0.isInstalled(in: self) } }
+    /// Both of them (the full engine, as engine/build.sh makes it).
+    public var hasBundledAddons: Bool { hasMono && hasGecko }
 
-    /// DLL overrides for wineboot runs: disable mscoree/mshtml only when the engine has no bundled
-    /// Mono/Gecko (otherwise their registration would open the download dialogs).
+    /// DLL overrides for wineboot runs: disable mscoree / mshtml while the engine has no Mono / Gecko
+    /// (otherwise their registration would open Wine's download dialogs). Once the add-on is there,
+    /// the next update of the space registers it (EngineAddons.touchWineInf).
     public var addonInstallOverrides: [String: String] {
-        hasBundledAddons ? [:] : ["mscoree": "", "mshtml": ""]
+        var overrides: [String: String] = [:]
+        if !hasMono { overrides["mscoree"] = "" }
+        if !hasGecko { overrides["mshtml"] = "" }
+        return overrides
     }
 
     public init(root: URL) throws {

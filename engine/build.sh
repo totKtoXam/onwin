@@ -17,7 +17,7 @@
 #   ./build.sh [параметры] [этап ...]
 #
 # Этапы (без аргументов выполняются все по порядку, кроме install):
-#   toolchain moltenvk wine-configure wine-build wine-install compat dxvk dxmt bundle manifest verify install
+#   toolchain moltenvk wine-configure wine-build wine-install compat dxvk dxmt addons bundle slim manifest verify install
 #
 # Параметры:
 #   -j N, --jobs N        число параллельных задач make (по умолчанию — число ядер)
@@ -26,7 +26,8 @@
 #   --no-dxvk             не собирать DXVK
 #   --no-dxmt             не ставить DXMT
 #   --gstreamer=auto|yes|no   поддержка GStreamer (по умолчанию auto — если найден в x86_64-Homebrew)
-#   --debug               собирать с отладочной информацией (-g); результат заметно больше
+#   --debug               собирать с отладочной информацией (-g) и не урезать её на этапе slim;
+#                         результат заметно больше
 #   --status              показать, какие этапы готовы
 #   --clean               удалить промежуточные файлы сборки (engine/build, кроме downloads)
 #   --distclean           удалить engine/build целиком и engine/dist/<id>
@@ -118,7 +119,7 @@ DXMT_URL="https://github.com/3Shain/dxmt/releases/download/${DXMT_VERSION}/dxmt-
 # через AudioToolbox — в GStreamer ≥ 1.26 он перенесён из applemedia).
 GST_PLUGINS="${ONWIN_GST_PLUGINS:-applemedia asf audioconvert audioparsers audioresample avi coreelements deinterlace id3demux isomp4 opengl osxaudio playback typefindfunctions videoconvertscale videofilter videoparsersbad wavparse}"
 
-ALL_STAGES="toolchain moltenvk wine-configure wine-build wine-install compat dxvk dxmt addons bundle manifest verify"
+ALL_STAGES="toolchain moltenvk wine-configure wine-build wine-install compat dxvk dxmt addons bundle slim manifest verify"
 
 # ------------------------------------------------------------------ параметры
 JOBS="$(sysctl -n hw.ncpu 2>/dev/null || echo 4)"
@@ -233,6 +234,8 @@ check_dxvk()           { [ "$WITH_DXVK" = 0 ] || [ -f "$DIST/lib/dxvk/x86_64-win
 check_dxmt()           { [ "$WITH_DXMT" = 0 ] || { [ -f "$DIST/lib/dxmt/x86_64-windows/d3d11.dll" ] && [ -f "$DIST/lib/wine/x86_64-windows/winemetal.dll" ]; }; }
 check_addons()         { [ -d "$DIST/share/wine/mono/wine-mono-$WINE_MONO_VERSION" ] && [ -d "$DIST/share/wine/gecko/wine-gecko-$WINE_GECKO_VERSION-x86_64" ]; }
 check_bundle()         { [ -f "$DIST/lib/external/libMoltenVK.dylib" ] && not_older bundle moltenvk wine-install compat dxmt; }
+check_slim()           { [ "$(cat "$STAMPS/slim.signature" 2>/dev/null)" = "$(slim_signature)" ] &&
+                         not_older slim wine-install compat dxvk dxmt addons bundle; }
 check_manifest()       { [ -f "$DIST/onwin-engine.json" ]; }
 
 stage_ready() {
@@ -1104,6 +1107,123 @@ EOF
     info "в lib/external: $(ls "$EXT" | wc -l | tr -d ' ') dylib, $(du -sh "$EXT" | awk '{print $1}')"
 }
 
+# ------------------------------------------------------------------ slim
+# Делает движок меньше, не меняя его поведения (замерено 11.11.2026 на onwin-cx26.3: на диске
+# 1077 → 851 МБ за ~2,5 мин; архив релиза — см. scripts/release.sh):
+#  1. PE-файлы (Wine, DXVK, DXMT; x86_64 и i386): <mingw>-strip --strip-all убирает таблицу символов
+#     COFF и секции .debug_*. Код, экспорт, импорт, ресурсы и .reloc остаются. Метку «Wine builtin
+#     DLL» (смещение 0x40) strip не трогает — проверяем после и при необходимости ставим заново.
+#     Платим только тем, что в журнале падения (winedbg) вместо имён внутренних функций будут адреса.
+#  2. Mach-O: strip -x — только локальные символы; экспортируемые (их ищут dlsym) остаются.
+#     strip портит подпись — ставим ad-hoc подпись заново, как этап bundle.
+#  3. Одинаковые файлы в share/wine/mono и share/wine/gecko (Wine Mono хранит одни и те же сборки
+#     в нескольких папках *-api и gac, Gecko — общие файлы x86 и x86_64) становятся жёсткими
+#     ссылками на один файл (−47 МБ на диске). tar и ditto сохраняют жёсткие ссылки. Только в этих
+#     папках: в них никто не пишет (например, share/licenses перезаписывает scripts/release.sh, и
+#     запись в одну жёсткую ссылку изменила бы и другую).
+# С --debug шаги 1–2 пропускаются. Этап повторяется после любого этапа, который меняет файлы движка.
+slim_signature() { echo "slim-1 debug=$DEBUG_BUILD"; }
+
+# pe_scan < список путей → «<machine>\t<метка 0|1>\t<путь>» для каждого PE-файла (machine: 8664 / 14c).
+pe_scan() {
+    perl -ne 'chomp; my $p = $_; {
+                 open(my $f, "<", $p) or next; binmode $f;
+                 read($f, my $h, 0x60) == 0x60 or next;
+                 substr($h, 0, 2) eq "MZ" or next;
+                 my $o = unpack("V", substr($h, 0x3c, 4));
+                 seek($f, $o, 0) or next; read($f, my $s, 6) == 6 or next;
+                 substr($s, 0, 4) eq "PE\0\0" or next;
+                 printf "%x\t%d\t%s\n", unpack("v", substr($s, 4, 2)),
+                        substr($h, 0x40, 16) eq "Wine builtin DLL" ? 1 : 0, $p;
+             }'
+}
+
+# hardlink_duplicates <папка> — одинаковые файлы (содержимое и права) → жёсткие ссылки на первый.
+hardlink_duplicates() {
+    perl -MDigest::SHA -MFile::Find -e '
+        my (%first, $n, $bytes);
+        my @files;
+        find({ no_chdir => 1, wanted => sub { push @files, $_ if -f $_ && ! -l $_ && -s $_ } }, $ARGV[0]);
+        for my $p (sort @files) {
+            my @st = lstat $p;
+            my $key = Digest::SHA->new(256)->addfile($p)->hexdigest . " " . ($st[2] & 07777);
+            if (my $q = $first{$key}) {
+                next if (lstat $q)[1] == $st[1];
+                link($q, "$p.onwin-link") or die "link $p: $!\n";
+                rename("$p.onwin-link", $p) or die "rename $p: $!\n";
+                $n++; $bytes += $st[7];
+            } else { $first{$key} = $p }
+        }
+        printf "%d файлов, %d МБ\n", $n // 0, ($bytes // 0) / 1048576;' "$1"
+}
+
+stage_slim() {
+    setup_build_env
+    local before d f n list
+    before="$(du -sk "$DIST" | awk '{print $1}')"
+    rm -f "$STAMPS/slim.signature"
+
+    if [ "$DEBUG_BUILD" = 1 ]; then
+        info "сборка --debug: символы и отладочную информацию не убираю"
+    else
+        # 1. PE
+        list="$BUILD/slim.pe"
+        : >"$list"
+        for d in "$DIST/lib/wine/x86_64-windows" "$DIST/lib/wine/i386-windows" \
+                 "$DIST"/lib/dxvk/*-windows "$DIST"/lib/dxmt/*-windows; do
+            [ -d "$d" ] || continue
+            find "$d" -type f | pe_scan >>"$list"
+        done
+        local m pfx
+        for m in 8664 14c; do
+            case "$m" in 8664) pfx=x86_64-w64-mingw32 ;; *) pfx=i686-w64-mingw32 ;; esac
+            [ -x "$TOOLBIN/$pfx-strip" ] || die "нет $TOOLBIN/$pfx-strip (этап toolchain)"
+            n="$(awk -F '\t' -v m="$m" '$1 == m' "$list" | wc -l | tr -d ' ')"
+            awk -F '\t' -v m="$m" '$1 == m { print $3 }' "$list" | tr '\n' '\0' |
+                xargs -0 -n 64 -P "$JOBS" "$TOOLBIN/$pfx-strip" --strip-all >>"$LOGS/slim.log" 2>&1 ||
+                die "$pfx-strip завершился с ошибкой (журнал $LOGS/slim.log)"
+            info "PE $pfx: $n файлов — strip --strip-all"
+        done
+        # Метки встроенных DLL должны остаться там, где были.
+        while IFS="$(printf '\t')" read -r m flag f; do
+            [ "$flag" = 1 ] || continue
+            has_builtin_marker "$f" || { warn "strip снял метку Wine builtin: ${f#$DIST/} — ставлю заново"; mark_builtin "$f"; }
+        done <"$list"
+        # Новых PE-файлов без метки быть не должно: сверяем количество помеченных до и после.
+        local marked_before marked_after
+        marked_before="$(awk -F '\t' '$2 == 1' "$list" | wc -l | tr -d ' ')"
+        marked_after="$(cut -f 3- "$list" | pe_scan | awk -F '\t' '$2 == 1' | wc -l | tr -d ' ')"
+        [ "$marked_before" = "$marked_after" ] || die "меток Wine builtin было $marked_before, стало $marked_after"
+
+        # 2. Mach-O
+        n=0
+        for d in "$DIST/bin" "$DIST/lib/wine/x86_64-unix" "$DIST/lib/external" "$DIST/lib/gstreamer-1.0" \
+                 "$DIST/lib/dxmt/x86_64-unix"; do
+            [ -d "$d" ] || continue
+            while IFS= read -r f; do
+                [ -n "$f" ] || continue
+                is_macho "$f" || continue
+                # «already stripped» — не ошибка, но в выводе strip; пишем всё в журнал.
+                /usr/bin/strip -x "$f" >>"$LOGS/slim.log" 2>&1 || die "strip -x $f не удался (журнал $LOGS/slim.log)"
+                codesign --force --sign - "$f" >>"$LOGS/slim.log" 2>&1 || warn "не удалось подписать $f"
+                n=$((n + 1))
+            done <<EOF
+$(find "$d" -type f)
+EOF
+        done
+        info "Mach-O: $n файлов — strip -x и ad-hoc подпись"
+    fi
+
+    # 3. Жёсткие ссылки
+    for d in "$DIST/share/wine/mono" "$DIST/share/wine/gecko"; do
+        [ -d "$d" ] || continue
+        info "одинаковые файлы в ${d#$DIST/} → жёсткие ссылки: $(hardlink_duplicates "$d")"
+    done
+
+    slim_signature >"$STAMPS/slim.signature"
+    info "размер движка: $((before / 1024)) МБ → $(( $(du -sk "$DIST" | awk '{print $1}') / 1024 )) МБ"
+}
+
 # ------------------------------------------------------------------ manifest
 json_escape() { printf '%s' "$1" | perl -pe 's/\\/\\\\/g; s/"/\\"/g'; }
 
@@ -1309,6 +1429,7 @@ for s in $STAGES; do
         dxmt)           run_stage dxmt           "Ставлю DXMT $DXMT_VERSION" ;;
         addons)         run_stage addons         "Встраиваю Wine Mono $WINE_MONO_VERSION и Wine Gecko $WINE_GECKO_VERSION" ;;
         bundle)         run_stage bundle         "Собираю библиотеки в lib/external и делаю движок переносимым" ;;
+        slim)           run_stage slim           "Уменьшаю движок: символы и отладочная информация, одинаковые файлы" ;;
         manifest)       run_stage manifest       "Пишу onwin-engine.json" ;;
         verify)         run_stage verify         "Проверяю результат" ;;
         install)        run_stage install        "Устанавливаю движок через onwinctl engine-install" ;;

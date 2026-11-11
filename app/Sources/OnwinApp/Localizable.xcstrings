@@ -820,28 +820,6 @@
         }
       }
     },
-    "D3DMetal установлен — указать другой…" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "D3DMetal Installed — Choose Another…"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "D3DMetal орнатылған — басқасын көрсету…"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "D3DMetal 已安装 — 指定其他…"
-          }
-        }
-      }
-    },
     "D3DMetal — часть Game Porting Toolkit, его лицензирует Apple. onwin не распространяет его: набор скачивается с вашей учётной записью Apple, и onwin копирует нужные файлы к себе (в папку «Графика») только на этом Mac." : {
       "localizations" : {
         "en" : {
@@ -1217,6 +1195,7 @@
         }
       }
     },
+    "onwin готовится к работе: скачивает движок Wine. Запуск программ — чуть позже." : {},
     "onwin закроется и откроется снова" : {
       "localizations" : {
         "en" : {
@@ -3162,28 +3141,6 @@
         }
       }
     },
-    "Вход с Apple ID, загрузка и установка — внутри onwin" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apple ID sign-in, download and installation — all inside onwin"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apple ID арқылы кіру, жүктеп алу және орнату — onwin ішінде"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在 onwin 内完成 Apple ID 登录、下载和安装"
-          }
-        }
-      }
-    },
     "Вход с Apple ID, загрузка и установка — внутри onwin. Уже скачанный .dmg из «Загрузок» берётся без входа" : {
       "localizations" : {
         "en" : {
@@ -3846,6 +3803,7 @@
         }
       }
     },
+    "Готово — движок установлен." : {},
     "Готово, нужна перезагрузка" : {
       "localizations" : {
         "en" : {
@@ -4242,6 +4200,8 @@
         }
       }
     },
+    "Движок Wine ещё не установлен — запуск программ пока недоступен." : {},
+    "Движок Wine ещё не установлен: onwin скачивает его сам при первом запуске (экран «Подготовка onwin»). Запуск программ станет доступен, когда загрузка закончится." : {},
     "Движок Wine не установлен" : {
       "localizations" : {
         "en" : {
@@ -4264,28 +4224,6 @@
         }
       }
     },
-    "Движок Wine не установлен — запуск программ пока недоступен." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The Wine engine isn’t installed — running programs isn’t available yet."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wine қозғалтқышы орнатылмаған — бағдарламаларды іске қосу әзірге қолжетімсіз."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wine 引擎未安装 — 暂时无法运行程序。"
-          }
-        }
-      }
-    },
     "Движок Wine не установлен — установка из каталога станет доступна, когда он появится." : {
       "localizations" : {
         "en" : {
@@ -4304,28 +4242,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wine 引擎未安装 — 安装引擎后即可从目录中安装。"
-          }
-        }
-      }
-    },
-    "Движок Wine не установлен. Соберите его скриптом engine/build.sh из папки проекта onwin или установите готовый движок в %@." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The Wine engine isn’t installed. Build it with the engine/build.sh script from the onwin project folder or install a ready-made engine in %@."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wine қозғалтқышы орнатылмаған. Оны onwin жобасының қалтасындағы engine/build.sh скриптімен жинаңыз немесе дайын қозғалтқышты мына жерге орнатыңыз: %@."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wine 引擎未安装。请在 onwin 项目文件夹中使用 engine/build.sh 脚本构建它，或将现成的引擎安装到 %@。"
           }
         }
       }
@@ -4374,6 +4290,7 @@
         }
       }
     },
+    "Движок не скачался" : {},
     "Движок не установлен" : {
       "localizations" : {
         "en" : {
@@ -4550,28 +4467,6 @@
         }
       }
     },
-    "Для DirectX 11/12 лучше всего подходит D3DMetal от Apple. onwin установит его сам: войдите с Apple ID прямо в приложении — Game Porting Toolkit скачается и установится автоматически." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "For DirectX 11/12, Apple’s D3DMetal works best. onwin will install it for you: sign in with your Apple ID right in the app — Game Porting Toolkit will download and install automatically."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DirectX 11/12 үшін Apple жасаған D3DMetal бәрінен жақсы келеді. onwin оны өзі орнатады: қолданбаның ішінде Apple ID арқылы кіріңіз — Game Porting Toolkit автоматты түрде жүктеліп, орнатылады."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "对于 DirectX 11/12，最合适的是 Apple 的 D3DMetal。onwin 会自动安装它：直接在应用中使用 Apple ID 登录 — Game Porting Toolkit 会自动下载并安装。"
-          }
-        }
-      }
-    },
     "Для onwin нужна Rosetta 2" : {
       "localizations" : {
         "en" : {
@@ -4638,28 +4533,7 @@
         }
       }
     },
-    "Для разработчиков: движок можно собрать самостоятельно скриптом engine/build.sh из исходного кода onwin (нужны Command Line Tools: xcode-select --install). Путь к движку можно задать переменной окружения ONWIN_ENGINE." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "For developers: you can build the engine yourself with the engine/build.sh script from the onwin source code (requires Command Line Tools: xcode-select --install). The engine path can be set with the ONWIN_ENGINE environment variable."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Әзірлеушілер үшін: қозғалтқышты onwin бастапқы кодынан engine/build.sh скриптімен өзіңіз жинай аласыз (Command Line Tools керек: xcode-select --install). Қозғалтқыш жолын ONWIN_ENGINE орта айнымалысымен беруге болады."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "开发者：可以使用 onwin 源代码中的 engine/build.sh 脚本自行构建引擎（需要 Command Line Tools：xcode-select --install）。引擎路径可以通过环境变量 ONWIN_ENGINE 指定。"
-          }
-        }
-      }
-    },
+    "Для разработчиков: движок собирается скриптом engine/build.sh из исходного кода onwin; путь к нему можно задать переменной окружения ONWIN_ENGINE." : {},
     "Добавит %@ в список программ пространства" : {
       "localizations" : {
         "en" : {
@@ -4925,28 +4799,6 @@
         }
       }
     },
-    "Добро пожаловать в onwin" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Welcome to onwin"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "onwin қолданбасына қош келдіңіз"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "欢迎使用 onwin"
-          }
-        }
-      }
-    },
     "Дождитесь окончания операции «%@»." : {
       "localizations" : {
         "en" : {
@@ -5145,6 +4997,7 @@
         }
       }
     },
+    "Другие способы" : {},
     "Дублировать" : {
       "localizations" : {
         "en" : {
@@ -5211,6 +5064,7 @@
         }
       }
     },
+    "Если этот Mac не подключается к интернету, скачайте на другом компьютере вариант onwin «без интернета» (файл с «offline» в названии на странице выпуска: движок уже внутри) и перенесите onwin оттуда в «Программы»." : {},
     "Есть в %lld пространствах" : {
       "localizations" : {
         "en" : {
@@ -5980,6 +5834,7 @@
         }
       }
     },
+    "Загрузка остановлена. Без движка onwin не может запускать программы — продолжите, когда будет удобно." : {},
     "Закрепить" : {
       "localizations" : {
         "en" : {
@@ -7939,28 +7794,6 @@
         }
       }
     },
-    "Как установить" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How to Install"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Қалай орнату керек"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "安装方法"
-          }
-        }
-      }
-    },
     "Каналы WINEDEBUG" : {
       "localizations" : {
         "en" : {
@@ -8089,28 +7922,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "“安装”按钮会运行 softwareupdate --install-rosetta --agree-to-license：这表示你接受 Apple 的 Rosetta 许可协议。"
-          }
-        }
-      }
-    },
-    "Когда установка закончится, нажмите «Проверить снова». Если движок лежит в другом месте, выберите его папку кнопкой «Установить из папки…»." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "When the installation finishes, click “Check Again”. If the engine is somewhere else, choose its folder with the “Install from Folder…” button."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Орнату аяқталғанда «Қайта тексеру» батырмасын басыңыз. Қозғалтқыш басқа жерде болса, оның қалтасын «Қалтадан орнату…» батырмасымен таңдаңыз."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "安装完成后，请点击“再次检查”。如果引擎位于其他位置，请用“从文件夹安装…”按钮选择它的文件夹。"
           }
         }
       }
@@ -8688,6 +8499,7 @@
         }
       }
     },
+    "Можно пользоваться Mac как обычно. Если связь прервётся, нажмите «Повторить» — загрузка обычно продолжается с того же места." : {},
     "Можно просто перетащить сюда файл .exe, .msi или ярлык .lnk." : {
       "localizations" : {
         "en" : {
@@ -10143,6 +9955,7 @@
         }
       }
     },
+    "Один раз onwin скачивает движок Wine — то, что запускает Windows-программы на Mac. Потом интернет для этого не нужен." : {},
     "Окно Wine «Установка и удаление»" : {
       "localizations" : {
         "en" : {
@@ -10845,28 +10658,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打开目录"
-          }
-        }
-      }
-    },
-    "Открыть папку движков" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open Engines Folder"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Қозғалтқыштар қалтасын ашу"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "打开引擎文件夹"
           }
         }
       }
@@ -12236,28 +12027,8 @@
         }
       }
     },
-    "Повторите установку onwin" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reinstall onwin"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "onwin қайта орнатыңыз"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重新安装 onwin"
-          }
-        }
-      }
-    },
+    "Повторить" : {},
+    "Подготовка onwin" : {},
     "Подготовка к запуску «%@»" : {
       "localizations" : {
         "en" : {
@@ -12302,6 +12073,7 @@
         }
       }
     },
+    "Подробнее" : {},
     "Подробный журнал Wine" : {
       "localizations" : {
         "en" : {
@@ -13116,28 +12888,6 @@
         }
       }
     },
-    "Проверить снова" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check Again"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Қайта тексеру"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "再次检查"
-          }
-        }
-      }
-    },
     "Проверить целостность файлов" : {
       "localizations" : {
         "en" : {
@@ -13182,28 +12932,7 @@
         }
       }
     },
-    "Проверьте" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Тексеріңіз"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "检查"
-          }
-        }
-      }
-    },
+    "Проверьте подключение к интернету и нажмите «Повторить». Без интернета — см. «Другие способы» ниже." : {},
     "Проверьте рецепт из «%@». Импорт ничего не устанавливает и не запускает — установка начнётся, только когда вы нажмёте «Установить» на карточке." : {
       "localizations" : {
         "en" : {
@@ -14278,28 +14007,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "空间："
-          }
-        }
-      }
-    },
-    "Проще всего ещё раз выполнить в Терминале команду установки с сайта onwin: она установит движок или обновит его до последней версии." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The easiest way is to run the install command from the onwin website in Terminal again: it will install the engine or update it to the latest version."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ең оңайы — onwin сайтындағы орнату пәрменін Терминалда қайта орындау: ол қозғалтқышты орнатады немесе оны соңғы нұсқаға дейін жаңартады."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "最简单的方法是在“终端”中再次运行 onwin 网站上的安装命令：它会安装引擎，或将其更新到最新版本。"
           }
         }
       }
@@ -16678,6 +16385,7 @@
         }
       }
     },
+    "Страница выпуска" : {},
     "Строка окружения «%@»: нужно ИМЯ=ЗНАЧЕНИЕ" : {
       "localizations" : {
         "en" : {
@@ -17536,6 +17244,7 @@
         }
       }
     },
+    "Узнаю, какой движок нужен этой версии onwin…" : {},
     "Укажите имя библиотеки" : {
       "localizations" : {
         "en" : {
@@ -17620,28 +17329,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请输入空间名称。"
-          }
-        }
-      }
-    },
-    "Указать .dmg вручную…" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose .dmg Manually…"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : ".dmg файлын қолмен көрсету…"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "手动选择 .dmg…"
           }
         }
       }
@@ -17998,6 +17685,7 @@
         }
       }
     },
+    "Установить движок из папки…" : {},
     "Установить ещё раз" : {
       "localizations" : {
         "en" : {
@@ -19050,28 +18738,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "要设置自己的启动参数和环境变量，请固定该程序 — 它会出现在“已固定”部分。"
-          }
-        }
-      }
-    },
-    "Чтобы запускать Windows-игры, нужен движок Wine, а он пока не установлен." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To run Windows games, you need a Wine engine, and it isn’t installed yet."
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Windows ойындарын іске қосу үшін Wine қозғалтқышы керек, бірақ ол әлі орнатылмаған."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "要运行 Windows 游戏，需要 Wine 引擎，但它尚未安装。"
           }
         }
       }

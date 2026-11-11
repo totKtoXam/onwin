@@ -123,10 +123,19 @@ engine/build-libs.sh && engine/build.sh    # движок → engine/dist/onwin-
 
 Подробно — в начале `scripts/release.sh`. Коротко:
 
-- **Релиз движка** (`engine-<id>-<сборка>`, не «latest»): `onwin-engine-<id>.tar.xz`, манифест с SHA-256 и архивы
-  исходников всех LGPL/GPL/MPL-компонентов. Выпускается только при изменении движка.
-- **Релиз приложения** (`v<версия>`, «latest»): `Onwin-<версия>.dmg` (приложение с движком внутри),
-  `Onwin-<версия>-app.zip` (без движка), `onwin-release.json` (версии, ссылки, SHA-256 частей), `install.sh`.
+- **Релиз движка** (`engine-<id>-<сборка>`, не «latest»): `onwin-engine-<id>.tar.xz` (без Wine Mono и Gecko),
+  манифест с SHA-256 и архивы исходников всех LGPL/GPL/MPL-компонентов. Выпускается только при изменении движка.
+- **Релиз приложения** (`v<версия>`, «latest»): `Onwin-<версия>.dmg` (лёгкий, ~5 МБ: движок приложение скачивает
+  само при первом запуске, экран «Подготовка onwin» — `Views/EngineSetupView.swift`), `Onwin-<версия>-offline.dmg`
+  (с полным движком внутри, для Mac без интернета), `Onwin-<версия>-app.zip` (без движка), `onwin-release.json`
+  (ключи `app`, `dmg`, `dmgOffline`, `engine`: ссылки, SHA-256, размеры), `install.sh`.
+- Wine Mono и Gecko не входят в архив движка: onwin скачивает официальные архивы с dl.winehq.org в движок, только
+  когда они нужны программе, один раз для всех пространств (`OnwinCore/EngineAddons.swift`; при обновлении движка
+  они переносятся). Без них `wineboot` идёт с отключёнными mscoree/mshtml (`Engine.addonInstallOverrides`).
+- Размер важен: у многих пользователей медленный интернет. Движок перед упаковкой проходит этап `slim`
+  (`engine/build.sh`), архив сжимается `xz` с x86-фильтром и большим словарём (`ENGINE_XZ` в `release.sh`).
+  install.sh и приложение распаковывают его системным `/usr/bin/tar`: другой формат — только такой, который он
+  читает без дополнительных программ (zstd — нет).
 - `site/install.sh` читает `onwin-release.json` последнего релиза и скачивает только изменившиеся части: приложение
   в `/Applications` (или `~/Applications`), движок в `~/Library/Application Support/onwin/Engines/<id>`. curl не ставит
   карантин, поэтому Gatekeeper не блокирует запуск неподписанного приложения.

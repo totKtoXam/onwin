@@ -1015,28 +1015,7 @@
         }
       }
     },
-    "Движки и графика:\n  onwinctl engines                         список движков Wine\n  onwinctl engine-install <папка>          установить собранный движок\n  onwinctl d3dmetal-import <путь к GPTK>   импортировать D3DMetal из Game Porting Toolkit (.dmg или том)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout минуты] [--downloads папка]\n                                           импортировать уже скачанный Game Porting Toolkit (.dmg из «Загрузок»\n                                           или кэша onwin); вход с Apple ID и загрузка — в приложении onwin\n  onwinctl status                          что установлено\n  onwinctl update [--check] [--version X]  обновить onwin и движок до последнего выпуска (--check — только\n                                           проверить, --version — поставить определённую версию)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Engines and graphics:\n  onwinctl engines                         list of Wine engines\n  onwinctl engine-install <folder>         install a built engine\n  onwinctl d3dmetal-import <path to GPTK>  import D3DMetal from Game Porting Toolkit (.dmg or volume)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout minutes] [--downloads folder]\n                                           import an already downloaded Game Porting Toolkit (.dmg from Downloads\n                                           or the onwin cache); Apple ID sign-in and download happen in the onwin app\n  onwinctl status                          what’s installed\n  onwinctl update [--check] [--version X]  update onwin and the engine to the latest release (--check: only\n                                           check, --version: install a specific version)"
-          }
-        },
-        "kk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Қозғалтқыштар және графика:\n  onwinctl engines                         Wine қозғалтқыштарының тізімі\n  onwinctl engine-install <қалта>          жиналған қозғалтқышты орнату\n  onwinctl d3dmetal-import <GPTK жолы>     Game Porting Toolkit ішінен D3DMetal импорттау (.dmg немесе том)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout минут] [--downloads қалта]\n                                           жүктеп алынған Game Porting Toolkit импорттау («Жүктеулер» қалтасынан\n                                           немесе onwin кэшінен .dmg); Apple ID арқылы кіру және жүктеп алу — onwin қолданбасында\n  onwinctl status                          не орнатылған\n  onwinctl update [--check] [--version X]  onwin мен қозғалтқышты соңғы шығарылымға дейін жаңарту (--check — тек\n                                           тексеру, --version — белгілі бір нұсқаны орнату)"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "引擎与图形：\n  onwinctl engines                         Wine 引擎列表\n  onwinctl engine-install <文件夹>         安装已构建的引擎\n  onwinctl d3dmetal-import <GPTK 路径>     从 Game Porting Toolkit（.dmg 或宗卷）导入 D3DMetal\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout 分钟] [--downloads 文件夹]\n                                           导入已下载的 Game Porting Toolkit（“下载”文件夹或\n                                           onwin 缓存中的 .dmg）；Apple ID 登录和下载在 onwin 应用中进行\n  onwinctl status                          已安装的内容\n  onwinctl update [--check] [--version X]  将 onwin 和引擎更新到最新版本（--check — 仅检查，\n                                           --version — 安装指定版本）"
-          }
-        }
-      }
-    },
+    "Движки и графика:\n  onwinctl engines                         список движков Wine\n  onwinctl engine-install <папка>          установить собранный движок\n  onwinctl engine-setup [--check]          скачать движок Wine этой версии onwin (то же, что первый запуск)\n  onwinctl addons [install mono|gecko|all] Wine Mono / Gecko в движке (обычно onwin ставит их сам, когда нужно)\n  onwinctl d3dmetal-import <путь к GPTK>   импортировать D3DMetal из Game Porting Toolkit (.dmg или том)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout минуты] [--downloads папка]\n                                           импортировать уже скачанный Game Porting Toolkit (.dmg из «Загрузок»\n                                           или кэша onwin); вход с Apple ID и загрузка — в приложении onwin\n  onwinctl status                          что установлено\n  onwinctl update [--check] [--version X]  обновить onwin и движок до последнего выпуска (--check — только\n                                           проверить, --version — поставить определённую версию)" : {},
     "Движки:   %@" : {
       "localizations" : {
         "en" : {

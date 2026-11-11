@@ -11,6 +11,8 @@ let usage = [
 Движки и графика:
   onwinctl engines                         список движков Wine
   onwinctl engine-install <папка>          установить собранный движок
+  onwinctl engine-setup [--check]          скачать движок Wine этой версии onwin (то же, что первый запуск)
+  onwinctl addons [install mono|gecko|all] Wine Mono / Gecko в движке (обычно onwin ставит их сам, когда нужно)
   onwinctl d3dmetal-import <путь к GPTK>   импортировать D3DMetal из Game Porting Toolkit (.dmg или том)
   onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout минуты] [--downloads папка]
                                            импортировать уже скачанный Game Porting Toolkit (.dmg из «Загрузок»

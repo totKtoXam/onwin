@@ -172,7 +172,8 @@
     if (!release || release.draft || release.prerelease || !Array.isArray(release.assets)) return null;
     for (var i = 0; i < release.assets.length; i++) {
       var a = release.assets[i];
-      if (a && typeof a.name === "string" && /\.dmg$/i.test(a.name) && a.browser_download_url) return a;
+      // The light DMG; "-offline.dmg" (the engine inside, for a Mac without internet) is offered on releases.html.
+      if (a && typeof a.name === "string" && /\.dmg$/i.test(a.name) && !/-offline\.dmg$/i.test(a.name) && a.browser_download_url) return a;
     }
     return null;
   }
@@ -492,7 +493,7 @@
 
           var actions = el("div", "release-actions");
           (rel.assets || []).forEach(function (asset) {
-            var kind = /\.dmg$/i.test(asset.name) ? "Скачать DMG" : /-app\.zip$/i.test(asset.name) ? "Приложение без движка (zip)" : "";
+            var kind = /-offline\.dmg$/i.test(asset.name) ? "DMG для Mac без интернета" : /\.dmg$/i.test(asset.name) ? "Скачать DMG" : /-app\.zip$/i.test(asset.name) ? "Приложение без движка (zip)" : "";
             if (!kind) return;
             var a = el("a", "btn " + (kind === "Скачать DMG" ? "btn-primary" : "btn-secondary"));
             a.href = asset.browser_download_url;

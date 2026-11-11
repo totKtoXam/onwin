@@ -58,7 +58,7 @@ struct ShellDetail: View {
                 LogsView(spaceID: nil)
             }
         } else if !model.hasEngine {
-            ShellEngineMissingView()
+            ShellEngineSetupView()   // Views/EngineSetupView.swift
         } else if model.spaces.isEmpty {
             ShellNoSpacesView()
         } else {
@@ -110,125 +110,7 @@ struct ShellDropOverlay: View {
 }
 
 // MARK: - Engine missing
-
-/// Slim banner on top of the detail column when no engine is installed.
-@MainActor
-struct ShellEngineBanner: View {
-    @Environment(AppModel.self) private var model
-
-    var body: some View {
-        HStack(spacing: 10) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(Color.orange)
-            Text("Движок Wine не установлен — запуск программ пока недоступен.")
-                .font(.callout)
-            Spacer()
-            Button("Как установить") { model.selection = nil }
-                .buttonStyle(.link)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
-        .background(.bar)
-        .overlay(alignment: .bottom) { Divider() }
-    }
-}
-
-/// First-run screen when no Wine engine is installed: the easiest fix is to re-run the installation command
-/// from the onwin website (it installs or updates the engine); developers can build it with engine/build.sh.
-@MainActor
-struct ShellEngineMissingView: View {
-    @Environment(AppModel.self) private var model
-
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 22) {
-                HStack(alignment: .center, spacing: 16) {
-                    OnwinSpaceIcon(symbol: "hammer.fill", size: 64)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Добро пожаловать в onwin")
-                            .font(.largeTitle.bold())
-                        Text("Чтобы запускать Windows-игры, нужен движок Wine, а он пока не установлен.")
-                            .font(.title3)
-                            .foregroundStyle(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-
-                VStack(alignment: .leading, spacing: 16) {
-                    ShellStep(number: 1, title: "Повторите установку onwin",
-                              detail: "Проще всего ещё раз выполнить в Терминале команду установки с сайта onwin: она установит движок или обновит его до последней версии.",
-                              command: nil)
-                    ShellStep(number: 2, title: "Проверьте",
-                              detail: "Когда установка закончится, нажмите «Проверить снова». Если движок лежит в другом месте, выберите его папку кнопкой «Установить из папки…».",
-                              command: nil)
-                }
-                .onwinCard(padding: 20)
-
-                HStack(spacing: 10) {
-                    Button {
-                        model.reload()
-                    } label: {
-                        Label("Проверить снова", systemImage: "arrow.clockwise")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-
-                    Button {
-                        model.installEngineInteractively()
-                    } label: {
-                        Label("Установить из папки…", systemImage: "folder.badge.plus")
-                    }
-                    .controlSize(.large)
-
-                    Button {
-                        try? OnwinPaths.ensureLayout()
-                        model.open(OnwinPaths.engines)
-                    } label: {
-                        Label("Открыть папку движков", systemImage: "folder")
-                    }
-                    .controlSize(.large)
-                }
-
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Графика")
-                        .font(.headline)
-                    Text("Для DirectX 11/12 лучше всего подходит D3DMetal от Apple. onwin установит его сам: войдите с Apple ID прямо в приложении — Game Porting Toolkit скачается и установится автоматически.")
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                    HStack(spacing: 10) {
-                        Button {
-                            Task { @MainActor in await model.fetchD3DMetal() }
-                        } label: {
-                            Label("Установить D3DMetal", systemImage: "wand.and.stars")
-                        }
-                        .help("Вход с Apple ID, загрузка и установка — внутри onwin")
-                        Button {
-                            model.importD3DMetalInteractively()
-                        } label: {
-                            Label(d3dmetalButtonTitle, systemImage: "cpu")
-                        }
-                    }
-                    .padding(.top, 4)
-                }
-                .onwinCard(padding: 20)
-
-                Text("Для разработчиков: движок можно собрать самостоятельно скриптом engine/build.sh из исходного кода onwin (нужны Command Line Tools: xcode-select --install). Путь к движку можно задать переменной окружения ONWIN_ENGINE.")
-                    .font(.footnote)
-                    .foregroundStyle(.tertiary)
-            }
-            .frame(maxWidth: 720, alignment: .leading)
-            .padding(32)
-            .frame(maxWidth: .infinity)
-        }
-    }
-}
-
-extension ShellEngineMissingView {
-    var d3dmetalButtonTitle: String {
-        model.isD3DMetalInstalled ? String(localized: "D3DMetal установлен — указать другой…")
-                                   : String(localized: "Указать .dmg вручную…")
-    }
-}
+// «Подготовка onwin» (the first launch downloads the engine) and the banner: Views/EngineSetupView.swift.
 
 @MainActor
 struct ShellStep: View {

@@ -241,7 +241,7 @@ final class AppModel {
 
     static let cancelledMessage = String(localized: "Операция отменена.")
 
-    static let noEngineMessage = String(localized: "Движок Wine не установлен. Соберите его скриптом engine/build.sh из папки проекта onwin или установите готовый движок в \(OnwinPaths.engines.path).")
+    static let noEngineMessage = String(localized: "Движок Wine ещё не установлен: onwin скачивает его сам при первом запуске (экран «Подготовка onwin»). Запуск программ станет доступен, когда загрузка закончится.")
 
     init() {
         try? OnwinPaths.ensureLayout()

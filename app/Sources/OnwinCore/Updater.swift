@@ -5,9 +5,15 @@ import Foundation
 // scripts/release.sh). Every app release `v<version>` carries onwin-release.json:
 //
 //     { "schema": 1, "version", "build", "minimumMacOS",
-//       "app":    { url, sha256, size }     Onwin-<v>-app.zip, Onwin.app without the engine
-//       "dmg":    { url, sha256, size }     not used here
-//       "engine": { id, built, url, sha256, size }   tar.xz of the folder <id>/ }
+//       "app":        { url, sha256, size }   Onwin-<v>-app.zip, Onwin.app without the engine
+//       "dmg":        { url, sha256, size }   Onwin-<v>.dmg, the same app (the engine comes at first launch);
+//                                             not used here
+//       "dmgOffline": { url, sha256, size }   Onwin-<v>-offline.dmg, the app with the full engine inside;
+//                                             not used here
+//       "engine":     { id, built, url, sha256, size }   tar.xz of the folder <id>/, without Wine Mono / Gecko
+//                                             (EngineAddons.swift downloads them when a program needs them) }
+// Readers ignore keys they do not know (JSONDecoder here, plutil -extract in install.sh): new keys are fine,
+// changing or removing one needs `schema` + 1.
 //
 // Order of an update: download (into ~/Library/Caches/onwin/Updates), check SHA-256, install the engine
 // into Engines/<id> (atomic swap, like install.sh; refused while Wine of that engine runs), then the app:
@@ -80,6 +86,7 @@ public struct ReleaseManifest: Codable, Sendable, Equatable {
     public var site: URL?
     public var app: Asset
     public var dmg: Asset?
+    public var dmgOffline: Asset?
     public var engine: EngineAsset
 
     public static let supportedSchema = 1
@@ -412,6 +419,11 @@ public enum Updater {
             try? FileManager.default.removeItem(at: destination)
         }
         progress(InstallProgress(message: String(localized: "Скачиваю \(title)…", bundle: .onwinCore), fraction: 0))
+        // A download broken off by the network continues where it stopped (slow connections: the engine
+        // takes many minutes). URLSession hands out "resume data" with the error; it is kept next to the file.
+        let resumeFile = directory.appendingPathComponent(name + ".resume")
+        let resumeData = try? Data(contentsOf: resumeFile)
+        try? FileManager.default.removeItem(at: resumeFile)
         let delegate = Downloader.DownloadDelegate(name: title, progress: progress)
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = 60
@@ -422,12 +434,22 @@ public enum Updater {
         let temp: URL
         let response: URLResponse
         do {
-            (temp, response) = try await session.download(for: request)
+            if let resumeData {
+                do {
+                    (temp, response) = try await session.download(resumeFrom: resumeData)
+                } catch let error as URLError where error.code != .cancelled && error.downloadTaskResumeData == nil {
+                    (temp, response) = try await session.download(for: request)   // stale resume data: start over
+                }
+            } else {
+                (temp, response) = try await session.download(for: request)
+            }
         } catch let error as URLError where error.code == .cancelled {
+            if let data = error.downloadTaskResumeData { try? data.write(to: resumeFile) }
             throw CancellationError()
         } catch is CancellationError {
             throw CancellationError()
         } catch {
+            if let data = (error as? URLError)?.downloadTaskResumeData { try? data.write(to: resumeFile) }
             if Task.isCancelled { throw CancellationError() }
             throw OnwinError(String(localized: "Не удалось скачать \(title): \(error.localizedDescription)", bundle: .onwinCore))
         }
@@ -459,6 +481,50 @@ public enum Updater {
             }
             return hasher.finalize().map { String(format: "%02x", $0) }.joined()
         }.value
+    }
+
+    // MARK: First launch
+
+    /// onwin-release.json whose engine the app installs when it has none (the light DMG / app.zip come
+    /// without one): the release of this very version, so the engine matches the app; the latest release
+    /// for a build that was never published (development). `ONWIN_MANIFEST_URL` overrides, for tests.
+    public static func manifestForEngineSetup() async throws -> ReleaseManifest {
+        if let custom = ProcessInfo.processInfo.environment["ONWIN_MANIFEST_URL"], !custom.isEmpty {
+            return try await latestManifest()
+        }
+        do {
+            return try await fetchManifest(from: OnwinLinks.releaseManifest(version: OnwinVersion.string))
+        } catch let error as HTTPStatusError where error.status == 404 {
+            return try await latestManifest()
+        }
+    }
+
+    /// What the first launch would download: the release, and the engine already installed if it is current.
+    public static func engineSetupPlan() async throws -> UpdatePlan {
+        let manifest: ReleaseManifest
+        do {
+            manifest = try await manifestForEngineSetup()
+        } catch let error as UpdateError {
+            throw error
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch {
+            throw OnwinError("Нет связи с GitHub: не удалось узнать, какой движок Wine скачать. Проверьте подключение к интернету.")
+        }
+        return plan(for: manifest, app: nil)
+    }
+
+    /// Downloads and installs the engine of `plan` into Engines/<id> (the same path as an update:
+    /// SHA-256 check, /usr/bin/tar, atomic swap). Returns the installed engine.
+    public static func installEngineForSetup(_ plan: UpdatePlan, progress: @escaping ProgressHandler) async throws -> Engine {
+        if plan.engine == .none, let engine = installedEngine(id: plan.manifest.engine.id) { return engine }
+        var download = plan
+        download.engine = .download
+        guard let engine = try await installEngine(download, progress: progress) else {
+            throw OnwinError("Движок Wine не установился.")
+        }
+        cleanUpDownloads()
+        return engine
     }
 
     // MARK: Engine
@@ -537,11 +603,16 @@ public enum Updater {
         if await isEngineInUse(destination) { throw UpdateError.engineInUse(id) }
         let old = OnwinPaths.engines.appendingPathComponent(".old-\(id)", isDirectory: true)
         try? fm.removeItem(at: old)
+        // Wine Mono / Gecko downloaded on demand into the old engine stay (when Wine wants the same versions).
+        EngineAddons.carryOver(from: destination, to: staged)
         if fm.fileExists(atPath: destination.path) { try fm.moveItem(at: destination, to: old) }
         do {
             try fm.moveItem(at: staged, to: destination)
         } catch {
-            if fm.fileExists(atPath: old.path) { try? fm.moveItem(at: old, to: destination) }
+            if fm.fileExists(atPath: old.path) {
+                try? fm.moveItem(at: old, to: destination)
+                EngineAddons.carryOver(from: staged, to: destination)
+            }
             throw error
         }
         try? fm.removeItem(at: old)

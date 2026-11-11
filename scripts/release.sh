@@ -7,17 +7,22 @@
 #
 # Engine release (not "latest"; one per engine build):
 #   onwin-engine-<id>.tar.xz                 the engine folder <id>/ (bin, lib, share, onwin-engine.json, share/licenses)
+#                                            without Wine Mono / Gecko (share/wine/{mono,gecko}): the app downloads
+#                                            them from dl.winehq.org when a program needs them (EngineAddons.swift)
 #   onwin-engine-manifest.json               id, built, asset name, sha256, size
 #   crossover-sources-<ver>.tar.gz           CodeWeavers' open CrossOver sources (Wine, DXVK fork, vkd3d…)
 #   onwin-engine-<id>-sources-upstream.tar   official source archives of the libraries (engine/sources/upstream)
 #   wine-mono-<ver>-src.tar.xz, wine-gecko-<ver>-src.tar.xz   sources of the bundled Wine Mono / Gecko
 # The engine's own patches and build scripts are in this repository (engine/).
 #
-# App release (latest):
-#   Onwin-<version>.dmg        Onwin.app with the engine inside (drag to Applications)
-#   Onwin-<version>-app.zip    Onwin.app without the engine (used by install.sh)
-#   onwin-release.json         what install.sh and the app's updater (Updater.swift) read: version, build,
-#                              app/dmg/engine URLs, sha256, sizes
+# App release (latest; <version> is "0.1.1-beta" below 1.0):
+#   Onwin-<version>.dmg          Onwin.app without the engine (~5 MB): at first launch it downloads the engine
+#                                itself («Подготовка onwin», EngineSetupView.swift)
+#   Onwin-<version>-offline.dmg  Onwin.app with the full engine inside (Wine Mono / Gecko too): for a Mac
+#                                without internet
+#   Onwin-<version>-app.zip      Onwin.app without the engine (install.sh, the app's updater)
+#   onwin-release.json           what install.sh and the app's updater (Updater.swift) read: version, build,
+#                                URLs, sha256 and sizes of "app", "dmg" (light), "dmgOffline", "engine"
 #   install.sh                 the installer with this repository filled in
 #
 # The app version is OnwinVersion.string (app/Sources/OnwinCore/WineRunner.swift); bump it before `app`.
@@ -50,6 +55,17 @@ OWNER="${REPO%%/*}"; NAME="${REPO#*/}"
 SITE_URL="https://$(echo "$OWNER" | tr '[:upper:]' '[:lower:]').github.io/$NAME"
 DL="https://github.com/$REPO/releases/download"
 SUPPORT_CHAT="https://t.me/+KGkGUTbpk0ZjNDEy"   # Telegram group «onwin — помощь» (same as site/config.js)
+
+# Engine archive compression. Must stay readable by plain macOS: install.sh and the app's updater unpack it
+# with /usr/bin/tar (libarchive + liblzma 5.4 on macOS 14–26), which reads .xz with any LZMA2 dictionary
+# and the x86 BCJ filter (xz ≥ 5.0; zstd it cannot read without the zstd program).
+#  --x86       BCJ filter: almost the whole engine is x86 machine code (Wine runs under Rosetta).
+#  dict=512MiB the default -9 dictionary (64 MiB) with -T0 splits the archive into independent 192 MiB
+#              blocks; a large dictionary also finds the copies between the i386 / x86_64 halves and in
+#              Wine Mono / Gecko. Unpacking needs ~520 MiB of memory; packing takes ~13 min (one thread).
+# Measured 11.11.2026 on onwin-cx26.3 after engine/build.sh slim (MiB): xz -9 -T0 184, -9e 184,
+# dict=256MiB 153, + --x86 150, dict=512MiB 146, dict=1GiB 146 (no gain, twice the memory).
+ENGINE_XZ=(xz -T0 --x86 --lzma2=preset=9e,dict=512MiB)
 
 json_get() { /usr/bin/plutil -extract "$2" raw -o - "$1"; }   # json_get <file> <key path>
 sha256() { /usr/bin/shasum -a 256 "$1" | cut -d' ' -f1; }
@@ -101,6 +117,10 @@ release_engine() {
     ensure_pushed
     local out="$DIST/engine"
     mkdir -p "$out"
+    # engine/build.sh slim strips the COFF symbol tables (NumberOfSymbols = 0) and more: ~30 MB less to download.
+    perl -e 'open(my $f, "<", $ARGV[0]) or exit 2; binmode $f; read($f, my $h, 0x40); seek($f, unpack("V", substr($h, 0x3c, 4)) + 16, 0);
+             read($f, my $n, 4) == 4 or exit 1; exit(unpack("V", $n) == 0 ? 0 : 1)' "$ENGINE_DIR/lib/wine/x86_64-windows/kernelbase.dll" \
+        || die "движок не урезан (в DLL есть таблицы символов) — сначала: engine/build.sh slim"
 
     note "лицензии → $ENGINE_ID/share/licenses"
     mkdir -p "$ENGINE_DIR/share/licenses"
@@ -108,13 +128,19 @@ release_engine() {
 
     # The archive is reused while it was made from this very engine build with the same licenses.
     local stamp
-    stamp="$ENGINE_BUILT $(cat "$ROOT"/third_party/licenses/*.txt | /usr/bin/shasum -a 256 | cut -d' ' -f1)"
+    stamp="$ENGINE_BUILT no-addons ${ENGINE_XZ[*]} $(cat "$ROOT"/third_party/licenses/*.txt | /usr/bin/shasum -a 256 | cut -d' ' -f1)"
     if [ -s "$out/$ENGINE_ASSET" ] && [ "$(cat "$out/.stamp" 2>/dev/null)" = "$stamp" ]; then
         note "движок уже упакован: $out/$ENGINE_ASSET"
     else
-        note "упаковываю движок (xz, несколько минут)"
+        note "упаковываю движок (${ENGINE_XZ[*]}, около 15 минут)"
         rm -f "$out/.stamp"
-        COPYFILE_DISABLE=1 tar -C "$ENGINE_DIST" -cf - "$ENGINE_ID" | xz -T0 -9 > "$out/$ENGINE_ASSET.part"
+        COPYFILE_DISABLE=1 tar -C "$ENGINE_DIST" --exclude "$ENGINE_ID/share/wine/mono" --exclude "$ENGINE_ID/share/wine/gecko" \
+            -cf - "$ENGINE_ID" | "${ENGINE_XZ[@]}" > "$out/$ENGINE_ASSET.part"
+        # The same unpacker as install.sh / Updater.swift must read it.
+        /usr/bin/tar -tf "$out/$ENGINE_ASSET.part" > "$out/.list" || die "/usr/bin/tar не читает $ENGINE_ASSET"
+        grep -q "^$ENGINE_ID/bin/wine\$" "$out/.list" || die "в $ENGINE_ASSET нет $ENGINE_ID/bin/wine"
+        ! grep -qE "^$ENGINE_ID/share/wine/(mono|gecko)/." "$out/.list" || die "в $ENGINE_ASSET попали Wine Mono / Gecko"
+        rm -f "$out/.list"
         mv "$out/$ENGINE_ASSET.part" "$out/$ENGINE_ASSET"
         echo "$stamp" > "$out/.stamp"
     fi
@@ -146,7 +172,9 @@ JSON
     cat > "$notes" <<MD
 Движок onwin **$ENGINE_ID**, собран $ENGINE_BUILT.
 
-Ставится автоматически установщиком onwin ($SITE_URL/install.html) — вручную скачивать не нужно.
+Ставится автоматически: приложение onwin скачивает его при первом запуске, а установщик
+($SITE_URL/install.html) — сразу. Вручную скачивать не нужно. Wine Mono и Wine Gecko в архив не входят:
+onwin скачивает их с dl.winehq.org, только когда они нужны программе (вариант onwin «-offline.dmg» содержит их).
 
 Состав и лицензии — [THIRD_PARTY_NOTICES.md](https://github.com/$REPO/blob/main/THIRD_PARTY_NOTICES.md).
 Здесь же лежат исходники всех компонентов под LGPL/GPL/MPL, из которых собран этот движок; наши патчи и скрипты
@@ -194,24 +222,29 @@ release_app() {
     export ONWIN_NO_INSTALL=1 ONWIN_BUILD_NUMBER="$build"
     local built_app="$ROOT/build/app.noindex/Onwin.app"
 
-    note "Onwin.app без движка"
+    # make_dmg <volume name> <file>: the built Onwin.app and a link to /Applications.
+    make_dmg() {
+        local stage="$out/dmg"
+        rm -rf "$stage"; mkdir -p "$stage"
+        /usr/bin/ditto "$built_app" "$stage/Onwin.app"
+        ln -s /Applications "$stage/Программы"
+        hdiutil create -quiet -volname "$1" -srcfolder "$stage" -fs APFS -format ULMO "$2"
+        rm -rf "$stage"
+    }
+
+    note "Onwin.app без движка → app.zip и DMG"
     "$SCRIPT_DIR/build-app.sh"
     /usr/bin/ditto -c -k --keepParent "$built_app" "$out/Onwin-$file_tag-app.zip"
+    make_dmg "$volume" "$out/Onwin-$file_tag.dmg"
 
-    note "Onwin.app с движком → DMG"
+    note "Onwin.app с полным движком → offline DMG"
     "$SCRIPT_DIR/build-app.sh" --with-engine "$ENGINE_DIR"
-    local stage="$out/dmg"
-    mkdir -p "$stage"
-    /usr/bin/ditto "$built_app" "$stage/Onwin.app"
-    ln -s /Applications "$stage/Программы"
-    hdiutil create -quiet -volname "$volume" -srcfolder "$stage" -fs APFS -format ULMO \
-        "$out/Onwin-$file_tag.dmg"
-    rm -rf "$stage"
+    make_dmg "$volume (без интернета)" "$out/Onwin-$file_tag-offline.dmg"
 
     sed "s|__ONWIN_REPO__|$REPO|" "$ROOT/site/install.sh" > "$out/install.sh"
     bash -n "$out/install.sh"
 
-    local app_zip="$out/Onwin-$file_tag-app.zip" dmg="$out/Onwin-$file_tag.dmg"
+    local app_zip="$out/Onwin-$file_tag-app.zip" dmg="$out/Onwin-$file_tag.dmg" dmg_offline="$out/Onwin-$file_tag-offline.dmg"
     cat > "$out/onwin-release.json" <<JSON
 {
   "schema": 1,
@@ -221,6 +254,7 @@ release_app() {
   "site": "$SITE_URL/",
   "app": { "url": "$DL/$tag/Onwin-$file_tag-app.zip", "sha256": "$(sha256 "$app_zip")", "size": $(fsize "$app_zip") },
   "dmg": { "url": "$DL/$tag/Onwin-$file_tag.dmg", "sha256": "$(sha256 "$dmg")", "size": $(fsize "$dmg") },
+  "dmgOffline": { "url": "$DL/$tag/Onwin-$file_tag-offline.dmg", "sha256": "$(sha256 "$dmg_offline")", "size": $(fsize "$dmg_offline") },
   "engine": {
     "id": "$ENGINE_ID",
     "built": "$ENGINE_BUILT",
@@ -247,12 +281,15 @@ curl -fsSL $SITE_URL/install.sh | bash
 Эта же команда обновляет onwin: она скачивает только изменившиеся части. Другие способы — на странице
 [Установка]($SITE_URL/install.html).
 
-**Onwin-$file_tag.dmg** — приложение вместе с движком: перетащите в «Программы». Приложение не нотаризовано Apple,
-поэтому при первом запуске откройте «Системные настройки → Конфиденциальность и безопасность → Всё равно открыть».
+**Onwin-$file_tag.dmg** — приложение: перетащите в «Программы». При первом запуске onwin сам скачает движок Wine
+($(json_get "$manifest" size | awk '{ printf "%d", $1 / 1048576 + 0.5 }') МБ, нужен интернет).
+**Onwin-$file_tag-offline.dmg** — то же приложение с движком внутри, для Mac без интернета.
+Приложение не нотаризовано Apple, поэтому при первом запуске откройте «Системные настройки → Конфиденциальность
+и безопасность → Всё равно открыть».
 
 Нужен Mac с Apple Silicon и macOS 14 или новее. Движок: $ENGINE_ID ([$ENGINE_TAG](https://github.com/$REPO/releases/tag/$ENGINE_TAG)).
 MD
-    local assets=("$dmg" "$app_zip" "$out/onwin-release.json" "$out/install.sh")
+    local assets=("$dmg" "$dmg_offline" "$app_zip" "$out/onwin-release.json" "$out/install.sh")
     if [ "$UPLOAD" = 0 ]; then
         note "без загрузки. Релиз $tag:"; ls -lh "${assets[@]}"; return 0
     fi

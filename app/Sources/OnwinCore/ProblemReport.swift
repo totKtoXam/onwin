@@ -80,7 +80,7 @@ public struct ProblemReport: Sendable {
             if let cx = engine.info.crossoverSourceVersion { line(L("Исходники CodeWeavers"), cx) }
             line(L("Состав"), [engine.hasDXMT ? "DXMT" : nil, engine.hasDXVK ? "DXVK" : nil,
                                engine.hasMoltenVK ? "MoltenVK" : nil,
-                               engine.hasBundledAddons ? "Wine Mono/Gecko" : nil].compactMap { $0 }.joined(separator: ", "))
+                               engine.hasMono ? "Wine Mono" : nil, engine.hasGecko ? "Wine Gecko" : nil].compactMap { $0 }.joined(separator: ", "))
         } else {
             line(L("Движок"), L("не установлен"))
         }
