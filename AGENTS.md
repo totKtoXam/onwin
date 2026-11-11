@@ -89,6 +89,10 @@ engine/build-libs.sh && engine/build.sh    # движок → engine/dist/onwin-
   коммит с понятным сообщением на английском и строкой `Co-Authored-By`, которую задаёт среда агента.
 - Публичный репозиторий: `github.com/<владелец>/onwin`. `git push`, создание релизов и изменение настроек GitHub —
   только по просьбе пользователя.
+- `main` на GitHub защищена набором правил «main»: удалять ветку и переписывать её историю (force push) нельзя,
+  изменения попадают в неё только через pull request (одобрение не требуется, способ вливания — merge commit, чтобы
+  локальные коммиты остались предками `origin/main`). Порядок: `git push origin <ветка>` → `gh pr create --base main`
+  → `gh pr merge --merge`. Релиз (`scripts/release.sh`) — после вливания, из чистой копии `origin/main`.
 - Не коммитить: исходники и сборку движка (`engine/sources`, `engine/build`, `engine/dist`), `build/`, `dist/`, `notes/`,
   токены, ключи, личные данные.
 

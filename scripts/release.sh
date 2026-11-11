@@ -61,7 +61,7 @@ ensure_pushed() {
     [ "$UPLOAD" = 1 ] || return 0
     git -C "$ROOT" fetch -q origin main || die "не удалось получить origin/main"
     git -C "$ROOT" merge-base --is-ancestor HEAD origin/main \
-        || die "текущий коммит не опубликован в origin/main — сначала git push"
+        || die "текущий коммит не влит в origin/main — сначала pull request в main (gh pr create, gh pr merge --merge)"
     [ -z "$(git -C "$ROOT" status --porcelain --untracked-files=no)" ] || die "есть незакоммиченные изменения"
 }
 
