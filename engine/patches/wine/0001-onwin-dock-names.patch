@@ -1,0 +1,59 @@
+--- a/dlls/ntdll/unix/loader.c
++++ b/dlls/ntdll/unix/loader.c
+@@ -631,9 +631,56 @@
+     return NULL;
+ }
+ 
++/* onwin: nicer Dock names. ONWIN_DOCK_NAMES="exe=Display Name;..." maps an exe base name
++ * (case-insensitive, without .exe) to a display name; otherwise an all-lowercase name gets a
++ * capital first letter. ONWIN_DOCK_LABEL_SUFFIX is appended verbatim (onwin sets e.g.
++ * " (onwin\xea\x9e\x89<space>)", so the format is decided by the app, not here). */
++static char *onwin_dock_name(char *app_name)
++{
++    const char *names = getenv("ONWIN_DOCK_NAMES"), *suffix = getenv("ONWIN_DOCK_LABEL_SUFFIX");
++    char *display = NULL, *ret;
++    size_t n = strlen(app_name);
++
++    /* extract_exe_name() computes the length without the extension but strdup()s the whole name,
++     * so "steamwebhelper.exe" arrives here with ".exe": drop it. */
++    if (n > 4 && !strcasecmp(app_name + n - 4, ".exe")) app_name[n -= 4] = 0;
++
++    if (names && *names)
++    {
++        const char *p = names;
++        while (*p && !display)
++        {
++            const char *end = strchr(p, ';'), *eq;
++            size_t len = end ? (size_t)(end - p) : strlen(p);
++            eq = memchr(p, '=', len);
++            if (eq && (size_t)(eq - p) == n && !strncasecmp(p, app_name, n) && eq + 1 < p + len)
++                display = strndup(eq + 1, p + len - (eq + 1));
++            p += len + (end ? 1 : 0);
++        }
++    }
++    if (!display)
++    {
++        size_t i;
++        int lower = 1;
++        display = strdup(app_name);
++        for (i = 0; display[i]; i++) if (display[i] >= 'A' && display[i] <= 'Z') lower = 0;
++        if (lower && display[0] >= 'a' && display[0] <= 'z') display[0] -= 32;
++    }
++    if (!display) return app_name;
++    if (suffix && *suffix && !strchr(suffix, '/') && asprintf(&ret, "%s%s", display, suffix) >= 0)
++    {
++        free(display);
++        display = ret;
++    }
++    if (strchr(display, '/')) { free(display); return app_name; }
++    free(app_name);
++    return display;
++}
++
+ static void replace_wineloader_path_with_link(char **wineloader_path, const char *image_path)
+ {
+     char *app_name = extract_exe_name(image_path);
++    if (app_name) app_name = onwin_dock_name(app_name);
+     if (app_name)
+     {
+         char *preloader_path = create_preloader_link(*wineloader_path, app_name);

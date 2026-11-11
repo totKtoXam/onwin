@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Установка onwin</title>
+  <meta name="description" content="Как установить onwin на Mac: одна команда в Терминале или образ диска DMG. Обновление и удаление.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — на главную">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="Основное меню">
+        <ul>
+          <li><a href="install.html" aria-current="page">Установка</a></li>
+          <li><a href="donate.html">Поддержать</a></li>
+          <li><a href="licenses.html">Лицензии</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap narrow page-head">
+      <h1>Установка onwin</h1>
+      <p class="lead">Проще всего — одной командой в Терминале. Та же команда потом обновляет приложение и движок.</p>
+    </div>
+
+    <section class="section" aria-labelledby="terminal-title" style="padding-top: 24px">
+      <div class="wrap narrow install-grid">
+        <div class="card">
+          <h2 id="terminal-title">Через Терминал <span class="badge">рекомендуем</span></h2>
+          <p class="muted">Скопируйте команду, вставьте её в Терминал и нажмите Return.</p>
+
+          <div class="command">
+            <code id="cmd-install" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+            <button class="btn btn-primary btn-lg" type="button" data-copy-from="#cmd-install">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></svg>
+              <span class="label">Скопировать</span>
+            </button>
+          </div>
+
+          <ol class="steps" style="margin-top: 28px">
+            <li>
+              <h3>Откройте Терминал</h3>
+              <p>Нажмите <kbd>⌘</kbd> + <kbd>Пробел</kbd>, введите «Терминал» и нажмите <kbd>Return</kbd>.</p>
+            </li>
+            <li>
+              <h3>Вставьте команду</h3>
+              <p>Нажмите <kbd>⌘</kbd> + <kbd>V</kbd> в окне Терминала.</p>
+            </li>
+            <li>
+              <h3>Нажмите Return</h3>
+              <p>Дождитесь сообщения о завершении. Если на Mac нет Rosetta 2, скрипт предложит её установить.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h2>Что устанавливается</h2>
+          <dl class="paths">
+            <div class="path-row">
+              <dt>Приложение</dt>
+              <dd><code>Onwin.app</code> в папку «Программы» (<code>/Applications</code>)</dd>
+            </div>
+            <div class="path-row">
+              <dt>Движок Wine</dt>
+              <dd>отдельно, в <code>~/Library/Application Support/onwin/Engines</code></dd>
+            </div>
+          </dl>
+          <h3 style="margin-top: 24px">Обновление</h3>
+          <p>Чтобы обновиться, выполните ту же команду ещё раз. Скрипт скачает только то, что изменилось: приложение — это десятки мегабайт, а движок весит сотни и загружается заново, только когда выходит его новая версия.</p>
+          <p class="muted small">Скрипт можно прочитать перед запуском: <a href="install.sh" data-install-url>install.sh</a>. Файлы, загруженные через Терминал, macOS не помечает как скачанные из интернета, поэтому приложение откроется сразу, без предупреждений Gatekeeper.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="dmg-title">
+      <div class="wrap narrow">
+        <div class="card">
+          <h2 id="dmg-title">Образ диска (DMG)</h2>
+          <p class="muted">Другой способ — скачать полный образ: приложение с движком внутри. Обновлять его придётся вручную, каждый раз загружая образ целиком.</p>
+
+          <div class="download" data-release>
+            <a class="btn btn-secondary btn-lg" href="https://github.com/OWNER/onwin/releases/latest" data-release-link>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>
+              <span class="label">Скачать DMG</span>
+            </a>
+            <span class="meta" data-release-meta>Последний выпуск на GitHub</span>
+          </div>
+
+          <ol class="list" style="margin-top: 18px">
+            <li>Откройте скачанный файл и перетащите Onwin в папку «Программы».</li>
+            <li>Запустите Onwin из папки «Программы» — при первом запуске понадобится один дополнительный шаг (см. ниже).</li>
+          </ol>
+
+          <div class="note" style="margin-top: 20px">
+            <h3>Первый запуск и Gatekeeper</h3>
+            <p>onwin не заверен (notarized) в Apple: для этого нужна платная учётная запись разработчика, которой у проекта пока нет. Поэтому macOS заблокирует первый запуск приложения, скачанного через браузер. Разрешить его можно так:</p>
+            <ol class="list">
+              <li>Откройте Onwin один раз. macOS сообщит, что не может проверить приложение, — нажмите «Готово».</li>
+              <li>Откройте «Системные настройки» → «Конфиденциальность и безопасность».</li>
+              <li>Прокрутите до раздела «Безопасность» и нажмите «Открыть всё равно» рядом с сообщением об Onwin. Подтвердите паролем или Touch&nbsp;ID.</li>
+            </ol>
+            <p>Дальше приложение открывается как обычно. Установка через Терминал обходится без этих шагов.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="uninstall-title">
+      <div class="wrap narrow">
+        <div class="card">
+          <h2 id="uninstall-title">Удаление</h2>
+          <p class="muted">Эта команда удалит приложение и движок. Ваши пространства — установленные программы, игры и сохранения — останутся на месте.</p>
+          <div class="command small-cmd">
+            <code id="cmd-uninstall" data-cmd="uninstall">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#cmd-uninstall">
+              <span class="label">Скопировать</span>
+            </button>
+          </div>
+          <p style="margin-top: 20px">Чтобы стереть и пространства, добавьте <code>--purge</code>. Это необратимо: программы и сохранения внутри пространств будут удалены.</p>
+          <div class="command small-cmd">
+            <code id="cmd-purge" data-cmd="purge">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall --purge</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#cmd-purge">
+              <span class="label">Скопировать</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="donate-title">
+      <div class="wrap narrow">
+        <div class="card donate-block">
+          <div>
+            <span class="eyebrow">Поддержать проект</span>
+            <h2 id="donate-title">Понравился onwin?</h2>
+            <p>Помогите сделать его лучше — и однажды подписать приложение сертификатом Apple, чтобы установка стала ещё проще. <a href="donate.html">Подробнее</a></p>
+          </div>
+          <div class="donate-list" data-donate="compact">
+            <noscript><p class="muted">Способы поддержки перечислены на странице <a href="donate.html">«Поддержать»</a>.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">Установка</a></li>
+          <li><a href="donate.html">Поддержать</a></li>
+          <li><a href="licenses.html">Лицензии</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">Свободное программное обеспечение под лицензией GPL-3.0.</p>
+      <p class="disclaimer">onwin — независимый проект и не связан с CodeWeavers, Apple, Microsoft или Valve. CrossOver — товарный знак CodeWeavers; Windows и DirectX — товарные знаки Microsoft; Mac, macOS и Metal — товарные знаки Apple; Steam — товарный знак Valve.</p>
+    </div>
+  </footer>
+</body>
+</html>

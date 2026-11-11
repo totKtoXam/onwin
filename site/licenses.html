@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Лицензии и благодарности — onwin</title>
+  <meta name="description" content="Лицензия onwin и сторонние компоненты, входящие в состав приложения и движка.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — на главную">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="Основное меню">
+        <ul>
+          <li><a href="install.html">Установка</a></li>
+          <li><a href="donate.html">Поддержать</a></li>
+          <li><a href="licenses.html" aria-current="page">Лицензии</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap narrow page-head">
+      <h1>Лицензии и благодарности</h1>
+      <p class="lead">onwin стоит на плечах большого сообщества открытого кода. Спасибо всем, кто разрабатывает эти проекты.</p>
+    </div>
+
+    <section class="section" aria-labelledby="own-title" style="padding-top: 24px">
+      <div class="wrap narrow">
+        <div class="card">
+          <h2 id="own-title">Код onwin</h2>
+          <p>Исходный код приложения onwin, инструмента <code>onwinctl</code> и сценариев сборки распространяется по лицензии <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License версии 3</a> (GPL-3.0). Вы можете свободно использовать, изучать, изменять и распространять его на условиях этой лицензии.</p>
+          <p class="muted" style="margin: 0">Исходный код: <a href="https://github.com/OWNER/onwin" data-gh="repo" data-repo-name>OWNER/onwin</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="third-title">
+      <div class="wrap narrow">
+        <div class="section-head" style="margin-bottom: 20px">
+          <h2 id="third-title">Сторонние компоненты</h2>
+          <p>Эти компоненты собраны из открытого исходного кода и входят в состав движка и приложения.</p>
+        </div>
+        <div class="card table-card">
+          <table>
+            <thead>
+              <tr><th scope="col">Компонент</th><th scope="col">Версия</th><th scope="col">Лицензия</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="name">Wine с патчами CodeWeavers</td><td class="ver">11.0</td><td class="lic">LGPL-2.1+</td></tr>
+              <tr><td class="name">DXVK (ответвление CodeWeavers)</td><td class="ver">1.10.3</td><td class="lic">zlib</td></tr>
+              <tr><td class="name">DXMT<span class="muted">подробности — в репозитории проекта</span></td><td class="ver">0.80</td><td class="lic">zlib</td></tr>
+              <tr><td class="name">MoltenVK</td><td class="ver">1.4.2</td><td class="lic">Apache-2.0</td></tr>
+              <tr><td class="name">vkd3d</td><td class="ver">—</td><td class="lic">LGPL-2.1+</td></tr>
+              <tr><td class="name">GStreamer и модули</td><td class="ver">1.28.9</td><td class="lic">LGPL-2.1+</td></tr>
+              <tr><td class="name">GLib</td><td class="ver">2.90.1</td><td class="lic">LGPL-2.1+</td></tr>
+              <tr><td class="name">GnuTLS</td><td class="ver">3.8.13</td><td class="lic">LGPL-2.1+</td></tr>
+              <tr><td class="name">Nettle</td><td class="ver">4.0</td><td class="lic">LGPL-3.0+ / GPL-2.0+</td></tr>
+              <tr><td class="name">GMP</td><td class="ver">6.3.0</td><td class="lic">LGPL-3.0+ / GPL-2.0+</td></tr>
+              <tr><td class="name">FreeType</td><td class="ver">2.15.0</td><td class="lic">FreeType License</td></tr>
+              <tr><td class="name">SDL3</td><td class="ver">3.4.20</td><td class="lic">zlib</td></tr>
+              <tr><td class="name">sdl2-compat</td><td class="ver">2.32.74</td><td class="lic">zlib</td></tr>
+              <tr><td class="name">libffi</td><td class="ver">3.8.0</td><td class="lic">MIT</td></tr>
+              <tr><td class="name">PCRE2</td><td class="ver">10.49</td><td class="lic">BSD-3-Clause</td></tr>
+              <tr><td class="name">proxy-libintl</td><td class="ver">0.5</td><td class="lic">LGPL-2.1+</td></tr>
+              <tr><td class="name">Wine Mono</td><td class="ver">10.4.1</td><td class="lic">MIT и другие</td></tr>
+              <tr><td class="name">Wine Gecko</td><td class="ver">2.47.4</td><td class="lic">MPL-2.0</td></tr>
+              <tr><td class="name">cabextract</td><td class="ver">1.11</td><td class="lic">GPL-2.0+</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted small" style="margin-top: 12px">Nettle и GMP распространяются по двойной лицензии: на выбор LGPL-3.0 или новее либо GPL-2.0 или новее.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="src-title">
+      <div class="wrap narrow">
+        <div class="split">
+          <div class="card">
+            <h2 id="src-title" style="font-size: 1.3rem">Тексты лицензий и исходный код</h2>
+            <p>Полные тексты всех лицензий поставляются внутри приложения — в файле <code>THIRD_PARTY_NOTICES</code>.</p>
+            <p style="margin: 0">Исходный код всех компонентов под LGPL и GPL для каждой сборки движка приложен к её выпуску на GitHub: откройте <a href="https://github.com/OWNER/onwin/releases" data-gh="releases">Releases</a> и выберите выпуск, тег которого начинается с <code>engine-</code>.</p>
+          </div>
+          <div class="card">
+            <h2 style="font-size: 1.3rem">Что не входит в состав</h2>
+            <p style="margin: 0"><b>D3DMetal</b> из Game Porting Toolkit принадлежит Apple и в onwin не распространяется. Если вы хотите им пользоваться, onwin скачает Game Porting Toolkit с сайта Apple после того, как вы войдёте со своим Apple ID, и импортирует его на вашем Mac. Его использование регулируется лицензией Apple.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="tm-title">
+      <div class="wrap narrow">
+        <div class="note note-plain">
+          <h2 id="tm-title" style="font-size: 1.15rem">Товарные знаки</h2>
+          <p>onwin — независимый проект и не связан с CodeWeavers, Apple, Microsoft или Valve и не одобрен ими. CrossOver — товарный знак CodeWeavers; Windows и DirectX — товарные знаки Microsoft; Mac, macOS, Metal и Apple Silicon — товарные знаки Apple; Steam — товарный знак Valve. Прочие названия принадлежат их владельцам и упоминаются только для описания совместимости.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">Установка</a></li>
+          <li><a href="donate.html">Поддержать</a></li>
+          <li><a href="licenses.html">Лицензии</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">Свободное программное обеспечение под лицензией GPL-3.0.</p>
+      <p class="disclaimer">onwin — независимый проект и не связан с CodeWeavers, Apple, Microsoft или Valve. CrossOver — товарный знак CodeWeavers; Windows и DirectX — товарные знаки Microsoft; Mac, macOS и Metal — товарные знаки Apple; Steam — товарный знак Valve.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,39 @@
+# Publishes site/ to GitHub Pages on every push to main that touches it.
+# install.sh gets the repository name (owner/name) baked in, so the one-line install command works
+# for forks too.
+name: Сайт (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Подставить репозиторий в install.sh
+        run: |
+          sed -i "s|__ONWIN_REPO__|${GITHUB_REPOSITORY}|" site/install.sh
+          grep -q "${GITHUB_REPOSITORY}" site/install.sh
+          bash -n site/install.sh
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v5

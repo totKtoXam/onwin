@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Страница не найдена — onwin</title>
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    /* GitHub Pages отдаёт эту страницу по любому неизвестному адресу, поэтому
+       относительные ссылки должны отсчитываться от корня сайта проекта. */
+    (function () {
+      if (location.protocol !== "http:" && location.protocol !== "https:") return;
+      var parts = location.pathname.split("/").filter(Boolean);
+      var base = "/";
+      if (/\.github\.io$/i.test(location.hostname) && parts.length > 1) base = "/" + parts[0] + "/";
+      var el = document.createElement("base");
+      el.href = base;
+      document.head.appendChild(el);
+    })();
+  </script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — на главную">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="Основное меню">
+        <ul>
+          <li><a href="install.html">Установка</a></li>
+          <li><a href="donate.html">Поддержать</a></li>
+          <li><a href="licenses.html">Лицензии</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap narrow lost">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="none" stroke="#1797AD" stroke-width="2.5" stroke-dasharray="5 4"/></svg>
+      <h1>Такой страницы нет</h1>
+      <p class="muted">Возможно, ссылка устарела или в адресе опечатка.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="index.html">На главную</a>
+        <a class="btn btn-secondary" href="install.html">Установка</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">Установка</a></li>
+          <li><a href="donate.html">Поддержать</a></li>
+          <li><a href="licenses.html">Лицензии</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">Свободное программное обеспечение под лицензией GPL-3.0.</p>
+      <p class="disclaimer">onwin — независимый проект и не связан с CodeWeavers, Apple, Microsoft или Valve. CrossOver — товарный знак CodeWeavers; Windows и DirectX — товарные знаки Microsoft; Mac, macOS и Metal — товарные знаки Apple; Steam — товарный знак Valve.</p>
+    </div>
+  </footer>
+</body>
+</html>

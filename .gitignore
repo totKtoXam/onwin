@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# SwiftPM / сборка приложения
+app/.build/
+app/.swiftpm/
+build/
+
+# Движок: исходники CrossOver и upstream-архивы скачиваются (см. engine/README.md),
+# промежуточные файлы и готовый движок пересобираются build-libs.sh / build.sh
+engine/sources
+engine/build/
+engine/dist
+engine/.build-run.sh
+
+# Тестовые бинарники
+engine/tests/*.exe
+
+# Журналы и кэши тестов
+engine/tests/*.log
+engine/tests/*.dxvk-cache
+
+# Сборка релизов (scripts/release.sh)
+dist/
+
+# Внутренние заметки (исследования, черновики) — в закрытом репозитории onwin-notes, не здесь
+notes/

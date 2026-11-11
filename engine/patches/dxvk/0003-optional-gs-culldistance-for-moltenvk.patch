@@ -1,0 +1,45 @@
+--- a/src/d3d11/d3d11_device.cpp
++++ b/src/d3d11/d3d11_device.cpp
+@@ -1948,7 +1948,9 @@
+     DxvkDeviceFeatures supported = adapter->features();
+     DxvkDeviceFeatures enabled   = {};
+ 
+-    enabled.core.features.geometryShader                          = VK_TRUE;
++    // onwin: Metal has no geometry shaders, so MoltenVK does not report them. the CW MoltenVK fork
++    // (open CrossOver sources) fakes it; we request it only when the device has it (as DXVK-macOS).
++    enabled.core.features.geometryShader                          = supported.core.features.geometryShader;
+     enabled.core.features.robustBufferAccess                      = VK_TRUE;
+     enabled.core.features.shaderStorageImageWriteWithoutFormat    = VK_TRUE;
+     enabled.core.features.depthBounds                             = supported.core.features.depthBounds;
+@@ -1981,7 +1983,8 @@
+       enabled.core.features.sampleRateShading                     = VK_TRUE;
+       enabled.core.features.samplerAnisotropy                     = supported.core.features.samplerAnisotropy;
+       enabled.core.features.shaderClipDistance                    = VK_TRUE;
+-      enabled.core.features.shaderCullDistance                    = VK_TRUE;
++      // onwin: Metal has no cull distances; the CW MoltenVK fork fakes it.
++      enabled.core.features.shaderCullDistance                    = supported.core.features.shaderCullDistance;
+       enabled.core.features.textureCompressionBC                  = VK_TRUE;
+       enabled.extDepthClipEnable.depthClipEnable                  = supported.extDepthClipEnable.depthClipEnable;
+       enabled.extHostQueryReset.hostQueryReset                    = VK_TRUE;
+--- a/src/d3d9/d3d9_device.cpp
++++ b/src/d3d9/d3d9_device.cpp
+@@ -3915,7 +3915,8 @@
+     DxvkDeviceFeatures enabled = {};
+ 
+     // Geometry shaders are used for some meta ops
+-    enabled.core.features.geometryShader = VK_TRUE;
++    // onwin: request geometry shaders only when MoltenVK reports them (Metal has none).
++    enabled.core.features.geometryShader = supported.core.features.geometryShader;
+     enabled.core.features.robustBufferAccess = VK_TRUE;
+     enabled.extRobustness2.robustBufferAccess2 = supported.extRobustness2.robustBufferAccess2;
+ 
+@@ -3944,7 +3945,8 @@
+     enabled.core.features.sampleRateShading = VK_TRUE;
+     enabled.core.features.samplerAnisotropy = supported.core.features.samplerAnisotropy;
+     enabled.core.features.shaderClipDistance = VK_TRUE;
+-    enabled.core.features.shaderCullDistance = VK_TRUE;
++    // onwin: optional on MoltenVK (Metal has no cull distances).
++    enabled.core.features.shaderCullDistance = supported.core.features.shaderCullDistance;
+ 
+     // Ensure we support real BC formats and unofficial vendor ones.
+     enabled.core.features.textureCompressionBC = VK_TRUE;
