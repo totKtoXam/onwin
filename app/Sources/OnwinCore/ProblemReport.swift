@@ -63,7 +63,7 @@ public struct ProblemReport: Sendable {
 
         // Mac
         section("Mac")
-        line("macOS", ProcessInfo.processInfo.operatingSystemVersionString)
+        line("macOS", HostSupport.macOSVersion)
         line(L("Модель"), sysctlString("hw.model") ?? L("неизвестно"))
         line(L("Процессор"), sysctlString("machdep.cpu.brand_string") ?? (HostSupport.isAppleSilicon ? "Apple Silicon" : "Intel"))
         if let gpu = HostSupport.gpuName { line(L("Видеокарта"), gpu) }

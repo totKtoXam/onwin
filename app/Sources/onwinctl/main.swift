@@ -134,7 +134,7 @@ do {
         let engines = EngineManager.installedEngines()
         print(String(localized: "Данные:   \(OnwinPaths.root.path)", bundle: .onwinctl))
         let rosetta = HostSupport.isRosettaInstalled()
-        print("Mac:      \(HostSupport.isAppleSilicon ? "Apple Silicon" : "Intel"), macOS \(ProcessInfo.processInfo.operatingSystemVersionString)\(HostSupport.gpuName.map { ", \($0)" } ?? "")")
+        print("Mac:      \(HostSupport.isAppleSilicon ? "Apple Silicon" : "Intel"), macOS \(HostSupport.macOSVersion)\(HostSupport.gpuName.map { ", \($0)" } ?? "")")
         if !HostSupport.isAppleSilicon {
             print(String(localized: "Rosetta:  не нужна", bundle: .onwinctl))
         } else if rosetta {

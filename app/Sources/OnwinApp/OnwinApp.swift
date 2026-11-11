@@ -46,7 +46,9 @@ final class OnwinAppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         // Without an Info.plist (swift run / .build/debug/Onwin) the process would start as a
         // background-only app with no Dock icon, menu bar or key window.
-        NSApplication.shared.setActivationPolicy(.regular)
+        // A test run in the background (UISnapshot.swift) gets no Dock icon and never takes focus.
+        NSApplication.shared.setActivationPolicy(UISnapshot.isBackground ? .accessory : .regular)
+        UISnapshot.keepWindowsInBackground()
         // Before anything can start Wine: an Onwin.app downloaded in a browser (the DMG) carries the
         // quarantine flag on every file of the bundled engine (Engine.swift).
         EngineManager.clearQuarantineOfBundledEngine()
@@ -55,6 +57,8 @@ final class OnwinAppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         _ = AppModel.shared
         UpdateController.shared.checkAtLaunchIfNeeded()   // Views/UpdateViews.swift
+        UISnapshot.startIfRequested()                       // testing aid: ONWIN_UI_SNAPSHOT=<folder>, UISnapshot.swift
+        guard !UISnapshot.isBackground else { return }
         NSApplication.shared.activate(ignoringOtherApps: true)
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 150_000_000)

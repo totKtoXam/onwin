@@ -152,21 +152,30 @@ struct ShellSpaceRow: View {
 struct ShellSidebarFooter: View {
     @Environment(AppModel.self) private var model
 
+    @ViewBuilder
+    private var footerLinks: some View {
+        Link(destination: OnwinLinks.documentation) {
+            Label("Документация", systemImage: "book")
+        }
+        .help("Открыть документацию onwin на сайте")
+        Button {
+            model.reportProblemFromMenu()
+        } label: {
+            Label("Сообщить о проблеме", systemImage: "exclamationmark.bubble")
+        }
+        .buttonStyle(.link)
+        .help("Собрать сведения о проблеме и открыть чат поддержки")
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Divider()
-            HStack(spacing: 14) {
-                Link(destination: OnwinLinks.documentation) {
-                    Label("Документация", systemImage: "book")
-                }
-                .help("Открыть документацию onwin на сайте")
-                Button {
-                    model.reportProblemFromMenu()
-                } label: {
-                    Label("Сообщить о проблеме", systemImage: "exclamationmark.bubble")
-                }
-                .buttonStyle(.link)
-                .help("Собрать сведения о проблеме и открыть чат поддержки")
+            // Side by side when both fit without wrapping, otherwise one under the other (longer
+            // labels in some languages would break mid-word in a narrow sidebar).
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 14) { footerLinks }
+                    .fixedSize(horizontal: true, vertical: false)
+                VStack(alignment: .leading, spacing: 6) { footerLinks }
             }
             .font(.callout)
             .labelStyle(.titleAndIcon)

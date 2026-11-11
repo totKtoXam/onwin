@@ -60,6 +60,19 @@ public enum HostSupport {
 
     public static var gpuName: String? { MTLCreateSystemDefaultDevice()?.name }
 
+    /// "26.5.1 (25F80)": the same in every interface language (operatingSystemVersionString is worded
+    /// in the system language, and macOS has no Kazakh).
+    public static var macOSVersion: String {
+        let v = ProcessInfo.processInfo.operatingSystemVersion
+        var version = "\(v.majorVersion).\(v.minorVersion)"
+        if v.patchVersion > 0 { version += ".\(v.patchVersion)" }
+        var size = 0
+        guard sysctlbyname("kern.osversion", nil, &size, nil, 0) == 0, size > 1 else { return version }
+        var build = [CChar](repeating: 0, count: size)
+        guard sysctlbyname("kern.osversion", &build, &size, nil, 0) == 0 else { return version }
+        return "\(version) (\(String(cString: build)))"
+    }
+
     // MARK: Gating
 
     /// Why a backend cannot run on this Mac at all (independent of what is installed), or nil.

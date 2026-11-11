@@ -126,6 +126,7 @@ final class UpdateController {
     @discardableResult
     private func showMainWindow() -> Bool {
         guard let window = NSApplication.shared.windows.first(where: { $0.canBecomeMain && $0.isVisible }) else { return false }
+        guard !UISnapshot.isBackground else { return true }
         window.makeKeyAndOrderFront(nil)
         NSApplication.shared.activate(ignoringOtherApps: true)
         return true
@@ -277,6 +278,8 @@ final class UpdateController {
         alert.messageText = title
         alert.informativeText = text
         for button in buttons { alert.addButton(withTitle: button) }
+        // A background test run must not pop up a modal question.
+        if UISnapshot.isBackground { return .alertSecondButtonReturn }
         NSApplication.shared.activate(ignoringOtherApps: true)
         return alert.runModal()
     }
