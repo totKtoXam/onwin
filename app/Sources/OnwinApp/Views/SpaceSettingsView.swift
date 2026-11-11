@@ -110,6 +110,7 @@ struct SpaceSettingsForm: View {
             generalSection
             graphicsSection
             performanceSection
+            macFoldersSection
             debugSection
             environmentSection
             dllSection
@@ -133,6 +134,18 @@ struct SpaceSettingsForm: View {
             commitTextFields()
         }
         .spaceRestartPrompt($pendingRestart, space: space)
+        .alert("Папки пространства",
+               isPresented: Binding(get: { model.macFoldersNotice != nil },
+                                    set: { if !$0 { model.macFoldersNotice = nil } }),
+               presenting: model.macFoldersNotice) { _ in
+            Button("Показать в Finder") {
+                model.macFoldersNotice = nil
+                model.open(MacFolders.profile(of: space))
+            }
+            Button("OK", role: .cancel) { model.macFoldersNotice = nil }
+        } message: { message in
+            Text(verbatim: message)
+        }
         .confirmationDialog("Удалить пространство «\(space.name)»?",
                             isPresented: $isConfirmingDelete,
                             titleVisibility: .visible) {
@@ -384,6 +397,30 @@ struct SpaceSettingsForm: View {
             }
         } header: {
             Text("Производительность")
+        }
+    }
+
+    // MARK: Папки
+
+    private var macFoldersSection: some View {
+        Section {
+            Toggle(isOn: $draft.linkMacFolders) {
+                optionLabel("Связать «Документы», «Загрузки» и другие папки с папками Mac",
+                            "Windows-программы будут видеть ваши папки Mac «Документы», «Загрузки», «Музыка», «Изображения», «Фильмы» и рабочий стол. Эти папки macOS охраняет, поэтому она будет спрашивать, разрешить ли onwin доступ к ним. Если выключено, у пространства свои отдельные папки: сохранения игр и файлы программ остаются внутри него, а macOS ничего не спрашивает")
+            }
+
+            HStack {
+                Button {
+                    model.open(MacFolders.profile(of: space))
+                } label: {
+                    Label("Показать папки пространства", systemImage: "folder")
+                }
+                Spacer()
+            }
+        } header: {
+            Text("Папки")
+        } footer: {
+            Text("При переключении ничего не удаляется: файлы в папках Mac остаются на месте, а файлы, уже лежащие в папках пространства, сохраняются рядом под именем вроде «Documents (onwin)». Менять можно, только пока в пространстве ничего не запущено.")
         }
     }
 

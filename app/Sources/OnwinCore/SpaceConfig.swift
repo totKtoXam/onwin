@@ -93,6 +93,11 @@ public struct SpaceConfig: Codable, Equatable, Sendable {
     /// Make a Launchpad / Dock `.app` for every Start Menu shortcut, see
     /// `LauncherBuilder.sync`. Off by default.
     public var autoLaunchers: Bool
+    /// «Документы», «Загрузки», «Музыка», «Изображения», «Видео» of the Windows profile are links to
+    /// the Mac folders (Wine's default) instead of the space's own folders. Those Mac folders are
+    /// protected by macOS privacy, so linking makes macOS ask for access. New spaces: off; spaces
+    /// stored before this setting existed: on, as Wine already linked them. See MacFolders.swift.
+    public var linkMacFolders: Bool
 
     // Components
     /// «Устанавливать нужные компоненты автоматически» for this space; nil = as in onwin's settings
@@ -132,6 +137,7 @@ public struct SpaceConfig: Codable, Equatable, Sendable {
         self.installedComponents = []
         self.programs = []
         self.autoLaunchers = false
+        self.linkMacFolders = false
         self.autoInstallComponents = nil
         self.analyzedPrograms = []
         self.configVersion = SpaceConfig.currentConfigVersion
@@ -143,7 +149,7 @@ public struct SpaceConfig: Codable, Equatable, Sendable {
              highResolution, metalHUD, advertiseAVX, dxrRaytracing, metalFX, dxvkAsync,
              debugLogging, wineDebugChannels, environment, dllOverrides, description,
              installedComponents, programs, configVersion, autoLaunchers,
-             autoInstallComponents, analyzedPrograms
+             autoInstallComponents, analyzedPrograms, linkMacFolders
     }
 
     public init(from decoder: Decoder) throws {
@@ -169,6 +175,9 @@ public struct SpaceConfig: Codable, Equatable, Sendable {
         installedComponents = (try? c.decode([String].self, forKey: .installedComponents)) ?? []
         programs = (try? c.decode([ProgramEntry].self, forKey: .programs)) ?? []
         autoLaunchers = (try? c.decode(Bool.self, forKey: .autoLaunchers)) ?? false
+        // Missing key: a space from an older build, whose folders Wine linked to the Mac. Keep them, so
+        // nobody loses the way to saves that are already in ~/Documents.
+        linkMacFolders = (try? c.decode(Bool.self, forKey: .linkMacFolders)) ?? true
         autoInstallComponents = try? c.decodeIfPresent(Bool.self, forKey: .autoInstallComponents)
         analyzedPrograms = (try? c.decode([String].self, forKey: .analyzedPrograms)) ?? []
         configVersion = (try? c.decode(Int.self, forKey: .configVersion)) ?? 1
@@ -206,6 +215,7 @@ public struct SpaceConfig: Codable, Equatable, Sendable {
         try c.encode(installedComponents, forKey: .installedComponents)
         try c.encode(programs, forKey: .programs)
         try c.encode(autoLaunchers, forKey: .autoLaunchers)
+        try c.encode(linkMacFolders, forKey: .linkMacFolders)
         try c.encodeIfPresent(autoInstallComponents, forKey: .autoInstallComponents)
         try c.encode(analyzedPrograms, forKey: .analyzedPrograms)
         try c.encode(configVersion, forKey: .configVersion)

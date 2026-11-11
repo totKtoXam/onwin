@@ -9,7 +9,7 @@ import OnwinCore
 //                                                      after 10 s wineserver -k; reports a refusal
 //   func forceQuitAll(in space: Space) async         "Принудительно": wineserver -k right away
 //   func restartSpace(_ spaceID: UUID, applying: RestartSensitiveChange) async
-//        "Перезапустить пространство": soft shutdown (→ kill), then saves the change (MSync / Retina) through
+//        "Перезапустить пространство": soft shutdown (→ kill), then saves the change (MSync / Retina / Mac folders) through
 //        updateConfig, in the task sheet.
 
 /// Settings a running wineserver does not pick up: MSync (WINEMSYNC is read by the server and by
@@ -18,18 +18,22 @@ import OnwinCore
 struct RestartSensitiveChange: Equatable, Sendable {
     var msync: Bool?
     var highResolution: Bool?
+    /// «Связать папки с папками Mac»: the folders are replaced only while nothing in the space runs.
+    var linkMacFolders: Bool?
 
-    var isEmpty: Bool { msync == nil && highResolution == nil }
+    var isEmpty: Bool { msync == nil && highResolution == nil && linkMacFolders == nil }
 
     /// The fields of `new` that differ from `old`.
     init(from old: SpaceConfig, to new: SpaceConfig) {
         msync = old.msync != new.msync ? new.msync : nil
         highResolution = old.highResolution != new.highResolution ? new.highResolution : nil
+        linkMacFolders = old.linkMacFolders != new.linkMacFolders ? new.linkMacFolders : nil
     }
 
     func apply(to config: inout SpaceConfig) {
         if let msync { config.msync = msync }
         if let highResolution { config.highResolution = highResolution }
+        if let linkMacFolders { config.linkMacFolders = linkMacFolders }
     }
 
     /// "Перезапустить пространство и включить MSync"
@@ -37,6 +41,7 @@ struct RestartSensitiveChange: Equatable, Sendable {
         var parts: [String] = []
         if let msync { parts.append(msync ? "включить MSync" : "выключить MSync") }
         if let highResolution { parts.append(highResolution ? "включить режим Retina" : "выключить режим Retina") }
+        if let linkMacFolders { parts.append(linkMacFolders ? "связать папки с Mac" : "сделать папки отдельными") }
         return "Перезапустить пространство и " + parts.joined(separator: ", ")
     }
 }

@@ -2,8 +2,9 @@ import AppKit
 import SwiftUI
 import OnwinCore
 
-// "Перезапустить пространство": asked when MSync or Retina mode is switched while the space runs
-// (the running wineserver would not pick the change up, see WineRunner.restart).
+// "Перезапустить пространство": asked when MSync, Retina mode or the Mac folders setting is switched while
+// the space runs (the running wineserver would not pick the change up, see WineRunner.restart; the
+// profile folders must not be replaced under running programs, see MacFolders).
 // Used by SpaceSettingsForm: it holds back such a change and sets `pending`; this modifier asks.
 
 extension View {
@@ -39,6 +40,9 @@ private struct SpaceRestartPromptModifier: ViewModifier {
         var text = "Эта настройка начнёт действовать только после перезапуска пространства: все его программы будут закрыты. Программы смогут сохранить данные, но если какая-то не закроется за 10 секунд, её завершат принудительно и несохранённое пропадёт."
         if change.msync == true {
             text += "\n\nНекоторые Windows-программы с MSync работают неправильно."
+        }
+        if change.linkMacFolders != nil {
+            text += "\n\nПапки «Документы», «Загрузки» и другие можно поменять, только пока в пространстве ничего не запущено."
         }
         if change.highResolution == true {
             text += "\n\nМногие Windows-программы в режиме Retina выглядят неправильно."

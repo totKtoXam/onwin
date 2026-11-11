@@ -145,6 +145,7 @@ func runProgramCommand(_ command: String, _ args: [String]) async throws -> Bool
             return true
         }
         // Same as `runAndWait`, but with this run's variables.
+        runner.prepareProfileFolders()
         let r = try await ProcessRunner.run(runner.engine.wine, arguments: wineArgs,
                                             environment: runner.environment(extraEnvironment: env),
                                             currentDirectory: resolved.unixPath?.deletingLastPathComponent()

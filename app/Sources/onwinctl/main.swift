@@ -26,6 +26,9 @@ onwinctl \(OnwinVersion.string) — запуск Windows-программ на M
                                            backend, win, msync, retina, hud, avx, dxr, metalfx,
                                            debug, launchers, autocomponents (on|off|default), env:ИМЯ, dll:ИМЯ. msync и retina в запущенной
                                            пространстве меняются только с --restart (перезапуск пространства)
+                                           mac-folders on|off — «Документы», «Загрузки», «Музыка», «Изображения»
+                                           и «Видео» пространства ведут в папки Mac (macOS спросит доступ) или
+                                           свои (по умолчанию в новых); меняется, только когда пространство не запущено
   onwinctl env <имя>                       переменные окружения запуска
   onwinctl archive <имя> <файл.onwinspace>
   onwinctl restore <файл.onwinspace> [имя]
@@ -188,7 +191,11 @@ do {
         args.removeAll { $0 == "--restart" }
         guard args.count >= 3 else { fail("использование: onwinctl set <пространство> <параметр> <значение> [--restart]") }
         var b = space(args[0])
-        if ["msync", "retina"].contains(args[1]) {
+        if args[1] == "mac-folders",
+           !["on", "off", "1", "0", "yes", "no", "true", "false", "да", "нет", "вкл", "выкл"].contains(args[2].lowercased()) {
+            fail("mac-folders: on (связать с папками Mac) или off (свои папки пространства)")
+        }
+        if ["msync", "retina", "mac-folders"].contains(args[1]) {
             let runner = try WineRunner(space: b)
             if runner.isServerRunning {
                 // A running wineserver keeps the old sync mode / DPI: mixed state until it exits.
@@ -199,6 +206,18 @@ do {
                 if outcome == .refused { fail("программа в пространстве отказалась завершаться; закройте её сами или: onwinctl kill \(b.name)") }
                 print(outcome == .forced ? "Пространство завершено принудительно" : "Пространство завершено")
             }
+        }
+        if args[1] == "mac-folders" {
+            let linked = parseBool(args[2])
+            let (updated, outcome) = try SpaceManager.setMacFoldersLinked(b, linked)
+            if linked {
+                print("Папки пространства «\(updated.name)» связаны с папками Mac. Когда Windows-программа откроет их, macOS спросит разрешение.")
+                if let message = outcome.keptMessage { print(message) }
+            } else {
+                print("У пространства «\(updated.name)» теперь свои папки «Документы», «Загрузки», «Музыка», «Изображения» и «Видео». Папки Mac не изменены.")
+                if !outcome.unlinked.isEmpty { print("Убраны ссылки: " + outcome.unlinked.map(\.title).joined(separator: ", ")) }
+            }
+            exit(0)
         }
         let key = args[1], value = args[2]
         var needsRegistry = false, needsWinver = false

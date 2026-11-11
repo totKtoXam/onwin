@@ -37,6 +37,7 @@ extension WineRunner {
     @discardableResult
     public func updatePrefixIfNeeded(onOutput: (@Sendable (String) -> Void)? = nil) async throws -> Bool {
         guard prefixUpdatePending, !isServerRunning else { return false }
+        prepareProfileFolders()
         onOutput?(WineRunner.prefixUpdateMessage + "\n")
         _ = try await ProcessRunner.run(engine.wine, arguments: ["wineboot", "-u"],
                                         environment: environment(extraOverrides: engine.addonInstallOverrides),

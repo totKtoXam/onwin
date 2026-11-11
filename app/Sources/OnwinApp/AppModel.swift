@@ -223,6 +223,9 @@ final class AppModel {
     var settings: OnwinSettings = OnwinSettings.load()
     var isD3DMetalInstalled = false
     var backgroundActivity: String?
+    /// What happened to a space's folders after «Связать … с папками Mac» was switched on, when some
+    /// of them had files (MacFolders.Outcome.keptMessage); shown by SpaceSettingsForm.
+    var macFoldersNotice: String?
 
     var showNewSpaceSheet = false
     var settingsSpaceID: UUID?
@@ -604,6 +607,17 @@ final class AppModel {
         space.config.name = old.name
 
         if space.config != old {
+            // «Документы», «Загрузки»… become links to the Mac folders or the space's own folders. Done
+            // before saving: if it fails (the space was started meanwhile), the setting stays as it was.
+            if space.config.linkMacFolders != old.linkMacFolders {
+                do {
+                    let outcome = try MacFolders.apply(linked: space.config.linkMacFolders, to: space)
+                    if let message = outcome.keptMessage { macFoldersNotice = message }
+                } catch {
+                    report(error)
+                    return
+                }
+            }
             do {
                 try space.save()
             } catch {
