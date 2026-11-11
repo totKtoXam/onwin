@@ -607,7 +607,7 @@ html { scroll-behavior: smooth; }
 
 /* ---------- Обновления ---------- */
 .release-list { display: grid; gap: 18px; }
-.release { padding: 24px; }
+.release { padding: 24px; min-width: 0; }  /* grid item: long commands and notes must not widen the card */
 .release-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 10px; }
 .release-head h2 { margin: 0; font-size: 1.35rem; }
 .release-date { color: var(--muted); font-size: 0.95rem; }
@@ -671,3 +671,27 @@ html { scroll-behavior: smooth; }
   font: inherit; font-size: 1.2rem; line-height: 1; cursor: pointer;
 }
 .lang-bar-close:hover { background: var(--surface-2); color: var(--text); }
+
+/* ---------- Счётчик «Нас уже» на главной ---------- */
+
+.counter {
+  display: inline-grid; gap: 2px; max-width: 100%;
+  margin-top: 26px; padding: 14px 20px 16px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.counter p { margin: 0; }
+.counter-label { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.92rem; font-weight: 600; }
+.counter-dot {
+  width: 8px; height: 8px; flex: none; border-radius: 50%; background: #34c759;
+  box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); animation: counter-pulse 2.4s ease-out infinite;
+}
+@keyframes counter-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); }
+  70%, 100% { box-shadow: 0 0 0 7px rgba(52, 199, 89, 0); }
+}
+.counter-value {
+  font-family: var(--font-display); font-size: clamp(2.2rem, 7vw, 3rem); font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.02em; color: var(--accent-text); font-variant-numeric: tabular-nums;
+}
+.counter-caption { color: var(--muted); font-size: 0.9rem; line-height: 1.4; }
+@media (prefers-reduced-motion: reduce) { .counter-dot { animation: none; } }

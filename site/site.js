@@ -42,7 +42,8 @@
       releasesNone: "Выпусков пока нет.", releasesFail: "Не удалось загрузить список выпусков.",
       badgeLatest: "последняя", badgePre: "тестовая", badgeBeta: "бета",
       dmg: "Скачать DMG", zip: "Приложение без движка (zip)", releasePage: "Страница выпуска",
-      thisVersion: "Установить именно эту версию через Терминал:", notes: "Что нового и как установить"
+      thisVersion: "Установить именно эту версию через Терминал:", notes: "Что нового и как установить",
+      downloads: function (n, s) { return "Скачано " + s + " " + ({ one: "раз", few: "раза", many: "раз" }[plural(n)] || "раза"); }
     },
     en: {
       copy: "Copy", copied: "Copied", copiedLive: "Copied to clipboard",
@@ -69,6 +70,7 @@
       badgeLatest: "latest", badgePre: "pre-release", badgeBeta: "beta",
       dmg: "Download DMG", zip: "App without the engine (zip)", releasePage: "Release page",
       thisVersion: "Install exactly this version with Terminal:", notes: "What’s new and how to install (in Russian)",
+      downloads: function (n, s) { return "Downloaded " + s + (plural(n) === "one" ? " time" : " times"); },
       bar: "This site is also available in English.", barGo: "Switch to English", barClose: "Close"
     },
     zh: {
@@ -96,6 +98,7 @@
       badgeLatest: "最新", badgePre: "预发布", badgeBeta: "测试版",
       dmg: "下载 DMG", zip: "不含引擎的应用（zip）", releasePage: "发布页面",
       thisVersion: "通过“终端”安装这个版本：", notes: "更新内容与安装说明（俄语）",
+      downloads: function (n, s) { return "已下载 " + s + " 次"; },
       bar: "本网站有简体中文版。", barGo: "切换到中文", barClose: "关闭"
     },
     kk: {
@@ -123,6 +126,7 @@
       badgeLatest: "соңғы", badgePre: "сынақ", badgeBeta: "бета",
       dmg: "DMG жүктеп алу", zip: "Қозғалтқышсыз қолданба (zip)", releasePage: "Шығарылым беті",
       thisVersion: "Дәл осы нұсқаны Терминал арқылы орнату:", notes: "Не жаңа және қалай орнату керек (орыс тілінде)",
+      downloads: function (n, s) { return s + " рет жүктелді"; },
       bar: "Бұл сайттың қазақша нұсқасы бар.", barGo: "Қазақшаға ауысу", barClose: "Жабу"
     }
   };
@@ -137,6 +141,11 @@
 
   var lang = langOf(document.documentElement.lang);
   var T = I18N[lang.code];
+
+  // Plural category ("one", "few", "many", "other") for the page language.
+  function plural(n) {
+    try { return new Intl.PluralRules(lang.locale).select(n); } catch (e) { return n === 1 ? "one" : "other"; }
+  }
 
   // Site root: the folder site.js is loaded from (pages in en/ load ../site.js).
   var script = document.currentScript;
@@ -309,7 +318,13 @@
   function formatDate(iso) {
     var d = new Date(iso);
     if (isNaN(d.getTime())) return "";
-    return d.toLocaleDateString(lang.locale, { day: "numeric", month: "long", year: "numeric" });
+    var text = d.toLocaleDateString(lang.locale, { day: "numeric", month: "long", year: "numeric" });
+    // Some browsers have no Kazakh month names and print "2026 M11 11".
+    if (lang.code === "kk" && /M\d/.test(text)) {
+      var months = ["қаңтар", "ақпан", "наурыз", "сәуір", "мамыр", "маусым", "шілде", "тамыз", "қыркүйек", "қазан", "қараша", "желтоқсан"];
+      text = d.getFullYear() + " жылғы " + d.getDate() + " " + months[d.getMonth()];
+    }
+    return text;
   }
 
   function dmgOf(release) {
@@ -621,6 +636,7 @@
           { headers: { "Accept": "application/vnd.github.html+json" } })
       .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
       .then(function (list) {
+        saveCount(countInstalls(list));
         var apps = list.filter(function (r) { return !r.draft && /^v\d/.test(r.tag_name || ""); });
         box.textContent = "";
         if (!apps.length) { fail(T.releasesNone); return; }
@@ -639,15 +655,20 @@
           card.appendChild(head);
 
           var actions = el("div", "release-actions");
+          var downloads = 0;
           (rel.assets || []).forEach(function (asset) {
             var isDmg = /\.dmg$/i.test(asset.name);
             var kind = isDmg ? T.dmg : /-app\.zip$/i.test(asset.name) ? T.zip : "";
             if (!kind) return;
+            downloads += asset.download_count || 0;
             var a = el("a", "btn " + (isDmg ? "btn-primary" : "btn-secondary"));
             a.href = asset.browser_download_url;
             a.appendChild(el("span", null, kind + (formatSize(asset.size) ? " · " + formatSize(asset.size) : "")));
             actions.appendChild(a);
           });
+          if (downloads > 0) {
+            head.appendChild(el("span", "release-date release-downloads", T.downloads(downloads, new Intl.NumberFormat(lang.locale).format(downloads))));
+          }
           var page = el("a", "btn btn-secondary", T.releasePage);
           page.href = rel.html_url;
           actions.appendChild(page);
@@ -679,6 +700,132 @@
         });
       })
       .catch(function () { fail(T.releasesFail); });
+  }
+
+  /* ---------- Счётчик «Нас уже» на главной ---------- */
+
+  // Installs, not downloads: every install downloads the engine once (Terminal installer, or the light DMG on
+  // first launch), or comes as a DMG with the engine inside (over 100 MB). App updates (zip, light DMG) are not counted.
+  var COUNT_KEY = "onwin-installs";
+  var BIG_DMG = 100 * 1024 * 1024;
+
+  function countInstalls(list) {
+    var total = 0;
+    (Array.isArray(list) ? list : []).forEach(function (rel) {
+      ((rel && rel.assets) || []).forEach(function (a) {
+        var name = String((a && a.name) || "");
+        var engine = /^onwin-engine-.+\.tar\.xz$/i.test(name) && !/sources?|src/i.test(name);  // not source archives
+        if (engine || (/\.dmg$/i.test(name) && a.size > BIG_DMG)) {
+          total += a.download_count || 0;
+        }
+      });
+    });
+    return total;
+  }
+
+  // The unauthenticated GitHub API allows 60 requests an hour per visitor: the last value is shared by the
+  // pages of this tab for a minute.
+  function readCount() {
+    try {
+      var c = JSON.parse(sessionStorage.getItem(COUNT_KEY) || "null");
+      if (c && typeof c.n === "number" && typeof c.t === "number") return c;
+    } catch (e) { /* no storage */ }
+    return null;
+  }
+  function saveCount(n) {
+    try { sessionStorage.setItem(COUNT_KEY, JSON.stringify({ n: n, t: Date.now() })); } catch (e) { /* no storage */ }
+  }
+
+  function setupCounter() {
+    var box = document.querySelector("[data-counter]");
+    if (!box || repo === PLACEHOLDER_REPO || !isWeb || !window.fetch || !window.requestAnimationFrame) return;
+    var out = box.querySelector("[data-counter-value]");
+    var sr = box.querySelector("[data-counter-sr]");
+    var nf = new Intl.NumberFormat(lang.locale);
+    var min = typeof cfg.counterMin === "number" && cfg.counterMin > 0 ? cfg.counterMin : 0;
+    var still = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    var REFRESH = 120000, FRESH = 60000;
+    var shown = 0, frame = 0, timer = 0, busy = false, lastTry = 0;
+
+    function render(n) { out.textContent = nf.format(n); }
+
+    // Counts up from zero on first appearance, then from the old value to the new one.
+    function show(n) {
+      if (n < min) { box.hidden = true; return; }
+      var from = box.hidden ? 0 : shown;
+      box.hidden = false;
+      shown = n;
+      if (sr) sr.textContent = nf.format(n);
+      cancelAnimationFrame(frame);
+      if (still || from === n) { render(n); return; }
+      var start = 0;
+      function step(now) {
+        if (!start) start = now;
+        var k = Math.min(1, (now - start) / 1200);
+        render(Math.round(from + (n - from) * (1 - Math.pow(1 - k, 3))));
+        if (k < 1) frame = requestAnimationFrame(step);
+      }
+      frame = requestAnimationFrame(step);
+    }
+
+    function schedule(ms) {
+      clearTimeout(timer);
+      timer = document.hidden ? 0 : setTimeout(refresh, Math.max(1000, ms));
+    }
+
+    function refresh() {
+      clearTimeout(timer);
+      if (document.hidden || busy) return;
+      var c = readCount();
+      var age = c ? Date.now() - c.t : Infinity;
+      if (c && age < FRESH) { show(c.n); schedule(REFRESH - age); return; }
+      busy = true;
+      lastTry = Date.now();
+      getJSON("https://api.github.com/repos/" + repo + "/releases?per_page=100").then(function (list) {
+        var n = countInstalls(list);
+        saveCount(n);
+        show(n);
+      }, function () {
+        // Rate limit or offline: keep the number on screen; with no number at all the block stays hidden.
+        if (box.hidden && c) show(c.n);
+      }).then(function () { busy = false; schedule(REFRESH); });
+    }
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) { clearTimeout(timer); return; }
+      var c = readCount();
+      var age = Date.now() - Math.max(lastTry, c ? c.t : 0);
+      if (age >= REFRESH) refresh(); else schedule(REFRESH - age);
+    });
+    refresh();
+  }
+
+  /* ---------- Счётчики посещений (по желанию, без cookie) ---------- */
+
+  // Loaded only when filled in config.js; then the footer says the site counts visits.
+  function setupAnalytics() {
+    if (!isWeb) return;
+    var a = cfg.analytics && typeof cfg.analytics === "object" ? cfg.analytics : {};
+    var gc = typeof a.goatcounter === "string" ? a.goatcounter.trim().toLowerCase() : "";
+    var cf = typeof a.cloudflareToken === "string" ? a.cloudflareToken.trim() : "";
+    var on = false;
+    if (/^[a-z0-9][a-z0-9-]{0,62}$/.test(gc)) {
+      var g = document.createElement("script");
+      g.async = true;
+      g.src = "https://gc.zgo.at/count.js";
+      g.setAttribute("data-goatcounter", "https://" + gc + ".goatcounter.com/count");
+      document.head.appendChild(g);
+      on = true;
+    }
+    if (/^[A-Za-z0-9]{8,64}$/.test(cf)) {
+      var b = document.createElement("script");
+      b.defer = true;
+      b.src = "https://static.cloudflareinsights.com/beacon.min.js";
+      b.setAttribute("data-cf-beacon", JSON.stringify({ token: cf }));
+      document.head.appendChild(b);
+      on = true;
+    }
+    if (on) each("[data-analytics-note]", function (n) { n.hidden = false; });
   }
 
   /* ---------- Выбор языка ---------- */
@@ -730,6 +877,8 @@
     each("[data-support]", renderSupport);
     setupRelease();
     setupReleasesPage();
+    setupCounter();
+    setupAnalytics();
     document.addEventListener("click", onCopyClick);
     document.addEventListener("click", onLangClick);
     suggestLanguage();

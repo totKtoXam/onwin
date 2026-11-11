@@ -9,7 +9,8 @@
     ведущий на ту же страницу в другом языке;
   * версии ?v= у style.css, config.js, site.js одинаковые на всех страницах;
   * набор id на странице одинаковый во всех языках (якоря из других страниц и из site.js не ломаются);
-  * в en/ и zh/ не осталось русского текста (кроме подписей переключателя и явно разрешённого).
+  * в en/ и zh/ не осталось русского текста (кроме подписей переключателя и явно разрешённого);
+  * в подвале есть строка о счётчике посещений, на главной — счётчик установок.
 Код выхода 1, если есть ошибки.
 """
 import os, re, sys
@@ -136,6 +137,12 @@ for d, tag in LANGS.items():
             check_link(path, link, rel)
         for m in re.finditer(r'(style\.css|config\.js|site\.js)\?v=(\d+)', p.source):
             versions.setdefault(m.group(1), {}).setdefault(m.group(2), []).append(rel)
+
+        # Hooks site.js fills in: the footer line about visit counting, the install counter on the home page.
+        if "data-analytics-note" not in p.source:
+            errors.append("%s: footer has no data-analytics-note line" % rel)
+        if page == "index.html" and "data-counter-value" not in p.source:
+            errors.append("%s: no install counter (data-counter)" % rel)
 
         if page != "404.html":
             for js in JS_LINKS:
