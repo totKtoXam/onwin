@@ -419,7 +419,7 @@ struct PreferencesUpdatesSection: View {
             }
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Установлена onwin \(OnwinVersion.displayString)")
+                    Text("Проверить, вышла ли новая версия")
                     if let last = model.settings.lastUpdateCheck {
                         Text("Последняя проверка: \(last.formatted(.dateTime.day().month(.wide).hour().minute().locale(Locale(identifier: "ru_RU"))))")
                             .font(.caption)
