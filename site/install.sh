@@ -32,7 +32,7 @@ die() { printf 'onwin: ошибка: %s\n' "$*" >&2; exit 1; }
 # Questions go to the terminal even though the script itself arrives through a pipe.
 ask_yes() {
     local answer=""
-    [ -r /dev/tty ] || return 1
+    { : < /dev/tty; } 2>/dev/null || return 1   # no terminal to ask (e.g. a script): treat as «no»
     printf '%s [Y/n] ' "$1" > /dev/tty
     read -r answer < /dev/tty || return 1
     case "$answer" in ""|y|Y|yes|д|Д|да|Да) return 0 ;; *) return 1 ;; esac
@@ -63,6 +63,8 @@ app_candidates() {
 }
 
 app_running() { /usr/bin/pgrep -x Onwin >/dev/null 2>&1; }
+# The copy at <path>/Onwin.app is running (only that one has to be closed before it is replaced).
+app_running_at() { /usr/bin/pgrep -f "^$1/Contents/MacOS/Onwin( |\$)" >/dev/null 2>&1; }
 
 # ---------------------------------------------------------------------------------- uninstall
 if [ "$UNINSTALL" = 1 ]; then
@@ -192,12 +194,12 @@ FRESH=0
 if [ "$installed_build" = "$BUILD" ]; then
     say "приложение onwin $VERSION уже установлено: $TARGET"
 else
-    if app_running; then
+    if [ -d "$TARGET" ] && app_running_at "$TARGET"; then
         if ask_yes "onwin сейчас открыт. Закрыть его для обновления?"; then
             /usr/bin/osascript -e 'tell application id "app.onwin.Onwin" to quit' >/dev/null 2>&1 || true
-            for _ in 1 2 3 4 5 6 7 8 9 10; do app_running || break; sleep 1; done
+            for _ in 1 2 3 4 5 6 7 8 9 10; do app_running_at "$TARGET" || break; sleep 1; done
         fi
-        app_running && die "закройте onwin и запустите установку снова"
+        app_running_at "$TARGET" && die "закройте onwin и запустите установку снова"
     fi
     size_mb=$(( $(json app.size) / 1048576 + 1 ))
     say "скачиваю $LABEL (~${size_mb} МБ)"
