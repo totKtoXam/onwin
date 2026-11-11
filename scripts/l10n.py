@@ -24,6 +24,7 @@ Xcode writes, so they can also be edited in Xcode.
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -40,11 +41,12 @@ TARGET_BUNDLES = {"OnwinCore": ".onwinCore", "onwinctl": ".onwinctl"}
 
 CYRILLIC = re.compile(r"[А-Яа-яЁё]")
 # Letters Kazakh has and Russian does not.
+CYRILLIC_WORD = re.compile(r"[А-Яа-яЁё]{2,}")
 KAZAKH_LETTERS = re.compile(r"[ӘәҒғҚқҢңӨөҰұҮүҺһІі]")
 # Russian words that do not exist in Kazakh: their presence in a kk string means it was not translated.
 RUSSIAN_WORDS = re.compile(
-    r"(?<![А-Яа-яЁёӘәҒғҚқҢңӨөҰұҮүҺһІі])(и|в|во|на|не|для|что|это|или|при|по|из|от|до|без|с|со|к|ко|как|если|"
-    r"нет|есть|уже|ещё|еще|можно|нужно|будет|файл[аыов]|пространств[аоеу]|программ[аыуе]?|установк[аиу])"
+    r"(?<![А-Яа-яЁёӘәҒғҚқҢңӨөҰұҮүҺһІі])(и|в|во|на|для|что|это|или|при|по|из|от|до|без|со|к|ко|как|если|"
+    r"нет|есть|уже|ещё|еще|можно|нужно|будет|файлов|пространств[аоеу]?|программ[ауе]?|установк[аиу])"
     r"(?![А-Яа-яЁёӘәҒғҚқҢңӨөҰұҮүҺһІі])"
 )
 SPECIFIER = re.compile(r"%(?:(\d+)\$)?([-+ #0]*\d*(?:\.\d+)?(?:hh|h|ll|l|q|z|t|j)?[@dDiuUxXoOfFeEgGcCsSpaA%])")
@@ -92,12 +94,16 @@ def specifiers(text):
 def extract():
     """Keys per target, from the .stringsdata files swiftc writes with -emit-localized-strings."""
     out = tempfile.mkdtemp(prefix="onwin-l10n-")
-    scratch = os.path.join(ROOT, "build", "l10n-scratch")
-    command = ["swift", "build", "--package-path", PACKAGE, "--scratch-path", scratch,
-               "-Xswiftc", "-emit-localized-strings", "-Xswiftc", "-emit-localized-strings-path", "-Xswiftc", out]
+    scratch = os.environ.get("L10N_SCRATCH") or os.path.join(ROOT, "build", "l10n-scratch")
+    command = ["swift", "build", "--package-path", PACKAGE, "--scratch-path", scratch]
+    if os.environ.get("L10N_PRODUCT"):   # e.g. onwinctl: compiles OnwinCore + onwinctl only
+        command += ["--product", os.environ["L10N_PRODUCT"]]
+    # swiftc writes .stringsdata only for files it compiles: always build from scratch.
+    shutil.rmtree(scratch, ignore_errors=True)
+    command += ["-Xswiftc", "-emit-localized-strings", "-Xswiftc", "-emit-localized-strings-path", "-Xswiftc", out]
     print("l10n: " + " ".join(command), file=sys.stderr)
     subprocess.run(command, check=True)
-    keys = {target: {} for target in TARGETS}
+    keys = {}
     for name in os.listdir(out):
         if not name.endswith(".stringsdata"):
             continue
@@ -105,9 +111,10 @@ def extract():
             data = json.load(f)
         source = data.get("source", "")
         match = re.search(r"/Sources/([^/]+)/", source)
-        if not match or match.group(1) not in keys:
+        if not match or match.group(1) not in TARGETS + ["onwin-launcher"]:
             continue
         target = match.group(1)
+        keys.setdefault(target, {})
         relative = os.path.relpath(source, PACKAGE)
         for table, entries in data.get("tables", {}).items():
             if table != "Localizable":
@@ -124,6 +131,8 @@ def extract():
 def sync():
     keys = extract()
     for target in TARGETS:
+        if target not in keys:   # not compiled (L10N_PRODUCT): leave its catalog alone
+            continue
         data = load(target)
         strings = data.setdefault("strings", {})
         added = removed = 0
@@ -192,7 +201,8 @@ def check():
                     if language in ("en", "zh-Hans") and CYRILLIC.search(text):
                         problems.append(f"{target}: {language}: Cyrillic in translation: {key!r} → {text!r}")
                     if language == "kk" and needs_translation(key):
-                        if text == key and len(key) > 3:
+                        # The same text is fine for loanwords («Графика», «Каталог», «Журнал: %@»).
+                        if text == key and len(CYRILLIC_WORD.findall(key)) > 2:
                             problems.append(f"{target}: kk: same as Russian: {key!r}")
                         elif RUSSIAN_WORDS.search(text) or (len(CYRILLIC.findall(text)) > 25 and not KAZAKH_LETTERS.search(text)):
                             problems.append(f"{target}: kk: looks Russian: {key!r} → {text!r}")
@@ -233,7 +243,7 @@ def export(language, path, everything=False):
     result = {}
     for target in TARGETS:
         strings = load(target).get("strings", {})
-        for key, info in sorted(keys[target].items()):
+        for key, info in sorted(keys.get(target, {}).items()):
             entry = strings.get(key, {})
             if entry.get("shouldTranslate") is False or not needs_translation(key):
                 continue

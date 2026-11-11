@@ -1,7 +1,4974 @@
 {
   "sourceLanguage" : "ru",
   "strings" : {
-
+    "%@ (файла нет!)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (file is missing!)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (файл жоқ!)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@（文件不存在！）"
+          }
+        }
+      }
+    },
+    "%@ — не PE-файл Windows" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ isn’t a Windows PE file"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ — Windows PE файлы емес"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ — 不是 Windows PE 文件"
+          }
+        }
+      }
+    },
+    "%@: не поддерживается этим Mac — %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: not supported on this Mac — %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: бұл Mac қолдамайды — %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@：此 Mac 不支持 — %@"
+          }
+        }
+      }
+    },
+    "(скрыта)" : {
+      "comment" : "The program is hidden from the desktop",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(hidden)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(жасырылған)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "（已隐藏）"
+          }
+        }
+      }
+    },
+    "--env ИМЯ=ЗНАЧЕНИЕ" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "--env NAME=VALUE"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "--env АТЫ=МӘНІ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "--env 名称=值"
+          }
+        }
+      }
+    },
+    "D3DMetal импортирован в %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal imported into %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal мына жерге импортталды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal 已导入到 %@"
+          }
+        }
+      }
+    },
+    "D3DMetal импортирован из %@ → %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal imported from %@ → %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal импортталды: %@ → %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal 已导入：%@ → %@"
+          }
+        }
+      }
+    },
+    "D3DMetal: импортирован" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal: imported"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal: импортталған"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal：已导入"
+          }
+        }
+      }
+    },
+    "D3DMetal: не импортирован (onwinctl d3dmetal-fetch)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal: not imported (onwinctl d3dmetal-fetch)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal: импортталмаған (onwinctl d3dmetal-fetch)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal：未导入（onwinctl d3dmetal-fetch）"
+          }
+        }
+      }
+    },
+    "Game Porting Toolkit не найден ни в «Загрузках», ни в кэше onwin, ни среди подключённых дисков.\nApple отдаёт его только после входа с Apple ID, а вход возможен только в приложении:\n  onwin → Каталог → D3DMetal → «Установить D3DMetal» (вход, загрузка и установка — внутри onwin).\nИли скачайте .dmg сами (%@) и запустите\n  onwinctl d3dmetal-fetch            — onwin найдёт его в «Загрузках»\n  onwinctl d3dmetal-fetch --wait     — ждать появления .dmg (--browser — ещё и открыть страницу Apple)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Game Porting Toolkit wasn’t found in Downloads, in the onwin cache, or among mounted disks.\nApple provides it only after you sign in with an Apple ID, and signing in is only possible in the app:\n  onwin → Catalog → D3DMetal → “Install D3DMetal” (sign-in, download and installation all happen in onwin).\nOr download the .dmg yourself (%@) and run\n  onwinctl d3dmetal-fetch            — onwin will find it in Downloads\n  onwinctl d3dmetal-fetch --wait     — wait for the .dmg to appear (--browser also opens Apple’s page)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Game Porting Toolkit «Жүктеулер» қалтасынан да, onwin кэшінен де, қосылған дискілерден де табылмады.\nApple оны тек Apple ID арқылы кіргеннен кейін береді, ал кіру тек қолданбада мүмкін:\n  onwin → Каталог → D3DMetal → «D3DMetal орнату» (кіру, жүктеп алу және орнату — onwin ішінде).\nНемесе .dmg файлын өзіңіз жүктеп алыңыз (%@) және іске қосыңыз\n  onwinctl d3dmetal-fetch            — onwin оны «Жүктеулер» қалтасынан табады\n  onwinctl d3dmetal-fetch --wait     — .dmg пайда болуын күту (--browser — Apple бетін де ашу)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在“下载”文件夹、onwin 缓存和已连接的磁盘中都找不到 Game Porting Toolkit。\nApple 只在使用 Apple ID 登录后才提供下载，而登录只能在应用中进行：\n  onwin → 目录 → D3DMetal → “安装 D3DMetal”（登录、下载和安装都在 onwin 中完成）。\n或者自行下载 .dmg（%@），然后运行\n  onwinctl d3dmetal-fetch            — onwin 会在“下载”文件夹中找到它\n  onwinctl d3dmetal-fetch --wait     — 等待 .dmg 出现（--browser — 同时打开 Apple 页面）"
+          }
+        }
+      }
+    },
+    "Rosetta:  НЕ УСТАНОВЛЕНА — без неё Wine не запустится: softwareupdate --install-rosetta --agree-to-license (macOS может запросить пароль)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta:  NOT INSTALLED — Wine won’t start without it: softwareupdate --install-rosetta --agree-to-license (macOS may ask for your password)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta:  ОРНАТЫЛМАҒАН — онсыз Wine іске қосылмайды: softwareupdate --install-rosetta --agree-to-license (macOS құпиясөз сұрауы мүмкін)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta： 未安装 — 没有它 Wine 无法运行：softwareupdate --install-rosetta --agree-to-license（macOS 可能会要求输入密码）"
+          }
+        }
+      }
+    },
+    "Rosetta:  не нужна" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta:  not needed"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta:  керек емес"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta： 不需要"
+          }
+        }
+      }
+    },
+    "Rosetta:  установлена" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta:  installed"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta:  орнатылған"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta： 已安装"
+          }
+        }
+      }
+    },
+    "Steam, удаление программ, запуск с параметрами:\n  onwinctl steam-games <пространство>      игры Steam в пространстве (appmanifest_*.acf)\n  onwinctl steam-launch <пространство> <appid|название> [аргументы...]  steam.exe -applaunch <appid>\n  onwinctl steam-install <пространство> <appid> открыть steam://install/<appid> в Steam пространства\n  onwinctl vdf <файл.vdf|.acf> [ключ/ключ...]   разобрать файл Valve KeyValues (проверка)\n  onwinctl uninstall-list <пространство>   программы из реестра (…\\CurrentVersion\\Uninstall)\n  onwinctl uninstall <пространство> <название|ключ> [--quiet] [--dry-run]\n                                           запустить удаление; --quiet — тихо (QuietUninstallString, msiexec /qn)\n  onwinctl run-command <пространство> [--backend b] [--hud on|off] [--no-avx] [--avx] [--winedebug каналы]\n                       [--env ИМЯ=ЗНАЧЕНИЕ]... [--dry-run] <командная строка Windows>\n                                           выполнить команду с параметрами одного запуска и ждать\n  onwinctl reboot <пространство>           «перезагрузить Windows» (wineboot --restart)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steam, uninstalling programs, running with options:\n  onwinctl steam-games <space>             Steam games in the space (appmanifest_*.acf)\n  onwinctl steam-launch <space> <appid|name> [arguments...]  steam.exe -applaunch <appid>\n  onwinctl steam-install <space> <appid>   open steam://install/<appid> in the space’s Steam\n  onwinctl vdf <file.vdf|.acf> [key/key...]  parse a Valve KeyValues file (testing)\n  onwinctl uninstall-list <space>          programs from the registry (…\\CurrentVersion\\Uninstall)\n  onwinctl uninstall <space> <name|key> [--quiet] [--dry-run]\n                                           run the uninstaller; --quiet: silently (QuietUninstallString, msiexec /qn)\n  onwinctl run-command <space> [--backend b] [--hud on|off] [--no-avx] [--avx] [--winedebug channels]\n                       [--env NAME=VALUE]... [--dry-run] <Windows command line>\n                                           run a command with one-time launch options and wait\n  onwinctl reboot <space>                  “restart Windows” (wineboot --restart)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steam, бағдарламаларды жою, параметрлермен іске қосу:\n  onwinctl steam-games <кеңістік>          кеңістіктегі Steam ойындары (appmanifest_*.acf)\n  onwinctl steam-launch <кеңістік> <appid|атауы> [аргументтер...]       steam.exe -applaunch <appid>\n  onwinctl steam-install <кеңістік> <appid> кеңістіктегі Steam ішінде steam://install/<appid> ашу\n  onwinctl vdf <файл.vdf|.acf> [кілт/кілт...]   Valve KeyValues файлын талдау (тексеру)\n  onwinctl uninstall-list <кеңістік>       тізілімдегі бағдарламалар (…\\CurrentVersion\\Uninstall)\n  onwinctl uninstall <кеңістік> <атауы|кілт> [--quiet] [--dry-run]\n                                           жоюды іске қосу; --quiet — үнсіз (QuietUninstallString, msiexec /qn)\n  onwinctl run-command <кеңістік> [--backend b] [--hud on|off] [--no-avx] [--avx] [--winedebug арналар]\n                       [--env АТЫ=МӘНІ]... [--dry-run] <Windows пәрмен жолы>\n                                           бір іске қосуға арналған параметрлермен пәрменді орындап, күту\n  onwinctl reboot <кеңістік>               «Windows жүйесін қайта іске қосу» (wineboot --restart)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steam、卸载程序、带参数运行：\n  onwinctl steam-games <空间>              空间中的 Steam 游戏（appmanifest_*.acf）\n  onwinctl steam-launch <空间> <appid|名称> [参数...]  steam.exe -applaunch <appid>\n  onwinctl steam-install <空间> <appid>    在空间的 Steam 中打开 steam://install/<appid>\n  onwinctl vdf <文件.vdf|.acf> [键/键...]  解析 Valve KeyValues 文件（检查用）\n  onwinctl uninstall-list <空间>           注册表中的程序（…\\CurrentVersion\\Uninstall）\n  onwinctl uninstall <空间> <名称|键> [--quiet] [--dry-run]\n                                           运行卸载；--quiet — 静默卸载（QuietUninstallString，msiexec /qn）\n  onwinctl run-command <空间> [--backend b] [--hud on|off] [--no-avx] [--avx] [--winedebug 通道]\n                       [--env 名称=值]... [--dry-run] <Windows 命令行>\n                                           使用单次运行的参数执行命令并等待\n  onwinctl reboot <空间>                   “重启 Windows”（wineboot --restart）"
+          }
+        }
+      }
+    },
+    "cabextract: не найден (scripts/build-cabextract.sh)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cabextract: not found (scripts/build-cabextract.sh)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cabextract: табылмады (scripts/build-cabextract.sh)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cabextract：未找到（scripts/build-cabextract.sh）"
+          }
+        }
+      }
+    },
+    "id «%@» занят встроенным рецептом каталога — выберите другой" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "id “%@” is already used by a built-in Catalog recipe — choose another one"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» id каталогтың кірістірілген рецептінде пайдаланылған — басқасын таңдаңыз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "id“%@”已被目录中的内置配方占用 — 请换一个"
+          }
+        }
+      }
+    },
+    "mac-folders: on (связать с папками Mac) или off (свои папки пространства)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mac-folders: on (link to Mac folders) or off (the space’s own folders)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mac-folders: on (Mac қалталарымен байланыстыру) немесе off (кеңістіктің өз қалталары)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mac-folders：on（关联到 Mac 文件夹）或 off（使用空间自己的文件夹）"
+          }
+        }
+      }
+    },
+    "onwin сейчас открыт. Обновите его из самого приложения: меню «onwin» → «Проверить обновления…»\n(onwin перезапустится сам) — или закройте onwin и выполните onwinctl update ещё раз." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin is open right now. Update it from the app itself: “onwin” menu → “Check for Updates…”\n(onwin will restart on its own) — or quit onwin and run onwinctl update again."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin қазір ашық. Оны қолданбаның өзінен жаңартыңыз: «onwin» мәзірі → «Жаңартуларды тексеру…»\n(onwin өзі қайта іске қосылады) — немесе onwin жабып, onwinctl update пәрменін қайта орындаңыз."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin 正在运行。请在应用内更新：菜单“onwin” → “检查更新…”\n（onwin 会自动重新启动）— 或者退出 onwin 后再次运行 onwinctl update。"
+          }
+        }
+      }
+    },
+    "onwin: %@ D3DMetal ставится с вашим Apple ID: кнопкой «Установить D3DMetal» в onwin (или onwinctl d3dmetal-fetch, если образ уже скачан)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: %@ D3DMetal is installed with your Apple ID: use the “Install D3DMetal” button in onwin (or onwinctl d3dmetal-fetch if the image is already downloaded)."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: %@ D3DMetal сіздің Apple ID арқылы орнатылады: onwin ішіндегі «D3DMetal орнату» батырмасымен (немесе диск бейнесі жүктеп алынған болса, onwinctl d3dmetal-fetch арқылы)."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin：%@ D3DMetal 需要使用你的 Apple ID 安装：在 onwin 中点按“安装 D3DMetal”按钮（如果映像已下载，也可以用 onwinctl d3dmetal-fetch）。"
+          }
+        }
+      }
+    },
+    "onwin: дополнительные компоненты не нужны" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: no additional components needed"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: қосымша компоненттер керек емес"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin：不需要额外的组件"
+          }
+        }
+      }
+    },
+    "onwin: запускаю программу без них." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: running the program without them."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: бағдарлама оларсыз іске қосылуда."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin：在没有这些组件的情况下运行程序。"
+          }
+        }
+      }
+    },
+    "onwin: компоненты установлены, запускаю программу ещё раз…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: components installed, running the program again…"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: компоненттер орнатылды, бағдарлама қайта іске қосылуда…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin：组件已安装，正在重新运行程序…"
+          }
+        }
+      }
+    },
+    "onwin: проверяю, какие компоненты нужны %@…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: checking which components %@ needs…"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: %@ үшін қандай компоненттер керек екені тексерілуде…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin：正在检查 %@ 需要哪些组件…"
+          }
+        }
+      }
+    },
+    "onwin: программа завершилась с кодом %lld — ей не хватает: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: the program exited with code %lld — it’s missing: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: бағдарлама %lld кодымен аяқталды — оған мыналар жетіспейді: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin：程序已退出，代码 %lld — 它缺少：%@"
+          }
+        }
+      }
+    },
+    "onwin: устанавливаю компоненты: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: installing components: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: компоненттер орнатылуда: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin：正在安装组件：%@"
+          }
+        }
+      }
+    },
+    "onwinctl %@ — запуск Windows-программ на Mac" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwinctl %@ — run Windows programs on a Mac"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwinctl %@ — Mac жүйесінде Windows бағдарламаларын іске қосу"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwinctl %@ — 在 Mac 上运行 Windows 程序"
+          }
+        }
+      }
+    },
+    "wineboot --restart: код %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "wineboot --restart: code %lld"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "wineboot --restart: код %lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "wineboot --restart：代码 %lld"
+          }
+        }
+      }
+    },
+    "«%@» не закреплена" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” isn’t pinned"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» бекітілмеген"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@”未固定"
+          }
+        }
+      }
+    },
+    "«%@» подходит к нескольким программам: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” matches several programs: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» бірнеше бағдарламаға сәйкес келеді: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@”匹配多个程序：%@"
+          }
+        }
+      }
+    },
+    "«%@» — не программа пространства, не приложение и не компонент каталога" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” isn’t a program in the space, an app, or a Catalog component"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» — кеңістік бағдарламасы да, қолданба да, каталог компоненті де емес"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@”不是空间中的程序，也不是目录中的应用或组件"
+          }
+        }
+      }
+    },
+    "Архив: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archive: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мұрағат: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "压缩包：%@"
+          }
+        }
+      }
+    },
+    "Библиотека: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кітапхана: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "库：%@"
+          }
+        }
+      }
+    },
+    "В пространстве «%@» выключено «Создавать ярлыки автоматически» (onwinctl set %@ launchers on): только перенос ярлыков" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Create shortcuts automatically” is off in the space “%@” (onwinctl set %@ launchers on): only moving existing shortcuts"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігінде «Жарлықтарды автоматты түрде жасау» өшірулі (onwinctl set %@ launchers on): тек жарлықтар көшіріледі"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”中关闭了“自动创建快捷方式”（onwinctl set %@ launchers on）：只移动快捷方式"
+          }
+        }
+      }
+    },
+    "В пространстве «%@» нет Steam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The space “%@” doesn’t have Steam"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігінде Steam жоқ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”中没有 Steam"
+          }
+        }
+      }
+    },
+    "Внимание: нет файла установщика «%@». Положите его рядом с файлом рецепта и импортируйте снова или выберите файл в onwin: Каталог → Мои приложения → Изменить." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warning: the installer file “%@” is missing. Put it next to the recipe file and import again, or choose the file in onwin: Catalog → My Apps → Edit."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Назар аударыңыз: «%@» орнатқыш файлы жоқ. Оны рецепт файлының қасына салып, қайта импорттаңыз немесе файлды onwin ішінде таңдаңыз: Каталог → Менің қолданбаларым → Өзгерту."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "注意：没有安装程序文件“%@”。请把它放在配方文件旁边后重新导入，或在 onwin 中选择文件：目录 → 我的应用 → 编辑。"
+          }
+        }
+      }
+    },
+    "Восстановлено пространство «%@»" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restored the space “%@”"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігі қалпына келтірілді"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已恢复空间“%@”"
+          }
+        }
+      }
+    },
+    "Все программы пространства «%@» завершены" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All programs in the space “%@” have been terminated"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігінің барлық бағдарламасы аяқталды"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”中的所有程序已结束"
+          }
+        }
+      }
+    },
+    "Все программы пространства «%@» закрыты" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All programs in the space “%@” have been closed"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігінің барлық бағдарламасы жабылды"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”中的所有程序已关闭"
+          }
+        }
+      }
+    },
+    "Всего: %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %lld"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Барлығы: %lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总计：%lld"
+          }
+        }
+      }
+    },
+    "Всего: %lld (скрыто ещё %lld, --hidden — показать)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %lld (%lld more hidden, --hidden to show)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Барлығы: %lld (тағы %lld жасырылған, --hidden — көрсету)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总计：%lld（另有 %lld 个已隐藏，使用 --hidden 显示）"
+          }
+        }
+      }
+    },
+    "Выпуск: onwin %@ (сборка %@), движок %@ от %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Release: onwin %@ (build %@), engine %@ from %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шығарылым: onwin %@ (жинақ %@), қозғалтқыш %@ (күні: %@)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本：onwin %@（构建 %@），引擎 %@（构建于 %@）"
+          }
+        }
+      }
+    },
+    "Готово" : {
+      "comment" : "The setting is saved",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дайын"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
+          }
+        }
+      }
+    },
+    "Готово: onwin %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done: onwin %@."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дайын: onwin %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成：onwin %@。"
+          }
+        }
+      }
+    },
+    "Данные:   %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data:     %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Деректер: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数据：    %@"
+          }
+        }
+      }
+    },
+    "Даёт: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provides: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Береді: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提供：%@"
+          }
+        }
+      }
+    },
+    "Движки и графика:\n  onwinctl engines                         список движков Wine\n  onwinctl engine-install <папка>          установить собранный движок\n  onwinctl d3dmetal-import <путь к GPTK>   импортировать D3DMetal из Game Porting Toolkit (.dmg или том)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout минуты] [--downloads папка]\n                                           импортировать уже скачанный Game Porting Toolkit (.dmg из «Загрузок»\n                                           или кэша onwin); вход с Apple ID и загрузка — в приложении onwin\n  onwinctl status                          что установлено\n  onwinctl update [--check] [--version X]  обновить onwin и движок до последнего выпуска (--check — только\n                                           проверить, --version — поставить определённую версию)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engines and graphics:\n  onwinctl engines                         list of Wine engines\n  onwinctl engine-install <folder>         install a built engine\n  onwinctl d3dmetal-import <path to GPTK>  import D3DMetal from Game Porting Toolkit (.dmg or volume)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout minutes] [--downloads folder]\n                                           import an already downloaded Game Porting Toolkit (.dmg from Downloads\n                                           or the onwin cache); Apple ID sign-in and download happen in the onwin app\n  onwinctl status                          what’s installed\n  onwinctl update [--check] [--version X]  update onwin and the engine to the latest release (--check: only\n                                           check, --version: install a specific version)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыштар және графика:\n  onwinctl engines                         Wine қозғалтқыштарының тізімі\n  onwinctl engine-install <қалта>          жиналған қозғалтқышты орнату\n  onwinctl d3dmetal-import <GPTK жолы>     Game Porting Toolkit ішінен D3DMetal импорттау (.dmg немесе том)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout минут] [--downloads қалта]\n                                           жүктеп алынған Game Porting Toolkit импорттау («Жүктеулер» қалтасынан\n                                           немесе onwin кэшінен .dmg); Apple ID арқылы кіру және жүктеп алу — onwin қолданбасында\n  onwinctl status                          не орнатылған\n  onwinctl update [--check] [--version X]  onwin мен қозғалтқышты соңғы шығарылымға дейін жаңарту (--check — тек\n                                           тексеру, --version — белгілі бір нұсқаны орнату)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎与图形：\n  onwinctl engines                         Wine 引擎列表\n  onwinctl engine-install <文件夹>         安装已构建的引擎\n  onwinctl d3dmetal-import <GPTK 路径>     从 Game Porting Toolkit（.dmg 或宗卷）导入 D3DMetal\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout 分钟] [--downloads 文件夹]\n                                           导入已下载的 Game Porting Toolkit（“下载”文件夹或\n                                           onwin 缓存中的 .dmg）；Apple ID 登录和下载在 onwin 应用中进行\n  onwinctl status                          已安装的内容\n  onwinctl update [--check] [--version X]  将 onwin 和引擎更新到最新版本（--check — 仅检查，\n                                           --version — 安装指定版本）"
+          }
+        }
+      }
+    },
+    "Движки:   %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engines:  %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыштар: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎：    %@"
+          }
+        }
+      }
+    },
+    "Движки:   нет" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engines:  none"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыштар: жоқ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎：    无"
+          }
+        }
+      }
+    },
+    "Движков нет. Соберите: engine/build.sh" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No engines. Build one: engine/build.sh"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыштар жоқ. Жинаңыз: engine/build.sh"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有引擎。请构建：engine/build.sh"
+          }
+        }
+      }
+    },
+    "Движок установлен: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engine installed: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыш орнатылды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎已安装：%@"
+          }
+        }
+      }
+    },
+    "Движок:      %@ не установлен" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engine:      %@ not installed"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыш:  %@ орнатылмаған"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎：       %@ 未安装"
+          }
+        }
+      }
+    },
+    "Движок:      %@, собран %@ — %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engine:      %@, built %@ — %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыш:  %@, жиналған күні %@ — %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎：       %@，构建于 %@ — %@"
+          }
+        }
+      }
+    },
+    "Журнал: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Журнал: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日志：%@"
+          }
+        }
+      }
+    },
+    "Закреплена: %@\t%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinned: %@\t%@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бекітілді: %@\t%@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已固定：%@\t%@"
+          }
+        }
+      }
+    },
+    "Записано: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Written: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жазылды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已写入：%@"
+          }
+        }
+      }
+    },
+    "Записано: %@ (%lld×%lld px)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Written: %@ (%lld×%lld px)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жазылды: %@ (%lld×%lld px)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已写入：%@（%lld×%lld px）"
+          }
+        }
+      }
+    },
+    "Запущено через Steam: %@ (%lld). Журнал: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launched through Steam: %@ (%lld). Log: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steam арқылы іске қосылды: %@ (%lld). Журнал: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已通过 Steam 启动：%@（%lld）。日志：%@"
+          }
+        }
+      }
+    },
+    "Значки (проверка):\n  onwinctl icon <пространство|-> <программа|приложение|component:id|steam:appid> <файл.png> [--only exe|image|remote] [--cover]\n                                           записать значок, который покажет onwin, в PNG и показать источники" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icons (testing):\n  onwinctl icon <space|-> <program|app|component:id|steam:appid> <file.png> [--only exe|image|remote] [--cover]\n                                           write the icon onwin would show to a PNG and list the sources"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Белгішелер (тексеру):\n  onwinctl icon <кеңістік|-> <бағдарлама|қолданба|component:id|steam:appid> <файл.png> [--only exe|image|remote] [--cover]\n                                           onwin көрсететін белгішені PNG файлына жазу және дереккөздерін көрсету"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "图标（检查用）：\n  onwinctl icon <空间|-> <程序|应用|component:id|steam:appid> <文件.png> [--only exe|image|remote] [--cover]\n                                           将 onwin 显示的图标写入 PNG，并列出图标来源"
+          }
+        }
+      }
+    },
+    "Значок" : {
+      "comment" : "Column header: where the icon comes from",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icon"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Белгіше"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "图标来源"
+          }
+        }
+      }
+    },
+    "Импорт: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Импорт: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入：%@"
+          }
+        }
+      }
+    },
+    "Импортирован рецепт «%@»: %@. Ничего не установлено — установка: onwinctl install %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imported the recipe “%@”: %@. Nothing was installed — to install: onwinctl install %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» рецепті импортталды: %@. Ештеңе орнатылмады — орнату: onwinctl install %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已导入配方“%@”：%@。尚未安装任何内容 — 安装：onwinctl install %@"
+          }
+        }
+      }
+    },
+    "Источник" : {
+      "comment" : "Column header: where the program was found",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Source"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дереккөз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "来源"
+          }
+        }
+      }
+    },
+    "Источников нет — onwin нарисует значок SF Symbol" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No sources — onwin will draw an SF Symbol icon"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дереккөздер жоқ — onwin SF Symbol белгішесін салады"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有图标来源 — onwin 将使用 SF Symbol 图标"
+          }
+        }
+      }
+    },
+    "Код %lld; «%@» удалена" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code %lld; “%@” uninstalled"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Код %lld; «%@» жойылды"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "代码 %lld；“%@”已卸载"
+          }
+        }
+      }
+    },
+    "Код %lld; запись в реестре осталась (удаление отменено или не завершено)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code %lld; the registry entry remains (uninstall canceled or not finished)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Код %lld; тізілімдегі жазба қалды (жою тоқтатылды немесе аяқталмады)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "代码 %lld；注册表中的条目仍然存在（卸载已取消或未完成）"
+          }
+        }
+      }
+    },
+    "Компоненты:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Components:"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Компоненттер:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "组件："
+          }
+        }
+      }
+    },
+    "Компоненты:\n  onwinctl components [пространство]       список компонентов (✓ — установлен в пространстве)\n  onwinctl component <пространство> <компонент>[,компонент...]  установить, например: vcrun2026,directx-jun2010\n  onwinctl component-info <компонент>      что скачивается, что делается, какие DLL даёт\n  onwinctl component-files <компонент> <папка>                 скачать и распаковать DLL без Wine (проверка)\n  onwinctl advise <пространство|-> <файл.exe> [--no-folder] [--wine-dlls папка]...\n                                           каких компонентов не хватает программе (по таблице импорта)\n  onwinctl advise-log <журнал.log> [--space имя]             что советует журнал неудачного запуска" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Components:\n  onwinctl components [space]              list of components (✓ — installed in the space)\n  onwinctl component <space> <component>[,component...]  install, for example: vcrun2026,directx-jun2010\n  onwinctl component-info <component>      what is downloaded, what is done, which DLLs it provides\n  onwinctl component-files <component> <folder>  download and extract DLLs without Wine (testing)\n  onwinctl advise <space|-> <file.exe> [--no-folder] [--wine-dlls folder]...\n                                           which components the program is missing (from its import table)\n  onwinctl advise-log <file.log> [--space name]  what the log of a failed launch suggests"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Компоненттер:\n  onwinctl components [кеңістік]           компоненттер тізімі (✓ — кеңістікке орнатылған)\n  onwinctl component <кеңістік> <компонент>[,компонент...]      орнату, мысалы: vcrun2026,directx-jun2010\n  onwinctl component-info <компонент>      не жүктеледі, не істеледі, қандай DLL береді\n  onwinctl component-files <компонент> <қалта>                 DLL файлдарын Wine қолданбай жүктеп алып, шығару (тексеру)\n  onwinctl advise <кеңістік|-> <файл.exe> [--no-folder] [--wine-dlls қалта]...\n                                           бағдарламаға қандай компоненттер жетіспейді (импорт кестесі бойынша)\n  onwinctl advise-log <журнал.log> [--space атау]            сәтсіз іске қосу журналы не ұсынады"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "组件：\n  onwinctl components [空间]               组件列表（✓ — 已安装在空间中）\n  onwinctl component <空间> <组件>[,组件...]  安装，例如：vcrun2026,directx-jun2010\n  onwinctl component-info <组件>           下载什么、执行什么、提供哪些 DLL\n  onwinctl component-files <组件> <文件夹>  不使用 Wine 下载并解压 DLL（检查用）\n  onwinctl advise <空间|-> <文件.exe> [--no-folder] [--wine-dlls 文件夹]...\n                                           程序缺少哪些组件（根据导入表判断）\n  onwinctl advise-log <日志.log> [--space 名称]  根据运行失败的日志给出建议"
+          }
+        }
+      }
+    },
+    "Кэш значков: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icon cache: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Белгішелер кэші: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "图标缓存：%@"
+          }
+        }
+      }
+    },
+    "Мои приложения (свои рецепты, ~/Library/Application Support/onwin/Recipes):\n  onwinctl recipe list                     список своих рецептов\n  onwinctl recipe show <id>                рецепт (JSON) и его проверка\n  onwinctl recipe add <файл.json> [--replace]\n                                           добавить рецепт; installer.file — путь к установщику на Mac\n                                           (файл копируется к рецепту)\n  onwinctl recipe remove <id>              удалить рецепт (пространства остаются)\n  onwinctl recipe export <id> <файл.onwinrecipe>\n  onwinctl recipe import <файл.onwinrecipe> [--replace]   импорт ничего не запускает\n  onwinctl install <id> [--space имя]     ставит и свой рецепт; без пути запуска onwin предложит\n                                           найденную программу и запишет её в рецепт" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Apps (your own recipes, ~/Library/Application Support/onwin/Recipes):\n  onwinctl recipe list                     list of your recipes\n  onwinctl recipe show <id>                the recipe (JSON) and its check\n  onwinctl recipe add <file.json> [--replace]\n                                           add a recipe; installer.file is the path to the installer on your Mac\n                                           (the file is copied next to the recipe)\n  onwinctl recipe remove <id>              remove a recipe (spaces are kept)\n  onwinctl recipe export <id> <file.onwinrecipe>\n  onwinctl recipe import <file.onwinrecipe> [--replace]  importing doesn’t run anything\n  onwinctl install <id> [--space name]     installs your own recipes too; without a launch path onwin offers\n                                           the program it found and saves it to the recipe"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Менің қолданбаларым (өз рецепттеріңіз, ~/Library/Application Support/onwin/Recipes):\n  onwinctl recipe list                     өз рецепттеріңіздің тізімі\n  onwinctl recipe show <id>                рецепт (JSON) және оны тексеру\n  onwinctl recipe add <файл.json> [--replace]\n                                           рецепт қосу; installer.file — Mac ішіндегі орнатқышқа апаратын жол\n                                           (файл рецептің қасына көшіріледі)\n  onwinctl recipe remove <id>              рецептті жою (кеңістіктер қалады)\n  onwinctl recipe export <id> <файл.onwinrecipe>\n  onwinctl recipe import <файл.onwinrecipe> [--replace]   импорт ештеңені іске қоспайды\n  onwinctl install <id> [--space атау]     өз рецептіңізді де орнатады; іске қосу жолы болмаса, onwin\n                                           табылған бағдарламаны ұсынып, оны рецептке жазады"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的应用（自定义配方，~/Library/Application Support/onwin/Recipes）：\n  onwinctl recipe list                     自定义配方列表\n  onwinctl recipe show <id>                配方（JSON）及其检查结果\n  onwinctl recipe add <文件.json> [--replace]\n                                           添加配方；installer.file — Mac 上安装程序的路径\n                                           （文件会复制到配方旁边）\n  onwinctl recipe remove <id>              删除配方（空间会保留）\n  onwinctl recipe export <id> <文件.onwinrecipe>\n  onwinctl recipe import <文件.onwinrecipe> [--replace]  导入不会运行任何内容\n  onwinctl install <id> [--space 名称]     也可安装自定义配方；如果没有启动路径，onwin 会\n                                           推荐找到的程序并将其写入配方"
+          }
+        }
+      }
+    },
+    "Найдено для запуска:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Found to launch:"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Іске қосуға табылғандары:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找到可运行的程序："
+          }
+        }
+      }
+    },
+    "Нашёл %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Found %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Табылды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找到 %@"
+          }
+        }
+      }
+    },
+    "Ничего не нужно: все найденные зависимости покрыты Wine, пространством или файлами игры." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing needed: all dependencies found are covered by Wine, the space, or the game’s files."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ештеңе керек емес: табылған тәуелділіктердің бәрін Wine, кеңістік немесе ойын файлдары қамтиды."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无需任何操作：找到的所有依赖都已由 Wine、空间或游戏文件提供。"
+          }
+        }
+      }
+    },
+    "Новая папка: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New folder: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жаңа қалта: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新文件夹：%@"
+          }
+        }
+      }
+    },
+    "Новая программа в реестре: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New program in the registry: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тізілімдегі жаңа бағдарлама: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "注册表中的新程序：%@"
+          }
+        }
+      }
+    },
+    "Новый ярлык: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New shortcut: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жаңа жарлық: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新快捷方式：%@"
+          }
+        }
+      }
+    },
+    "Новых программ для запуска не найдено — укажите путь запуска в рецепте (Каталог → Мои приложения → Изменить)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No new programs to launch were found — set the launch path in the recipe (Catalog → My Apps → Edit)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Іске қосуға жаңа бағдарламалар табылмады — рецептте іске қосу жолын көрсетіңіз (Каталог → Менің қолданбаларым → Өзгерту)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有找到可运行的新程序 — 请在配方中指定启动路径（目录 → 我的应用 → 编辑）"
+          }
+        }
+      }
+    },
+    "Нужно:" : {
+      "comment" : "Followed by the list of parts to update",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To update:"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Керек:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要："
+          }
+        }
+      }
+    },
+    "Обновить: onwinctl update" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To update: onwinctl update"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жаңарту: onwinctl update"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更新：onwinctl update"
+          }
+        }
+      }
+    },
+    "Обновлять нечего: установлена последняя версия." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing to update: the latest version is installed."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жаңартатын ештеңе жоқ: соңғы нұсқа орнатылған."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无需更新：已安装最新版本。"
+          }
+        }
+      }
+    },
+    "Обновлять нечего: установлена эта версия." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing to update: this version is installed."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жаңартатын ештеңе жоқ: дәл осы нұсқа орнатылған."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无需更新：已安装此版本。"
+          }
+        }
+      }
+    },
+    "Откреплена: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpinned: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бекітуден алынды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已取消固定：%@"
+          }
+        }
+      }
+    },
+    "Отложенный импорт: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delay-load imports: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кейінге қалдырылған импорт: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "延迟导入：%@"
+          }
+        }
+      }
+    },
+    "Отчёт сохранён: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report saved: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Есеп сақталды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "报告已保存：%@"
+          }
+        }
+      }
+    },
+    "Папки пространства «%@» связаны с папками Mac. Когда Windows-программа откроет их, macOS спросит разрешение." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The folders of the space “%@” are linked to Mac folders. When a Windows program opens them, macOS will ask for permission."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігінің қалталары Mac қалталарымен байланыстырылды. Windows бағдарламасы оларды ашқанда, macOS рұқсат сұрайды."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”的文件夹已关联到 Mac 文件夹。Windows 程序打开它们时，macOS 会请求权限。"
+          }
+        }
+      }
+    },
+    "Поддержка:\n  onwinctl report <пространство> [программа.exe] [--log журнал.log] [--no-log] [--output файл]\n                                           отчёт о проблеме для чата поддержки: Mac, движок, настройки\n                                           пространства и конец последнего журнала запуска (без личных данных)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support:\n  onwinctl report <space> [program.exe] [--log file.log] [--no-log] [--output file]\n                                           a problem report for the support chat: Mac, engine, space settings\n                                           and the end of the last launch log (no personal data)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қолдау:\n  onwinctl report <кеңістік> [бағдарлама.exe] [--log журнал.log] [--no-log] [--output файл]\n                                           қолдау чатына арналған мәселе туралы есеп: Mac, қозғалтқыш, кеңістік\n                                           баптаулары және соңғы іске қосу журналының соңы (жеке деректерсіз)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持：\n  onwinctl report <空间> [程序.exe] [--log 日志.log] [--no-log] [--output 文件]\n                                           生成发给支持群的问题报告：Mac、引擎、空间设置\n                                           以及最近一次运行日志的末尾（不含个人信息）"
+          }
+        }
+      }
+    },
+    "Покрывает импорт: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satisfies imports: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Импортты қамтиды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "满足导入：%@"
+          }
+        }
+      }
+    },
+    "Последний выпуск: onwin %@ (сборка %@), движок %@ от %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest release: onwin %@ (build %@), engine %@ from %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Соңғы шығарылым: onwin %@ (жинақ %@), қозғалтқыш %@ (күні: %@)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最新版本：onwin %@（构建 %@），引擎 %@（构建于 %@）"
+          }
+        }
+      }
+    },
+    "Приложение установлено: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App installed: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қолданба орнатылды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用已安装：%@"
+          }
+        }
+      }
+    },
+    "Приложение:  onwin %@ (сборка %@) — %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App:         onwin %@ (build %@) — %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қолданба:    onwin %@ (жинақ %@) — %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用：       onwin %@（构建 %@）— %@"
+          }
+        }
+      }
+    },
+    "Приложение:  не установлено" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App:         not installed"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қолданба:    орнатылмаған"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用：       未安装"
+          }
+        }
+      }
+    },
+    "Приложения:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps:"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қолданбалар:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用："
+          }
+        }
+      }
+    },
+    "Проблемы:\n%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problems:\n%@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мәселелер:\n%@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "问题：\n%@"
+          }
+        }
+      }
+    },
+    "Проверка: всё в порядке" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check: everything is fine"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тексеру: бәрі дұрыс"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "检查：一切正常"
+          }
+        }
+      }
+    },
+    "Программ для удаления нет" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No programs to uninstall"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жоюға бағдарламалар жоқ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有可卸载的程序"
+          }
+        }
+      }
+    },
+    "Программа" : {
+      "comment" : "Column header",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Program"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бағдарлама"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "程序"
+          }
+        }
+      }
+    },
+    "Программы:\n  onwinctl run [--no-auto-components] <пространство> <файл.exe|.msi|.lnk> [аргументы...]\n                                           запустить и ждать. Перед первым запуском программы onwin сам\n                                           ставит нужные ей компоненты (Visual C++, DirectX, .NET…), а если\n                                           она не запустилась из-за нехватки библиотеки — ставит их и\n                                           запускает ещё раз. --no-auto-components — без этого\n  onwinctl wine <пространство> <команда wine...>              например: winecfg, regedit, cmd\n  onwinctl shutdown <пространство> [--timeout с]  мягко закрыть программы (как «Завершить всё»),\n                                           через 10 с — принудительно\n  onwinctl kill <пространство>             принудительно завершить все программы (wineserver -k)\n  onwinctl running <пространство>          запущено ли пространство (код 0 — да, 1 — нет)\n  onwinctl programs <пространство>         найденные программы\n  onwinctl pin <пространство> <путь> [имя]  закрепить программу (C:\\... или путь на Mac)\n  onwinctl unpin <пространство> <программа>  открепить" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programs:\n  onwinctl run [--no-auto-components] <space> <file.exe|.msi|.lnk> [arguments...]\n                                           run and wait. Before a program’s first launch onwin installs\n                                           the components it needs (Visual C++, DirectX, .NET…), and if\n                                           it fails to start because a library is missing, installs them and\n                                           launches it again. --no-auto-components: skip this\n  onwinctl wine <space> <wine command...>  for example: winecfg, regedit, cmd\n  onwinctl shutdown <space> [--timeout s]  gently close programs (like “Quit All”),\n                                           forcibly after 10 s\n  onwinctl kill <space>                    force quit all programs (wineserver -k)\n  onwinctl running <space>                 whether the space is running (code 0: yes, 1: no)\n  onwinctl programs <space>                programs found\n  onwinctl pin <space> <path> [name]       pin a program (C:\\... or a path on your Mac)\n  onwinctl unpin <space> <program>         unpin"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бағдарламалар:\n  onwinctl run [--no-auto-components] <кеңістік> <файл.exe|.msi|.lnk> [аргументтер...]\n                                           іске қосып, күту. Бағдарламаны алғаш іске қоспас бұрын onwin оған\n                                           керек компоненттерді (Visual C++, DirectX, .NET…) өзі орнатады, ал егер\n                                           ол кітапхана жетіспегендіктен іске қосылмаса — оларды орнатып,\n                                           қайта іске қосады. --no-auto-components — мұнсыз\n  onwinctl wine <кеңістік> <wine пәрмені...>                  мысалы: winecfg, regedit, cmd\n  onwinctl shutdown <кеңістік> [--timeout с]      бағдарламаларды жұмсақ жабу («Барлығын аяқтау» сияқты),\n                                           10 с кейін — мәжбүрлеп\n  onwinctl kill <кеңістік>                 барлық бағдарламаны мәжбүрлеп аяқтау (wineserver -k)\n  onwinctl running <кеңістік>              кеңістік іске қосулы ма (код 0 — иә, 1 — жоқ)\n  onwinctl programs <кеңістік>             табылған бағдарламалар\n  onwinctl pin <кеңістік> <жол> [атау]      бағдарламаны бекіту (C:\\... немесе Mac ішіндегі жол)\n  onwinctl unpin <кеңістік> <бағдарлама>     бекітуден алу"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "程序：\n  onwinctl run [--no-auto-components] <空间> <文件.exe|.msi|.lnk> [参数...]\n                                           运行并等待。首次运行程序前，onwin 会自动\n                                           安装它需要的组件（Visual C++、DirectX、.NET…）；如果\n                                           程序因缺少库而无法启动，onwin 会安装这些库并\n                                           重新运行。--no-auto-components — 不执行这些操作\n  onwinctl wine <空间> <wine 命令...>      例如：winecfg、regedit、cmd\n  onwinctl shutdown <空间> [--timeout 秒]  正常关闭程序（类似“全部结束”），\n                                           10 秒后强制关闭\n  onwinctl kill <空间>                     强制结束所有程序（wineserver -k）\n  onwinctl running <空间>                  空间是否正在运行（代码 0 — 是，1 — 否）\n  onwinctl programs <空间>                 找到的程序\n  onwinctl pin <空间> <路径> [名称]        固定程序（C:\\... 或 Mac 上的路径）\n  onwinctl unpin <空间> <程序>             取消固定"
+          }
+        }
+      }
+    },
+    "Пространства:\n  onwinctl spaces                         список пространств\n  onwinctl create <имя> [--win win10] [--backend auto|d3dmetal|dxmt|dxvk|wined3d]\n  onwinctl delete <имя>                    в корзину\n  onwinctl info <имя>                      настройки пространства\n  onwinctl set <имя> <параметр> <значение> [--restart]\n                                           backend, win, msync, retina, hud, avx, dxr, metalfx,\n                                           debug, launchers, autocomponents (on|off|default), env:ИМЯ, dll:ИМЯ. msync и retina в запущенном\n                                           пространстве меняются только с --restart (перезапуск пространства)\n                                           mac-folders on|off — «Документы», «Загрузки», «Музыка», «Изображения»\n                                           и «Видео» пространства ведут в папки Mac (macOS спросит доступ) или\n                                           свои (по умолчанию в новых); меняется, только когда пространство не запущено\n  onwinctl env <имя>                       переменные окружения запуска\n  onwinctl archive <имя> <файл.onwinspace>\n  onwinctl restore <файл.onwinspace> [имя]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spaces:\n  onwinctl spaces                          list of spaces\n  onwinctl create <name> [--win win10] [--backend auto|d3dmetal|dxmt|dxvk|wined3d]\n  onwinctl delete <name>                   move to the Trash\n  onwinctl info <name>                     space settings\n  onwinctl set <name> <setting> <value> [--restart]\n                                           backend, win, msync, retina, hud, avx, dxr, metalfx,\n                                           debug, launchers, autocomponents (on|off|default), env:NAME, dll:NAME. In a running space\n                                           msync and retina change only with --restart (restarts the space)\n                                           mac-folders on|off — the space’s Documents, Downloads, Music, Pictures\n                                           and Videos lead to the Mac folders (macOS will ask for access) or\n                                           to its own (the default for new spaces); can be changed only when the space isn’t running\n  onwinctl env <name>                      launch environment variables\n  onwinctl archive <name> <file.onwinspace>\n  onwinctl restore <file.onwinspace> [name]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кеңістіктер:\n  onwinctl spaces                         кеңістіктер тізімі\n  onwinctl create <атау> [--win win10] [--backend auto|d3dmetal|dxmt|dxvk|wined3d]\n  onwinctl delete <атау>                   себетке\n  onwinctl info <атау>                     кеңістік баптаулары\n  onwinctl set <атау> <параметр> <мән> [--restart]\n                                           backend, win, msync, retina, hud, avx, dxr, metalfx,\n                                           debug, launchers, autocomponents (on|off|default), env:АТЫ, dll:АТЫ. Іске қосулы\n                                           кеңістікте msync пен retina тек --restart арқылы өзгереді (кеңістік қайта іске қосылады)\n                                           mac-folders on|off — кеңістіктің «Құжаттар», «Жүктеулер», «Музыка», «Суреттер»\n                                           және «Бейнелер» қалталары Mac қалталарына апарады (macOS рұқсат сұрайды) немесе\n                                           өзіндік болады (жаңаларында әдепкі); кеңістік іске қосылмаған кезде ғана өзгереді\n  onwinctl env <атау>                      іске қосудың орта айнымалылары\n  onwinctl archive <атау> <файл.onwinspace>\n  onwinctl restore <файл.onwinspace> [атау]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间：\n  onwinctl spaces                          空间列表\n  onwinctl create <名称> [--win win10] [--backend auto|d3dmetal|dxmt|dxvk|wined3d]\n  onwinctl delete <名称>                   移到废纸篓\n  onwinctl info <名称>                     空间设置\n  onwinctl set <名称> <参数> <值> [--restart]\n                                           backend, win, msync, retina, hud, avx, dxr, metalfx,\n                                           debug, launchers, autocomponents (on|off|default), env:名称, dll:名称。正在运行的空间中，\n                                           msync 和 retina 只能配合 --restart 更改（会重启空间）\n                                           mac-folders on|off — 空间的“文档”“下载”“音乐”“图片”\n                                           和“视频”指向 Mac 文件夹（macOS 会请求访问权限）或使用\n                                           自己的文件夹（新空间默认如此）；仅在空间未运行时可更改\n  onwinctl env <名称>                      运行时的环境变量\n  onwinctl archive <名称> <文件.onwinspace>\n  onwinctl restore <文件.onwinspace> [名称]"
+          }
+        }
+      }
+    },
+    "Пространства: %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spaces: %lld"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кеңістіктер: %lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间：%lld"
+          }
+        }
+      }
+    },
+    "Пространство" : {
+      "comment" : "Column header",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Space"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кеңістік"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间"
+          }
+        }
+      }
+    },
+    "Пространство «%@» завершено принудительно (не всё закрылось за %lld с)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The space “%@” was terminated forcibly (not everything closed within %lld s)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігі мәжбүрлеп тоқтатылды (%lld с ішінде бәрі жабылмады)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”已被强制结束（并非所有程序都在 %lld 秒内关闭）"
+          }
+        }
+      }
+    },
+    "Пространство «%@» не запущено" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The space “%@” isn’t running"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігі іске қосылмаған"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”未在运行"
+          }
+        }
+      }
+    },
+    "Пространство «%@» перемещено в корзину" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The space “%@” was moved to the Trash"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігі себетке жылжытылды"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”已移到废纸篓"
+          }
+        }
+      }
+    },
+    "Пространство «%@» создано: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Space “%@” created: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігі жасалды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”已创建：%@"
+          }
+        }
+      }
+    },
+    "Пространство завершено" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Space terminated"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кеңістік тоқтатылды"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间已结束"
+          }
+        }
+      }
+    },
+    "Пространство завершено принудительно" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Space terminated forcibly"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кеңістік мәжбүрлеп тоқтатылды"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间已被强制结束"
+          }
+        }
+      }
+    },
+    "Путь запуска записан в рецепт и программа закреплена в пространстве: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The launch path was saved to the recipe and the program was pinned in the space: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Іске қосу жолы рецептке жазылды және бағдарлама кеңістікте бекітілді: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启动路径已写入配方，程序已固定到空间中：%@"
+          }
+        }
+      }
+    },
+    "Рабочий стол (проверка):\n  onwinctl desktop [--hidden] [--all-sources]  все программы всех пространств, как их покажет «Рабочий стол»:\n                                           имя | пространство | источник | источник значка (--hidden: и скрытые)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desktop (testing):\n  onwinctl desktop [--hidden] [--all-sources]  all programs of all spaces as the Desktop shows them:\n                                           name | space | source | icon source (--hidden: hidden ones too)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жұмыс үстелі (тексеру):\n  onwinctl desktop [--hidden] [--all-sources]  барлық кеңістіктің барлық бағдарламасы, «Жұмыс үстелі» көрсететіндей:\n                                           атау | кеңістік | дереккөз | белгіше дереккөзі (--hidden: жасырылғандары да)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "桌面（检查用）：\n  onwinctl desktop [--hidden] [--all-sources]  所有空间中的所有程序，与“桌面”中显示的一致：\n                                           名称 | 空间 | 来源 | 图标来源（--hidden：包括隐藏的）"
+          }
+        }
+      }
+    },
+    "Размер: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Size: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Өлшемі: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "大小：%@"
+          }
+        }
+      }
+    },
+    "Размер: %@, общий для всех пространств" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Size: %@, shared by all spaces"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Өлшемі: %@, барлық кеңістікке ортақ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "大小：%@，所有空间共用"
+          }
+        }
+      }
+    },
+    "Рецепт «%@» сохранён: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recipe “%@” saved: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» рецепті сақталды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "配方“%@”已保存：%@"
+          }
+        }
+      }
+    },
+    "Рецепт «%@» удалён (пространства, установленные по нему, остались)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recipe “%@” removed (spaces installed from it are kept)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» рецепті жойылды (ол арқылы орнатылған кеңістіктер қалды)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "配方“%@”已删除（用它安装的空间仍然保留）"
+          }
+        }
+      }
+    },
+    "Своих рецептов нет. Добавить: onwinctl recipe add <файл.json>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have no recipes of your own. To add one: onwinctl recipe add <file.json>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Өз рецепттеріңіз жоқ. Қосу: onwinctl recipe add <файл.json>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有自定义配方。添加：onwinctl recipe add <文件.json>"
+          }
+        }
+      }
+    },
+    "Сначала ставится: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installed first: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Алдымен орнатылады: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先安装：%@"
+          }
+        }
+      }
+    },
+    "Страница выпуска: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Release page: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шығарылым беті: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发布页面：%@"
+          }
+        }
+      }
+    },
+    "У пространства «%@» теперь свои папки «Документы», «Загрузки», «Музыка», «Изображения» и «Видео». Папки Mac не изменены." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The space “%@” now has its own Documents, Downloads, Music, Pictures and Videos folders. The Mac folders weren’t changed."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігінде енді өзінің «Құжаттар», «Жүктеулер», «Музыка», «Суреттер» және «Бейнелер» қалталары бар. Mac қалталары өзгертілмеді."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”现在使用自己的“文档”“下载”“音乐”“图片”和“视频”文件夹。Mac 文件夹没有改动。"
+          }
+        }
+      }
+    },
+    "Убраны ссылки: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Links removed: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сілтемелер алынып тасталды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移除链接：%@"
+          }
+        }
+      }
+    },
+    "Удаляю «%@»: wine %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uninstalling “%@”: wine %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» жойылуда: wine %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在卸载“%@”：wine %@"
+          }
+        }
+      }
+    },
+    "Уже закреплена: %@\t%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Already pinned: %@\t%@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бұрыннан бекітілген: %@\t%@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已经固定：%@\t%@"
+          }
+        }
+      }
+    },
+    "Установлен движок %@ → %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engine %@ installed → %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ қозғалтқышы орнатылды → %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已安装引擎 %@ → %@"
+          }
+        }
+      }
+    },
+    "Установленных игр нет" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No installed games"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Орнатылған ойындар жоқ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有已安装的游戏"
+          }
+        }
+      }
+    },
+    "Установлено в пространство «%@»" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installed into the space “%@”"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігіне орнатылды"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已安装到空间“%@”"
+          }
+        }
+      }
+    },
+    "Установщик: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installer: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Орнатқыш: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安装程序：%@"
+          }
+        }
+      }
+    },
+    "Установщик: %@ — НЕТ ФАЙЛА" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installer: %@ — FILE MISSING"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Орнатқыш: %@ — ФАЙЛ ЖОҚ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安装程序：%@ — 文件不存在"
+          }
+        }
+      }
+    },
+    "Файлов: %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Files: %lld"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Файлдар: %lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件：%lld"
+          }
+        }
+      }
+    },
+    "Что нового:  %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What’s new:  %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жаңалықтар:  %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更新内容：   %@"
+          }
+        }
+      }
+    },
+    "Экспортировано: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exported: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экспортталды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已导出：%@"
+          }
+        }
+      }
+    },
+    "Ярлык перемещён в корзину: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcut moved to the Trash: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жарлық себетке жылжытылды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快捷方式已移到废纸篓：%@"
+          }
+        }
+      }
+    },
+    "Ярлык: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcut: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жарлық: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快捷方式：%@"
+          }
+        }
+      }
+    },
+    "Ярлыки (.app для Launchpad и Dock, ~/Applications/onwin/<пространство>/):\n  onwinctl launcher <пространство> <программа> [--dir папка]   создать ярлык (программа: имя или id)\n  onwinctl launcher-remove <пространство> <программа> [--dir папка]\n  onwinctl launchers [пространство] [--dir папка]               список ярлыков\n  onwinctl launchers-sync <пространство> [--rescan] [--dir папка]  ярлыки для меню «Пуск» (set … launchers on)\n  onwinctl open-url <onwin://run?...>      запустить программу ярлыка и ждать\n  onwinctl catalog                         каталог приложений и компонентов\n  onwinctl install <приложение> [--space имя]                 например: steam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcuts (.app for Launchpad and the Dock, ~/Applications/onwin/<space>/):\n  onwinctl launcher <space> <program> [--dir folder]          create a shortcut (program: name or id)\n  onwinctl launcher-remove <space> <program> [--dir folder]\n  onwinctl launchers [space] [--dir folder]                   list of shortcuts\n  onwinctl launchers-sync <space> [--rescan] [--dir folder]   shortcuts for the Start menu (set … launchers on)\n  onwinctl open-url <onwin://run?...>      run the shortcut’s program and wait\n  onwinctl catalog                         catalog of apps and components\n  onwinctl install <app> [--space name]                       for example: steam"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жарлықтар (Launchpad пен Dock үшін .app, ~/Applications/onwin/<кеңістік>/):\n  onwinctl launcher <кеңістік> <бағдарлама> [--dir қалта]      жарлық жасау (бағдарлама: атауы немесе id)\n  onwinctl launcher-remove <кеңістік> <бағдарлама> [--dir қалта]\n  onwinctl launchers [кеңістік] [--dir қалта]                   жарлықтар тізімі\n  onwinctl launchers-sync <кеңістік> [--rescan] [--dir қалта]      «Бастау» мәзіріне арналған жарлықтар (set … launchers on)\n  onwinctl open-url <onwin://run?...>      жарлық бағдарламасын іске қосып, күту\n  onwinctl catalog                         қолданбалар мен компоненттер каталогы\n  onwinctl install <қолданба> [--space атау]                  мысалы: steam"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快捷方式（用于 Launchpad 和 Dock 的 .app，~/Applications/onwin/<空间>/）：\n  onwinctl launcher <空间> <程序> [--dir 文件夹]  创建快捷方式（程序：名称或 id）\n  onwinctl launcher-remove <空间> <程序> [--dir 文件夹]\n  onwinctl launchers [空间] [--dir 文件夹]  快捷方式列表\n  onwinctl launchers-sync <空间> [--rescan] [--dir 文件夹]  为“开始”菜单创建快捷方式（set … launchers on）\n  onwinctl open-url <onwin://run?...>      运行快捷方式的程序并等待\n  onwinctl catalog                         应用和组件目录\n  onwinctl install <应用> [--space 名称]   例如：steam"
+          }
+        }
+      }
+    },
+    "Ярлыки в порядке" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcuts are fine"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жарлықтармен бәрі дұрыс"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快捷方式均正常"
+          }
+        }
+      }
+    },
+    "Ярлыков нет (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No shortcuts (%@)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жарлықтар жоқ (%@)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有快捷方式（%@）"
+          }
+        }
+      }
+    },
+    "авто" : {
+      "comment" : "The shortcut was made automatically",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "auto"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "авто"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动"
+          }
+        }
+      }
+    },
+    "без установщика" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no installer"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "орнатқышсыз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无安装程序"
+          }
+        }
+      }
+    },
+    "в пространстве «%@» нет Steam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the space “%@” doesn’t have Steam"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігінде Steam жоқ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”中没有 Steam"
+          }
+        }
+      }
+    },
+    "в пространстве «%@» нет программы «%@». Список: onwinctl programs %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the space “%@” has no program “%@”. List: onwinctl programs %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігінде «%@» бағдарламасы жоқ. Тізім: onwinctl programs %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”中没有程序“%@”。查看列表：onwinctl programs %@"
+          }
+        }
+      }
+    },
+    "вручную" : {
+      "comment" : "The shortcut was made by the user",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "manual"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолмен"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "手动"
+          }
+        }
+      }
+    },
+    "да" : {
+      "comment" : "Status value: supported",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "yes"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "иә"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "是"
+          }
+        }
+      }
+    },
+    "движок Wine %@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine engine %@, %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine %@ қозғалтқышы, %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine 引擎 %@，%@"
+          }
+        }
+      }
+    },
+    "для steam:<appid> нужно пространство со Steam" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "steam:<appid> needs a space with Steam"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "steam:<appid> үшін Steam орнатылған кеңістік керек"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "steam:<appid> 需要一个装有 Steam 的空间"
+          }
+        }
+      }
+    },
+    "есть" : {
+      "comment" : "Status value: the part is present",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "present"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "бар"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有"
+          }
+        }
+      }
+    },
+    "журнала запуска «%@» в «%@» нет — отчёт без журнала" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "there’s no launch log “%@” in “%@” — report without a log"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» іске қосу журналы жоқ («%@» ішінде) — есеп журналсыз жасалады"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%2$@”中没有运行日志“%1$@”— 报告将不包含日志"
+          }
+        }
+      }
+    },
+    "загружается (StateFlags %lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "downloading (StateFlags %lld)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "жүктелуде (StateFlags %lld)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在下载（StateFlags %lld）"
+          }
+        }
+      }
+    },
+    "запущено (wineserver %lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "running (wineserver %lld)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "іске қосулы (wineserver %lld)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在运行（wineserver %lld）"
+          }
+        }
+      }
+    },
+    "значок exe/ico: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "exe/ico icon: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "exe/ico белгішесі: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "exe/ico 图标：%@"
+          }
+        }
+      }
+    },
+    "издатель: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "publisher: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "жариялаушы: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发布者：%@"
+          }
+        }
+      }
+    },
+    "использование: onwinctl advise <пространство|-> <файл.exe>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl advise <space|-> <file.exe>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl advise <кеңістік|-> <файл.exe>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl advise <空间|-> <文件.exe>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl advise-log <журнал.log> [--space имя]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl advise-log <file.log> [--space name]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl advise-log <журнал.log> [--space атау]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl advise-log <日志.log> [--space 名称]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl archive <пространство> <файл>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl archive <space> <file>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl archive <кеңістік> <файл>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl archive <空间> <文件>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl component <пространство> <компонент>[,компонент...]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl component <space> <component>[,component...]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl component <кеңістік> <компонент>[,компонент...]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl component <空间> <组件>[,组件...]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl component-files <компонент> <папка>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl component-files <component> <folder>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl component-files <компонент> <қалта>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl component-files <组件> <文件夹>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl icon <пространство|-> <программа|приложение|component:id|steam:appid> <файл.png> [--only exe|image|remote]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl icon <space|-> <program|app|component:id|steam:appid> <file.png> [--only exe|image|remote]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl icon <кеңістік|-> <бағдарлама|қолданба|component:id|steam:appid> <файл.png> [--only exe|image|remote]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl icon <空间|-> <程序|应用|component:id|steam:appid> <文件.png> [--only exe|image|remote]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl launcher <пространство> <программа> [--dir папка]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl launcher <space> <program> [--dir folder]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl launcher <кеңістік> <бағдарлама> [--dir қалта]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl launcher <空间> <程序> [--dir 文件夹]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl launcher-remove <пространство> <программа> [--dir папка]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl launcher-remove <space> <program> [--dir folder]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl launcher-remove <кеңістік> <бағдарлама> [--dir қалта]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl launcher-remove <空间> <程序> [--dir 文件夹]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl launchers-sync <пространство> [--rescan] [--dir папка]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl launchers-sync <space> [--rescan] [--dir folder]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl launchers-sync <кеңістік> [--rescan] [--dir қалта]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl launchers-sync <空间> [--rescan] [--dir 文件夹]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl open-url 'onwin://run?space=<id>&program=<id>'" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl open-url 'onwin://run?space=<id>&program=<id>'"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl open-url 'onwin://run?space=<id>&program=<id>'"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl open-url 'onwin://run?space=<id>&program=<id>'"
+          }
+        }
+      }
+    },
+    "использование: onwinctl pin <пространство> <путь> [имя]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl pin <space> <path> [name]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl pin <кеңістік> <жол> [атау]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl pin <空间> <路径> [名称]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl recipe add <файл.json> [--replace]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl recipe add <file.json> [--replace]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl recipe add <файл.json> [--replace]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl recipe add <文件.json> [--replace]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl recipe export <id> <файл.onwinrecipe>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl recipe export <id> <file.onwinrecipe>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl recipe export <id> <файл.onwinrecipe>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl recipe export <id> <文件.onwinrecipe>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl recipe import <файл.onwinrecipe>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl recipe import <file.onwinrecipe>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl recipe import <файл.onwinrecipe>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl recipe import <文件.onwinrecipe>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl recipe remove <id>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl recipe remove <id>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl recipe remove <id>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl recipe remove <id>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl recipe show <id>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl recipe show <id>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl recipe show <id>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl recipe show <id>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl report <пространство> [программа.exe] [--log журнал.log] [--no-log] [--output файл]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl report <space> [program.exe] [--log file.log] [--no-log] [--output file]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl report <кеңістік> [бағдарлама.exe] [--log журнал.log] [--no-log] [--output файл]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl report <空间> [程序.exe] [--log 日志.log] [--no-log] [--output 文件]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl run [--no-auto-components] <пространство> <файл> [аргументы]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl run [--no-auto-components] <space> <file> [arguments]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl run [--no-auto-components] <кеңістік> <файл> [аргументтер]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl run [--no-auto-components] <空间> <文件> [参数]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl run-command <пространство> [параметры] <командная строка>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl run-command <space> [options] <command line>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl run-command <кеңістік> [параметрлер] <пәрмен жолы>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl run-command <空间> [选项] <命令行>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl set <пространство> <параметр> <значение> [--restart]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl set <space> <setting> <value> [--restart]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl set <кеңістік> <параметр> <мән> [--restart]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl set <空间> <参数> <值> [--restart]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl steam-install <пространство> <appid>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl steam-install <space> <appid>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl steam-install <кеңістік> <appid>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl steam-install <空间> <appid>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl steam-launch <пространство> <appid|название>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl steam-launch <space> <appid|name>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl steam-launch <кеңістік> <appid|атауы>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl steam-launch <空间> <appid|名称>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl uninstall <пространство> <название|ключ> [--quiet] [--dry-run]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl uninstall <space> <name|key> [--quiet] [--dry-run]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl uninstall <кеңістік> <атауы|кілт> [--quiet] [--dry-run]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl uninstall <空间> <名称|键> [--quiet] [--dry-run]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl unpin <пространство> <программа>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl unpin <space> <program>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl unpin <кеңістік> <бағдарлама>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl unpin <空间> <程序>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl update [--check] [--version <версия>]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl update [--check] [--version <version>]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl update [--check] [--version <нұсқа>]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl update [--check] [--version <版本>]"
+          }
+        }
+      }
+    },
+    "использование: onwinctl wine <пространство> <команда>" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl wine <space> <command>"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl wine <кеңістік> <пәрмен>"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl wine <空间> <命令>"
+          }
+        }
+      }
+    },
+    "картинка: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "image: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сурет: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "图片：%@"
+          }
+        }
+      }
+    },
+    "не запущено" : {
+      "comment" : "The space is not running",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "not running"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "іске қосылмаған"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未运行"
+          }
+        }
+      }
+    },
+    "не удалось записать %@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "couldn’t write %@: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "жазу мүмкін болмады (%@): %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法写入 %@：%@"
+          }
+        }
+      }
+    },
+    "не удалось разобрать команду удаления «%@»" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "couldn’t parse the uninstall command “%@”"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» жою пәрменін талдау мүмкін болмады"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法解析卸载命令“%@”"
+          }
+        }
+      }
+    },
+    "неизвестная команда %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unknown command %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "белгісіз пәрмен: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未知命令 %@"
+          }
+        }
+      }
+    },
+    "неизвестная команда recipe %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unknown recipe command %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "белгісіз recipe пәрмені: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未知的 recipe 命令 %@"
+          }
+        }
+      }
+    },
+    "неизвестный параметр %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unknown setting %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "белгісіз параметр: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未知参数 %@"
+          }
+        }
+      }
+    },
+    "нет" : {
+      "comment" : "Status value: the part is absent",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "жоқ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无"
+          }
+        }
+      }
+    },
+    "нет игры «%@». Список: onwinctl steam-games %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no game “%@”. List: onwinctl steam-games %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» ойыны жоқ. Тізім: onwinctl steam-games %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有游戏“%@”。查看列表：onwinctl steam-games %@"
+          }
+        }
+      }
+    },
+    "нет ключа «%@»" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no key “%@”"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кілті жоқ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有键“%@”"
+          }
+        }
+      }
+    },
+    "нет компонента %@. Список: onwinctl components" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no component %@. List: onwinctl components"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ компоненті жоқ. Тізім: onwinctl components"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有组件 %@。查看列表：onwinctl components"
+          }
+        }
+      }
+    },
+    "нет компонента «%@»" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no component “%@”"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» компоненті жоқ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有组件“%@”"
+          }
+        }
+      }
+    },
+    "нет приложения «%@» в каталоге" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no app “%@” in the Catalog"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "каталогта «%@» қолданбасы жоқ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目录中没有应用“%@”"
+          }
+        }
+      }
+    },
+    "нет программы «%@». Список: onwinctl uninstall-list %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no program “%@”. List: onwinctl uninstall-list %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» бағдарламасы жоқ. Тізім: onwinctl uninstall-list %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有程序“%@”。查看列表：onwinctl uninstall-list %@"
+          }
+        }
+      }
+    },
+    "нет пространства «%@». Список: onwinctl spaces" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no space “%@”. List: onwinctl spaces"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігі жоқ. Тізім: onwinctl spaces"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有空间“%@”。查看列表：onwinctl spaces"
+          }
+        }
+      }
+    },
+    "нет своего рецепта «%@». Список: onwinctl recipe list" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no recipe of your own named “%@”. List: onwinctl recipe list"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» деген өз рецептіңіз жоқ. Тізім: onwinctl recipe list"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有自定义配方“%@”。查看列表：onwinctl recipe list"
+          }
+        }
+      }
+    },
+    "нет файла установщика «%@» (путь в installer.file — абсолютный или относительно %@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "installer file “%@” is missing (the path in installer.file is absolute or relative to %@)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» орнатқыш файлы жоқ (installer.file ішіндегі жол абсолютті немесе %@ қалтасына қатысты болуы керек)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有安装程序文件“%@”（installer.file 中的路径应为绝对路径，或相对于 %@ 的路径）"
+          }
+        }
+      }
+    },
+    "ни один источник не дал значка" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no source provided an icon"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "бірде-бір дереккөз белгіше бермеді"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有任何来源提供图标"
+          }
+        }
+      }
+    },
+    "нужно обновление (StateFlags %lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "needs an update (StateFlags %lld)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "жаңарту керек (StateFlags %lld)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要更新（StateFlags %lld）"
+          }
+        }
+      }
+    },
+    "ошибка: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "error: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қате: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "错误：%@"
+          }
+        }
+      }
+    },
+    "перенести движок Wine из приложения в %@ (без загрузки)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "move the Wine engine from the app to %@ (no download)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine қозғалтқышын қолданбадан көшіру (жүктеп алусыз): %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将 Wine 引擎从应用中移到 %@（无需下载）"
+          }
+        }
+      }
+    },
+    "перенесён: %@" : {
+      "comment" : "A shortcut was moved",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "moved: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "жылжытылды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移动：%@"
+          }
+        }
+      }
+    },
+    "подсказка" : {
+      "comment" : "A suggestion without a component to install",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tip"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "кеңес"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提示"
+          }
+        }
+      }
+    },
+    "приложение onwin %@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin app %@, %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin қолданбасы %@, %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin 应用 %@，%@"
+          }
+        }
+      }
+    },
+    "проверка PE (ссылка aka.ms меняется)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PE check (the aka.ms link changes)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PE тексеру (aka.ms сілтемесі өзгереді)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PE 检查（aka.ms 链接会变化）"
+          }
+        }
+      }
+    },
+    "проверка заголовка CAB" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CAB header check"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CAB тақырыбын тексеру"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CAB 文件头检查"
+          }
+        }
+      }
+    },
+    "программа в пространстве отказалась завершаться; закройте её сами или: onwinctl kill %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "a program in the space refused to quit; close it yourself or run: onwinctl kill %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "кеңістіктегі бағдарлама жабылудан бас тартты; оны өзіңіз жабыңыз немесе: onwinctl kill %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间中的程序拒绝退出；请自行关闭它，或运行：onwinctl kill %@"
+          }
+        }
+      }
+    },
+    "программа не запустилась и после установки компонентов (код %lld)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the program still didn’t start after installing components (code %lld)."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "бағдарлама компоненттерді орнатқаннан кейін де іске қосылмады (код %lld)."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安装组件后程序仍未能启动（代码 %lld）。"
+          }
+        }
+      }
+    },
+    "программа не запустилась и после установки компонентов (код %lld). Всё ещё не хватает: %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the program still didn’t start after installing components (code %lld). Still missing: %@."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "бағдарлама компоненттерді орнатқаннан кейін де іске қосылмады (код %lld). Әлі де жетіспейді: %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安装组件后程序仍未能启动（代码 %lld）。仍然缺少：%@。"
+          }
+        }
+      }
+    },
+    "программа отказалась завершаться (например, ждёт ответа «Сохранить?»). Принудительно: onwinctl kill %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the program refused to quit (for example, it’s waiting for an answer to “Save?”). To force it: onwinctl kill %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "бағдарлама жабылудан бас тартты (мысалы, «Сақтау керек пе?» сұрағына жауап күтіп тұр). Мәжбүрлеп: onwinctl kill %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "程序拒绝退出（例如正在等待回答“是否保存？”）。强制结束：onwinctl kill %@"
+          }
+        }
+      }
+    },
+    "пространство «%@»" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "space “%@”"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігі"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”"
+          }
+        }
+      }
+    },
+    "пространство «%@» запущено. %@ применится только после перезапуска пространства: все его программы будут закрыты. Повторите с --restart" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the space “%@” is running. %@ will take effect only after the space restarts: all its programs will be closed. Repeat with --restart"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» кеңістігі іске қосулы. %@ кеңістік қайта іске қосылғаннан кейін ғана күшіне енеді: оның барлық бағдарламасы жабылады. --restart арқылы қайталаңыз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空间“%@”正在运行。%@ 需要重启空间后才会生效：空间中的所有程序都会被关闭。请加上 --restart 重试"
+          }
+        }
+      }
+    },
+    "пустая команда" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "empty command"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "бос пәрмен"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "命令为空"
+          }
+        }
+      }
+    },
+    "рецепт «%@» не готов:\n%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "recipe “%@” isn’t ready:\n%@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» рецепті дайын емес:\n%@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "配方“%@”尚未就绪：\n%@"
+          }
+        }
+      }
+    },
+    "рецепт «%@» уже есть; заменить: --replace" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "recipe “%@” already exists; to replace it: --replace"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» рецепті бұрыннан бар; ауыстыру: --replace"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "配方“%@”已存在；要替换，请使用 --replace"
+          }
+        }
+      }
+    },
+    "рецепт не сохранён:\n%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "recipe not saved:\n%@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "рецепт сақталмады:\n%@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "配方未保存：\n%@"
+          }
+        }
+      }
+    },
+    "сайт разработчика: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "developer website: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "әзірлеуші сайты: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开发者网站：%@"
+          }
+        }
+      }
+    },
+    "создан: %@" : {
+      "comment" : "A shortcut was created",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "created: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "жасалды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已创建：%@"
+          }
+        }
+      }
+    },
+    "у «%@» нет тихого удаления (QuietUninstallString); без --quiet откроется окно деинсталлятора" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” has no silent uninstall (QuietUninstallString); without --quiet the uninstaller window will open"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» үшін үнсіз жою жоқ (QuietUninstallString); --quiet болмаса, жою бағдарламасының терезесі ашылады"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@”不支持静默卸载（QuietUninstallString）；不加 --quiet 会打开卸载程序窗口"
+          }
+        }
+      }
+    },
+    "у программы «%@» нет ярлыка в %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the program “%@” has no shortcut in %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@» бағдарламасының жарлығы жоқ (%@ ішінде)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "程序“%@”在 %@ 中没有快捷方式"
+          }
+        }
+      }
+    },
+    "удалён: %@" : {
+      "comment" : "A shortcut was removed",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "removed: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "жойылды: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已删除：%@"
+          }
+        }
+      }
+    },
+    "укажите архив" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specify an archive"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "мұрағатты көрсетіңіз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请指定压缩包"
+          }
+        }
+      }
+    },
+    "укажите имя пространства" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specify a space name"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "кеңістік атауын көрсетіңіз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请指定空间名称"
+          }
+        }
+      }
+    },
+    "укажите компонент из onwinctl components" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specify a component from onwinctl components"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwinctl components тізімінен компонент көрсетіңіз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请从 onwinctl components 中指定组件"
+          }
+        }
+      }
+    },
+    "укажите папку движка" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specify the engine folder"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қозғалтқыш қалтасын көрсетіңіз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请指定引擎文件夹"
+          }
+        }
+      }
+    },
+    "укажите приложение из onwinctl catalog" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specify an app from onwinctl catalog"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwinctl catalog тізімінен қолданба көрсетіңіз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请从 onwinctl catalog 中指定应用"
+          }
+        }
+      }
+    },
+    "укажите пространство" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specify a space"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "кеңістікті көрсетіңіз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请指定空间"
+          }
+        }
+      }
+    },
+    "укажите путь к Game Porting Toolkit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specify the path to Game Porting Toolkit"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Game Porting Toolkit жолын көрсетіңіз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请指定 Game Porting Toolkit 的路径"
+          }
+        }
+      }
+    },
+    "укажите файл" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "specify a file"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "файлды көрсетіңіз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请指定文件"
+          }
+        }
+      }
+    },
+    "установлена" : {
+      "comment" : "Steam game state",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "installed"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "орнатылған"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已安装"
+          }
+        }
+      }
+    },
+    "файл не найден: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "file not found: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "файл табылмады: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找不到文件：%@"
+          }
+        }
+      }
+    },
+    "файл: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "file: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "файл: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件：%@"
+          }
+        }
+      }
+    },
+    "— (значок-заглушка %@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "— (placeholder icon %@)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "— (уақытша белгіше: %@)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—（占位图标 %@）"
+          }
+        }
+      }
+    },
+    "• %@  [%@]  приоритет %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• %@  [%@]  priority %lld"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• %@  [%@]  басымдық %lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• %@  [%@]  优先级 %lld"
+          }
+        }
+      }
+    }
   },
   "version" : "1.0"
 }
