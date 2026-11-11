@@ -8,9 +8,9 @@ public enum OnwinLinks {
     /// «Что делать, если не работает» on the site: opened by «Сообщить о проблеме» while there is no chat yet.
     public static let troubleshooting = URL(string: "https://totktoxam.github.io/onwin/docs.html#troubleshooting")!
 
-    /// Invite link of the support chat (a Telegram group).
-    // TODO: put the Telegram group's invite link here once the group exists (e.g. "https://t.me/…").
-    public static let supportChat = ""
+    /// Invite link of the support chat: the Telegram group «onwin — помощь».
+    /// Leave it empty to fall back to the troubleshooting page.
+    public static let supportChat = "https://t.me/+KGkGUTbpk0ZjNDEy"
 
     /// Where «Скопировать и открыть чат поддержки» goes: the chat, or the troubleshooting page while
     /// `supportChat` is empty.
