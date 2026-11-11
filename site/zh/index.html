@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>onwin — 在 Mac 上运行 Windows 游戏和程序</title>
+  <meta name="description" content="onwin 是一款自由软件，可在搭载 Apple 芯片的 Mac 上运行 Windows 程序和游戏。自有引擎基于 Wine 11，图形通过 Metal 渲染，支持 Steam。">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="alternate" hreflang="ru" href="https://totktoxam.github.io/onwin/">
+  <link rel="alternate" hreflang="en" href="https://totktoxam.github.io/onwin/en/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://totktoxam.github.io/onwin/zh/">
+  <link rel="alternate" hreflang="kk" href="https://totktoxam.github.io/onwin/kk/">
+  <link rel="alternate" hreflang="x-default" href="https://totktoxam.github.io/onwin/">
+  <link rel="stylesheet" href="../style.css?v=13">
+  <script src="../config.js?v=5" defer></script>
+  <script src="../site.js?v=13" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <aside class="donate-bar" aria-label="支持 onwin">
+    <div class="wrap">
+      <p class="donate-bar-text">
+        <svg class="donate-bar-heart" width="16" height="16" fill="#e5484d" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        <span>onwin 免费且开源<span class="donate-bar-more">，它的发展全靠您的捐助。</span></span>
+      </p>
+      <a class="donate-bar-link" href="#donate">支持我们<span aria-hidden="true"> →</span></a>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — 返回首页">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="主菜单">
+        <ul>
+          <li><a href="install.html">安装</a></li>
+          <li><a href="releases.html">更新</a></li>
+          <li><a href="docs.html">文档</a></li>
+          <li><a href="donate.html">支持我们</a></li>
+          <li><a href="licenses.html">许可证</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+      <nav class="lang-switch" aria-label="语言">
+        <a href="../index.html" hreflang="ru" lang="ru" title="Русский">РУ</a>
+        <a href="../en/index.html" hreflang="en" lang="en" title="English">EN</a>
+        <a href="index.html" hreflang="zh-Hans" lang="zh-Hans" title="简体中文" aria-current="true">中文</a>
+        <a href="../kk/index.html" hreflang="kk" lang="kk" title="Қазақша">ҚАЗ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero hero-simple" aria-labelledby="why-title">
+      <div class="wrap">
+        <div class="hero-intro">
+          <p class="hero-brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg><span>onwin</span></p>
+          <p class="beta-note"><span class="badge">测试版</span> onwin 仍在开发中：很多功能已经可用，但仍可能出错。遇到问题请<a href="#support-home">告诉我们</a>。</p>
+          <h1 id="why-title">在您的 Mac 上运行 Windows 游戏和程序</h1>
+          <p class="pitch">有一款只支持 Windows 的游戏或程序，而您用的是 Mac？onwin 可以直接在 macOS 中运行它：无需安装 Windows，无需额外分区，也无需重启。</p>
+          <div class="btn-row">
+            <a class="btn btn-primary btn-lg" href="install.html">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>
+              免费安装
+            </a>
+            <a class="btn btn-secondary btn-lg" href="#how-title">工作原理</a>
+          </div>
+          <p class="fineprint">免费，无广告、无订阅 · 搭载 Apple 芯片的 Mac（M1 及更新机型） · macOS 14 及更新版本</p>
+          <div class="counter" data-counter hidden>
+            <p class="counter-label"><span class="counter-dot" aria-hidden="true"></span>累计安装</p>
+            <p class="counter-value"><span data-counter-value aria-hidden="true">0</span><span class="copied-status" data-counter-sr></span></p>
+            <p class="counter-caption">通过本网站和 GitHub 安装 onwin 的次数</p>
+          </div>
+        </div>
+
+        <h2 class="why-title">onwin 适合谁、能做什么</h2>
+        <div class="why-grid">
+          <article class="card why">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6h11a3.5 3.5 0 0 1 3.4 2.9l.8 5.8a2.5 2.5 0 0 1-4.4 2L15.5 15h-7l-1.8 1.7a2.5 2.5 0 0 1-4.4-2l.8-5.8A3.5 3.5 0 0 1 6.5 6z"/><path d="M8 9v4M6 11h4"/></svg></div>
+            <h3>想玩一款没有 Mac 版的游戏</h3>
+            <p>Steam 和其他商店里的很多游戏只有 Windows 版。在 onwin 中安装 Windows 版 Steam，就能像普通应用一样直接在 Mac 上运行这些游戏。</p>
+          </article>
+          <article class="card why">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2.5"/><path d="M8 21h8M12 17v4"/></svg></div>
+            <h3>需要一个只有 Windows 版的程序</h3>
+            <p>工作用的小工具、用惯了的老程序、光盘里的安装程序……onwin 双击就能打开普通的 .exe 文件。</p>
+          </article>
+          <article class="card why">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg></div>
+            <h3>不想安装 Windows，也不想来回重启</h3>
+            <p>不用购买 Windows，不用给硬盘分区，也不用开虚拟机。Windows 程序会在窗口中打开，和您的 Mac 应用并排使用。</p>
+          </article>
+          <article class="card why">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <h3>这对我的 Mac 安全吗？</h3>
+            <p>每个程序都在自己的“空间”里运行。空间就是一个单独的文件夹，有自己的 C: 盘。不满意的话，删除这个空间，程序就不会留下任何痕迹。onwin 不会改动 macOS 的系统文件。</p>
+          </article>
+        </div>
+
+        <p class="note note-plain why-honest"><strong>实话实说：哪些可能无法运行。</strong> 能运行的程序非常多，但不是全部：带有严格反作弊保护的游戏（部分在线射击游戏），以及需要专用设备驱动的程序，通常无法运行。验证方法很简单：onwin 是免费的，装上试试就知道了。</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="features-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">功能</span>
+          <h2 id="features-title">一切只为让程序顺利运行</h2>
+          <p>onwin 会替您配置好 Windows 环境，您只需选择游戏或安装程序。</p>
+        </div>
+
+        <div class="features">
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="12" height="12" rx="3"/><path d="M8 4.5h8.5A3.5 3.5 0 0 1 20 8v8.5"/></svg></div>
+            <h3>空间</h3>
+            <p>每个空间都是一个独立的 Windows 环境，有自己的 C: 盘和程序。游戏之间互不干扰，不需要的空间可以整个删除。</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6h11a3.5 3.5 0 0 1 3.4 2.9l.8 5.8a2.5 2.5 0 0 1-4.4 2L15.5 15h-7l-1.8 1.7a2.5 2.5 0 0 1-4.4-2l.8-5.8A3.5 3.5 0 0 1 6.5 6z"/><path d="M8 9v4M6 11h4"/><path d="M15.5 10.2h.01M17.5 12h.01"/></svg></div>
+            <h3>Steam 与游戏磁贴</h3>
+            <p>安装 Windows 版 Steam 后，游戏库中的游戏会以磁贴的形式出现在 onwin 的桌面上。磁贴会显示游戏当前是否正在运行。</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg></div>
+            <h3>组件自动安装</h3>
+            <p>内置 DirectX、Visual C++ 运行库、字体等组件的目录。onwin 会在程序首次运行前安装它需要的组件；如果启动失败，还会补装缺少的部分。</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 16.5l9 5 9-5"/></svg></div>
+            <h3>图形方案任选</h3>
+            <p>D3DMetal、DXMT 或 DXVK，可以为每个程序单独选择。D3DMetal 是 Apple 的 Game Porting Toolkit 的一部分：您用自己的 Apple ID 登录后，onwin 会从 Apple 网站下载它。</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg></div>
+            <h3>Launchpad 和 Dock 中的快捷方式</h3>
+            <p>Windows 程序会拥有自己的快捷方式，像普通 Mac 应用一样直接打开，无需先进入 onwin。</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="3"/><path d="M7 9.5l3 2.5-3 2.5M12.5 15H17"/></svg></div>
+            <h3>onwinctl</h3>
+            <p>命令行工具：在“终端”和脚本中管理空间、安装和运行程序。</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></div>
+            <h3>自有引擎</h3>
+            <p>Wine 11（含 CodeWeavers 的补丁）、DXVK、DXMT、MoltenVK 和 GStreamer，全部由开源代码专门为 onwin 构建。</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 7L4 12l4.5 5M15.5 7L20 12l-4.5 5M13.5 5l-3 14"/></svg></div>
+            <h3>自由且免费</h3>
+            <p>代码以 GPL-3.0 许可证开源。没有广告、没有订阅，也不强制注册账号。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="how-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">工作原理</span>
+          <h2 id="how-title">快速上手</h2>
+          <p>只需四个简单步骤，就能在 Mac 上运行 Windows 游戏。</p>
+        </div>
+        <div class="how how-main">
+          <div>
+            <ol class="steps">
+              <li>
+                <h3>安装 onwin</h3>
+                <p>从<a href="install.html">“安装”</a>页面复制一条命令，粘贴到“终端”中。它会安装应用以及所需的一切。</p>
+              </li>
+              <li>
+                <h3>打开 onwin</h3>
+                <p>如果 onwin 提示安装 Rosetta 2，请点按“安装 Rosetta”。这是 Apple 提供的免费转译工具，没有它 Windows 程序无法运行。</p>
+              </li>
+              <li>
+                <h3>安装 Steam 或您自己的程序</h3>
+                <p>点按“安装 Steam”，或者直接把 .exe 安装程序拖到 onwin 窗口中。onwin 会自动为它创建一个单独的“空间”，相当于属于它自己的小 Windows。</p>
+              </li>
+              <li>
+                <h3>开始游戏</h3>
+                <p>游戏和程序会以磁贴的形式出现在 onwin 的“桌面”上。双击磁贴即可运行。</p>
+              </li>
+            </ol>
+            <p><a class="more-link" href="docs.html#quick-start">在文档中了解更多<span aria-hidden="true"> →</span></a></p>
+          </div>
+          <div class="card">
+            <h3>内部原理</h3>
+            <p class="muted small">这不是模拟一整台电脑：Windows 程序就像普通的 macOS 进程一样运行。</p>
+            <ul class="layers">
+              <li class="top"><b>Windows 程序或游戏</b><span>.exe</span></li>
+              <li><b>Wine 11</b><span>Windows 调用 → macOS 调用</span></li>
+              <li><b>D3DMetal · DXMT · DXVK</b><span>DirectX → Metal</span></li>
+              <li><b>Rosetta 2</b><span>x86-64 代码 → Apple 芯片</span></li>
+              <li><b>macOS 与 Metal</b><span>您的 Mac</span></li>
+            </ul>
+          </div>
+        </div>
+        <figure class="shot">
+          <img src="../img/docs/main-window.png" alt="onwin 主窗口：桌面上排列着 Windows 程序和游戏的磁贴" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+          <figcaption>这就是 onwin：所有 Windows 程序和游戏都以磁贴的形式排列在“桌面”上</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section support-section" id="support-home" aria-labelledby="support-title">
+      <div class="wrap">
+        <div class="card">
+          <div>
+            <span class="eyebrow">帮助</span>
+            <h2 id="support-title">遇到问题？联系我们</h2>
+            <p>用您自己的话描述发生了什么。也可以先看看<a href="docs.html#troubleshooting">“遇到问题怎么办”</a>中的建议。Telegram 支持群组使用俄语交流；如果想用英语联系，可以在 GitHub Issues 上提交问题。</p>
+          </div>
+          <div data-support="compact">
+            <noscript><p class="muted">联系方式见文档中的<a href="docs.html#troubleshooting">“遇到问题怎么办”</a>部分。</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="req-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">系统要求</span>
+          <h2 id="req-title">运行所需条件</h2>
+        </div>
+        <div class="reqs">
+          <div class="card req">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></div>
+            <div>
+              <h3>搭载 Apple 芯片的 Mac</h3>
+              <p>M1 或更新的芯片。不支持搭载 Intel 处理器的 Mac。</p>
+            </div>
+          </div>
+          <div class="card req">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></div>
+            <div>
+              <h3>macOS 14 或更新版本</h3>
+              <p>Sonoma 及更高版本。</p>
+            </div>
+          </div>
+          <div class="card req">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20v-4h-4"/></svg></div>
+            <div>
+              <h3>Rosetta 2</h3>
+              <p>运行 Windows 程序的 x86 代码需要它。如果尚未安装，安装程序和应用都会提示您安装。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section donate-section" id="donate" aria-labelledby="donate-title">
+      <div class="wrap">
+        <div class="card donate-block">
+          <div>
+            <span class="eyebrow">支持项目</span>
+            <h2 id="donate-title">onwin 靠热情发展</h2>
+            <p>捐款用于支付开发时间和测试硬件，将来还会用于购买 Apple 开发者证书，让应用安装时不再需要额外步骤。 <a href="donate.html">了解更多</a></p>
+          </div>
+          <div class="donate-list" data-donate="compact">
+            <noscript><p class="muted">支持方式列在<a href="donate.html">“支持我们”</a>页面上。</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">安装</a></li>
+          <li><a href="releases.html">更新</a></li>
+          <li><a href="docs.html">文档</a></li>
+          <li><a href="donate.html">支持我们</a></li>
+          <li><a href="licenses.html">许可证</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">自由软件，采用 GPL-3.0 许可证。</p>
+      <p class="disclaimer">Windows、Mac、Steam 及其他产品名称归其各自所有者所有；onwin 是一个独立项目。</p>
+      <p class="disclaimer analytics-note" data-analytics-note hidden>本网站统计访问量，不使用 Cookie，也不收集个人数据。</p>
+    </div>
+  </footer>
+</body>
+</html>

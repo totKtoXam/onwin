@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>onwin — Windows games and apps on your Mac</title>
+  <meta name="description" content="onwin is a free, open-source app for running Windows programs and games on Apple Silicon Macs. Its own engine based on Wine 11, graphics through Metal, Steam support.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="alternate" hreflang="ru" href="https://totktoxam.github.io/onwin/">
+  <link rel="alternate" hreflang="en" href="https://totktoxam.github.io/onwin/en/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://totktoxam.github.io/onwin/zh/">
+  <link rel="alternate" hreflang="kk" href="https://totktoxam.github.io/onwin/kk/">
+  <link rel="alternate" hreflang="x-default" href="https://totktoxam.github.io/onwin/">
+  <link rel="stylesheet" href="../style.css?v=13">
+  <script src="../config.js?v=5" defer></script>
+  <script src="../site.js?v=13" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <aside class="donate-bar" aria-label="Support onwin">
+    <div class="wrap">
+      <p class="donate-bar-text">
+        <svg class="donate-bar-heart" width="16" height="16" fill="#e5484d" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        <span>onwin is free and open source<span class="donate-bar-more"> — its development runs on your donations.</span></span>
+      </p>
+      <a class="donate-bar-link" href="#donate">Donate<span aria-hidden="true"> →</span></a>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — home page">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="Main menu">
+        <ul>
+          <li><a href="install.html">Install</a></li>
+          <li><a href="releases.html">Updates</a></li>
+          <li><a href="docs.html">Docs</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="licenses.html">Licenses</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+      <nav class="lang-switch" aria-label="Language">
+        <a href="../index.html" hreflang="ru" lang="ru" title="Русский">РУ</a>
+        <a href="index.html" hreflang="en" lang="en" title="English" aria-current="true">EN</a>
+        <a href="../zh/index.html" hreflang="zh-Hans" lang="zh-Hans" title="简体中文">中文</a>
+        <a href="../kk/index.html" hreflang="kk" lang="kk" title="Қазақша">ҚАЗ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero hero-simple" aria-labelledby="why-title">
+      <div class="wrap">
+        <div class="hero-intro">
+          <p class="hero-brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg><span>onwin</span></p>
+          <p class="beta-note"><span class="badge">beta</span> onwin is still in development: a lot already works, but you may run into bugs — <a href="#support-home">let us know</a>.</p>
+          <h1 id="why-title">Windows games and apps on your Mac</h1>
+          <p class="pitch">Found a game or program that only runs on Windows, but you have a Mac? onwin runs it right in macOS — no Windows, no second drive, no restarting.</p>
+          <div class="btn-row">
+            <a class="btn btn-primary btn-lg" href="install.html">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>
+              Install for free
+            </a>
+            <a class="btn btn-secondary btn-lg" href="#how-title">How it works</a>
+          </div>
+          <p class="fineprint">Free, no ads or subscriptions · Mac with an Apple chip (M1 or later) · macOS 14 or later</p>
+          <div class="counter" data-counter hidden>
+            <p class="counter-label"><span class="counter-dot" aria-hidden="true"></span>Already with us</p>
+            <p class="counter-value"><span data-counter-value aria-hidden="true">0</span><span class="copied-status" data-counter-sr></span></p>
+            <p class="counter-caption">times onwin has been installed from this site and GitHub</p>
+          </div>
+        </div>
+
+        <h2 class="why-title">Who onwin is for</h2>
+        <div class="why-grid">
+          <article class="card why">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6h11a3.5 3.5 0 0 1 3.4 2.9l.8 5.8a2.5 2.5 0 0 1-4.4 2L15.5 15h-7l-1.8 1.7a2.5 2.5 0 0 1-4.4-2l.8-5.8A3.5 3.5 0 0 1 6.5 6z"/><path d="M8 9v4M6 11h4"/></svg></div>
+            <h3>I want to play a game that isn’t on Mac</h3>
+            <p>Many games on Steam and other stores come out for Windows only. Install the Windows version of Steam in onwin and run them right on your Mac, like regular apps.</p>
+          </article>
+          <article class="card why">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2.5"/><path d="M8 21h8M12 17v4"/></svg></div>
+            <h3>I need a program that only exists for Windows</h3>
+            <p>A tool for work, an old favorite program, an installer from a disc — onwin opens a regular .exe file with a double-click.</p>
+          </article>
+          <article class="card why">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg></div>
+            <h3>I don’t want to install Windows and keep restarting</h3>
+            <p>No need to buy Windows, split your drive or keep a virtual machine around. Windows programs open in windows right next to your Mac apps.</p>
+          </article>
+          <article class="card why">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <h3>Is it safe for my Mac?</h3>
+            <p>Each program lives in its own “space” — a separate folder with its own C: drive. Don’t like something? Delete the space, and the program leaves no trace. onwin doesn’t touch macOS system files.</p>
+          </article>
+        </div>
+
+        <p class="note note-plain why-honest"><strong>An honest word about what may not work.</strong> A lot runs, but not everything: games with strict anti-cheat protection (some online shooters) and programs that need drivers for their own devices usually don’t work. It’s easy to check: onwin is free — install it and try.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="features-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Features</span>
+          <h2 id="features-title">Everything a program needs to just start</h2>
+          <p>onwin takes care of setting up the Windows environment: all you do is pick a game or an installer.</p>
+        </div>
+
+        <div class="features">
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="12" height="12" rx="3"/><path d="M8 4.5h8.5A3.5 3.5 0 0 1 20 8v8.5"/></svg></div>
+            <h3>Spaces</h3>
+            <p>Each space is a separate Windows environment with its own C: drive and its own programs. Games don’t get in each other’s way, and a space you no longer need is deleted all at once.</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6h11a3.5 3.5 0 0 1 3.4 2.9l.8 5.8a2.5 2.5 0 0 1-4.4 2L15.5 15h-7l-1.8 1.7a2.5 2.5 0 0 1-4.4-2l.8-5.8A3.5 3.5 0 0 1 6.5 6z"/><path d="M8 9v4M6 11h4"/><path d="M15.5 10.2h.01M17.5 12h.01"/></svg></div>
+            <h3>Steam and game tiles</h3>
+            <p>Install Steam for Windows, and the games in your library appear as tiles on the onwin Desktop. A tile shows whether the game is running right now.</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg></div>
+            <h3>Components, handled for you</h3>
+            <p>A catalog of DirectX, Visual C++ libraries, fonts and other components. onwin installs what a program needs before its first launch — and fetches anything missing if a launch fails.</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 16.5l9 5 9-5"/></svg></div>
+            <h3>Your choice of graphics</h3>
+            <p>D3DMetal, DXMT or DXVK — set separately for each program. D3DMetal is part of Apple’s Game Porting Toolkit: onwin downloads it from Apple’s website after you sign in with your Apple ID.</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg></div>
+            <h3>Shortcuts in Launchpad and the Dock</h3>
+            <p>A Windows program gets its own shortcut and opens like a regular Mac app — without going into onwin.</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="3"/><path d="M7 9.5l3 2.5-3 2.5M12.5 15H17"/></svg></div>
+            <h3>onwinctl</h3>
+            <p>A command-line tool: manage spaces, install and run programs from Terminal and scripts.</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></div>
+            <h3>Its own engine</h3>
+            <p>Wine 11 with CodeWeavers patches, DXVK, DXMT, MoltenVK and GStreamer — built from open source code specifically for onwin.</p>
+          </article>
+          <article class="card feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 7L4 12l4.5 5M15.5 7L20 12l-4.5 5M13.5 5l-3 14"/></svg></div>
+            <h3>Free and open</h3>
+            <p>The code is open under the GPL-3.0 license. No ads, no subscriptions, no required accounts.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="how-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">How it works</span>
+          <h2 id="how-title">Quick start</h2>
+          <p>Four simple steps, and a Windows game is running on your Mac.</p>
+        </div>
+        <div class="how how-main">
+          <div>
+            <ol class="steps">
+              <li>
+                <h3>Install onwin</h3>
+                <p>Copy one command from the <a href="install.html">Install</a> page and paste it into Terminal. It installs the app and everything it needs.</p>
+              </li>
+              <li>
+                <h3>Open onwin</h3>
+                <p>If onwin asks you to install Rosetta 2, click “Install Rosetta”. It’s a free translator from Apple; Windows programs won’t start without it.</p>
+              </li>
+              <li>
+                <h3>Install Steam or your own program</h3>
+                <p>Click “Install Steam” — or just drag an .exe installer into the onwin window. onwin creates a separate “space” for it — its own little Windows.</p>
+              </li>
+              <li>
+                <h3>Play</h3>
+                <p>Games and programs appear as tiles on the onwin Desktop. Double-click a tile, and that’s it.</p>
+              </li>
+            </ol>
+            <p><a class="more-link" href="docs.html#quick-start">More in the docs<span aria-hidden="true"> →</span></a></p>
+          </div>
+          <div class="card">
+            <h3>What happens inside</h3>
+            <p class="muted small">No emulation of a whole computer: a Windows program runs as a regular macOS process.</p>
+            <ul class="layers">
+              <li class="top"><b>Windows program or game</b><span>.exe</span></li>
+              <li><b>Wine 11</b><span>Windows calls → macOS calls</span></li>
+              <li><b>D3DMetal · DXMT · DXVK</b><span>DirectX → Metal</span></li>
+              <li><b>Rosetta 2</b><span>x86-64 code → Apple Silicon</span></li>
+              <li><b>macOS and Metal</b><span>your Mac</span></li>
+            </ul>
+          </div>
+        </div>
+        <figure class="shot">
+          <img src="../img/docs/main-window.png" alt="The main onwin window: the Desktop with tiles for Windows programs and games" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+          <figcaption>This is onwin: all your Windows programs and games as tiles on the Desktop</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section support-section" id="support-home" aria-labelledby="support-title">
+      <div class="wrap">
+        <div class="card">
+          <div>
+            <span class="eyebrow">Help</span>
+            <h2 id="support-title">Something not working? Write to us</h2>
+            <p>Tell us in your own words what happened. Our support chat is in Russian; you can also write in English on GitHub Issues. First, you may want to look at the tips in <a href="docs.html#troubleshooting">“If something doesn’t work”</a>.</p>
+          </div>
+          <div data-support="compact">
+            <noscript><p class="muted">Ways to contact us are in the <a href="docs.html#troubleshooting">“If something doesn’t work”</a> section of the docs.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="req-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">System requirements</span>
+          <h2 id="req-title">What you need</h2>
+        </div>
+        <div class="reqs">
+          <div class="card req">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></div>
+            <div>
+              <h3>A Mac with Apple Silicon</h3>
+              <p>An M1 chip or later. Macs with Intel processors are not supported.</p>
+            </div>
+          </div>
+          <div class="card req">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></div>
+            <div>
+              <h3>macOS 14 or later</h3>
+              <p>Sonoma and later versions.</p>
+            </div>
+          </div>
+          <div class="card req">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20v-4h-4"/></svg></div>
+            <div>
+              <h3>Rosetta 2</h3>
+              <p>Needed for the x86 code of Windows programs. If it’s missing, the installer and the app will offer to install it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section donate-section" id="donate" aria-labelledby="donate-title">
+      <div class="wrap">
+        <div class="card donate-block">
+          <div>
+            <span class="eyebrow">Support the project</span>
+            <h2 id="donate-title">onwin is made out of passion</h2>
+            <p>Donations pay for development time, test hardware and, in the future, an Apple developer certificate so the app installs without extra steps. <a href="donate.html">Learn more</a></p>
+          </div>
+          <div class="donate-list" data-donate="compact">
+            <noscript><p class="muted">Ways to donate are listed on the <a href="donate.html">Donate</a> page.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">Install</a></li>
+          <li><a href="releases.html">Updates</a></li>
+          <li><a href="docs.html">Docs</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="licenses.html">Licenses</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">Free software under the GPL-3.0 license.</p>
+      <p class="disclaimer">Windows, Mac, Steam and other product names belong to their owners; onwin is an independent project.</p>
+      <p class="disclaimer analytics-note" data-analytics-note hidden>This site counts visits without cookies or personal data.</p>
+    </div>
+  </footer>
+</body>
+</html>

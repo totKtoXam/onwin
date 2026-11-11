@@ -607,7 +607,7 @@ html { scroll-behavior: smooth; }
 
 /* ---------- Обновления ---------- */
 .release-list { display: grid; gap: 18px; }
-.release { padding: 24px; }
+.release { padding: 24px; min-width: 0; }  /* grid item: long commands and notes must not widen the card */
 .release-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 10px; }
 .release-head h2 { margin: 0; font-size: 1.35rem; }
 .release-date { color: var(--muted); font-size: 0.95rem; }
@@ -633,3 +633,65 @@ html { scroll-behavior: smooth; }
 
 .btn-sub span { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
 .btn-sub small { font-size: 0.75rem; font-weight: 500; color: var(--muted); }
+
+/* ---------- Языки ---------- */
+
+.lang-switch { display: flex; gap: 2px; flex: none; }
+.lang-switch a {
+  display: block; padding: 5px 9px; border-radius: 999px;
+  color: var(--muted); text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.02em;
+}
+.lang-switch a:hover { color: var(--text); background: var(--surface-2); }
+.lang-switch a[aria-current] { color: var(--accent-text); background: var(--accent-soft); }
+/* Когда меню не помещается в одну строку с логотипом, языки встают справа от логотипа, меню — ниже. */
+@media (max-width: 1099px) {
+  .site-header .lang-switch { order: 1; margin-left: auto; }
+  .site-header .site-nav { order: 2; width: 100%; }
+}
+@media (max-width: 600px) {
+  .site-nav ul { margin-inline: -8px; }
+  .lang-switch { margin-right: -6px; }
+  .lang-switch a { padding: 5px 7px; }
+}
+
+.lang-bar { background: var(--surface); border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+.lang-bar .wrap {
+  display: flex; align-items: center; justify-content: center; gap: 6px 12px;
+  min-height: 44px; padding-block: 6px; flex-wrap: wrap; text-align: center;
+}
+.lang-bar p { margin: 0; }
+.lang-bar-go {
+  display: inline-block; padding: 4px 14px; border-radius: 999px;
+  background: var(--btn-bg); color: var(--btn-ink); font-weight: 600; text-decoration: none; white-space: nowrap;
+}
+.lang-bar-go:hover { background: var(--btn-bg-hover); }
+.lang-bar-close {
+  display: inline-grid; place-items: center; width: 30px; height: 30px; padding: 0;
+  border: 0; border-radius: 999px; background: transparent; color: var(--muted);
+  font: inherit; font-size: 1.2rem; line-height: 1; cursor: pointer;
+}
+.lang-bar-close:hover { background: var(--surface-2); color: var(--text); }
+
+/* ---------- Счётчик «Нас уже» на главной ---------- */
+
+.counter {
+  display: inline-grid; gap: 2px; max-width: 100%;
+  margin-top: 26px; padding: 14px 20px 16px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.counter p { margin: 0; }
+.counter-label { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.92rem; font-weight: 600; }
+.counter-dot {
+  width: 8px; height: 8px; flex: none; border-radius: 50%; background: #34c759;
+  box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); animation: counter-pulse 2.4s ease-out infinite;
+}
+@keyframes counter-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); }
+  70%, 100% { box-shadow: 0 0 0 7px rgba(52, 199, 89, 0); }
+}
+.counter-value {
+  font-family: var(--font-display); font-size: clamp(2.2rem, 7vw, 3rem); font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.02em; color: var(--accent-text); font-variant-numeric: tabular-nums;
+}
+.counter-caption { color: var(--muted); font-size: 0.9rem; line-height: 1.4; }
+@media (prefers-reduced-motion: reduce) { .counter-dot { animation: none; } }

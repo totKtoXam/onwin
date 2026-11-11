@@ -13,6 +13,11 @@
  *          telegram — ссылка на чат или группу (https://t.me/...),
  *          form     — ссылка на веб-форму, где не нужен аккаунт GitHub (https://...),
  *          email    — адрес почты (name@example.org).
+ * counterMin — счётчик «Нас уже» на главной прячется, пока установок меньше этого числа (0 — показывать всегда,
+ *          когда GitHub ответил).
+ * analytics — счётчики посещений без cookie. Пусто — ничего не подключается и строка о счётчике в подвале скрыта.
+ *          goatcounter     — код сайта в GoatCounter, например "onwin" (→ https://onwin.goatcounter.com/count),
+ *          cloudflareToken — токен Cloudflare Web Analytics (Websites → Add a site → JS snippet, поле "token").
  */
 window.ONWIN_CONFIG = {
   repo: "",
@@ -30,5 +35,10 @@ window.ONWIN_CONFIG = {
     telegramQR: "img/telegram-qr.svg",   // QR-код той же ссылки (qrencode); пусто — без QR
     form: "",
     email: ""
+  },
+  counterMin: 0,
+  analytics: {
+    goatcounter: "",
+    cloudflareToken: ""
   }
 };

@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>onwin 文档</title>
+  <meta name="description" content="onwin 使用说明：快速入门、空间、安装程序和 Steam、D3DMetal / DXMT / DXVK 图形、快捷方式，以及遇到问题怎么办。">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="alternate" hreflang="ru" href="https://totktoxam.github.io/onwin/docs.html">
+  <link rel="alternate" hreflang="en" href="https://totktoxam.github.io/onwin/en/docs.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://totktoxam.github.io/onwin/zh/docs.html">
+  <link rel="alternate" hreflang="kk" href="https://totktoxam.github.io/onwin/kk/docs.html">
+  <link rel="alternate" hreflang="x-default" href="https://totktoxam.github.io/onwin/docs.html">
+  <link rel="stylesheet" href="../style.css?v=13">
+  <script src="../config.js?v=5" defer></script>
+  <script src="../site.js?v=13" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <aside class="donate-bar" aria-label="支持 onwin">
+    <div class="wrap">
+      <p class="donate-bar-text">
+        <svg class="donate-bar-heart" width="16" height="16" fill="#e5484d" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        <span>onwin 免费且开源<span class="donate-bar-more">，它的发展全靠大家的捐助。</span></span>
+      </p>
+      <a class="donate-bar-link" href="#donate">支持我们<span aria-hidden="true"> →</span></a>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — 返回首页">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="主菜单">
+        <ul>
+          <li><a href="install.html">安装</a></li>
+          <li><a href="releases.html">更新</a></li>
+          <li><a href="docs.html" aria-current="page">文档</a></li>
+          <li><a href="donate.html">支持我们</a></li>
+          <li><a href="licenses.html">许可证</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+      <nav class="lang-switch" aria-label="语言">
+        <a href="../docs.html" hreflang="ru" lang="ru" title="Русский">РУ</a>
+        <a href="../en/docs.html" hreflang="en" lang="en" title="English">EN</a>
+        <a href="docs.html" hreflang="zh-Hans" lang="zh-Hans" title="简体中文" aria-current="true">中文</a>
+        <a href="../kk/docs.html" hreflang="kk" lang="kk" title="Қазақша">ҚАЗ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap page-head">
+      <h1>文档</h1>
+      <p class="lead">用简单的话讲清楚怎么使用 onwin。建议从“快速入门”开始：五分钟后，您的 Mac 上就能运行第一个 Windows 游戏或程序。</p>
+    </div>
+
+    <div class="wrap docs-layout">
+      <nav class="toc" aria-labelledby="toc-title">
+        <p class="toc-title" id="toc-title">目录</p>
+        <ol>
+          <li><a href="#quick-start">快速入门</a></li>
+          <li><a href="#spaces">空间</a></li>
+          <li><a href="#install-programs">安装程序</a></li>
+          <li><a href="#steam">Steam 与游戏</a></li>
+          <li><a href="#graphics">图形：D3DMetal、DXMT、DXVK</a></li>
+          <li><a href="#components">组件</a></li>
+          <li><a href="#launchers">Launchpad 和 Dock 中的快捷方式</a></li>
+          <li><a href="#troubleshooting">遇到问题怎么办</a></li>
+          <li><a href="#update-uninstall">更新与卸载</a></li>
+          <li><a href="#cli">进阶：onwinctl</a></li>
+        </ol>
+      </nav>
+
+      <div class="doc">
+
+        <!-- ================= 快速入门 ================= -->
+        <section id="quick-start" aria-labelledby="quick-start-title">
+          <h2 id="quick-start-title">快速入门</h2>
+          <p>从安装到运行第一个游戏只需五步，不需要任何手动设置。</p>
+
+          <ol class="steps">
+            <li>
+              <h3>安装 onwin</h3>
+              <p>打开“终端”：按 <kbd>⌘</kbd> + <kbd>空格键</kbd>，输入“终端”，然后按 <kbd>Return</kbd>。粘贴下面这条命令，再按一次 <kbd>Return</kbd>：</p>
+              <div class="command small-cmd">
+                <code id="qs-install" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+                <button class="btn btn-primary" type="button" data-copy-from="#qs-install">
+                  <span class="label">复制</span>
+                </button>
+              </div>
+              <p>这条命令会安装 onwin 应用及其引擎。引擎是负责运行 Windows 程序的那一部分。安装过程中“终端”里的提示目前是俄语的。其他安装方式请见<a href="install.html">“安装”</a>页面。</p>
+            </li>
+            <li>
+              <h3>打开 onwin</h3>
+              <p>onwin 位于“应用程序”文件夹中。如果 Mac 上没有 Rosetta 2，onwin 会显示“onwin 需要 Rosetta 2”窗口。Rosetta 2 是 Apple 提供的免费转译工具：没有它，Windows 程序无法在搭载 Apple 芯片的 Mac 上运行。点按“安装 Rosetta”。macOS 可能会要求输入密码，这是正常的。</p>
+              <p>接下来您会看到主窗口。左侧是各个栏目：“桌面”、“应用和游戏”目录、您的空间、正在运行的程序以及日志。右侧是“桌面”：您所有的 Windows 游戏和程序都会出现在这里。</p>
+              <figure class="shot">
+                <img src="../img/docs/main-window.png" alt="onwin 主窗口：左侧是栏目，右侧是带有程序和游戏磁贴的桌面" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>onwin 主窗口：带有程序磁贴的“桌面”</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>安装 Steam 或您自己的程序</h3>
+              <p><strong>一键安装 Steam。</strong>在空白的桌面上点按“安装 Steam”。或者在左侧打开“应用和游戏”，找到 Steam，然后点按“安装…”。onwin 会自动准备好一切并运行安装程序。</p>
+              <p><strong>您自己的程序</strong>，也就是 <code>.exe</code> 或 <code>.msi</code> 安装文件。有三种方法：</p>
+              <ul class="list">
+                <li>直接把文件拖到 onwin 窗口中；</li>
+                <li>把文件拖到 Dock 中的 onwin 图标上，或者用 onwin 打开它（在“访达”中：右键点按 →“打开方式”→ onwin）；</li>
+                <li>在目录的“自定义程序”部分，点按“选择安装程序…”。</li>
+              </ul>
+              <p>onwin 会询问把程序安装到哪里：新的空间，还是已经创建的某个空间。如果拿不准，就选新的。</p>
+              <figure class="shot">
+                <img src="../img/docs/catalog.png" alt="onwin 目录：Steam、Epic Games、GOG Galaxy 和 Battle.net 等游戏启动器及其安装按钮" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>“应用和游戏”目录：Steam 和其他启动器一键即可安装</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>运行游戏</h3>
+              <p>安装好的所有内容都会以磁贴的形式出现在 onwin 的“桌面”上。双击磁贴，程序或游戏就会启动。您在 Steam 中下载的游戏也会作为单独的磁贴出现在这里。</p>
+              <figure class="shot">
+                <img src="../img/docs/steam-games.png" alt="onwin 中以磁贴显示的 Steam 游戏" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>Steam 游戏以磁贴显示，双击即可启动</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>新游戏请启用 D3DMetal</h3>
+              <p>现代游戏（DirectX 12，很多 DirectX 11 游戏也一样）使用 D3DMetal 效果最好，这是 Apple 的图形技术。onwin 不能把它打包在内，但可以替您安装：打开目录中的“组件”部分，找到“D3DMetal (Game Porting Toolkit)”卡片，点按“安装 D3DMetal”。需要用免费的 Apple ID 登录。详情请见<a href="#graphics">“图形”</a>一节。</p>
+              <p>如果游戏需要 D3DMetal 而它还没有安装，onwin 会在启动前主动提示您安装。</p>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ================= 空间 ================= -->
+        <section id="spaces" aria-labelledby="spaces-title">
+          <h2 id="spaces-title">空间</h2>
+          <p><dfn class="term">空间</dfn>是 onwin 里一台独立的“Windows 电脑”。它有自己的 C: 盘，自己的程序、设置和存档。各个空间互不干扰。如果出了问题或者不再需要，删除这个空间即可，程序不会留下任何痕迹。</p>
+          <p>通常一个启动器（例如“Steam”）或一个程序用一个空间就够了。从目录安装时，onwin 会自动创建空间。</p>
+
+          <h3>创建空间</h3>
+          <p>在左侧的“空间”部分点按“创建空间…”。也可以点按窗口顶部的“新建空间”按钮，或者按 <kbd>⌘</kbd> + <kbd>N</kbd>。填写名称并选择 Windows 版本。大多数游戏适合 Windows 10。图形可以保持“自动”。</p>
+          <figure class="shot">
+            <img src="../img/docs/new-space.png" alt="“新建空间”窗口，包含名称、Windows 版本和图形等字段" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>“新建空间”窗口</figcaption>
+          </figure>
+
+          <h3>可以对空间做什么</h3>
+          <p>在左侧列表中右键点按某个空间。空间页面上的“更多”菜单里也有同样的命令。</p>
+          <ul class="list">
+            <li><strong>“重新命名…”</strong>：换一个名字。请先关闭这个空间中的程序。</li>
+            <li><strong>“复制”</strong>：制作一个独立的副本，包含所有已安装的程序。想尝试点什么、又不想影响正在使用的版本时很方便。</li>
+            <li><strong>“归档…”</strong>：把空间打包成一个 <code>.onwinspace</code> 文件。可以用作备份，或者把空间搬到另一台 Mac 上。操作前请先关闭空间中的程序。</li>
+            <li><strong>从归档恢复</strong>：双击 <code>.onwinspace</code> 文件，或者在“文件”菜单中选择“从归档恢复空间…”。</li>
+            <li><strong>“删除…”</strong>：空间连同其中的所有内容会被移到废纸篓。在倒空废纸篓之前，都可以把它找回来。</li>
+            <li><strong>“在访达中显示”</strong>：打开空间所在的文件夹。空间页面上的“打开 C: 盘”按钮会打开它的 C: 盘。</li>
+          </ul>
+
+          <h3>空间设置</h3>
+          <p>点按空间页面上的“设置”按钮，或者通过菜单“空间”→“空间设置…”打开。最有用的几项：</p>
+          <ul class="list">
+            <li><strong>“Windows 版本”</strong>（“通用”部分）：程序“看到”的是哪个版本的 Windows。老游戏有时需要 Windows 7 或 XP。</li>
+            <li><strong>“图形”</strong>：游戏画面是怎样绘制的。通常最好保持“自动”。详情请见<a href="#graphics">“图形”</a>一节。</li>
+            <li><strong>“Metal HUD”</strong>：在游戏画面上显示帧率，方便查看游戏运行得是否流畅。</li>
+            <li><strong>“高分辨率（Retina）”</strong>：画面更清晰，但游戏会变慢，老程序里的文字也会变小。如果拿不准，就不要开启。</li>
+            <li><strong>“MSync”</strong>（“性能”部分）：让游戏运行得更快。建议保持开启。</li>
+            <li><strong>“报告支持 AVX”</strong>：有些新游戏需要它，否则无法启动。</li>
+            <li><strong>“组件”</strong>：空间里已经装了什么、还可以添加什么。见<a href="#components">“组件”</a>一节。</li>
+            <li><strong>“Launchpad 快捷方式”</strong>：见<a href="#launchers">“快捷方式”</a>一节。</li>
+          </ul>
+          <p>如果在空间运行时更改 MSync 或 Retina，onwin 会提醒您：设置要在空间重新启动后才生效，空间中的所有程序都会被关闭。</p>
+          <figure class="shot">
+            <img src="../img/docs/space-settings.png" alt="空间设置：“通用”、“图形”和“性能”部分" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>空间设置</figcaption>
+          </figure>
+        </section>
+
+        <!-- ================= 安装程序 ================= -->
+        <section id="install-programs" aria-labelledby="install-programs-title">
+          <h2 id="install-programs-title">安装程序</h2>
+
+          <h3>从目录安装</h3>
+          <p>目录就是左侧的“应用和游戏”（或者菜单“空间”→“从目录安装…”）。里面是现成的配方。<dfn class="term">配方</dfn>是给 onwin 的一份说明：创建什么样的空间、安装哪些组件、运行哪个安装程序。您只需点按“安装…”并选择安装位置，其余的事 onwin 会自己完成。</p>
+          <p>“游戏启动器”部分有 Steam、Epic Games Launcher、GOG Galaxy 和 Battle.net。顶部有搜索栏。</p>
+
+          <h3>自己的安装程序（.exe 或 .msi）</h3>
+          <p>目录里没有您要的程序？那就从文件安装：</p>
+          <ul class="list">
+            <li>把文件拖到 onwin 窗口中；</li>
+            <li>或者在目录的“安装自己的程序”卡片中点按“选择安装程序…”；</li>
+            <li>或者在桌面上点按“安装”→“从文件…”。</li>
+          </ul>
+          <p>选择一个空间（新建的或已有的），然后点按“运行安装程序”。如果 onwin 问“要做什么”，安装程序请选“安装”，不需要安装的现成程序请选“运行”。安装完成后，onwin 会自动找到新程序，并把它显示在桌面上。</p>
+
+          <h3>“我的应用”</h3>
+          <p>安装完自己的程序后，onwin 会建议把它保存到“我的应用”。这些是您自己在目录中的配方：下次一键就能安装同一个程序。也可以手动创建新配方：在“添加应用”卡片中点按“创建…”。配方可以分享：“导出…”会把它保存为 <code>.onwinrecipe</code> 文件，“导入…”则会添加别人的配方。导入不会运行任何东西，您会先看到配方里有什么。</p>
+
+          <h3>不安装，直接运行 .exe</h3>
+          <p>点按窗口顶部的“运行 .exe”（或者按 <kbd>⌘</kbd> + <kbd>O</kbd>），选择文件和空间。也可以直接把文件拖到窗口中。</p>
+
+          <h3>固定程序</h3>
+          <p>空间页面上会列出它的程序。右键点按某个程序并选择“固定”，它就会出现在“已固定”部分。对于已固定的程序，可以在“属性…”中设置自己的名称、图形、启动参数和环境变量。如果列表里没有您要的程序，请在“更多”菜单中选择“将程序添加到列表…”。</p>
+          <p>如果桌面上的某个磁贴碍事，可以在它的菜单中选择“从桌面隐藏”。点按“显示隐藏项”即可恢复。</p>
+
+          <h3>“带参数运行…”</h3>
+          <p>每个程序和游戏的菜单里都有这一项。它会用特殊设置把程序运行一次：自定义启动参数、换一种图形、Metal HUD。空间的设置不会因此改变。想试试某项改动是否有用时很方便。如果有用，勾选“存储为程序”，onwin 就会记住这些设置。</p>
+
+          <h3>卸载程序</h3>
+          <p>菜单“空间”→“卸载程序…”会打开已安装程序的列表，并运行它们的卸载程序。想一次清除所有内容，直接删除整个空间即可。</p>
+        </section>
+
+        <!-- ================= Steam ================= -->
+        <section id="steam" aria-labelledby="steam-title">
+          <h2 id="steam-title">Steam 与游戏</h2>
+          <ol class="steps">
+            <li>
+              <h3>安装 Steam</h3>
+              <p>目录 →“Steam”→“安装…”。onwin 会创建名为“Steam”的空间，并立即为它设置好 Steam 在 Mac 上需要的选项。</p>
+            </li>
+            <li>
+              <h3>登录账户</h3>
+              <p>安装完成后，Steam 会自动更新并要求登录。像平常一样登录即可，用户名和密码是在 Steam 自己的窗口里输入的。</p>
+            </li>
+            <li>
+              <h3>下载游戏</h3>
+              <p>像在 Windows 上一样，从 Steam 库中安装游戏。装好的游戏会以磁贴的形式出现在 onwin 桌面上，也会出现在空间页面的“Steam 游戏”部分。</p>
+            </li>
+            <li>
+              <h3>开始游戏</h3>
+              <p>双击磁贴，选择“开始游戏”。onwin 会通过 Steam 启动游戏。</p>
+            </li>
+          </ol>
+          <p>游戏磁贴上会显示它当前的状态：“正在运行”、“正在下载”或“需要更新”。游戏的菜单（右键点按）中有“显示游戏文件夹”、“验证文件完整性”、“Steam 商店页面”和“通过 Steam 卸载…”。空间页面上的“打开 Steam”按钮会打开 Steam 本身。</p>
+          <p class="note note-plain">在 Windows 内核层面运行反作弊保护的游戏（部分网络射击游戏）通常无法在 onwin 中运行。这是 Wine 的限制，与您的 Mac 无关。</p>
+        </section>
+
+        <!-- ================= 图形 ================= -->
+        <section id="graphics" aria-labelledby="graphics-title">
+          <h2 id="graphics-title">图形：D3DMetal、DXMT、DXVK</h2>
+          <p>Windows 游戏通过 DirectX 绘制画面，这是 Windows 的技术。Mac 上没有 DirectX，所以 onwin 会把 DirectX“翻译”成 Mac 的语言（Metal）。这样的翻译器有好几种，不同的游戏适合不同的翻译器。在 onwin 里，这一项叫作“图形”。</p>
+
+          <div class="card">
+            <dl class="paths">
+              <div class="path-row"><dt>自动</dt><dd>onwin 会自动选择最合适的方案。建议先用这个。</dd></div>
+              <div class="path-row"><dt>D3DMetal</dt><dd>来自 Apple。对使用 DirectX 11 和 12 的新游戏来说是最佳选择。需要单独安装（见下文）。</dd></div>
+              <div class="path-row"><dt>DXMT</dt><dd>开源的翻译器，适用于 DirectX 10 和 11 游戏。</dd></div>
+              <div class="path-row"><dt>DXVK</dt><dd>适用于 DirectX 9–11 游戏。如果用其他方案游戏运行不起来，可以试试它。</dd></div>
+              <div class="path-row"><dt>WineD3D (OpenGL)</dt><dd>兼容性最好，但速度最慢。适合老游戏。</dd></div>
+            </dl>
+          </div>
+
+          <h3>如何选择</h3>
+          <ul class="list">
+            <li>先保持“自动”。安装了 D3DMetal 后，onwin 会优先选择它。</li>
+            <li>游戏无法启动、黑屏或画面出错时，换一种方案试试。最快的办法是用“带参数运行…”：这样不会改动空间的设置。</li>
+            <li>找到合适的方案后，固定这个程序，在“属性…”的“此程序的图形”中选择它。或者在空间设置中更改“图形”，这样空间里的所有程序都会使用它。</li>
+          </ul>
+          <p>图形设置的更改会在下次启动程序时生效。</p>
+          <figure class="shot">
+            <img src="../img/docs/graphics.png" alt="为程序选择图形：自动、D3DMetal、DXMT、DXVK、WineD3D" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>为单个程序选择图形</figcaption>
+          </figure>
+
+          <h3 id="d3dmetal">如何安装 D3DMetal</h3>
+          <p>D3DMetal 是 Game Porting Toolkit 的一部分，这是 Apple 为游戏开发者提供的一套工具。Apple 只在您用 Apple ID 登录后才提供下载，普通的免费账户就可以。因此 onwin 不能把 D3DMetal 打包在内，也从不分发它：这套工具是在您的 Mac 上从 Apple 网站下载的。</p>
+          <ol class="steps">
+            <li>
+              <h3>点按“安装 D3DMetal”</h3>
+              <p>这个按钮在目录里（“组件”部分的“D3DMetal (Game Porting Toolkit)”卡片），在菜单“空间”→“安装 D3DMetal…”中，也在 onwin 设置的“D3DMetal”标签页里。</p>
+            </li>
+            <li>
+              <h3>用 Apple ID 登录</h3>
+              <p>会打开“安装 D3DMetal — 登录 Apple ID”窗口，里面是 Apple 的网页。密码是在 Apple 的网页上输入的，onwin 看不到也不会保存它。如果 Apple 要求您接受开发者协议，请在同一页面上接受。</p>
+            </li>
+            <li>
+              <h3>稍等片刻</h3>
+              <p>onwin 会自动下载最新版本的 Game Porting Toolkit，并从中安装 D3DMetal，所有空间都能直接使用。这一步只需要做一次。</p>
+            </li>
+          </ol>
+          <p>不想在 onwin 窗口里登录？点按“在浏览器中打开”，在 Apple 网站上把 Game Porting Toolkit（.dmg）下载到“下载”文件夹，onwin 会自己找到这个文件。如果文件已经下载好了，可以点按“手动选择…”来选中它。</p>
+          <figure class="shot">
+            <img src="../img/docs/d3dmetal.png" alt="D3DMetal 安装窗口：“登录 Apple ID”、“下载 Game Porting Toolkit”、“安装 D3DMetal”三个步骤" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>安装 D3DMetal：在 Apple 网页上用 Apple ID 登录</figcaption>
+          </figure>
+        </section>
+
+        <!-- ================= 组件 ================= -->
+        <section id="components" aria-labelledby="components-title">
+          <h2 id="components-title">组件</h2>
+          <p><dfn class="term">组件</dfn>是许多游戏和程序都需要的 Windows 附加部分：Visual C++ 运行库、DirectX、.NET、字体等等。在普通的 Windows 上，它们会随游戏一起安装。在 onwin 中，这一切都会自动完成。</p>
+
+          <h3>自动安装</h3>
+          <p>程序第一次启动前，onwin 会检查它缺少哪些库，并在后台悄悄装好。如果程序仍然因为缺少某个库而没能启动，onwin 会补装缺少的部分，然后再启动一次。所有内容都从官方服务器（Microsoft 及其他作者）下载。</p>
+          <p>这项功能默认开启。可以在 onwin 设置的“通用”标签页中关闭，也可以在单个空间的设置中关闭“自动安装所需组件”。关闭后，onwin 只会提示缺少什么。</p>
+
+          <h3>手动安装</h3>
+          <p>打开目录中的“组件”部分。选择一个组件，点按“添加…”，然后选择空间。另一种方式是在空间设置的“组件”部分操作。</p>
+          <p>有时空间页面上会出现“游戏可能需要”的提示，并附有组件列表。点按“全部安装”，onwin 就会把它们装好。</p>
+        </section>
+
+        <!-- ================= 快捷方式 ================= -->
+        <section id="launchers" aria-labelledby="launchers-title">
+          <h2 id="launchers-title">Launchpad 和 Dock 中的快捷方式</h2>
+          <p>任何 Windows 程序都可以像普通的 Mac 应用一样，从 Launchpad（启动台）、聚焦搜索或 Dock（程序坞）中打开，无需先进入 onwin。</p>
+          <ul class="list">
+            <li><strong>单个程序：</strong>右键点按它（在桌面上或空间页面上），选择“在 Launchpad 中创建快捷方式”。</li>
+            <li><strong>空间中的所有程序：</strong>在空间设置的“Launchpad 快捷方式”部分，开启“自动创建快捷方式”。onwin 会为“开始”菜单中的每个程序创建快捷方式，并自动移除已卸载程序的快捷方式。</li>
+            <li><strong>放到 Dock 中：</strong>像对待任何 Mac 应用一样，把快捷方式从 Launchpad 或快捷方式文件夹拖到 Dock 中。</li>
+          </ul>
+          <p>快捷方式位于 <code>~/Applications/onwin/</code> 文件夹中，每个空间一个子文件夹。要移除快捷方式，请在程序的菜单中选择“从 Launchpad 移除快捷方式”。</p>
+        </section>
+
+        <!-- ================= 遇到问题 ================= -->
+        <section id="troubleshooting" aria-labelledby="troubleshooting-title">
+          <h2 id="troubleshooting-title">遇到问题怎么办</h2>
+          <p>请按顺序尝试。大多数情况下，第一步或第二步就能解决问题。</p>
+
+          <ol class="steps">
+            <li>
+              <h3>重新启动空间</h3>
+              <p>有时程序会在后台“卡住”。在空间页面上点按“全部结束”（或者菜单“空间”→“结束空间中的所有程序”），然后再次启动程序。</p>
+            </li>
+            <li>
+              <h3>换一种图形</h3>
+              <p>黑屏、启动时闪退、画面出错：用“带参数运行…”启动程序，并在“图形”中选择另一种方案。详情请见<a href="#graphics">“图形”</a>一节。</p>
+            </li>
+            <li>
+              <h3>安装建议的组件</h3>
+              <p>如果程序没能启动，onwin 可能会显示“……没能启动，以下方法也许有帮助”的提示，并附上组件列表。点按“全部安装”。</p>
+            </li>
+            <li>
+              <h3>更改 Windows 版本</h3>
+              <p>老游戏有时需要 Windows 7 或 XP。可以在空间设置的“Windows 版本”中更改。</p>
+            </li>
+            <li>
+              <h3>查看日志</h3>
+              <p><dfn class="term">日志</dfn>是一个文本文件，onwin 会把程序启动时发生的一切都记在里面。出错的原因通常能在这里找到。打开日志的方法：左侧的“日志”栏目、空间页面上的“日志”按钮，或者错误信息中的“显示日志”按钮。日志文件本身位于 <code>~/Library/Logs/onwin</code> 文件夹中。可以点按“拷贝”复制日志，附在问题报告里。</p>
+            </li>
+          </ol>
+          <figure class="shot">
+            <img src="../img/docs/troubleshooting-logs.png" alt="onwin 中的“日志”栏目：日志列表和所选日志的内容" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>“日志”栏目：在这里可以看到哪里出了问题</figcaption>
+          </figure>
+
+          <h3>通常无法运行的情况</h3>
+          <ul class="list">
+            <li>反作弊系统在 Windows 内核层面运行的游戏（部分网络射击游戏）。</li>
+            <li>需要专用设备驱动的程序：某些打印机、扫描仪、加密狗和少见的控制器。</li>
+            <li>会检查自己是否运行在“真正的”Windows 上、否则拒绝启动的程序。</li>
+          </ul>
+          <p>其他大多数程序都能运行。如果没能成功，请告诉我们，这能帮助我们把 onwin 做得更好。</p>
+
+          <div class="card" id="report">
+            <h3 style="margin-top: 0">报告问题</h3>
+            <p class="muted">用简单的话描述发生了什么，不需要技术细节，我们会弄清楚的。请注意：Telegram 支持群组使用俄语交流；如果您更习惯用英语，可以在 GitHub Issues 中提交问题。</p>
+            <div data-support="full">
+              <noscript><p class="muted">要查看联系方式，请启用 JavaScript。</p></noscript>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 更新与卸载 ================= -->
+        <section id="update-uninstall" aria-labelledby="update-uninstall-title">
+          <h2 id="update-uninstall-title">更新与卸载</h2>
+
+          <h3>更新 onwin</h3>
+          <p>在“终端”中运行安装时用过的同一条命令。它只会下载有变化的部分。</p>
+          <div class="command small-cmd">
+            <code id="doc-update" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-update">
+              <span class="label">复制</span>
+            </button>
+          </div>
+          <p>如果您是通过 DMG 磁盘映像安装的 onwin，请在<a href="install.html">“安装”</a>页面下载新的磁盘映像。</p>
+
+          <h3>卸载 onwin</h3>
+          <p>这条命令会删除应用和引擎。您的空间（程序、游戏和存档）会保留下来。</p>
+          <div class="command small-cmd">
+            <code id="doc-uninstall" data-cmd="uninstall">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-uninstall">
+              <span class="label">复制</span>
+            </button>
+          </div>
+          <p>如果连空间也要删除，请使用下面这条命令。“终端”会再次询问您是否确定要删除。此操作无法撤销：空间中的程序和存档都会消失。</p>
+          <div class="command small-cmd">
+            <code id="doc-purge" data-cmd="purge">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall --purge</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-purge">
+              <span class="label">复制</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= onwinctl ================= -->
+        <section id="cli" aria-labelledby="cli-title">
+          <h2 id="cli-title">进阶：onwinctl</h2>
+          <p><code>onwinctl</code> 是一个“终端”工具：onwin 窗口里能做的事，都可以用命令完成。普通用户用不到它。输入 <code>onwinctl help</code> 可以查看全部命令。</p>
+          <p class="muted small">如果找不到 <code>onwinctl</code> 命令，可以直接从应用中运行它：<code>/Applications/Onwin.app/Contents/MacOS/onwinctl</code>。</p>
+
+          <div class="cli-group">
+            <h3>检查安装情况</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl status</code></dt><dd>已安装的内容：Rosetta、引擎、D3DMetal</dd></div>
+              <div class="cli-row"><dt><code>onwinctl engines</code></dt><dd>Wine 引擎列表</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>空间</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl spaces</code></dt><dd>空间列表</dd></div>
+              <div class="cli-row"><dt><code>onwinctl create &lt;名称&gt; [--win win10] [--backend auto|d3dmetal|dxmt|dxvk|wined3d]</code></dt><dd>创建空间</dd></div>
+              <div class="cli-row"><dt><code>onwinctl info &lt;名称&gt;</code></dt><dd>空间设置</dd></div>
+              <div class="cli-row"><dt><code>onwinctl set &lt;名称&gt; &lt;参数&gt; &lt;值&gt; [--restart]</code></dt><dd>更改设置：backend、win、msync、retina、hud、avx、dxr、metalfx、debug、launchers、autocomponents、env:名称、dll:名称</dd></div>
+              <div class="cli-row"><dt><code>onwinctl archive &lt;名称&gt; &lt;文件.onwinspace&gt;</code></dt><dd>把空间打包为归档</dd></div>
+              <div class="cli-row"><dt><code>onwinctl restore &lt;文件.onwinspace&gt; [名称]</code></dt><dd>从归档恢复</dd></div>
+              <div class="cli-row"><dt><code>onwinctl delete &lt;名称&gt;</code></dt><dd>把空间移到废纸篓</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>安装与运行</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl catalog</code></dt><dd>应用和组件目录</dd></div>
+              <div class="cli-row"><dt><code>onwinctl install &lt;应用&gt; [--space 名称]</code></dt><dd>从目录安装，例如 <code>steam</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl run &lt;空间&gt; &lt;文件.exe|.msi|.lnk&gt; [参数...]</code></dt><dd>运行并等待结束；所需组件会自动安装（加 <code>--no-auto-components</code> 则不安装）</dd></div>
+              <div class="cli-row"><dt><code>onwinctl programs &lt;空间&gt;</code></dt><dd>找到的程序</dd></div>
+              <div class="cli-row"><dt><code>onwinctl pin &lt;空间&gt; &lt;路径&gt; [名称]</code></dt><dd>固定程序（<code>unpin</code> 取消固定）</dd></div>
+              <div class="cli-row"><dt><code>onwinctl wine &lt;空间&gt; &lt;命令&gt;</code></dt><dd>运行 Wine 工具，例如 <code>winecfg</code>、<code>regedit</code>、<code>cmd</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl uninstall-list &lt;空间&gt;</code></dt><dd>可以卸载的程序（<code>uninstall</code> 用于卸载）</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Steam</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl steam-games &lt;空间&gt;</code></dt><dd>空间中的 Steam 游戏</dd></div>
+              <div class="cli-row"><dt><code>onwinctl steam-launch &lt;空间&gt; &lt;appid|名称&gt;</code></dt><dd>通过 Steam 启动游戏</dd></div>
+              <div class="cli-row"><dt><code>onwinctl steam-install &lt;空间&gt; &lt;appid&gt;</code></dt><dd>在 Steam 中打开游戏安装</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>停止程序</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl running &lt;空间&gt;</code></dt><dd>空间是否正在运行</dd></div>
+              <div class="cli-row"><dt><code>onwinctl shutdown &lt;空间&gt;</code></dt><dd>正常关闭所有程序（10 秒后强制关闭）</dd></div>
+              <div class="cli-row"><dt><code>onwinctl kill &lt;空间&gt;</code></dt><dd>强制结束所有程序</dd></div>
+              <div class="cli-row"><dt><code>onwinctl reboot &lt;空间&gt;</code></dt><dd>在空间中“重启 Windows”</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>图形与组件</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl d3dmetal-import &lt;GPTK 路径&gt;</code></dt><dd>从下载好的 Game Porting Toolkit（.dmg 或宗卷）导入 D3DMetal</dd></div>
+              <div class="cli-row"><dt><code>onwinctl d3dmetal-fetch</code></dt><dd>从“下载”文件夹导入已下载的 Game Porting Toolkit；用 Apple ID 登录请在 onwin 应用中进行</dd></div>
+              <div class="cli-row"><dt><code>onwinctl components [空间]</code></dt><dd>组件列表（✓ 表示已安装）</dd></div>
+              <div class="cli-row"><dt><code>onwinctl component &lt;空间&gt; &lt;组件&gt;[,...]</code></dt><dd>安装组件，例如 <code>vcrun2026</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl advise &lt;空间|-&gt; &lt;文件.exe&gt;</code></dt><dd>程序缺少哪些组件</dd></div>
+              <div class="cli-row"><dt><code>onwinctl advise-log &lt;日志.log&gt;</code></dt><dd>根据启动失败的日志给出建议</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>快捷方式与自定义配方</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl launcher &lt;空间&gt; &lt;程序&gt;</code></dt><dd>为 Launchpad 和 Dock 创建快捷方式</dd></div>
+              <div class="cli-row"><dt><code>onwinctl launchers [空间]</code></dt><dd>快捷方式列表</dd></div>
+              <div class="cli-row"><dt><code>onwinctl launcher-remove &lt;空间&gt; &lt;程序&gt;</code></dt><dd>移除快捷方式</dd></div>
+              <div class="cli-row"><dt><code>onwinctl recipe list</code></dt><dd>“我的应用”中您自己的配方</dd></div>
+              <div class="cli-row"><dt><code>onwinctl recipe export &lt;id&gt; &lt;文件.onwinrecipe&gt;</code></dt><dd>把配方保存为文件（<code>recipe import</code> 用于从文件添加）</dd></div>
+            </dl>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <section class="section donate-section" id="donate" aria-labelledby="donate-title" style="padding-top: 0">
+      <div class="wrap">
+        <div class="card donate-block">
+          <div>
+            <span class="eyebrow">支持项目</span>
+            <h2 id="donate-title">文档对您有帮助吗？</h2>
+            <p>onwin 是免费的，全凭热情在开发。捐助用来支付开发和测试游戏所花的时间。<a href="donate.html">了解更多</a></p>
+          </div>
+          <div class="donate-list" data-donate="compact">
+            <noscript><p class="muted">支持方式列在<a href="donate.html">“支持我们”</a>页面上。</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">安装</a></li>
+          <li><a href="releases.html">更新</a></li>
+          <li><a href="docs.html">文档</a></li>
+          <li><a href="donate.html">支持我们</a></li>
+          <li><a href="licenses.html">许可证</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">基于 GPL-3.0 许可证的自由软件。</p>
+      <p class="disclaimer">Windows、Mac、Steam 及其他产品名称归其各自所有者所有；onwin 是一个独立项目。</p>
+      <p class="disclaimer analytics-note" data-analytics-note hidden>本网站统计访问量，不使用 Cookie，也不收集个人数据。</p>
+    </div>
+  </footer>
+</body>
+</html>
