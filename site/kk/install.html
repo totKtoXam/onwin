@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>onwin орнату</title>
+  <meta name="description" content="onwin-ді Mac-қа қалай орнатуға болады: Терминалдағы бір пәрмен немесе DMG диск бейнесі. Жаңарту және жою.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="alternate" hreflang="ru" href="https://totktoxam.github.io/onwin/install.html">
+  <link rel="alternate" hreflang="en" href="https://totktoxam.github.io/onwin/en/install.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://totktoxam.github.io/onwin/zh/install.html">
+  <link rel="alternate" hreflang="kk" href="https://totktoxam.github.io/onwin/kk/install.html">
+  <link rel="alternate" hreflang="x-default" href="https://totktoxam.github.io/onwin/install.html">
+  <link rel="stylesheet" href="../style.css?v=12">
+  <script src="../config.js?v=4" defer></script>
+  <script src="../site.js?v=11" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Негізгі мазмұнға өту</a>
+
+  <aside class="donate-bar" aria-label="onwin жобасын қолдау">
+    <div class="wrap">
+      <p class="donate-bar-text">
+        <svg class="donate-bar-heart" width="16" height="16" fill="#e5484d" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        <span>onwin — тегін әрі коды ашық бағдарлама<span class="donate-bar-more"> — ол сіздің демеушілігіңіздің арқасында дамиды.</span></span>
+      </p>
+      <a class="donate-bar-link" href="#donate">Қолдау<span aria-hidden="true"> →</span></a>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — басты бетке">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="Негізгі мәзір">
+        <ul>
+          <li><a href="install.html" aria-current="page">Орнату</a></li>
+          <li><a href="releases.html">Жаңартулар</a></li>
+          <li><a href="docs.html">Құжаттама</a></li>
+          <li><a href="donate.html">Қолдау</a></li>
+          <li><a href="licenses.html">Лицензиялар</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+      <nav class="lang-switch" aria-label="Тіл">
+        <a href="../install.html" hreflang="ru" lang="ru" title="Русский">РУ</a>
+        <a href="../en/install.html" hreflang="en" lang="en" title="English">EN</a>
+        <a href="../zh/install.html" hreflang="zh-Hans" lang="zh-Hans" title="简体中文">中文</a>
+        <a href="install.html" hreflang="kk" lang="kk" title="Қазақша" aria-current="true">ҚАЗ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap page-head">
+      <h1>onwin орнату</h1>
+      <p class="lead">Екі тәсіл бар — өзіңізге ыңғайлысын таңдаңыз. Нәтиже бірдей: onwin «Бағдарламалар» (Applications) қалтасында болады.</p>
+      <p class="beta-note"><span class="badge">бета</span> Қазір бета нұсқалар қолжетімді: onwin әлі әзірленіп жатыр, кейбір нәрселер тұрақсыз жұмыс істеуі мүмкін. Мәселеге тап болсаңыз, <a href="#support">бізге жазыңыз</a>.</p>
+    </div>
+
+    <section class="section" aria-label="Орнату тәсілдері" style="padding-top: 24px">
+      <div class="wrap install-choice">
+        <div class="card install-way">
+          <span class="eyebrow">1-тәсіл</span>
+          <h2 id="dmg-title">Қолданбаны жүктеп алу</h2>
+          <p class="muted">Mac-қа арналған басқа бағдарламалардағыдай кәдімгі диск бейнесі (DMG). Қажеттінің бәрі ішінде бар.</p>
+          <div class="download" data-release>
+            <a class="btn btn-primary btn-lg" href="https://github.com/OWNER/onwin/releases/latest" data-release-link>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>
+              <span class="label">onwin жүктеп алу (DMG)</span>
+            </a>
+            <span class="meta" data-release-meta>GitHub-тағы соңғы шығарылым</span>
+          </div>
+          <ol class="steps">
+            <li><h3>Жүктелген файлды ашыңыз</h3><p>Ол «Жүктеулер» (Downloads) қалтасында пайда болады. Onwin-ді «Бағдарламалар» қалтасына сүйреп апарыңыз.</p></li>
+            <li><h3>Onwin-ді іске қосыңыз</h3><p>Бірінші рет macOS қолданбаны тексере алмайтынын айтады. «Дайын» (Done) түймесін басыңыз.</p></li>
+            <li><h3>Іске қосуға бір рет рұқсат беріңіз</h3><p>«Жүйе параметрлері» (System Settings) → «Құпиялылық және қауіпсіздік» (Privacy &amp; Security) → төмендегі «Бәрібір ашу» (Open Anyway). <a href="#gatekeeper">Неге бұлай екені туралы толығырақ</a></p></li>
+          </ol>
+        </div>
+
+        <div class="card install-way">
+          <span class="eyebrow">2-тәсіл</span>
+          <h2 id="terminal-title">Терминал арқылы <span class="badge">ескертусіз</span></h2>
+          <p class="muted">Бір пәрмен — және onwin Жүйе параметрлеріндегі қадамдарсыз өзі орнатылады.</p>
+          <div class="command">
+            <code id="cmd-install" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+            <button class="btn btn-primary btn-lg" type="button" data-copy-from="#cmd-install">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></svg>
+              <span class="label">Көшіру</span>
+            </button>
+          </div>
+          <ol class="steps">
+            <li><h3>Терминалды ашыңыз</h3><p><kbd>⌘</kbd> + <kbd>Бос орын</kbd> пернелерін басып, «Terminal» (немесе «Терминал») деп жазыңыз да, <kbd>Return</kbd> пернесін басыңыз.</p></li>
+            <li><h3>Пәрменді қойыңыз</h3><p>Терминал терезесінде <kbd>⌘</kbd> + <kbd>V</kbd> пернелерін басыңыз.</p></li>
+            <li><h3>Return пернесін басыңыз</h3><p>«Готово» («Дайын») деген сөзді күтіңіз. Mac-та Rosetta 2 болмаса, орнатқыш оны орнатуды ұсынады.</p></li>
+          </ol>
+          <p class="muted small">Орнатқыш әзірге хабарламаларын орыс тілінде көрсетеді. Қадамдар өзгермейді: соңында ол «Готово» («Дайын») деп жазады.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="updates-title">
+      <div class="wrap narrow">
+        <div class="card">
+          <h2 id="updates-title">Жаңартулар</h2>
+          <p>Жаңа нұсқаны да осылай алуға болады: жаңа диск бейнесі немесе Терминалдағы сол пәрмен. Пәрмен тек өзгерген бөліктерді жүктейді. Жақын нұсқаларда onwin жаңартуды өзі ұсынады — бір түймемен, қайта рұқсат сұрамай.</p>
+          <p class="muted small">Барлық шығарылымдар, олардағы жаңалықтар және кез келген нұсқаны орнату пәрмендері — <a href="releases.html">«Жаңартулар»</a> бетінде.</p>
+          <dl class="paths" style="margin-top: 16px">
+            <div class="path-row"><dt>Қолданба</dt><dd><code>Onwin.app</code> — «Бағдарламалар» қалтасында (<code>/Applications</code>)</dd></div>
+            <div class="path-row"><dt>Wine қозғалтқышы</dt><dd>Терминал арқылы орнатқанда — бөлек, <code>~/Library/Application Support/onwin/Engines</code> қалтасында; диск бейнесінде — қолданбаның ішінде</dd></div>
+          </dl>
+          <p class="muted small">Орнату скриптін іске қоспас бұрын оқып шығуға болады: <a href="../install.sh" data-install-url>install.sh</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="gatekeeper" aria-labelledby="gk-title">
+      <div class="wrap narrow">
+        <div class="note">
+          <h2 id="gk-title" style="font-size: 1.2rem">Неге macOS рұқсат сұрайды</h2>
+          <p>Apple бағдарламаларды тек ақылы әзірлеуші жазылымы болғанда ғана тексеріп, растайды — жылына 99 доллар. onwin-де ол әзірге жоқ, сондықтан браузер арқылы жүктелген қолданбаны алғаш іске қосқанда macOS сақтық танытып, бағдарламаға сенетініңізді растауды сұрайды. Мұны бір рет қана істеу керек:</p>
+          <ol class="list">
+            <li>Onwin-ді «Бағдарламалар» қалтасынан ашыңыз. macOS қолданбаны тексере алмайтыны туралы хабарлама шығады — «Дайын» (Done) түймесін басыңыз.</li>
+            <li>«Жүйе параметрлері» → «Құпиялылық және қауіпсіздік» бөлімін ашыңыз.</li>
+            <li>«Қауіпсіздік» (Security) бөліміне дейін төмен айналдырып, Onwin туралы хабарламаның жанындағы «Бәрібір ашу» (Open Anyway) түймесін басыңыз. Құпиясөзбен немесе Touch&nbsp;ID арқылы растаңыз.</li>
+          </ol>
+          <p>onwin коды ашық — оны кез келген адам тексере алады. Терминал арқылы орнатқанда бұл қадамдар қажет емес, себебі пәрменмен жүктелген файлдарды macOS «интернеттен алынған» деп белгілемейді. Демеушілік Apple жазылымын төлеуге көмектеседі, сонда бұл қадам мүлде жойылады.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="uninstall-title">
+      <div class="wrap narrow">
+        <div class="card">
+          <h2 id="uninstall-title">Жою</h2>
+          <p class="muted">Бұл пәрмен қолданба мен қозғалтқышты жояды. Кеңістіктеріңіз — орнатылған бағдарламалар, ойындар және ойын сақтаулары — орнында қалады.</p>
+          <div class="command small-cmd">
+            <code id="cmd-uninstall" data-cmd="uninstall">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#cmd-uninstall">
+              <span class="label">Көшіру</span>
+            </button>
+          </div>
+          <p style="margin-top: 20px">Кеңістіктерді де өшіру үшін <code>--purge</code> қосыңыз. Мұны кері қайтару мүмкін емес: кеңістіктердегі бағдарламалар мен сақтаулар жойылады.</p>
+          <div class="command small-cmd">
+            <code id="cmd-purge" data-cmd="purge">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall --purge</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#cmd-purge">
+              <span class="label">Көшіру</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section support-section" id="support" aria-labelledby="support-title-install">
+      <div class="wrap narrow">
+        <div class="card">
+          <div>
+            <span class="eyebrow">Көмек</span>
+            <h2 id="support-title-install">Бірдеңе жұмыс істемей ме? Бізге жазыңыз</h2>
+            <p>Не болғанын өз сөзіңізбен айтып беріңіз. Алдымен <a href="docs.html#troubleshooting">«Бір нәрсе істемесе»</a> бөліміндегі кеңестерді қарап шығуға болады. Telegram-чат орыс тілінде жүргізіледі; ағылшын тілінде GitHub Issues арқылы жазуға болады.</p>
+          </div>
+          <div data-support="compact">
+            <noscript><p class="muted">Байланыс тәсілдері — құжаттаманың <a href="docs.html#troubleshooting">«Бір нәрсе істемесе»</a> бөлімінде.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section donate-section" id="donate" aria-labelledby="donate-title">
+      <div class="wrap narrow">
+        <div class="card donate-block">
+          <div>
+            <span class="eyebrow">Жобаны қолдау</span>
+            <h2 id="donate-title">onwin ұнады ма?</h2>
+            <p>Оны жақсартуға көмектесіңіз — сонда бір күні қолданбаға Apple сертификатымен қол қойып, орнатуды одан да жеңіл ете аламыз. <a href="donate.html">Толығырақ</a></p>
+          </div>
+          <div class="donate-list" data-donate="compact">
+            <noscript><p class="muted">Қолдау тәсілдері <a href="donate.html">«Қолдау»</a> бетінде келтірілген.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">Орнату</a></li>
+          <li><a href="releases.html">Жаңартулар</a></li>
+          <li><a href="docs.html">Құжаттама</a></li>
+          <li><a href="donate.html">Қолдау</a></li>
+          <li><a href="licenses.html">Лицензиялар</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">GPL-3.0 лицензиясы бойынша таратылатын еркін бағдарламалық жасақтама.</p>
+      <p class="disclaimer">Windows, Mac, Steam және басқа өнімдердің атаулары олардың иелеріне тиесілі; onwin — тәуелсіз жоба.</p>
+    </div>
+  </footer>
+</body>
+</html>

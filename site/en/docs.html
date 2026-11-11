@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>onwin documentation</title>
+  <meta name="description" content="How to use onwin: quick start, spaces, installing programs and Steam, D3DMetal, DXMT and DXVK graphics, shortcuts, and what to do if something doesn’t work.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="alternate" hreflang="ru" href="https://totktoxam.github.io/onwin/docs.html">
+  <link rel="alternate" hreflang="en" href="https://totktoxam.github.io/onwin/en/docs.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://totktoxam.github.io/onwin/zh/docs.html">
+  <link rel="alternate" hreflang="kk" href="https://totktoxam.github.io/onwin/kk/docs.html">
+  <link rel="alternate" hreflang="x-default" href="https://totktoxam.github.io/onwin/docs.html">
+  <link rel="stylesheet" href="../style.css?v=12">
+  <script src="../config.js?v=4" defer></script>
+  <script src="../site.js?v=11" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <aside class="donate-bar" aria-label="Support onwin">
+    <div class="wrap">
+      <p class="donate-bar-text">
+        <svg class="donate-bar-heart" width="16" height="16" fill="#e5484d" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        <span>onwin is free and open source<span class="donate-bar-more"> — its development is funded by your donations.</span></span>
+      </p>
+      <a class="donate-bar-link" href="#donate">Donate<span aria-hidden="true"> →</span></a>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — home">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="Main menu">
+        <ul>
+          <li><a href="install.html">Install</a></li>
+          <li><a href="releases.html">Updates</a></li>
+          <li><a href="docs.html" aria-current="page">Docs</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="licenses.html">Licenses</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+      <nav class="lang-switch" aria-label="Language">
+        <a href="../docs.html" hreflang="ru" lang="ru" title="Русский">РУ</a>
+        <a href="docs.html" hreflang="en" lang="en" title="English" aria-current="true">EN</a>
+        <a href="../zh/docs.html" hreflang="zh-Hans" lang="zh-Hans" title="简体中文">中文</a>
+        <a href="../kk/docs.html" hreflang="kk" lang="kk" title="Қазақша">ҚАЗ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap page-head">
+      <h1>Documentation</h1>
+      <p class="lead">How to use onwin, in plain words. Start with the quick start: in five minutes you’ll have your first Windows game or program running on your Mac.</p>
+    </div>
+
+    <div class="wrap docs-layout">
+      <nav class="toc" aria-labelledby="toc-title">
+        <p class="toc-title" id="toc-title">Contents</p>
+        <ol>
+          <li><a href="#quick-start">Quick start</a></li>
+          <li><a href="#spaces">Spaces</a></li>
+          <li><a href="#install-programs">Installing programs</a></li>
+          <li><a href="#steam">Steam and games</a></li>
+          <li><a href="#graphics">Graphics: D3DMetal, DXMT, DXVK</a></li>
+          <li><a href="#components">Components</a></li>
+          <li><a href="#launchers">Shortcuts in Launchpad and the Dock</a></li>
+          <li><a href="#troubleshooting">If something doesn’t work</a></li>
+          <li><a href="#update-uninstall">Updating and uninstalling</a></li>
+          <li><a href="#cli">For advanced users: onwinctl</a></li>
+        </ol>
+      </nav>
+
+      <div class="doc">
+
+        <!-- ================= Quick start ================= -->
+        <section id="quick-start" aria-labelledby="quick-start-title">
+          <h2 id="quick-start-title">Quick start</h2>
+          <p>Five steps from installing onwin to your first game. You don’t need to set anything up by hand.</p>
+
+          <ol class="steps">
+            <li>
+              <h3>Install onwin</h3>
+              <p>Open Terminal: press <kbd>⌘</kbd> + <kbd>Space</kbd>, type “Terminal” and press <kbd>Return</kbd>. Paste this command and press <kbd>Return</kbd> again:</p>
+              <div class="command small-cmd">
+                <code id="qs-install" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+                <button class="btn btn-primary" type="button" data-copy-from="#qs-install">
+                  <span class="label">Copy</span>
+                </button>
+              </div>
+              <p>The command installs the onwin app and its engine. The engine is the part that knows how to run Windows programs. The installer’s messages are in Russian for now, but there’s nothing to choose: just wait until it finishes. Other ways to install are described on the <a href="install.html">Install</a> page.</p>
+            </li>
+            <li>
+              <h3>Open onwin</h3>
+              <p>onwin is in your Applications folder. If your Mac doesn’t have Rosetta 2, onwin shows a window saying that onwin needs Rosetta 2. Rosetta 2 is a free translator from Apple: without it, Windows programs can’t run on a Mac with an Apple processor. Click “Install Rosetta”. macOS may ask for your password — that’s normal.</p>
+              <p>Next you’ll see the main window. On the left is a list of sections: “Desktop”, the “Apps &amp; Games” catalog, your spaces, running programs and logs. On the right is the “Desktop”: this is where all your Windows games and programs will appear.</p>
+              <figure class="shot">
+                <img src="../img/docs/main-window.png" alt="The onwin main window: sections on the left, a desktop with program and game tiles on the right" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>The onwin main window: the “Desktop” with program tiles</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>Install Steam or your own program</h3>
+              <p><strong>Steam in one click.</strong> On the empty desktop, click “Install Steam”. Or open “Apps &amp; Games” on the left, find Steam and click “Install…”. onwin prepares everything and starts the installer for you.</p>
+              <p><strong>Your own program</strong> — an installer file, <code>.exe</code> or <code>.msi</code>. There are three ways:</p>
+              <ul class="list">
+                <li>drag the file straight into the onwin window;</li>
+                <li>drag the file onto the onwin icon in the Dock, or open it with onwin (in Finder: right-click → “Open With” → onwin);</li>
+                <li>in the catalog, under “Your Own Program”, click “Choose Installer…”.</li>
+              </ul>
+              <p>onwin asks where to install the program: into a new space or into one you already have. If you’re not sure, choose a new one.</p>
+              <figure class="shot">
+                <img src="../img/docs/catalog.png" alt="The onwin catalog: the Steam, Epic Games, GOG Galaxy and Battle.net game launchers with install buttons" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>The “Apps &amp; Games” catalog: Steam and other launchers install in one click</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>Launch your game</h3>
+              <p>Everything you install appears as a tile on the onwin “Desktop”. Double-click a tile and the program or game starts. Games you download in Steam also show up here as separate tiles.</p>
+              <figure class="shot">
+                <img src="../img/docs/steam-games.png" alt="Steam games as tiles in onwin" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>Steam games as tiles: double-click to play</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>For new games, turn on D3DMetal</h3>
+              <p>Modern games (DirectX 12, and often DirectX 11) work best with D3DMetal — Apple’s graphics translation. onwin can’t bundle it, but it can install it for you: open the catalog, the “Components” section, the “D3DMetal (Game Porting Toolkit)” card, and click “Install D3DMetal”. You’ll need to sign in with a free Apple ID. More in the <a href="#graphics">Graphics</a> section.</p>
+              <p>If a game needs D3DMetal and it isn’t installed yet, onwin offers to install it before launching the game.</p>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ================= Spaces ================= -->
+        <section id="spaces" aria-labelledby="spaces-title">
+          <h2 id="spaces-title">Spaces</h2>
+          <p>A <dfn class="term">space</dfn> is a separate “Windows computer” inside onwin. It has its own C: drive, its own programs, settings and saves. Spaces don’t interfere with each other. If something breaks or you no longer need it, delete the space and the program leaves no trace.</p>
+          <p>Usually one space per launcher (for example, “Steam”) or per program is enough. When you install something from the catalog, onwin creates the space for you.</p>
+
+          <h3>Create a space</h3>
+          <p>On the left, in the “Spaces” section, click “Create Space…”. Or use the “New Space” button at the top of the window, or press <kbd>⌘</kbd> + <kbd>N</kbd>. Enter a name and a Windows version. Windows 10 suits most games. You can leave the graphics on “Automatic”.</p>
+          <figure class="shot">
+            <img src="../img/docs/new-space.png" alt="The “New Space” window with name, Windows version and graphics fields" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>The “New Space” window</figcaption>
+          </figure>
+
+          <h3>What you can do with a space</h3>
+          <p>Right-click a space in the list on the left. The same commands are in the “More” menu on the space’s page.</p>
+          <ul class="list">
+            <li><strong>“Rename…”</strong> — give it another name. Close the space’s programs first.</li>
+            <li><strong>“Duplicate”</strong> — make an independent copy with all installed programs. Handy for trying something without risking the working version.</li>
+            <li><strong>“Archive…”</strong> — pack the space into a single <code>.onwinspace</code> file. It’s a backup, or a way to move the space to another Mac. Close the space’s programs first.</li>
+            <li><strong>Restore from an archive</strong> — double-click the <code>.onwinspace</code> file, or choose “Restore Space from Archive…” in the “File” menu.</li>
+            <li><strong>“Delete…”</strong> — the space and everything in it go to the Trash. You can get it back until you empty the Trash.</li>
+            <li><strong>“Show in Finder”</strong> — open the space’s folder. The “Open C: Drive” button on the space’s page opens its C: drive.</li>
+          </ul>
+
+          <h3>Space settings</h3>
+          <p>Open them with the “Settings” button on the space’s page, or via the “Space” menu → “Space Settings…”. The most useful ones:</p>
+          <ul class="list">
+            <li><strong>“Windows Version”</strong> (“General” section) — which Windows the programs “see”. Old games sometimes need Windows 7 or XP.</li>
+            <li><strong>“Graphics”</strong> — how games draw their picture. It’s usually best to leave it on “Automatic”. More in the <a href="#graphics">Graphics</a> section.</li>
+            <li><strong>“Metal HUD”</strong> — shows the frame rate on top of the game. Handy for checking how smoothly a game runs.</li>
+            <li><strong>“High Resolution (Retina)”</strong> — a sharper picture, but games run slower and text in old programs gets tiny. If you’re not sure, leave it off.</li>
+            <li><strong>“MSync”</strong> (“Performance” section) — makes games run faster. We recommend keeping it on.</li>
+            <li><strong>“Report AVX Support”</strong> — needed by some new games that won’t start without it.</li>
+            <li><strong>“Components”</strong> — what’s already installed in the space and what you can add. See the <a href="#components">Components</a> section.</li>
+            <li><strong>“Launchpad Shortcuts”</strong> — see the <a href="#launchers">Shortcuts</a> section.</li>
+          </ul>
+          <p>If the space is running and you change MSync or Retina, onwin warns you: the setting takes effect after the space restarts, and all its programs will close.</p>
+          <figure class="shot">
+            <img src="../img/docs/space-settings.png" alt="Space settings: the “General”, “Graphics” and “Performance” sections" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Space settings</figcaption>
+          </figure>
+        </section>
+
+        <!-- ================= Installing programs ================= -->
+        <section id="install-programs" aria-labelledby="install-programs-title">
+          <h2 id="install-programs-title">Installing programs</h2>
+
+          <h3>From the catalog</h3>
+          <p>The catalog is the “Apps &amp; Games” section on the left (or the “Space” menu → “Install from Catalog…”). It holds ready-made recipes. A <dfn class="term">recipe</dfn> is a set of instructions for onwin: which space to create, which components to install and which installer to run. You click “Install…”, choose where to install, and onwin does the rest.</p>
+          <p>The “Game Launchers” section has Steam, Epic Games Launcher, GOG Galaxy and Battle.net. There’s a search field at the top.</p>
+
+          <h3>Your own installer (.exe or .msi)</h3>
+          <p>Program not in the catalog? Install it from a file:</p>
+          <ul class="list">
+            <li>drag the file into the onwin window;</li>
+            <li>or, in the catalog, on the “Install Your Own Program” card, click “Choose Installer…”;</li>
+            <li>or, on the desktop, click “Install” → “From File…”.</li>
+          </ul>
+          <p>Choose a space — a new one or one you’ve already created — and click “Run Installer”. If onwin asks “What to do”, choose “Install” for an installer or “Run” for a ready-to-use program that doesn’t need installing. When the installation finishes, onwin finds the new program and shows it on the desktop.</p>
+
+          <h3>“My Apps”</h3>
+          <p>After you install your own program, onwin offers to save it to “My Apps”. These are your own recipes in the catalog: next time you can install the same program in one click. You can also make a new recipe by hand — the “Add App” card, the “Create…” button. Recipes can be shared: “Export…” saves one to a <code>.onwinrecipe</code> file, and “Import…” adds someone else’s. Importing doesn’t run anything — you see what’s in the recipe first.</p>
+
+          <h3>Run an .exe without installing</h3>
+          <p>Click “Run .exe” at the top of the window (or press <kbd>⌘</kbd> + <kbd>O</kbd>), choose the file and a space. You can also simply drag the file into the window.</p>
+
+          <h3>Pin a program</h3>
+          <p>A space’s page shows its programs. Right-click a program and choose “Pin”. It moves to the “Pinned” section. For a pinned program, “Properties…” lets you set your own name, graphics, launch options and environment variables. If the program you need isn’t in the list, choose “Add Program to List…” in the “More” menu.</p>
+          <p>If a tile is in the way on the desktop, choose “Hide from Desktop” in its menu. The “Show Hidden” button brings hidden tiles back.</p>
+
+          <h3>“Run with Options…”</h3>
+          <p>This item is in the menu of every program and game. It runs the program once with special settings: your own launch arguments, different graphics, Metal HUD. The space’s settings stay the same. Handy for testing whether something helps. If it does, tick “Save as Program” and onwin will remember these settings.</p>
+
+          <h3>Uninstall a program</h3>
+          <p>The “Space” menu → “Uninstall Program…” opens a list of installed programs and runs their uninstaller. To remove everything at once, delete the space itself.</p>
+        </section>
+
+        <!-- ================= Steam ================= -->
+        <section id="steam" aria-labelledby="steam-title">
+          <h2 id="steam-title">Steam and games</h2>
+          <ol class="steps">
+            <li>
+              <h3>Install Steam</h3>
+              <p>Catalog → “Steam” → “Install…”. onwin creates a “Steam” space and right away applies the settings Steam needs on a Mac.</p>
+            </li>
+            <li>
+              <h3>Sign in</h3>
+              <p>After installing, Steam updates itself and asks you to sign in. Sign in as usual — you type your login and password in Steam’s own window.</p>
+            </li>
+            <li>
+              <h3>Download a game</h3>
+              <p>Install a game from your Steam library, just like on Windows. When it’s ready, the game appears as a tile on the onwin desktop and in the “Steam Games” section on the space’s page.</p>
+            </li>
+            <li>
+              <h3>Play</h3>
+              <p>Double-click the tile — “Play”. onwin launches the game through Steam for you.</p>
+            </li>
+          </ol>
+          <p>A game’s tile shows what’s happening with it: “Running”, “Downloading” or “Update Required”. The game’s menu (right-click) has “Show Game Folder”, “Verify Integrity of Game Files”, “Steam Store Page” and “Uninstall via Steam…”. The “Open Steam” button on the space’s page opens Steam itself.</p>
+          <p class="note note-plain">Games with anti-cheat that works at the Windows kernel level (some online shooters) usually don’t run in onwin. This is a limitation of Wine, not of your Mac.</p>
+        </section>
+
+        <!-- ================= Graphics ================= -->
+        <section id="graphics" aria-labelledby="graphics-title">
+          <h2 id="graphics-title">Graphics: D3DMetal, DXMT, DXVK</h2>
+          <p>Windows games draw their picture with DirectX, a Windows technology. Macs don’t have it, so onwin “translates” DirectX into the Mac’s language (Metal). There are several translators, and different games work better with different ones. In onwin this is called “Graphics”.</p>
+
+          <div class="card">
+            <dl class="paths">
+              <div class="path-row"><dt>Automatic</dt><dd>onwin picks the best option itself. Start with this one.</dd></div>
+              <div class="path-row"><dt>D3DMetal</dt><dd>from Apple. The best choice for new DirectX 11 and 12 games. Installed separately (see below).</dd></div>
+              <div class="path-row"><dt>DXMT</dt><dd>an open-source translator for DirectX 10 and 11 games.</dd></div>
+              <div class="path-row"><dt>DXVK</dt><dd>for DirectX 9–11 games. Try it if a game won’t run with the other options.</dd></div>
+              <div class="path-row"><dt>WineD3D (OpenGL)</dt><dd>the most compatible, but the slowest. Good for old games.</dd></div>
+            </dl>
+          </div>
+
+          <h3>How to choose</h3>
+          <ul class="list">
+            <li>Start with “Automatic”. When D3DMetal is installed, onwin picks it first.</li>
+            <li>The game won’t start, the screen is black or the picture is glitchy — try another option. The quickest way is “Run with Options…”: it doesn’t change the space’s settings.</li>
+            <li>Found an option that works? Pin the program and, in “Properties…”, choose it under “Graphics for This Program”. Or change “Graphics” in the space settings — then all programs in the space will use it.</li>
+          </ul>
+          <p>Graphics changes take effect the next time the program starts.</p>
+          <figure class="shot">
+            <img src="../img/docs/graphics.png" alt="Choosing graphics for a program: Automatic, D3DMetal, DXMT, DXVK, WineD3D" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Choosing graphics for a single program</figcaption>
+          </figure>
+
+          <h3 id="d3dmetal">How to install D3DMetal</h3>
+          <p>D3DMetal is part of the Game Porting Toolkit, Apple’s kit for game developers. Apple only provides it after you sign in with an Apple ID. A regular free account is fine. That’s why onwin can’t bundle D3DMetal and never distributes it: the kit is downloaded from Apple’s website on your Mac.</p>
+          <ol class="steps">
+            <li>
+              <h3>Click “Install D3DMetal”</h3>
+              <p>The button is in the catalog (the “Components” section, the “D3DMetal (Game Porting Toolkit)” card), in the “Space” menu → “Install D3DMetal…”, and in onwin’s settings on the “D3DMetal” tab.</p>
+            </li>
+            <li>
+              <h3>Sign in with your Apple ID</h3>
+              <p>A window titled “Install D3DMetal — Apple ID Sign-In” opens with Apple’s page. You type your password on Apple’s page — onwin doesn’t see it or store it. If Apple asks you to accept the developer agreement, accept it right there.</p>
+            </li>
+            <li>
+              <h3>Wait</h3>
+              <p>onwin downloads the latest Game Porting Toolkit and installs D3DMetal from it — for all spaces at once. You only need to do this once.</p>
+            </li>
+          </ol>
+          <p>Don’t want to sign in inside the onwin window? Click “Open in Browser” and download the Game Porting Toolkit (.dmg) from Apple’s website into your Downloads folder — onwin will find the file by itself. If you’ve already downloaded it, select it with the “Choose Manually…” button.</p>
+          <figure class="shot">
+            <img src="../img/docs/d3dmetal.png" alt="The D3DMetal installation window: the “Apple ID Sign-In”, “Downloading Game Porting Toolkit” and “Installing D3DMetal” steps" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Installing D3DMetal: signing in with your Apple ID on Apple’s page</figcaption>
+          </figure>
+        </section>
+
+        <!-- ================= Components ================= -->
+        <section id="components" aria-labelledby="components-title">
+          <h2 id="components-title">Components</h2>
+          <p><dfn class="term">Components</dfn> are extra parts of Windows that many games and programs need: Visual C++ libraries, DirectX, .NET, fonts and more. On a regular Windows PC they’re installed together with the game. In onwin this happens automatically.</p>
+
+          <h3>Automatically</h3>
+          <p>Before a program’s first launch, onwin checks which libraries it’s missing and quietly installs them. If the program still fails to start because a library is missing, onwin installs what’s missing and launches it again. Everything is downloaded from official servers (Microsoft and other authors).</p>
+          <p>This is on by default. You can turn it off in onwin’s settings on the “General” tab, or in the settings of a single space with the “Install required components automatically” option. Then onwin will only tell you what’s missing.</p>
+
+          <h3>Manually</h3>
+          <p>Open the catalog, the “Components” section. Choose a component, click “Add…” and pick a space. Another way is the space settings, the “Components” section.</p>
+          <p>Sometimes the space’s page shows a hint, “The game may need”, with a list of components. Click “Install All” and onwin installs them.</p>
+        </section>
+
+        <!-- ================= Shortcuts ================= -->
+        <section id="launchers" aria-labelledby="launchers-title">
+          <h2 id="launchers-title">Shortcuts in Launchpad and the Dock</h2>
+          <p>Any Windows program can be opened like a regular Mac app — from Launchpad, Spotlight or the Dock, without opening onwin.</p>
+          <ul class="list">
+            <li><strong>For one program:</strong> right-click it (on the desktop or on the space’s page) and choose “Create Launchpad Shortcut”.</li>
+            <li><strong>For all programs in a space:</strong> in the space settings, in the “Launchpad Shortcuts” section, turn on “Create shortcuts automatically”. onwin makes a shortcut for every program in the Start menu and removes shortcuts of uninstalled programs by itself.</li>
+            <li><strong>In the Dock:</strong> drag a shortcut from Launchpad or from the shortcuts folder to the Dock, like any Mac app.</li>
+          </ul>
+          <p>Shortcuts are stored in the <code>~/Applications/onwin/</code> folder, one folder per space. To remove a shortcut, choose “Remove Launchpad Shortcut” in the program’s menu.</p>
+        </section>
+
+        <!-- ================= Troubleshooting ================= -->
+        <section id="troubleshooting" aria-labelledby="troubleshooting-title">
+          <h2 id="troubleshooting-title">If something doesn’t work</h2>
+          <p>Try these in order. The first or second step helps most often.</p>
+
+          <ol class="steps">
+            <li>
+              <h3>Restart the space</h3>
+              <p>Sometimes a program “hangs” in the background. On the space’s page, click “Quit All” (or the “Space” menu → “Quit All Programs in Space”) and start the program again.</p>
+            </li>
+            <li>
+              <h3>Try different graphics</h3>
+              <p>Black screen, a crash at startup, a glitchy picture — start the program with “Run with Options…” and choose another option under “Graphics”. More in the <a href="#graphics">Graphics</a> section.</p>
+            </li>
+            <li>
+              <h3>Install the suggested components</h3>
+              <p>If a program fails to start, onwin may show a hint, “…didn’t start — here’s what may help”, with a list of components. Click “Install All”.</p>
+            </li>
+            <li>
+              <h3>Change the Windows version</h3>
+              <p>Old games sometimes need Windows 7 or XP. You can change this in the space settings, under “Windows Version”.</p>
+            </li>
+            <li>
+              <h3>Look at the log</h3>
+              <p>A <dfn class="term">log</dfn> is a text file where onwin writes down everything that happens when a program starts. The cause of an error is usually visible there. Logs open in the “Logs” section on the left, with the “Logs” button on the space’s page, or with the “Show Log” button in an error message. The files themselves are in the <code>~/Library/Logs/onwin</code> folder. You can copy a log with the “Copy” button and attach it to your problem report.</p>
+            </li>
+          </ol>
+          <figure class="shot">
+            <img src="../img/docs/troubleshooting-logs.png" alt="The “Logs” section in onwin: a list of logs and the text of the selected log" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>The “Logs” section: this is where you can see what went wrong</figcaption>
+          </figure>
+
+          <h3>What usually doesn’t work</h3>
+          <ul class="list">
+            <li>Games with anti-cheat that works at the Windows kernel level (some online shooters).</li>
+            <li>Programs that need their own device drivers: some printers, scanners, copy-protection dongles, rare controllers.</li>
+            <li>Programs that check that they’re running on “real” Windows and refuse to start otherwise.</li>
+          </ul>
+          <p>Most other things run. If something doesn’t work for you, let us know — it helps make onwin better.</p>
+
+          <div class="card" id="report">
+            <h3 style="margin-top: 0">Report a problem</h3>
+            <p class="muted">Describe what happened in plain words — no technical details needed. We’ll figure it out. Our Telegram support chat is in Russian; if you prefer English, open an issue on GitHub.</p>
+            <div data-support="full">
+              <noscript><p class="muted">To see the ways to contact us, turn on JavaScript.</p></noscript>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= Updating and uninstalling ================= -->
+        <section id="update-uninstall" aria-labelledby="update-uninstall-title">
+          <h2 id="update-uninstall-title">Updating and uninstalling</h2>
+
+          <h3>Update onwin</h3>
+          <p>Run the same command in Terminal that you used to install it. It downloads only what has changed.</p>
+          <div class="command small-cmd">
+            <code id="doc-update" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-update">
+              <span class="label">Copy</span>
+            </button>
+          </div>
+          <p>If you installed onwin from the DMG disk image, download the new image on the <a href="install.html">Install</a> page.</p>
+
+          <h3>Uninstall onwin</h3>
+          <p>This command removes the app and the engine. Your spaces — programs, games and saves — stay where they are.</p>
+          <div class="command small-cmd">
+            <code id="doc-uninstall" data-cmd="uninstall">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-uninstall">
+              <span class="label">Copy</span>
+            </button>
+          </div>
+          <p>To delete your spaces as well, use this command. Terminal will ask whether you’re sure (the question is in Russian; answer it as the prompt shows). This can’t be undone: the programs and saves inside your spaces will be gone.</p>
+          <div class="command small-cmd">
+            <code id="doc-purge" data-cmd="purge">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall --purge</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-purge">
+              <span class="label">Copy</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= onwinctl ================= -->
+        <section id="cli" aria-labelledby="cli-title">
+          <h2 id="cli-title">For advanced users: onwinctl</h2>
+          <p><code>onwinctl</code> is a tool for Terminal: everything the onwin window does, but with commands. Regular users don’t need it. <code>onwinctl help</code> shows the full list of commands.</p>
+          <p class="muted small">If the <code>onwinctl</code> command isn’t found, run it from inside the app: <code>/Applications/Onwin.app/Contents/MacOS/onwinctl</code>.</p>
+
+          <div class="cli-group">
+            <h3>Check that everything is installed</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl status</code></dt><dd>what’s installed: Rosetta, the engine, D3DMetal</dd></div>
+              <div class="cli-row"><dt><code>onwinctl engines</code></dt><dd>list of Wine engines</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Spaces</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl spaces</code></dt><dd>list of spaces</dd></div>
+              <div class="cli-row"><dt><code>onwinctl create &lt;name&gt; [--win win10] [--backend auto|d3dmetal|dxmt|dxvk|wined3d]</code></dt><dd>create a space</dd></div>
+              <div class="cli-row"><dt><code>onwinctl info &lt;name&gt;</code></dt><dd>a space’s settings</dd></div>
+              <div class="cli-row"><dt><code>onwinctl set &lt;name&gt; &lt;setting&gt; &lt;value&gt; [--restart]</code></dt><dd>change a setting: backend, win, msync, retina, hud, avx, dxr, metalfx, debug, launchers, autocomponents, env:NAME, dll:NAME</dd></div>
+              <div class="cli-row"><dt><code>onwinctl archive &lt;name&gt; &lt;file.onwinspace&gt;</code></dt><dd>pack a space into an archive</dd></div>
+              <div class="cli-row"><dt><code>onwinctl restore &lt;file.onwinspace&gt; [name]</code></dt><dd>restore from an archive</dd></div>
+              <div class="cli-row"><dt><code>onwinctl delete &lt;name&gt;</code></dt><dd>move a space to the Trash</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Install and run</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl catalog</code></dt><dd>catalog of apps and components</dd></div>
+              <div class="cli-row"><dt><code>onwinctl install &lt;app&gt; [--space name]</code></dt><dd>install from the catalog, for example <code>steam</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl run &lt;space&gt; &lt;file.exe|.msi|.lnk&gt; [arguments...]</code></dt><dd>run and wait; required components install automatically (<code>--no-auto-components</code> turns this off)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl programs &lt;space&gt;</code></dt><dd>programs found in the space</dd></div>
+              <div class="cli-row"><dt><code>onwinctl pin &lt;space&gt; &lt;path&gt; [name]</code></dt><dd>pin a program (<code>unpin</code> to unpin)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl wine &lt;space&gt; &lt;command&gt;</code></dt><dd>run a Wine tool, for example <code>winecfg</code>, <code>regedit</code>, <code>cmd</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl uninstall-list &lt;space&gt;</code></dt><dd>programs that can be uninstalled (<code>uninstall</code> to uninstall)</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Steam</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl steam-games &lt;space&gt;</code></dt><dd>Steam games in the space</dd></div>
+              <div class="cli-row"><dt><code>onwinctl steam-launch &lt;space&gt; &lt;appid|title&gt;</code></dt><dd>launch a game through Steam</dd></div>
+              <div class="cli-row"><dt><code>onwinctl steam-install &lt;space&gt; &lt;appid&gt;</code></dt><dd>open a game’s installation in Steam</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Stop programs</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl running &lt;space&gt;</code></dt><dd>whether the space is running</dd></div>
+              <div class="cli-row"><dt><code>onwinctl shutdown &lt;space&gt;</code></dt><dd>close all programs gently (forcefully after 10 s)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl kill &lt;space&gt;</code></dt><dd>force-quit all programs</dd></div>
+              <div class="cli-row"><dt><code>onwinctl reboot &lt;space&gt;</code></dt><dd>“restart Windows” in the space</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Graphics and components</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl d3dmetal-import &lt;path to GPTK&gt;</code></dt><dd>import D3DMetal from a downloaded Game Porting Toolkit (.dmg or volume)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl d3dmetal-fetch</code></dt><dd>import a Game Porting Toolkit you’ve already downloaded to Downloads; Apple ID sign-in happens in the onwin app</dd></div>
+              <div class="cli-row"><dt><code>onwinctl components [space]</code></dt><dd>list of components (✓ — installed)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl component &lt;space&gt; &lt;component&gt;[,...]</code></dt><dd>install a component, for example <code>vcrun2026</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl advise &lt;space|-&gt; &lt;file.exe&gt;</code></dt><dd>which components a program is missing</dd></div>
+              <div class="cli-row"><dt><code>onwinctl advise-log &lt;log.log&gt;</code></dt><dd>what the log of a failed launch suggests</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Shortcuts and your own recipes</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl launcher &lt;space&gt; &lt;program&gt;</code></dt><dd>create a shortcut for Launchpad and the Dock</dd></div>
+              <div class="cli-row"><dt><code>onwinctl launchers [space]</code></dt><dd>list of shortcuts</dd></div>
+              <div class="cli-row"><dt><code>onwinctl launcher-remove &lt;space&gt; &lt;program&gt;</code></dt><dd>remove a shortcut</dd></div>
+              <div class="cli-row"><dt><code>onwinctl recipe list</code></dt><dd>your recipes from “My Apps”</dd></div>
+              <div class="cli-row"><dt><code>onwinctl recipe export &lt;id&gt; &lt;file.onwinrecipe&gt;</code></dt><dd>save a recipe to a file (<code>recipe import</code> adds one from a file)</dd></div>
+            </dl>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <section class="section donate-section" id="donate" aria-labelledby="donate-title" style="padding-top: 0">
+      <div class="wrap">
+        <div class="card donate-block">
+          <div>
+            <span class="eyebrow">Support the project</span>
+            <h2 id="donate-title">Did the docs help?</h2>
+            <p>onwin is free and made by enthusiasts. Donations pay for development time and for testing games. <a href="donate.html">Learn more</a></p>
+          </div>
+          <div class="donate-list" data-donate="compact">
+            <noscript><p class="muted">Ways to support the project are listed on the <a href="donate.html">Donate</a> page.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">Install</a></li>
+          <li><a href="releases.html">Updates</a></li>
+          <li><a href="docs.html">Docs</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="licenses.html">Licenses</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">Free software licensed under GPL-3.0.</p>
+      <p class="disclaimer">Windows, Mac, Steam and other product names belong to their owners; onwin is an independent project.</p>
+    </div>
+  </footer>
+</body>
+</html>

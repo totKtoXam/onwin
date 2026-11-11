@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>onwin құжаттамасы</title>
+  <meta name="description" content="onwin-ды қалай пайдалану керек: жылдам бастау, кеңістіктер, бағдарламалар мен Steam орнату, D3DMetal, DXMT және DXVK графикасы, жарлықтар, бір нәрсе істемесе не істеу керек.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="alternate" hreflang="ru" href="https://totktoxam.github.io/onwin/docs.html">
+  <link rel="alternate" hreflang="en" href="https://totktoxam.github.io/onwin/en/docs.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://totktoxam.github.io/onwin/zh/docs.html">
+  <link rel="alternate" hreflang="kk" href="https://totktoxam.github.io/onwin/kk/docs.html">
+  <link rel="alternate" hreflang="x-default" href="https://totktoxam.github.io/onwin/docs.html">
+  <link rel="stylesheet" href="../style.css?v=12">
+  <script src="../config.js?v=4" defer></script>
+  <script src="../site.js?v=11" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Негізгі мазмұнға өту</a>
+
+  <aside class="donate-bar" aria-label="onwin жобасын қолдау">
+    <div class="wrap">
+      <p class="donate-bar-text">
+        <svg class="donate-bar-heart" width="16" height="16" fill="#e5484d" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        <span>onwin тегін және коды ашық<span class="donate-bar-more"> — ол сіздің жарналарыңыздың арқасында дамып келеді.</span></span>
+      </p>
+      <a class="donate-bar-link" href="#donate">Қолдау<span aria-hidden="true"> →</span></a>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — басты бетке">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="Негізгі мәзір">
+        <ul>
+          <li><a href="install.html">Орнату</a></li>
+          <li><a href="releases.html">Жаңартулар</a></li>
+          <li><a href="docs.html" aria-current="page">Құжаттама</a></li>
+          <li><a href="donate.html">Қолдау</a></li>
+          <li><a href="licenses.html">Лицензиялар</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+      <nav class="lang-switch" aria-label="Тіл">
+        <a href="../docs.html" hreflang="ru" lang="ru" title="Русский">РУ</a>
+        <a href="../en/docs.html" hreflang="en" lang="en" title="English">EN</a>
+        <a href="../zh/docs.html" hreflang="zh-Hans" lang="zh-Hans" title="简体中文">中文</a>
+        <a href="docs.html" hreflang="kk" lang="kk" title="Қазақша" aria-current="true">ҚАЗ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap page-head">
+      <h1>Құжаттама</h1>
+      <p class="lead">onwin-ды қалай пайдалану керек — қарапайым тілмен. Жылдам бастаудан бастаңыз: бес минуттан кейін Mac-та алғашқы Windows ойыны немесе бағдарламасы іске қосылады.</p>
+    </div>
+
+    <div class="wrap docs-layout">
+      <nav class="toc" aria-labelledby="toc-title">
+        <p class="toc-title" id="toc-title">Мазмұны</p>
+        <ol>
+          <li><a href="#quick-start">Жылдам бастау</a></li>
+          <li><a href="#spaces">Кеңістіктер</a></li>
+          <li><a href="#install-programs">Бағдарламаларды орнату</a></li>
+          <li><a href="#steam">Steam және ойындар</a></li>
+          <li><a href="#graphics">Графика: D3DMetal, DXMT, DXVK</a></li>
+          <li><a href="#components">Компоненттер</a></li>
+          <li><a href="#launchers">Launchpad пен Dock-тағы жарлықтар</a></li>
+          <li><a href="#troubleshooting">Бір нәрсе істемесе</a></li>
+          <li><a href="#update-uninstall">Жаңарту және жою</a></li>
+          <li><a href="#cli">Тәжірибелі пайдаланушыларға: onwinctl</a></li>
+        </ol>
+      </nav>
+
+      <div class="doc">
+
+        <!-- ================= Жылдам бастау ================= -->
+        <section id="quick-start" aria-labelledby="quick-start-title">
+          <h2 id="quick-start-title">Жылдам бастау</h2>
+          <p>Орнатудан алғашқы ойынға дейін бес қадам. Қолмен ештеңе баптаудың қажеті жоқ.</p>
+
+          <ol class="steps">
+            <li>
+              <h3>onwin орнатыңыз</h3>
+              <p>Терминалды ашыңыз: <kbd>⌘</kbd> + <kbd>Бос орын</kbd> (Space) пернелерін басып, «Терминал» (Terminal) деп теріңіз де, <kbd>Return</kbd> пернесін басыңыз. Мына пәрменді қойып, тағы да <kbd>Return</kbd> басыңыз:</p>
+              <div class="command small-cmd">
+                <code id="qs-install" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+                <button class="btn btn-primary" type="button" data-copy-from="#qs-install">
+                  <span class="label">Көшіру</span>
+                </button>
+              </div>
+              <p>Пәрмен onwin қолданбасын және оның қозғалтқышын орнатады. Қозғалтқыш — Windows бағдарламаларын іске қоса алатын бөлік. Орнатқыштың хабарлары әзірге орыс тілінде. Орнатудың басқа тәсілдері <a href="install.html">«Орнату»</a> бетінде сипатталған.</p>
+            </li>
+            <li>
+              <h3>onwin-ды ашыңыз</h3>
+              <p>onwin «Бағдарламалар» (Applications) қалтасында тұрады. Егер Mac-та Rosetta 2 болмаса, onwin «onwin үшін Rosetta 2 қажет» терезесін көрсетеді. Rosetta 2 — Apple-дың тегін аудармашысы: онсыз Apple процессоры бар Mac-та Windows бағдарламалары іске қосылмайды. «Rosetta орнату» батырмасын басыңыз. macOS құпиясөз сұрауы мүмкін — бұл қалыпты жағдай.</p>
+              <p>Содан кейін басты терезені көресіз. Сол жақта — бөлімдер тізімі: «Жұмыс үстелі», «Қолданбалар мен ойындар» каталогы, кеңістіктеріңіз, іске қосылған бағдарламалар және журналдар. Оң жақта — «Жұмыс үстелі»: барлық Windows ойындары мен бағдарламаларыңыз осында пайда болады.</p>
+              <figure class="shot">
+                <img src="../img/docs/main-window.png" alt="onwin басты терезесі: сол жақта бөлімдер, оң жақта бағдарламалар мен ойындардың тақтайшалары бар жұмыс үстелі" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>onwin басты терезесі: бағдарлама тақтайшалары бар «Жұмыс үстелі»</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>Steam немесе өз бағдарламаңызды орнатыңыз</h3>
+              <p><strong>Steam бір басумен.</strong> Бос жұмыс үстелінде «Steam орнату» батырмасын басыңыз. Немесе сол жақтан «Қолданбалар мен ойындар» бөлімін ашып, Steam-ді тауып, «Орнату…» батырмасын басыңыз. onwin бәрін өзі дайындап, орнатқышты іске қосады.</p>
+              <p><strong>Өз бағдарламаңыз</strong> — <code>.exe</code> немесе <code>.msi</code> орнатқыш файлы. Үш тәсіл бар:</p>
+              <ul class="list">
+                <li>файлды тікелей onwin терезесіне сүйреп апарыңыз;</li>
+                <li>файлды Dock-тағы onwin белгішесіне сүйреңіз немесе оны onwin арқылы ашыңыз (Finder-де: тінтуірдің оң жақ батырмасы → «Бағдарламамен ашу» (Open With) → onwin);</li>
+                <li>каталогтың «Өз бағдарламаңыз» бөлімінде «Орнатқышты таңдау…» батырмасын басыңыз.</li>
+              </ul>
+              <p>onwin бағдарламаны қайда орнату керектігін сұрайды: жаңа кеңістікке ме, әлде бұрын жасалған кеңістіктердің біріне ме. Күмәндансаңыз — жаңасын таңдаңыз.</p>
+              <figure class="shot">
+                <img src="../img/docs/catalog.png" alt="onwin каталогы: орнату батырмалары бар Steam, Epic Games, GOG Galaxy және Battle.net ойын лаунчерлері" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>«Қолданбалар мен ойындар» каталогы: Steam және басқа лаунчерлер бір басумен орнатылады</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>Ойынды іске қосыңыз</h3>
+              <p>Орнатылғанның бәрі onwin «Жұмыс үстелінде» тақтайша болып шығады. Тақтайшаны екі рет басыңыз — бағдарлама немесе ойын іске қосылады. Steam-нен жүктеп алған ойындарыңыз да осында жеке тақтайшалар болып көрінеді.</p>
+              <figure class="shot">
+                <img src="../img/docs/steam-games.png" alt="onwin-дағы Steam ойындарының тақтайшалары" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+                <figcaption>Steam ойындары — тақтайшалар түрінде, екі рет басқанда ойын іске қосылады</figcaption>
+              </figure>
+            </li>
+            <li>
+              <h3>Жаңа ойындар үшін D3DMetal қосыңыз</h3>
+              <p>Заманауи ойындар (DirectX 12-дегі, көбіне DirectX 11-дегі де) D3DMetal-мен — Apple жасаған графикамен — ең жақсы жұмыс істейді. onwin оны өз жинағына қоса алмайды, бірақ өзі орнатып береді: каталогты ашып, «Компоненттер» бөліміндегі «D3DMetal (Game Porting Toolkit)» карточкасын тауып, «D3DMetal орнату» батырмасын басыңыз. Тегін Apple ID-мен кіру қажет болады. Толығырақ — <a href="#graphics">«Графика»</a> бөлімінде.</p>
+              <p>Ойынға D3DMetal қажет болып, ол әлі орнатылмаса, onwin іске қосар алдында оны орнатуды өзі ұсынады.</p>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ================= Кеңістіктер ================= -->
+        <section id="spaces" aria-labelledby="spaces-title">
+          <h2 id="spaces-title">Кеңістіктер</h2>
+          <p><dfn class="term">Кеңістік</dfn> — onwin ішіндегі жеке «Windows компьютері». Оның өз C: дискісі, өз бағдарламалары, баптаулары мен сақтаулары бар. Кеңістіктер бір-біріне кедергі келтірмейді. Бір нәрсе бұзылса немесе қажет болмай қалса — кеңістікті жойыңыз, бағдарламадан із де қалмайды.</p>
+          <p>Әдетте бір лаунчерге (мысалы, «Steam») немесе бір бағдарламаға бір кеңістік жеткілікті. Каталогтан бір нәрсе орнатқанда onwin кеңістікті өзі жасайды.</p>
+
+          <h3>Кеңістік жасау</h3>
+          <p>Сол жақтағы «Кеңістіктер» бөлімінде «Кеңістік жасау…» батырмасын басыңыз. Немесе терезенің жоғарғы жағындағы «Жаңа кеңістік» батырмасын, не <kbd>⌘</kbd> + <kbd>N</kbd> пернелерін басыңыз. Атауын және Windows нұсқасын көрсетіңіз. Көп ойынға Windows 10 жарайды. Графиканы «Автоматты түрде» күйінде қалдыруға болады.</p>
+          <figure class="shot">
+            <img src="../img/docs/new-space.png" alt="Атау, Windows нұсқасы және графика өрістері бар «Жаңа кеңістік» терезесі" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>«Жаңа кеңістік» терезесі</figcaption>
+          </figure>
+
+          <h3>Кеңістікпен не істеуге болады</h3>
+          <p>Сол жақтағы тізімде кеңістікті тінтуірдің оң жақ батырмасымен басыңыз. Дәл осы пәрмендер кеңістік бетіндегі «Тағы» мәзірінде де бар.</p>
+          <ul class="list">
+            <li><strong>«Атын өзгерту…»</strong> — басқа атау беру. Алдымен осы кеңістіктің бағдарламаларын жабыңыз.</li>
+            <li><strong>«Көшірмесін жасау»</strong> — барлық орнатылған бағдарламаларымен бірге тәуелсіз көшірме жасау. Жұмыс істеп тұрған нұсқаны қатерге тікпей, бір нәрсені байқап көруге ыңғайлы.</li>
+            <li><strong>«Мұрағаттау…»</strong> — кеңістікті бір <code>.onwinspace</code> файлына жинау. Бұл — сақтық көшірме немесе кеңістікті басқа Mac-қа көшіру тәсілі. Бұған дейін кеңістіктің бағдарламаларын жабыңыз.</li>
+            <li><strong>Мұрағаттан қалпына келтіру</strong> — <code>.onwinspace</code> файлын екі рет басыңыз немесе «Файл» мәзірінен «Кеңістікті мұрағаттан қалпына келтіру…» тармағын таңдаңыз.</li>
+            <li><strong>«Жою…»</strong> — кеңістік бүкіл ішіндегісімен бірге Себетке түседі. Себет тазаланбайынша, оны қайтаруға болады.</li>
+            <li><strong>«Finder-де көрсету»</strong> — кеңістік қалтасын ашу. Кеңістік бетіндегі «C: дискісін ашу» батырмасы оның C: дискісін ашады.</li>
+          </ul>
+
+          <h3>Кеңістік баптаулары</h3>
+          <p>Оларды кеңістік бетіндегі «Баптаулар» батырмасымен немесе «Кеңістік» → «Кеңістік баптаулары…» мәзірі арқылы ашыңыз. Ең пайдалылары:</p>
+          <ul class="list">
+            <li><strong>«Windows нұсқасы»</strong> («Негізгі» бөлімі) — бағдарламалар Windows-тың қай нұсқасын «көреді». Ескі ойындарға кейде Windows 7 немесе XP керек.</li>
+            <li><strong>«Графика»</strong> — ойындарда сурет қалай салынады. Әдетте «Автоматты түрде» күйінде қалдырған дұрыс. Толығырақ — <a href="#graphics">«Графика»</a> бөлімінде.</li>
+            <li><strong>«Metal HUD»</strong> — ойынның үстінен кадр жиілігін көрсетеді. Ойынның қаншалықты бірқалыпты жүріп тұрғанын тексеруге ыңғайлы.</li>
+            <li><strong>«Жоғары ажыратымдылық (Retina)»</strong> — сурет анығырақ болады, бірақ ойындар баяуырақ жұмыс істейді, ал ескі бағдарламалардағы жазулар ұсақ болып кетеді. Күмәндансаңыз — қоспаңыз.</li>
+            <li><strong>«MSync»</strong> («Өнімділік» бөлімі) — ойындардың жұмысын жылдамдатады. Қосулы ұстаған жөн.</li>
+            <li><strong>«AVX қолдауы туралы хабарлау»</strong> — онсыз іске қосылмайтын кейбір жаңа ойындарға қажет.</li>
+            <li><strong>«Компоненттер»</strong> — кеңістікте не орнатылған және тағы нені қосуға болады. <a href="#components">«Компоненттер»</a> бөлімін қараңыз.</li>
+            <li><strong>«Launchpad-тағы жарлықтар»</strong> — <a href="#launchers">«Жарлықтар»</a> бөлімін қараңыз.</li>
+          </ul>
+          <p>Кеңістік қазір жұмыс істеп тұрғанда MSync немесе Retina баптауын өзгертсеңіз, onwin ескертеді: баптау кеңістік қайта іске қосылғаннан кейін күшіне енеді, ал оның барлық бағдарламалары жабылады.</p>
+          <figure class="shot">
+            <img src="../img/docs/space-settings.png" alt="Кеңістік баптаулары: «Негізгі», «Графика» және «Өнімділік» бөлімдері" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Кеңістік баптаулары</figcaption>
+          </figure>
+        </section>
+
+        <!-- ================= Бағдарламаларды орнату ================= -->
+        <section id="install-programs" aria-labelledby="install-programs-title">
+          <h2 id="install-programs-title">Бағдарламаларды орнату</h2>
+
+          <h3>Каталогтан</h3>
+          <p>Каталог — сол жақтағы «Қолданбалар мен ойындар» бөлімі (немесе «Кеңістік» → «Каталогтан орнату…» мәзірі). Онда дайын рецепттер бар. <dfn class="term">Рецепт</dfn> — onwin-ға арналған нұсқаулық: қандай кеңістік жасау, қандай компоненттер орнату және қай орнатқышты іске қосу керек. Сіз «Орнату…» батырмасын басып, қайда орнату керегін таңдайсыз — қалғанын onwin өзі жасайды.</p>
+          <p>«Ойын лаунчерлері» бөлімінде Steam, Epic Games Launcher, GOG Galaxy және Battle.net бар. Жоғарыда іздеу жолы бар.</p>
+
+          <h3>Өз орнатқышыңыз (.exe немесе .msi)</h3>
+          <p>Бағдарлама каталогта жоқ па? Оны файлдан орнатыңыз:</p>
+          <ul class="list">
+            <li>файлды onwin терезесіне сүйреп апарыңыз;</li>
+            <li>немесе каталогтағы «Өз бағдарламаңызды орнату» карточкасында «Орнатқышты таңдау…» батырмасын басыңыз;</li>
+            <li>немесе жұмыс үстелінде «Орнату» → «Файлдан…» тармағын басыңыз.</li>
+          </ul>
+          <p>Кеңістікті таңдаңыз — жаңасын немесе бұрын жасалғандардың бірін — да, «Орнатқышты іске қосу» батырмасын басыңыз. Егер onwin «Не істеу керек» деп сұраса, орнатқыш үшін «Орнату», ал орнатуды қажет етпейтін дайын бағдарлама үшін «Іске қосу» тармағын таңдаңыз. Орнату аяқталғанда onwin жаңа бағдарламаны өзі тауып, жұмыс үстелінде көрсетеді.</p>
+
+          <h3>«Менің қолданбаларым»</h3>
+          <p>Өз бағдарламаңызды орнатқаннан кейін onwin оны «Менің қолданбаларым» бөліміне сақтауды ұсынады. Бұл — каталогтағы өзіңіздің рецепттеріңіз: келесі жолы сол бағдарламаны бір басумен орнатуға болады. Жаңа рецептті қолмен де жасауға болады — «Қолданба қосу» карточкасы, «Жасау…» батырмасы. Рецептпен бөлісуге болады: «Экспорттау…» оны <code>.onwinrecipe</code> файлына сақтайды, ал «Импорттау…» басқа біреудің рецептін қосады. Импорт ештеңені іске қоспайды — алдымен рецептте не бар екенін көресіз.</p>
+
+          <h3>.exe файлын орнатпай іске қосу</h3>
+          <p>Терезенің жоғарғы жағындағы «.exe іске қосу» батырмасын (немесе <kbd>⌘</kbd> + <kbd>O</kbd>) басып, файл мен кеңістікті таңдаңыз. Файлды терезеге жай ғана сүйреп апаруға да болады.</p>
+
+          <h3>Бағдарламаны бекіту</h3>
+          <p>Кеңістік бетінде оның бағдарламалары көрінеді. Бағдарламаны оң жақ батырмамен басып, «Бекіту» тармағын таңдаңыз. Ол «Бекітілгендер» бөліміне түседі. Бекітілген бағдарламаның «Қасиеттер…» терезесінде өз атауын, графиканы, іске қосу параметрлерін және орта айнымалыларын беруге болады. Керекті бағдарлама тізімде болмаса, «Тағы» мәзірінен «Бағдарламаны тізімге қосу…» тармағын таңдаңыз.</p>
+          <p>Тақтайша жұмыс үстелінде кедергі келтірсе, оның мәзірінен «Жұмыс үстелінен жасыру» тармағын таңдаңыз. Жасырылғандарды «Жасырылғандарды көрсету» батырмасымен қайтаруға болады.</p>
+
+          <h3>«Параметрлермен іске қосу…»</h3>
+          <p>Бұл тармақ кез келген бағдарлама мен ойынның мәзірінде бар. Ол бағдарламаны бір рет ерекше баптаулармен іске қосады: өз іске қосу аргументтері, басқа графика, Metal HUD. Бұл кезде кеңістік баптаулары өзгермейді. Бір нәрсе көмектесе ме, жоқ па — байқап көруге ыңғайлы. Көмектессе — «Бағдарлама ретінде сақтау» белгісін қойыңыз, сонда onwin бұл баптауларды есте сақтайды.</p>
+
+          <h3>Бағдарламаны жою</h3>
+          <p>«Кеңістік» → «Бағдарламаны жою…» мәзірі орнатылған бағдарламалар тізімін ашып, таңдалған бағдарламаның жою құралын іске қосады. Барлығын бірден алып тастау үшін кеңістіктің өзін жойыңыз.</p>
+        </section>
+
+        <!-- ================= Steam ================= -->
+        <section id="steam" aria-labelledby="steam-title">
+          <h2 id="steam-title">Steam және ойындар</h2>
+          <ol class="steps">
+            <li>
+              <h3>Steam орнатыңыз</h3>
+              <p>Каталог → «Steam» → «Орнату…». onwin «Steam» кеңістігін жасап, оған Mac-тағы Steam-ге қажет баптауларды бірден орнатады.</p>
+            </li>
+            <li>
+              <h3>Аккаунтқа кіріңіз</h3>
+              <p>Орнатылғаннан кейін Steam өзін жаңартып, кіруді сұрайды. Әдеттегідей кіріңіз — логин мен құпиясөз Steam-нің өз терезесінде енгізіледі.</p>
+            </li>
+            <li>
+              <h3>Ойынды жүктеп алыңыз</h3>
+              <p>Ойынды Steam кітапханасынан Windows-тағыдай орнатыңыз. Дайын ойын onwin жұмыс үстелінде тақтайша болып және кеңістік бетіндегі «Steam ойындары» бөлімінде пайда болады.</p>
+            </li>
+            <li>
+              <h3>Ойнаңыз</h3>
+              <p>Тақтайшаны екі рет басу — «Ойнау». onwin ойынды Steam арқылы өзі іске қосады.</p>
+            </li>
+          </ol>
+          <p>Ойын тақтайшасында оның қазіргі күйі көрінеді: «Іске қосылған», «Жүктелуде» немесе «Жаңарту қажет». Ойын мәзірінде (тінтуірдің оң жақ батырмасы) «Ойын қалтасын көрсету», «Файлдардың тұтастығын тексеру», «Steam дүкеніндегі беті» және «Steam арқылы жою…» тармақтары бар. Кеңістік бетіндегі «Steam ашу» батырмасы Steam-нің өзін ашады.</p>
+          <p class="note note-plain">Windows ядросы деңгейінде читтерден қорғанысы бар ойындар (кейбір онлайн-шутерлер) onwin-да әдетте іске қосылмайды. Бұл — сіздің Mac-ыңыздың емес, Wine-ның шектеуі.</p>
+        </section>
+
+        <!-- ================= Графика ================= -->
+        <section id="graphics" aria-labelledby="graphics-title">
+          <h2 id="graphics-title">Графика: D3DMetal, DXMT, DXVK</h2>
+          <p>Windows ойындары суретті DirectX арқылы салады — бұл Windows технологиясы. Mac-та ол жоқ, сондықтан onwin DirectX-ті Mac тіліне (Metal) «аударады». Аудармашылар бірнешеу, әр ойынға әртүрлісі жақсы келеді. onwin-да бұл «Графика» деп аталады.</p>
+
+          <div class="card">
+            <dl class="paths">
+              <div class="path-row"><dt>Автоматты түрде</dt><dd>onwin ең жақсы нұсқаны өзі таңдайды. Осыдан бастаңыз.</dd></div>
+              <div class="path-row"><dt>D3DMetal</dt><dd>Apple жасаған. DirectX 11 және 12 негізіндегі жаңа ойындар үшін ең жақсы таңдау. Бөлек орнату керек (төменде қараңыз).</dd></div>
+              <div class="path-row"><dt>DXMT</dt><dd>DirectX 10 және 11 ойындарына арналған ашық аудармашы.</dd></div>
+              <div class="path-row"><dt>DXVK</dt><dd>DirectX 9–11 ойындарына арналған. Басқа нұсқалармен ойын жүрмесе, байқап көріңіз.</dd></div>
+              <div class="path-row"><dt>WineD3D (OpenGL)</dt><dd>ең үйлесімдісі, бірақ ең баяуы. Ескі ойындарға жарайды.</dd></div>
+            </dl>
+          </div>
+
+          <h3>Қалай таңдау керек</h3>
+          <ul class="list">
+            <li>Алдымен «Автоматты түрде» күйінде қалдырыңыз. D3DMetal орнатылған болса, onwin алдымен соны таңдайды.</li>
+            <li>Ойын іске қосылмаса, қара экран немесе сурет қателері болса — басқа нұсқаны байқап көріңіз. Ең жылдам жолы — «Параметрлермен іске қосу…»: бұлай кеңістік баптаулары өзгермейді.</li>
+            <li>Қолайлы нұсқаны тапсаңыз — бағдарламаны бекітіп, «Қасиеттер…» ішіндегі «Осы бағдарламаның графикасы» тармағынан соны таңдаңыз. Немесе кеңістік баптауларындағы «Графика» мәнін өзгертіңіз — сонда ол кеңістіктің барлық бағдарламаларына қолданылады.</li>
+          </ul>
+          <p>Графика өзгерістері бағдарлама келесі рет іске қосылғанда күшіне енеді.</p>
+          <figure class="shot">
+            <img src="../img/docs/graphics.png" alt="Бағдарламаға графика таңдау: Автоматты түрде, D3DMetal, DXMT, DXVK, WineD3D" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>Бір бағдарламаға графика таңдау</figcaption>
+          </figure>
+
+          <h3 id="d3dmetal">D3DMetal қалай орнатылады</h3>
+          <p>D3DMetal Game Porting Toolkit құрамына кіреді — бұл Apple-дың ойын әзірлеушілеріне арналған жинағы. Apple оны тек Apple ID-мен кіргеннен кейін ғана береді. Кәдімгі тегін тіркелгі жарайды. Сондықтан onwin D3DMetal-ды өз жинағына қоса алмайды және оны ешқашан таратпайды: жинақ Apple сайтынан тікелей сіздің Mac-ыңызға жүктеледі.</p>
+          <ol class="steps">
+            <li>
+              <h3>«D3DMetal орнату» батырмасын басыңыз</h3>
+              <p>Бұл батырма каталогта («Компоненттер» бөлімі, «D3DMetal (Game Porting Toolkit)» карточкасы), «Кеңістік» → «D3DMetal орнату…» мәзірінде және onwin баптауларының «D3DMetal» қойындысында бар.</p>
+            </li>
+            <li>
+              <h3>Apple ID-мен кіріңіз</h3>
+              <p>Apple беті бар «D3DMetal орнату — Apple ID-ге кіру» терезесі ашылады. Құпиясөз Apple бетінде енгізіледі — onwin оны көрмейді және сақтамайды. Егер Apple әзірлеушілер келісімін қабылдауды сұраса, оны сол жерде қабылдаңыз.</p>
+            </li>
+            <li>
+              <h3>Күтіңіз</h3>
+              <p>onwin Game Porting Toolkit-тің соңғы нұсқасын өзі жүктеп алып, одан D3DMetal-ды бірден барлық кеңістіктер үшін орнатады. Мұны бір рет жасау жеткілікті.</p>
+            </li>
+          </ol>
+          <p>onwin терезесінде кіргіңіз келмей ме? «Браузерде ашу» батырмасын басып, Game Porting Toolkit (.dmg) файлын Apple сайтынан «Жүктеулер» (Downloads) қалтасына жүктеп алыңыз — onwin файлды өзі табады. Файл бұрын жүктелген болса, оны «Қолмен көрсету…» батырмасымен таңдаңыз.</p>
+          <figure class="shot">
+            <img src="../img/docs/d3dmetal.png" alt="D3DMetal орнату терезесі: «Apple ID-ге кіру», «Game Porting Toolkit жүктеу», «D3DMetal орнату» қадамдары" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>D3DMetal орнату: Apple бетінде Apple ID-мен кіру</figcaption>
+          </figure>
+        </section>
+
+        <!-- ================= Компоненттер ================= -->
+        <section id="components" aria-labelledby="components-title">
+          <h2 id="components-title">Компоненттер</h2>
+          <p><dfn class="term">Компоненттер</dfn> — көптеген ойындар мен бағдарламаларға қажет Windows-тың қосымша бөліктері: Visual C++ кітапханалары, DirectX, .NET, қаріптер және басқалар. Кәдімгі Windows-та оларды ойынмен бірге орнатады. onwin-да бұл өздігінен жасалады.</p>
+
+          <h3>Автоматты түрде</h3>
+          <p>Бағдарлама алғаш іске қосылар алдында onwin оған қай кітапханалар жетіспейтінін тексеріп, оларды үнсіз орнатады. Егер бағдарлама бәрібір кітапхана жетіспегендіктен іске қосылмаса, onwin жетіспейтінін орнатып, оны қайта іске қосады. Барлығы ресми серверлерден (Microsoft және басқа авторлардың серверлерінен) жүктеледі.</p>
+          <p>Бұл әдепкі бойынша қосулы. Оны onwin баптауларының «Негізгі» қойындысында немесе жеке кеңістіктің баптауларында — «Қажетті компоненттерді автоматты түрде орнату» тармағында өшіруге болады. Сонда onwin тек неңіз жетіспейтінін айтып отырады.</p>
+
+          <h3>Қолмен</h3>
+          <p>Каталогты ашып, «Компоненттер» бөліміне өтіңіз. Компонентті таңдап, «Қосу…» батырмасын басыңыз да, кеңістікті көрсетіңіз. Тағы бір жолы — кеңістік баптауларының «Компоненттер» бөлімі.</p>
+          <p>Кейде кеңістік бетінде компоненттер тізімі бар «Ойынға қажет болуы мүмкін» деген кеңес пайда болады. «Барлығын орнату» батырмасын басыңыз — onwin оларды орнатады.</p>
+        </section>
+
+        <!-- ================= Жарлықтар ================= -->
+        <section id="launchers" aria-labelledby="launchers-title">
+          <h2 id="launchers-title">Launchpad пен Dock-тағы жарлықтар</h2>
+          <p>Кез келген Windows бағдарламасын кәдімгі Mac қолданбасы сияқты — onwin-ды ашпай-ақ Launchpad, Spotlight немесе Dock арқылы ашуға болады.</p>
+          <ul class="list">
+            <li><strong>Бір бағдарлама үшін:</strong> оны оң жақ батырмамен басыңыз (жұмыс үстелінде немесе кеңістік бетінде) және «Launchpad-та жарлық жасау» тармағын таңдаңыз.</li>
+            <li><strong>Кеңістіктің барлық бағдарламалары үшін:</strong> кеңістік баптауларының «Launchpad-тағы жарлықтар» бөлімінде «Жарлықтарды автоматты түрде жасау» тармағын қосыңыз. onwin Windows-тың «Бастау» (Start) мәзіріндегі әр бағдарламаға жарлық жасайды, ал жойылған бағдарламалардың жарлықтарын өзі алып тастайды.</li>
+            <li><strong>Dock-қа:</strong> жарлықты Launchpad-тан немесе жарлықтар қалтасынан кез келген Mac қолданбасы сияқты Dock-қа сүйреп апарыңыз.</li>
+          </ul>
+          <p>Жарлықтар <code>~/Applications/onwin/</code> қалтасында, әр кеңістікке бөлек қалтада сақталады. Жарлықты алып тастау үшін бағдарлама мәзірінен «Launchpad-тан жарлықты жою» тармағын таңдаңыз.</p>
+        </section>
+
+        <!-- ================= Ақаулар ================= -->
+        <section id="troubleshooting" aria-labelledby="troubleshooting-title">
+          <h2 id="troubleshooting-title">Бір нәрсе істемесе</h2>
+          <p>Ретімен байқап көріңіз. Көбіне бірінші немесе екінші қадам көмектеседі.</p>
+
+          <ol class="steps">
+            <li>
+              <h3>Кеңістікті қайта іске қосыңыз</h3>
+              <p>Кейде бағдарлама фонда «қатып қалады». Кеңістік бетінде «Барлығын тоқтату» батырмасын басыңыз (немесе «Кеңістік» → «Кеңістіктің барлық бағдарламаларын тоқтату» мәзірі) және бағдарламаны қайта іске қосыңыз.</p>
+            </li>
+            <li>
+              <h3>Басқа графиканы байқап көріңіз</h3>
+              <p>Қара экран, іске қосқанда жабылып қалу, сурет қателері болса — бағдарламаны «Параметрлермен іске қосу…» арқылы іске қосып, «Графика» тармағынан басқа нұсқаны таңдаңыз. Толығырақ — <a href="#graphics">«Графика»</a> бөлімінде.</p>
+            </li>
+            <li>
+              <h3>Ұсынылған компоненттерді орнатыңыз</h3>
+              <p>Бағдарлама іске қосылмаса, onwin компоненттер тізімі бар «…іске қосылмады — мыналар көмектесуі мүмкін» деген кеңесті көрсетуі мүмкін. «Барлығын орнату» батырмасын басыңыз.</p>
+            </li>
+            <li>
+              <h3>Windows нұсқасын өзгертіңіз</h3>
+              <p>Ескі ойындарға кейде Windows 7 немесе XP керек. Бұл кеңістік баптауларындағы «Windows нұсқасы» тармағында өзгертіледі.</p>
+            </li>
+            <li>
+              <h3>Журналды қараңыз</h3>
+              <p><dfn class="term">Журнал</dfn> — бағдарлама іске қосылғанда болатынның бәрін onwin жазып отыратын мәтіндік файл. Қатенің себебі әдетте сонда көрінеді. Журналдар сол жақтағы «Журналдар» бөлімінде, кеңістік бетіндегі «Журналдар» батырмасымен немесе қате туралы хабардағы «Журналды көрсету» батырмасымен ашылады. Файлдардың өзі <code>~/Library/Logs/onwin</code> қалтасында жатыр. Журналды «Көшіру» батырмасымен көшіріп, мәселе туралы хабарға тіркеуге болады.</p>
+            </li>
+          </ol>
+          <figure class="shot">
+            <img src="../img/docs/troubleshooting-logs.png" alt="onwin-дағы «Журналдар» бөлімі: журналдар тізімі және таңдалған журналдың мәтіні" width="1200" height="800" loading="lazy" onerror="this.closest('figure').hidden=true">
+            <figcaption>«Журналдар» бөлімі: мұнда не дұрыс болмағаны көрінеді</figcaption>
+          </figure>
+
+          <h3>Әдетте не істемейді</h3>
+          <ul class="list">
+            <li>Windows ядросы деңгейінде жұмыс істейтін античиті бар ойындар (кейбір онлайн-шутерлер).</li>
+            <li>Өз құрылғы драйверлері қажет бағдарламалар: кейбір принтерлер, сканерлер, қорғау кілттері, сирек кездесетін контроллерлер.</li>
+            <li>«Нағыз» Windows-та жұмыс істеп тұрғанын тексеретін және әйтпесе іске қосылудан бас тартатын бағдарламалар.</li>
+          </ul>
+          <p>Қалғаны көбіне іске қосылады. Шықпаса — бізге жазыңыз, бұл onwin-ды жақсартуға көмектеседі.</p>
+
+          <div class="card" id="report">
+            <h3 style="margin-top: 0">Мәселе туралы хабарлау</h3>
+            <p class="muted">Не болғанын қарапайым сөзбен, техникалық егжей-тегжейсіз сипаттаңыз. Біз анықтаймыз. Telegram-дағы қолдау чаты орыс тілінде; ағылшынша GitHub Issues арқылы жазуға болады.</p>
+            <div data-support="full">
+              <noscript><p class="muted">Байланыс тәсілдерін көру үшін JavaScript-ті қосыңыз.</p></noscript>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= Жаңарту және жою ================= -->
+        <section id="update-uninstall" aria-labelledby="update-uninstall-title">
+          <h2 id="update-uninstall-title">Жаңарту және жою</h2>
+
+          <h3>onwin жаңарту</h3>
+          <p>Терминалда орнату кезіндегі сол пәрменді орындаңыз. Ол тек өзгергенін ғана жүктеп алады.</p>
+          <div class="command small-cmd">
+            <code id="doc-update" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-update">
+              <span class="label">Көшіру</span>
+            </button>
+          </div>
+          <p>Егер onwin-ды DMG бейнесінен орнатқан болсаңыз, жаңа бейнені <a href="install.html">«Орнату»</a> бетінен жүктеп алыңыз.</p>
+
+          <h3>onwin жою</h3>
+          <p>Бұл пәрмен қолданба мен қозғалтқышты жояды. Кеңістіктеріңіз — бағдарламалар, ойындар және сақтаулар — орнында қалады.</p>
+          <div class="command small-cmd">
+            <code id="doc-uninstall" data-cmd="uninstall">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-uninstall">
+              <span class="label">Көшіру</span>
+            </button>
+          </div>
+          <p>Кеңістіктерді де жою үшін мына пәрменді пайдаланыңыз. Терминал жоюды растауды қайта сұрайды. Бұл әрекетті кері қайтару мүмкін емес: кеңістіктер ішіндегі бағдарламалар мен сақтаулар жоғалады.</p>
+          <div class="command small-cmd">
+            <code id="doc-purge" data-cmd="purge">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall --purge</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#doc-purge">
+              <span class="label">Көшіру</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= onwinctl ================= -->
+        <section id="cli" aria-labelledby="cli-title">
+          <h2 id="cli-title">Тәжірибелі пайдаланушыларға: onwinctl</h2>
+          <p><code>onwinctl</code> — Терминалға арналған құрал: onwin терезесіндегінің бәрі, тек пәрмендер арқылы. Қарапайым пайдаланушыларға ол қажет емес. Пәрмендердің толық тізімін <code>onwinctl help</code> көрсетеді.</p>
+          <p class="muted small">Егер <code>onwinctl</code> пәрмені табылмаса, оны қолданбаның ішінен іске қосыңыз: <code>/Applications/Onwin.app/Contents/MacOS/onwinctl</code>.</p>
+
+          <div class="cli-group">
+            <h3>Бәрі орнатылғанын тексеру</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl status</code></dt><dd>не орнатылған: Rosetta, қозғалтқыш, D3DMetal</dd></div>
+              <div class="cli-row"><dt><code>onwinctl engines</code></dt><dd>Wine қозғалтқыштарының тізімі</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Кеңістіктер</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl spaces</code></dt><dd>кеңістіктер тізімі</dd></div>
+              <div class="cli-row"><dt><code>onwinctl create &lt;атауы&gt; [--win win10] [--backend auto|d3dmetal|dxmt|dxvk|wined3d]</code></dt><dd>кеңістік жасау</dd></div>
+              <div class="cli-row"><dt><code>onwinctl info &lt;атауы&gt;</code></dt><dd>кеңістік баптаулары</dd></div>
+              <div class="cli-row"><dt><code>onwinctl set &lt;атауы&gt; &lt;параметр&gt; &lt;мәні&gt; [--restart]</code></dt><dd>баптауды өзгерту: backend, win, msync, retina, hud, avx, dxr, metalfx, debug, launchers, autocomponents, env:АТАУЫ, dll:АТАУЫ</dd></div>
+              <div class="cli-row"><dt><code>onwinctl archive &lt;атауы&gt; &lt;файл.onwinspace&gt;</code></dt><dd>кеңістікті мұрағатқа жинау</dd></div>
+              <div class="cli-row"><dt><code>onwinctl restore &lt;файл.onwinspace&gt; [атауы]</code></dt><dd>мұрағаттан қалпына келтіру</dd></div>
+              <div class="cli-row"><dt><code>onwinctl delete &lt;атауы&gt;</code></dt><dd>кеңістікті Себетке жылжыту</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Орнату және іске қосу</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl catalog</code></dt><dd>қолданбалар мен компоненттер каталогы</dd></div>
+              <div class="cli-row"><dt><code>onwinctl install &lt;қолданба&gt; [--space атауы]</code></dt><dd>каталогтан орнату, мысалы <code>steam</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl run &lt;кеңістік&gt; &lt;файл.exe|.msi|.lnk&gt; [аргументтер...]</code></dt><dd>іске қосып, аяқталуын күту; қажетті компоненттер өздігінен орнатылады (<code>--no-auto-components</code> — оларсыз)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl programs &lt;кеңістік&gt;</code></dt><dd>табылған бағдарламалар</dd></div>
+              <div class="cli-row"><dt><code>onwinctl pin &lt;кеңістік&gt; &lt;жол&gt; [атауы]</code></dt><dd>бағдарламаны бекіту (<code>unpin</code> — босату)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl wine &lt;кеңістік&gt; &lt;пәрмен&gt;</code></dt><dd>Wine құралын іске қосу, мысалы <code>winecfg</code>, <code>regedit</code>, <code>cmd</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl uninstall-list &lt;кеңістік&gt;</code></dt><dd>жоюға болатын бағдарламалар (<code>uninstall</code> — жою)</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Steam</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl steam-games &lt;кеңістік&gt;</code></dt><dd>кеңістіктегі Steam ойындары</dd></div>
+              <div class="cli-row"><dt><code>onwinctl steam-launch &lt;кеңістік&gt; &lt;appid|атауы&gt;</code></dt><dd>ойынды Steam арқылы іске қосу</dd></div>
+              <div class="cli-row"><dt><code>onwinctl steam-install &lt;кеңістік&gt; &lt;appid&gt;</code></dt><dd>Steam-де ойынды орнату терезесін ашу</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Бағдарламаларды тоқтату</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl running &lt;кеңістік&gt;</code></dt><dd>кеңістік іске қосылған ба</dd></div>
+              <div class="cli-row"><dt><code>onwinctl shutdown &lt;кеңістік&gt;</code></dt><dd>барлық бағдарламаларды жайлап жабу (10 секундтан кейін — мәжбүрлі түрде)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl kill &lt;кеңістік&gt;</code></dt><dd>барлық бағдарламаларды мәжбүрлі түрде тоқтату</dd></div>
+              <div class="cli-row"><dt><code>onwinctl reboot &lt;кеңістік&gt;</code></dt><dd>кеңістікте «Windows-ты қайта жүктеу»</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Графика және компоненттер</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl d3dmetal-import &lt;GPTK жолы&gt;</code></dt><dd>жүктеп алынған Game Porting Toolkit-тен (.dmg немесе том) D3DMetal импорттау</dd></div>
+              <div class="cli-row"><dt><code>onwinctl d3dmetal-fetch</code></dt><dd>«Жүктеулер» қалтасынан бұрын жүктелген Game Porting Toolkit-ті импорттау; Apple ID-мен кіру — onwin қолданбасында</dd></div>
+              <div class="cli-row"><dt><code>onwinctl components [кеңістік]</code></dt><dd>компоненттер тізімі (✓ — орнатылған)</dd></div>
+              <div class="cli-row"><dt><code>onwinctl component &lt;кеңістік&gt; &lt;компонент&gt;[,...]</code></dt><dd>компонентті орнату, мысалы <code>vcrun2026</code></dd></div>
+              <div class="cli-row"><dt><code>onwinctl advise &lt;кеңістік|-&gt; &lt;файл.exe&gt;</code></dt><dd>бағдарламаға қай компоненттер жетіспейді</dd></div>
+              <div class="cli-row"><dt><code>onwinctl advise-log &lt;журнал.log&gt;</code></dt><dd>сәтсіз іске қосу журналы бойынша кеңес</dd></div>
+            </dl>
+          </div>
+
+          <div class="cli-group">
+            <h3>Жарлықтар және өз рецепттеріңіз</h3>
+            <dl class="cli">
+              <div class="cli-row"><dt><code>onwinctl launcher &lt;кеңістік&gt; &lt;бағдарлама&gt;</code></dt><dd>Launchpad пен Dock үшін жарлық жасау</dd></div>
+              <div class="cli-row"><dt><code>onwinctl launchers [кеңістік]</code></dt><dd>жарлықтар тізімі</dd></div>
+              <div class="cli-row"><dt><code>onwinctl launcher-remove &lt;кеңістік&gt; &lt;бағдарлама&gt;</code></dt><dd>жарлықты жою</dd></div>
+              <div class="cli-row"><dt><code>onwinctl recipe list</code></dt><dd>«Менің қолданбаларым» ішіндегі рецепттеріңіз</dd></div>
+              <div class="cli-row"><dt><code>onwinctl recipe export &lt;id&gt; &lt;файл.onwinrecipe&gt;</code></dt><dd>рецептті файлға сақтау (<code>recipe import</code> — файлдан қосу)</dd></div>
+            </dl>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <section class="section donate-section" id="donate" aria-labelledby="donate-title" style="padding-top: 0">
+      <div class="wrap">
+        <div class="card donate-block">
+          <div>
+            <span class="eyebrow">Жобаны қолдау</span>
+            <h2 id="donate-title">Құжаттама көмектесті ме?</h2>
+            <p>onwin тегін және ынта-жігердің арқасында жасалып жатыр. Жарналар әзірлеуге және ойындарды тексеруге кететін уақытты өтейді. <a href="donate.html">Толығырақ</a></p>
+          </div>
+          <div class="donate-list" data-donate="compact">
+            <noscript><p class="muted">Қолдау тәсілдері <a href="donate.html">«Қолдау»</a> бетінде келтірілген.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">Орнату</a></li>
+          <li><a href="releases.html">Жаңартулар</a></li>
+          <li><a href="docs.html">Құжаттама</a></li>
+          <li><a href="donate.html">Қолдау</a></li>
+          <li><a href="licenses.html">Лицензиялар</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">GPL-3.0 лицензиясы бойынша таратылатын еркін бағдарламалық қамтамасыз ету.</p>
+      <p class="disclaimer">Windows, Mac, Steam және басқа өнімдердің атаулары олардың иелеріне тиесілі; onwin — тәуелсіз жоба.</p>
+    </div>
+  </footer>
+</body>
+</html>
