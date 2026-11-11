@@ -93,6 +93,9 @@ engine/build-libs.sh && engine/build.sh    # движок → engine/dist/onwin-
   изменения попадают в неё только через pull request (одобрение не требуется, способ вливания — merge commit, чтобы
   локальные коммиты остались предками `origin/main`). Порядок: `git push origin <ветка>` → `gh pr create --base main`
   → `gh pr merge --merge`. Релиз (`scripts/release.sh`) — после вливания, из чистой копии `origin/main`.
+- Теги релизов (`v*`, `engine-*`) ставит сам `scripts/release.sh` через `gh release create --target <коммит>`; набор
+  правил «release tags» запрещает их удалять и переносить. Ошибочный релиз не переделывают под тем же номером —
+  выпускают следующую версию.
 - Не коммитить: исходники и сборку движка (`engine/sources`, `engine/build`, `engine/dist`), `build/`, `dist/`, `notes/`,
   токены, ключи, личные данные.
 
