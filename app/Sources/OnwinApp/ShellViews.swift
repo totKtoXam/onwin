@@ -104,8 +104,8 @@ struct ShellDropOverlay: View {
     }
 
     private var title: String {
-        if let spaceName { return "Отпустите, чтобы запустить в «\(spaceName)»" }
-        return "Отпустите, чтобы выбрать пространство для запуска"
+        if let spaceName { return String(localized: "Отпустите, чтобы запустить в «\(spaceName)»") }
+        return String(localized: "Отпустите, чтобы выбрать пространство для запуска")
     }
 }
 
@@ -225,20 +225,21 @@ struct ShellEngineMissingView: View {
 
 extension ShellEngineMissingView {
     var d3dmetalButtonTitle: String {
-        model.isD3DMetalInstalled ? "D3DMetal установлен — указать другой…" : "Указать .dmg вручную…"
+        model.isD3DMetalInstalled ? String(localized: "D3DMetal установлен — указать другой…")
+                                   : String(localized: "Указать .dmg вручную…")
     }
 }
 
 @MainActor
 struct ShellStep: View {
     let number: Int
-    let title: String
-    let detail: String
+    let title: LocalizedStringKey
+    let detail: LocalizedStringKey
     let command: String?
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
-            Text("\(number)")
+            Text(verbatim: "\(number)")
                 .font(.headline.monospacedDigit())
                 .foregroundStyle(Color.white)
                 .frame(width: 28, height: 28)
@@ -325,8 +326,8 @@ struct ShellNoSpacesView: View {
 @MainActor
 struct ShellActionCard: View {
     let symbol: String
-    let title: String
-    let detail: String
+    let title: LocalizedStringKey
+    let detail: LocalizedStringKey
     let action: () -> Void
     @State private var isHovering = false
 
@@ -496,7 +497,7 @@ struct ShellRunInSpaceSheet: View {
     }
 
     private var heading: String {
-        pending.files.count == 1 ? "Запуск программы" : "Запуск программ"
+        pending.files.count == 1 ? String(localized: "Запуск программы") : String(localized: "Запуск программ")
     }
 
     private var fileNames: String {

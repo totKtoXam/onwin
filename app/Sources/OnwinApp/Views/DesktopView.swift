@@ -16,8 +16,8 @@ enum DesktopSort: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .name: return "По имени"
-        case .recent: return "Недавние"
+        case .name: return String(localized: "По имени", comment: "Desktop sort order")
+        case .recent: return String(localized: "Недавние", comment: "Desktop sort order: recently used first")
         }
     }
 }
@@ -314,10 +314,8 @@ struct DesktopTopBar: View {
     }
 
     private var summary: String {
-        guard itemCount > 0 else { return "Все Windows-программы и игры из всех пространств" }
-        let programs = CatalogView.plural(itemCount, "программа", "программы", "программ")
-        let spaces = CatalogView.plural(spaceCount, "пространстве", "пространствах", "пространствах")
-        return "\(itemCount) \(programs) в \(spaceCount) \(spaces)"
+        guard itemCount > 0 else { return String(localized: "Все Windows-программы и игры из всех пространств") }
+        return String(localized: "\(itemCount) программ в \(spaceCount) пространствах")
     }
 }
 
@@ -358,13 +356,13 @@ struct DesktopInstallMenu: View {
         .buttonStyle(.borderedProminent)
         .fixedSize()
         .disabled(!model.hasEngine)
-        .help(model.hasEngine ? "Установить Windows-программу или игру" : AppModel.noEngineMessage)
+        .help(model.hasEngine ? String(localized: "Установить Windows-программу или игру") : AppModel.noEngineMessage)
     }
 
     private func title(for recipe: AppRecipe) -> String {
         let installed = model.desktopSpaces(with: recipe.id)
         guard let first = installed.first else { return recipe.name }
-        return "\(recipe.name) — уже есть в «\(first.name)»"
+        return String(localized: "\(recipe.name) — уже есть в «\(first.name)»")
     }
 }
 
@@ -507,9 +505,10 @@ struct DesktopTile: View {
     }
 
     private var helpText: String {
-        var lines = [item.name, "Пространство «\(item.spaceName)» · \(item.source.displayName)"]
-        if isHidden { lines.append("Скрыта с рабочего стола") }
-        lines.append(item.steamGame != nil ? "Двойной щелчок — играть через Steam" : "Двойной щелчок — запустить")
+        var lines = [item.name, String(localized: "Пространство «\(item.spaceName)» · \(item.source.displayName)")]
+        if isHidden { lines.append(String(localized: "Скрыта с рабочего стола")) }
+        lines.append(item.steamGame != nil ? String(localized: "Двойной щелчок — играть через Steam")
+                                           : String(localized: "Двойной щелчок — запустить"))
         return lines.joined(separator: "\n")
     }
 }
@@ -628,18 +627,20 @@ struct DesktopEmptyState: View {
     }
 
     private var subtitle: String {
-        if !model.hasEngine { return "Сначала нужен движок Wine — как его получить, рассказано на стартовой странице." }
-        if model.spaces.isEmpty {
-            return "Установите игровой магазин или свою программу — onwin сам создаст для неё пространство, и она появится на рабочем столе."
+        if !model.hasEngine {
+            return String(localized: "Сначала нужен движок Wine — как его получить, рассказано на стартовой странице.")
         }
-        return "В пространствах пока нет программ. Установите что-нибудь — значок появится здесь, запуск двойным щелчком."
+        if model.spaces.isEmpty {
+            return String(localized: "Установите игровой магазин или свою программу — onwin сам создаст для неё пространство, и она появится на рабочем столе.")
+        }
+        return String(localized: "В пространствах пока нет программ. Установите что-нибудь — значок появится здесь, запуск двойным щелчком.")
     }
 }
 
 @MainActor
 struct DesktopBigButton: View {
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     let symbol: String
     let prominent: Bool
     let action: () -> Void

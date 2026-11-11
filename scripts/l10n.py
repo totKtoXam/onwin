@@ -71,6 +71,12 @@ def needs_translation(key):
     return bool(CYRILLIC.search(key))
 
 
+def source_text(key, entry):
+    """The Russian text of a key: its source-language value (keys with defaultValue) or the key itself."""
+    unit = entry.get("localizations", {}).get(SOURCE_LANGUAGE, {}).get("stringUnit")
+    return unit["value"] if unit and unit.get("value") else key
+
+
 def specifiers(text):
     """Format specifiers in argument order (positional ones by their position), without %%."""
     result = []
@@ -92,7 +98,25 @@ def specifiers(text):
 
 
 def extract():
-    """Keys per target, from the .stringsdata files swiftc writes with -emit-localized-strings."""
+    """Keys per target, from the .stringsdata files swiftc writes with -emit-localized-strings.
+    L10N_REUSE=1 reuses the result of the previous run (build/l10n-keys.json) instead of compiling."""
+    cache = os.path.join(ROOT, "build", "l10n-keys.json")
+    if os.environ.get("L10N_REUSE") and os.path.exists(cache):
+        with open(cache, encoding="utf-8") as f:
+            cached = json.load(f)
+        for entries in cached.values():
+            for info in entries.values():
+                info["files"] = set(info["files"])
+        return cached
+    keys = _extract()
+    os.makedirs(os.path.dirname(cache), exist_ok=True)
+    with open(cache, "w", encoding="utf-8") as f:
+        json.dump({t: {k: {**i, "files": sorted(i["files"])} for k, i in e.items()} for t, e in keys.items()},
+                  f, ensure_ascii=False)
+    return keys
+
+
+def _extract():
     out = tempfile.mkdtemp(prefix="onwin-l10n-")
     scratch = os.environ.get("L10N_SCRATCH") or os.path.join(ROOT, "build", "l10n-scratch")
     command = ["swift", "build", "--package-path", PACKAGE, "--scratch-path", scratch]
@@ -124,6 +148,8 @@ def extract():
                 info = keys[target].setdefault(entry["key"], {"comment": "", "files": set()})
                 if entry.get("comment"):
                     info["comment"] = entry["comment"]
+                if entry.get("value"):   # String(localized: "id", defaultValue: "Текст")
+                    info["value"] = entry["value"]
                 info["files"].add(f"{relative}:{entry['location']['startingLine']}")
     return keys
 
@@ -144,8 +170,14 @@ def sync():
             entry.pop("extractionState", None)
             if info["comment"]:
                 entry["comment"] = info["comment"]
-            if not needs_translation(key):
+            if info.get("value"):
+                # A key with a defaultValue (two meanings of one Russian word): the Russian text is
+                # the source-language value, like Xcode stores it.
+                entry.setdefault("localizations", {})[SOURCE_LANGUAGE] = unit(info["value"])
+            if not needs_translation(source_text(key, entry)):
                 entry["shouldTranslate"] = False
+            else:
+                entry.pop("shouldTranslate", None)
         for key in [k for k in strings if k not in keys[target]]:
             if strings[key].get("extractionState") == "manual":
                 continue
@@ -178,10 +210,11 @@ def check():
         data = load(name, table or "Localizable")
         is_plist = bool(table)
         for key, entry in data.get("strings", {}).items():
-            if entry.get("shouldTranslate") is False or not (needs_translation(key) or is_plist):
+            source_key = key if is_plist else source_text(key, entry)
+            if entry.get("shouldTranslate") is False or not (needs_translation(source_key) or is_plist):
                 continue
             localizations = entry.get("localizations", {})
-            key_specs = specifiers(key)
+            key_specs = specifiers(source_key)
             source = localizations.get(SOURCE_LANGUAGE)
             if source is not None and plural_forms(source) is not None:
                 for category, value in plural_forms(source).items():
@@ -200,9 +233,9 @@ def check():
                         problems.append(f"{target}: {language}: format specifiers differ: {key!r} → {text!r}")
                     if language in ("en", "zh-Hans") and CYRILLIC.search(text):
                         problems.append(f"{target}: {language}: Cyrillic in translation: {key!r} → {text!r}")
-                    if language == "kk" and needs_translation(key):
+                    if language == "kk" and needs_translation(source_key):
                         # The same text is fine for loanwords («Графика», «Каталог», «Журнал: %@»).
-                        if text == key and len(CYRILLIC_WORD.findall(key)) > 2:
+                        if text == source_key and len(CYRILLIC_WORD.findall(source_key)) > 2:
                             problems.append(f"{target}: kk: same as Russian: {key!r}")
                         elif RUSSIAN_WORDS.search(text) or (len(CYRILLIC.findall(text)) > 25 and not KAZAKH_LETTERS.search(text)):
                             problems.append(f"{target}: kk: looks Russian: {key!r} → {text!r}")
@@ -245,11 +278,12 @@ def export(language, path, everything=False):
         strings = load(target).get("strings", {})
         for key, info in sorted(keys.get(target, {}).items()):
             entry = strings.get(key, {})
-            if entry.get("shouldTranslate") is False or not needs_translation(key):
+            if entry.get("shouldTranslate") is False or not needs_translation(source_text(key, entry)):
                 continue
             if not everything and language in entry.get("localizations", {}):
                 continue
             result.setdefault(target, {})[key] = {
+                "source": source_text(key, entry),
                 "comment": info["comment"] or entry.get("comment", ""),
                 "files": sorted(info["files"]),
             }
@@ -337,14 +371,31 @@ def swift_literals(text):
         elif text.startswith('"""', i):
             line = text.count("\n", 0, i) + 1
             i, parts = read_string(i + 3, True)
-            result.append((line, parts))
+            result.append((line, parts, True))
         elif text[i] == '"':
             line = text.count("\n", 0, i) + 1
             i, parts = read_string(i + 1, False)
-            result.append((line, parts))
+            result.append((line, parts, False))
         else:
             i += 1
     return result
+
+
+def dedent_multiline(parts):
+    """A triple-quoted literal as the compiler sees it: without the newline after the opening quotes,
+    the line before the closing ones, and the closing delimiter's indentation on every line."""
+    if not parts or parts[-1] is None:
+        return parts
+    last = parts[-1]
+    indent = last[last.rfind("\n") + 1:] if "\n" in last else ""
+    if indent.strip():
+        return parts
+    parts = list(parts)
+    parts[-1] = last[:last.rfind("\n")] if "\n" in last else last
+    if parts[0] is not None and parts[0].startswith("\n"):
+        parts[0] = parts[0][1:]
+    return [p if p is None else re.sub("(^|\n)" + re.escape(indent), r"\1", p) if i == 0
+            else p.replace("\n" + indent, "\n") for i, p in enumerate(parts)]
 
 
 def leftovers():
@@ -352,20 +403,22 @@ def leftovers():
     found = 0
     for target in TARGETS + ["onwin-launcher"]:
         folder = os.path.join(PACKAGE, "Sources", target)
-        extracted = set(keys.get(target, {}))
+        extracted = set(keys.get(target, {})) | {i["value"] for i in keys.get(target, {}).values() if i.get("value")}
         for name in sorted(os.listdir(folder)):
             if not name.endswith(".swift"):
                 continue
             with open(os.path.join(folder, name), encoding="utf-8") as f:
                 text = f.read()
-            for line, parts in swift_literals(text):
+            for line, parts, multiline in swift_literals(text):
+                if multiline:
+                    parts = dedent_multiline(parts)
                 joined = "".join(p for p in parts if p is not None)
                 if not CYRILLIC.search(joined):
                     continue
                 # Escapes as the compiler writes them into the key (\n stays \n in .stringsdata as a newline).
                 regex = "".join(
                     r"%(\d+\$)?[-+ #0]*\d*(\.\d+)?(hh|h|ll|l|q|z|t|j)?[@dDiuUxXoOfFeEgGcCsSpaA]" if p is None
-                    else re.escape(p.replace("\\n", "\n").replace('\\"', '"').replace("\\\\", "\\").replace("%", "%%"))
+                    else re.escape(p.replace("\\n", "\n").replace("\\t", "\t").replace('\\"', '"').replace("\\\\", "\\").replace("%", "%%"))
                     for p in parts)
                 pattern = re.compile("^" + regex + "$", re.S)
                 if any(pattern.match(key) for key in extracted):

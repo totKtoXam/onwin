@@ -60,7 +60,8 @@ struct ShellSpaceRow: View {
 
     var body: some View {
         let running = ProcessTracker.shared.running(in: space.id).count
-        let runningHint: String = running == 1 ? "Запущена 1 программа" : "Запущено программ: \(running)"
+        let runningHint: String = running == 1 ? String(localized: "Запущена 1 программа")
+                                                : String(localized: "Запущено программ: \(running)")
 
         HStack(spacing: 9) {
             SpaceIconView(space: space, size: 24)   // main program's own icon (Views/AppIconView.swift)
@@ -193,7 +194,7 @@ struct ShellSidebarFooter: View {
     }
 
     private var engineText: String {
-        guard let engine = model.defaultEngine else { return "Движок не установлен" }
+        guard let engine = model.defaultEngine else { return String(localized: "Движок не установлен") }
         return "\(engine.info.displayName) · Wine \(engine.info.wineVersion)"
     }
 }

@@ -113,7 +113,7 @@ func printSuggestions(_ list: [Suggestion]) {
         return
     }
     for s in list {
-        let target = s.componentID.map { "onwinctl component <пространство> \($0)" } ?? String(localized: "подсказка", bundle: .onwinctl, comment: "A suggestion without a component to install")
+        let target = s.componentID.map { String(localized: "onwinctl component <пространство> \($0)", bundle: .onwinctl) } ?? String(localized: "подсказка", bundle: .onwinctl, comment: "A suggestion without a component to install")
         print(String(localized: "• \(s.title)  [\(s.componentID ?? "—")]  приоритет \(s.priority)", bundle: .onwinctl))
         print("  \(s.reason)")
         for e in s.evidence { print("    \(e)") }

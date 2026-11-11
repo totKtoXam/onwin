@@ -106,7 +106,7 @@ struct SpaceDetailView: View {
             }
             Button("Отмена", role: .cancel) {}
         } message: {
-            Text(verbatim: "«Завершить всё»: программы пространства «\(space.name)» получат команду закрыться и смогут сохранить данные; то, что не закроется за 10 секунд, будет завершено принудительно. Если программа спросит, сохранить ли изменения, ответьте в её окне.\n«Принудительно»: остановить все процессы сразу (wineserver -k), несохранённое пропадёт.")
+            Text("«Завершить всё»: программы пространства «\(space.name)» получат команду закрыться и смогут сохранить данные; то, что не закроется за 10 секунд, будет завершено принудительно. Если программа спросит, сохранить ли изменения, ответьте в её окне.\n«Принудительно»: остановить все процессы сразу (wineserver -k), несохранённое пропадёт.")
         }
         .sheet(item: $propertiesProgram) { program in
             SpaceProgramPropertiesSheet(spaceID: spaceID, program: program)
@@ -162,7 +162,7 @@ struct SpaceDetailView: View {
         let configured = space.config.graphicsBackend
         if let resolved = model.resolvedBackend(for: space) {
             if configured == .auto {
-                SpaceDetailBadge(text: "Авто → \(resolved.displayName)", symbol: "cpu", tint: Color.indigo)
+                SpaceDetailBadge(text: String(localized: "Авто → \(resolved.displayName)"), symbol: "cpu", tint: Color.indigo)
                     .help("Графика выбирается автоматически: сейчас \(resolved.displayName) — \(resolved.summary)")
             } else if resolved != configured {
                 SpaceDetailBadge(text: "\(configured.displayName) → \(resolved.displayName)",
@@ -193,7 +193,7 @@ struct SpaceDetailView: View {
             VStack(alignment: .trailing, spacing: 8) {
                 HStack(spacing: 6) {
                     OnwinRunningDot(size: 8)
-                    Text(verbatim: "Работает: \(RunningProgramControl.programsCount(running.count))")
+                    Text("Работает: \(running.count) программ")
                         .font(.callout.weight(.medium))
                 }
                 Button(role: .destructive) {
@@ -529,12 +529,12 @@ struct SpaceDetailView: View {
         }
     }
 
-    private func sectionHeader(_ title: String, detail: String?) -> some View {
+    private func sectionHeader(_ title: LocalizedStringKey, detail: LocalizedStringKey?) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(verbatim: title)
+            Text(title)
                 .font(.title3.weight(.semibold))
             if let detail {
-                Text(verbatim: detail)
+                Text(detail)
                     .font(.callout)
                     .foregroundStyle(.secondary)
             }
@@ -729,15 +729,15 @@ private struct SpaceProgramCard: View {
 
     private var sourceText: String {
         switch program.source {
-        case .pinned: return "Закреплено"
-        case .startMenu: return "Меню «Пуск»"
-        case .desktop: return "Рабочий стол"
+        case .pinned: return String(localized: "Закреплено", comment: "Program source: pinned by the user")
+        case .startMenu: return String(localized: "Меню «Пуск»")
+        case .desktop: return String(localized: "Рабочий стол")
         }
     }
 
     private var helpText: String {
         let file = program.executable ?? program.launchFile
-        return "\(program.name)\n\(file.lastPathComponent) — двойной щелчок запускает"
+        return String(localized: "\(program.name)\n\(file.lastPathComponent) — двойной щелчок запускает")
     }
 }
 
@@ -816,7 +816,7 @@ private struct SpaceAddProgramTile: View {
                 Text("Добавить")
                     .font(.callout.weight(.medium))
                     .frame(height: 34, alignment: .top)
-                Text(isTargeted ? "Отпустите, чтобы закрепить" : "Выберите или перетащите .exe")
+                (isTargeted ? Text("Отпустите, чтобы закрепить") : Text("Выберите или перетащите .exe"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
@@ -884,7 +884,7 @@ private struct SpaceToolButton: View {
         .buttonStyle(.plain)
         .opacity(isEnabled ? 1 : 0.5)
         .onHover { hovering in isHovering = hovering }
-        .help(tool == .cmd ? "Командная строка Windows (wineconsole cmd)" : "Запустить «\(tool.title)»")
+        .help(tool == .cmd ? Text("Командная строка Windows (wineconsole cmd)") : Text("Запустить «\(tool.title)»"))
     }
 }
 
@@ -959,7 +959,7 @@ private struct SpaceProgramPropertiesSheet: View {
                     Text(verbatim: entry?.name ?? program.name)
                         .font(.title3.weight(.semibold))
                         .lineLimit(1)
-                    Text(verbatim: entry != nil ? "Закреплённая программа" : "Программа из меню «Пуск»")
+                    (entry != nil ? Text("Закреплённая программа") : Text("Программа из меню «Пуск»"))
                         .font(.callout)
                         .foregroundStyle(.secondary)
                 }
@@ -1119,9 +1119,9 @@ private struct SpaceProgramPropertiesSheet: View {
 
     private var sourceText: String {
         switch program.source {
-        case .pinned: return "Закреплено"
-        case .startMenu: return "Меню «Пуск»"
-        case .desktop: return "Рабочий стол"
+        case .pinned: return String(localized: "Закреплено", comment: "Program source: pinned by the user")
+        case .startMenu: return String(localized: "Меню «Пуск»")
+        case .desktop: return String(localized: "Рабочий стол")
         }
     }
 
@@ -1226,9 +1226,9 @@ private enum SpaceDetailPanels {
     /// Programs to pin (the panel opens in the space's drive C:).
     static func chooseFilesToPin(startingIn directory: URL) -> [URL] {
         let panel = NSOpenPanel()
-        panel.title = "Добавить программу"
-        panel.message = "Выберите программу (.exe), ярлык (.lnk) или сценарий (.bat) — она появится в списке пространства"
-        panel.prompt = "Добавить"
+        panel.title = String(localized: "Добавить программу")
+        panel.message = String(localized: "Выберите программу (.exe), ярлык (.lnk) или сценарий (.bat) — она появится в списке пространства")
+        panel.prompt = String(localized: "Добавить", comment: "Open panel button: add the chosen programs to the space")
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = true

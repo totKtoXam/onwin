@@ -44,7 +44,7 @@ struct CatalogView: View {
 
                 if !model.hasEngine {
                     CatalogNotice(symbol: "exclamationmark.triangle.fill",
-                                  text: "Движок Wine не установлен — установка из каталога станет доступна, когда он появится.")
+                                  text: String(localized: "Движок Wine не установлен — установка из каталога станет доступна, когда он появится."))
                 }
 
                 ForEach(visibleCategories, id: \.self) { category in
@@ -66,8 +66,8 @@ struct CatalogView: View {
                 UserRecipesSection(query: query, columns: columns, onInstall: { recipe in activeSheet = .recipe(recipe) })
 
                 if !visibleComponents.isEmpty {
-                    CatalogSection(title: "Компоненты", symbol: "puzzlepiece.extension",
-                                   subtitle: "То, что нужно играм: ставится в выбранное пространство в пару щелчков") {
+                    CatalogSection(title: String(localized: "Компоненты"), symbol: "puzzlepiece.extension",
+                                   subtitle: String(localized: "То, что нужно играм: ставится в выбранное пространство в пару щелчков")) {
                         VStack(alignment: .leading, spacing: 20) {
                             if let d3dmetal = visibleComponents.first(where: { $0.kind == .global }) {
                                 CatalogD3DMetalCard(component: d3dmetal,
@@ -113,7 +113,7 @@ struct CatalogView: View {
                 }
 
                 if showsCustomCard {
-                    CatalogSection(title: "Своя программа", symbol: "square.and.arrow.down") {
+                    CatalogSection(title: String(localized: "Своя программа"), symbol: "square.and.arrow.down") {
                         CatalogCustomInstallCard(canInstall: model.hasEngine,
                                                  onChoose: { chooseInstaller() },
                                                  onDropFile: { url in activeSheet = .custom(url) })
@@ -178,9 +178,9 @@ struct CatalogView: View {
     }
 
     private func chooseInstaller() {
-        guard let url = OnwinPanels.chooseFile(title: "Установить свою программу",
-                                               message: "Выберите установщик Windows-программы (.exe или .msi)",
-                                               prompt: "Выбрать",
+        guard let url = OnwinPanels.chooseFile(title: String(localized: "Установить свою программу"),
+                                               message: String(localized: "Выберите установщик Windows-программы (.exe или .msi)"),
+                                               prompt: String(localized: "Выбрать", comment: "Open panel button: choose the file"),
                                                extensions: ["exe", "msi"]) else { return }
         activeSheet = .custom(url)
     }
@@ -214,7 +214,8 @@ struct CatalogView: View {
 
     private var visibleComponents: [Component] {
         Catalog.listedComponents.filter {
-            matches([$0.name, $0.summary, $0.id, $0.category.title, "компонент"] + $0.providesDLLs + $0.satisfiesImports)
+            matches([$0.name, $0.summary, $0.id, $0.category.title,
+                     String(localized: "компонент", comment: "Search keyword that matches every component")] + $0.providesDLLs + $0.satisfiesImports)
         }
     }
 
@@ -228,7 +229,10 @@ struct CatalogView: View {
 
     private var showsCustomCard: Bool {
         trimmedQuery.isEmpty || nothingFound
-            || matches(["Установить свою программу", "установщик", "exe", "msi", "своя"])
+            || matches([String(localized: "Установить свою программу"),
+                        String(localized: "установщик", comment: "Search keyword for the custom installer card"),
+                        String(localized: "своя", comment: "Search keyword for the custom installer card (\"your own\")"),
+                        "exe", "msi"])
     }
 
     private var nothingFound: Bool {
@@ -248,15 +252,6 @@ struct CatalogView: View {
         if category == .launchers { return "gamecontroller" }
         if category == .runtimes { return "cube" }
         return "wrench.and.screwdriver"
-    }
-
-    /// Russian plural form: 1 компонент, 2 компонента, 5 компонентов.
-    static func plural(_ n: Int, _ one: String, _ few: String, _ many: String) -> String {
-        let n10 = n % 10
-        let n100 = n % 100
-        if n10 == 1 && n100 != 11 { return one }
-        if (2...4).contains(n10) && !(12...14).contains(n100) { return few }
-        return many
     }
 
     /// "SteamSetup.exe" → "Steam", "Battle.net-Setup.exe" → "Battle.net"; never an existing space's name.
@@ -419,8 +414,7 @@ struct CatalogRecipeCard: View {
                 CatalogTag(text: recipe.windowsVersion.displayName, symbol: "macwindow")
                 CatalogTag(text: recipe.backend.displayName, symbol: "cpu")
                 if !recipe.components.isEmpty {
-                    CatalogTag(text: "+ \(recipe.components.count) " +
-                               CatalogView.plural(recipe.components.count, "компонент", "компонента", "компонентов"),
+                    CatalogTag(text: String(localized: "+ \(recipe.components.count) компонентов"),
                                symbol: "puzzlepiece.extension")
                         .help(componentNames)
                 }
@@ -513,19 +507,18 @@ struct CatalogComponentCard: View {
                 CatalogTag(text: component.sizeDescription, symbol: "arrow.down.circle")
                 if !component.providesDLLs.isEmpty {
                     CatalogTag(text: CatalogComponentCard.shortList(component.providesDLLs), symbol: "doc.on.doc")
-                        .help("Даёт: " + component.providesDLLs.joined(separator: ", "))
+                        .help("Даёт: \(component.providesDLLs.joined(separator: ", "))")
                 }
             }
             HStack(spacing: 8) {
                 if installedCount > 0 {
-                    Label("Есть в \(installedCount) " + CatalogView.plural(installedCount, "пространстве", "пространствах", "пространствах"),
-                          systemImage: "checkmark.circle.fill")
+                    Label("Есть в \(installedCount) пространствах", systemImage: "checkmark.circle.fill")
                         .font(.caption.weight(.medium))
                         .foregroundStyle(OnwinTheme.accent)
                         .lineLimit(1)
                 }
                 Spacer(minLength: 0)
-                Button(installedCount > 0 ? "Добавить ещё…" : "Добавить…", action: onInstall)
+                Button(installedCount > 0 ? String(localized: "Добавить ещё…") : String(localized: "Добавить…"), action: onInstall)
                     .buttonStyle(.bordered)
                     .disabled(!canInstall)
             }
@@ -564,7 +557,7 @@ struct CatalogD3DMetalCard: View {
                             .font(.caption.weight(.medium))
                             .foregroundStyle(OnwinTheme.accent)
                     } else {
-                        CatalogTag(text: "для всех пространств", symbol: "square.stack.3d.up")
+                        CatalogTag(text: String(localized: "для всех пространств"), symbol: "square.stack.3d.up")
                     }
                 }
                 Text(component.summary)
@@ -582,7 +575,8 @@ struct CatalogD3DMetalCard: View {
             }
             Spacer(minLength: 12)
             VStack(alignment: .trailing, spacing: 8) {
-                Button(isInstalled ? "Обновить D3DMetal" : "Установить D3DMetal", action: onFetch)
+                Button(isInstalled ? String(localized: "Обновить D3DMetal") : String(localized: "Установить D3DMetal"),
+                       action: onFetch)
                     .buttonStyle(.borderedProminent)
                     .help("Вход с Apple ID, загрузка и установка — внутри onwin. Уже скачанный .dmg из «Загрузок» берётся без входа")
                 Button("Указать вручную…", action: onChooseManually)
@@ -598,9 +592,9 @@ struct CatalogD3DMetalCard: View {
         .onwinCard(highlighted: !isInstalled)
     }
 
-    private func step(_ n: Int, _ text: String) -> some View {
+    private func step(_ n: Int, _ text: LocalizedStringKey) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text("\(n)")
+            Text(verbatim: "\(n)")
                 .font(.caption2.bold())
                 .foregroundStyle(Color.white)
                 .frame(width: 16, height: 16)
@@ -625,8 +619,7 @@ struct CatalogCustomInstallCard: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Установить свою программу")
                     .font(.headline)
-                Text("Программы нет в каталоге? Выберите её установщик (.exe или .msi) — onwin запустит его " +
-                     "в новом или существующем пространстве. Файл можно просто перетащить на эту карточку.")
+                Text("Программы нет в каталоге? Выберите её установщик (.exe или .msi) — onwin запустит его в новом или существующем пространстве. Файл можно просто перетащить на эту карточку.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -708,8 +701,8 @@ struct CatalogTargetPicker: View {
                     Button {
                         target = .newSpace
                     } label: {
-                        CatalogChoiceRow(symbol: "plus", title: "Новое пространство",
-                                         subtitle: "Отдельный Windows только для этой программы",
+                        CatalogChoiceRow(symbol: "plus", title: String(localized: "Новое пространство"),
+                                         subtitle: String(localized: "Отдельный Windows только для этой программы"),
                                          isSelected: target == .newSpace)
                     }
                     .buttonStyle(.plain)
@@ -786,7 +779,7 @@ struct CatalogRecipeSheet: View {
                     .font(.headline)
                 ForEach(Array(plannedSteps.enumerated()), id: \.offset) { index, step in
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text("\(index + 1).")
+                        Text(verbatim: "\(index + 1).")
                             .monospacedDigit()
                             .foregroundStyle(.secondary)
                         Text(step)
@@ -801,7 +794,7 @@ struct CatalogRecipeSheet: View {
 
             CatalogTargetPicker(spaces: model.spaces, target: $target, newName: $newName,
                                 nameProblem: nameProblem,
-                                badge: { space in isInstalled(in: space) ? "уже установлено" : nil })
+                                badge: { space in isInstalled(in: space) ? String(localized: "уже установлено") : nil })
 
             ForEach(warnings, id: \.self) { warning in
                 CatalogNotice(symbol: "info.circle.fill", text: warning, color: .blue)
@@ -844,8 +837,8 @@ struct CatalogRecipeSheet: View {
 
     private var nameProblem: String? {
         guard target == .newSpace else { return nil }
-        if trimmedName.isEmpty { return "Укажите имя пространства" }
-        if CatalogView.isNameTaken(trimmedName, in: model.spaces) { return "Пространство с таким именем уже есть" }
+        if trimmedName.isEmpty { return String(localized: "Укажите имя пространства") }
+        if CatalogView.isNameTaken(trimmedName, in: model.spaces) { return String(localized: "Пространство с таким именем уже есть") }
         return nil
     }
 
@@ -865,21 +858,23 @@ struct CatalogRecipeSheet: View {
         var steps: [String] = []
         switch target {
         case .newSpace:
-            steps.append("Создаст пространство «\(trimmedName.isEmpty ? recipe.spaceName : trimmedName)» " +
-                         "(\(recipe.windowsVersion.displayName), графика: \(recipe.backend.displayName))")
+            let name = trimmedName.isEmpty ? recipe.spaceName : trimmedName
+            steps.append(String(localized: "Создаст пространство «\(name)» (\(recipe.windowsVersion.displayName), графика: \(recipe.backend.displayName))"))
         case .existing(let id):
-            steps.append("Использует пространство «\(model.space(id: id)?.name ?? "")»")
+            let name = model.space(id: id)?.name ?? ""
+            steps.append(String(localized: "Использует пространство «\(name)»"))
         }
         let names = recipe.components.compactMap { Catalog.component($0)?.name }
         if !names.isEmpty {
-            steps.append("Установит компоненты: \(names.joined(separator: ", ")) (если их ещё нет)")
+            steps.append(String(localized: "Установит компоненты: \(names.joined(separator: ", ")) (если их ещё нет)"))
         }
         if let installer = recipe.installer {
-            steps.append(installer.url.isFileURL ? "Запустит установщик \(installer.fileName), сохранённый в рецепте"
-                                                 : "Скачает и запустит установщик \(installer.fileName)")
+            steps.append(installer.url.isFileURL
+                         ? String(localized: "Запустит установщик \(installer.fileName), сохранённый в рецепте")
+                         : String(localized: "Скачает и запустит установщик \(installer.fileName)"))
         }
         if recipe.launchPath != nil {
-            steps.append("Добавит \(recipe.name) в список программ пространства")
+            steps.append(String(localized: "Добавит \(recipe.name) в список программ пространства"))
         }
         return steps
     }
@@ -887,20 +882,22 @@ struct CatalogRecipeSheet: View {
     private var warnings: [String] {
         var result: [String] = []
         if recipe.backend == .d3dmetal && !model.isD3DMetalInstalled {
-            result.append("Рецепт рассчитан на D3DMetal, но он ещё не установлен — onwin временно выберет другой вариант графики.")
+            result.append(String(localized: "Рецепт рассчитан на D3DMetal, но он ещё не установлен — onwin временно выберет другой вариант графики."))
         }
         if case .existing(let id) = target, let space = model.space(id: id) {
             if space.config.windowsVersion != recipe.windowsVersion {
-                result.append("Рецепт рассчитан на \(recipe.windowsVersion.displayName), а в пространстве «\(space.name)» — " +
-                              "\(space.config.windowsVersion.displayName). Обычно это не мешает.")
+                let recipeVersion = recipe.windowsVersion.displayName
+                let spaceVersion = space.config.windowsVersion.displayName
+                result.append(String(localized: "Рецепт рассчитан на \(recipeVersion), а в пространстве «\(space.name)» — \(spaceVersion). Обычно это не мешает."))
             }
             if model.isRunning(space.id) {
-                result.append("В пространстве «\(space.name)» сейчас работают программы — установка может дождаться их закрытия.")
+                result.append(String(localized: "В пространстве «\(space.name)» сейчас работают программы — установка может дождаться их закрытия."))
             }
         }
         if let installer = recipe.installer, !installer.url.isFileURL {
-            result.append(recipe.category == .user ? "Установщик будет скачан по ссылке из вашего рецепта."
-                                                   : "Установщик будет скачан из интернета от издателя программы.")
+            result.append(recipe.category == .user
+                          ? String(localized: "Установщик будет скачан по ссылке из вашего рецепта.")
+                          : String(localized: "Установщик будет скачан из интернета от издателя программы."))
         }
         return result
     }
@@ -968,7 +965,7 @@ struct CatalogComponentSheet: View {
                 }
             }
             if !component.providesDLLs.isEmpty {
-                Text("Даёт: " + component.providesDLLs.joined(separator: ", "))
+                Text("Даёт: \(component.providesDLLs.joined(separator: ", "))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -981,7 +978,8 @@ struct CatalogComponentSheet: View {
             }
 
             if model.spaces.isEmpty {
-                CatalogNotice(symbol: "shippingbox", text: "Компоненты устанавливаются в пространство, а пространств пока нет.",
+                CatalogNotice(symbol: "shippingbox",
+                              text: String(localized: "Компоненты устанавливаются в пространство, а пространств пока нет."),
                               color: .blue)
                 HStack {
                     Spacer()
@@ -1002,12 +1000,12 @@ struct CatalogComponentSheet: View {
                 CatalogTargetPicker(spaces: model.spaces, target: $target, newName: $unusedName,
                                     allowsNewSpace: false,
                                     badge: { space in
-                                        component.isInstalled(in: space.config) ? "уже установлен" : nil
+                                        component.isInstalled(in: space.config) ? String(localized: "уже установлен", comment: "Badge: the component is already installed in this space") : nil
                                     })
 
                 if let space = chosenSpace, component.isInstalled(in: space.config) {
                     CatalogNotice(symbol: "info.circle.fill",
-                                  text: "\(component.name) уже есть в «\(space.name)». Повторная установка его переустановит.",
+                                  text: String(localized: "\(component.name) уже есть в «\(space.name)». Повторная установка его переустановит."),
                                   color: .blue)
                 }
 
@@ -1163,8 +1161,8 @@ struct CatalogCustomSheet: View {
 
     private var nameProblem: String? {
         guard target == .newSpace else { return nil }
-        if trimmedName.isEmpty { return "Укажите имя пространства" }
-        if CatalogView.isNameTaken(trimmedName, in: model.spaces) { return "Пространство с таким именем уже есть" }
+        if trimmedName.isEmpty { return String(localized: "Укажите имя пространства") }
+        if CatalogView.isNameTaken(trimmedName, in: model.spaces) { return String(localized: "Пространство с таким именем уже есть") }
         return nil
     }
 

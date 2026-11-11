@@ -105,7 +105,7 @@ struct RecipeDraft: Equatable {
             .filter { !$0.isEmpty && !$0.hasPrefix("#") }
             .compactMap { line in
                 guard let eq = line.firstIndex(of: "="), eq != line.startIndex else {
-                    return "Строка окружения «\(line)»: нужно ИМЯ=ЗНАЧЕНИЕ"
+                    return String(localized: "Строка окружения «\(line)»: нужно ИМЯ=ЗНАЧЕНИЕ")
                 }
                 return nil
             }
@@ -157,11 +157,11 @@ struct RecipeDraft: Equatable {
         var result = UserRecipes.validate(recipe, checkFiles: false)
         if installerKind == .file {
             if let file {
-                if !FileManager.default.fileExists(atPath: file.path) { result.append("Нет файла \(file.path)") }
+                if !FileManager.default.fileExists(atPath: file.path) { result.append(String(localized: "Нет файла \(file.path)")) }
             } else if let stored = storedFileName {
                 let url = UserRecipes.filesDirectory(for: id).appendingPathComponent(stored)
                 if id.isEmpty || !FileManager.default.fileExists(atPath: url.path) {
-                    result.append("Нет файла установщика «\(stored)» — выберите его на этом Mac")
+                    result.append(String(localized: "Нет файла установщика «\(stored)» — выберите его на этом Mac"))
                 }
             }
         }
@@ -227,9 +227,9 @@ extension AppModel {
 
     func importUserRecipeInteractively() {
         let panel = NSOpenPanel()
-        panel.title = "Импорт рецепта"
-        panel.message = "Выберите файл рецепта onwin (.\(UserRecipe.fileExtension)). Импорт ничего не устанавливает и не запускает."
-        panel.prompt = "Импортировать"
+        panel.title = String(localized: "Импорт рецепта")
+        panel.message = String(localized: "Выберите файл рецепта onwin (.\(UserRecipe.fileExtension)). Импорт ничего не устанавливает и не запускает.")
+        panel.prompt = String(localized: "Импортировать")
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
@@ -259,16 +259,16 @@ extension AppModel {
 
     func exportUserRecipe(_ recipe: UserRecipe) {
         let panel = NSSavePanel()
-        panel.title = "Экспорт рецепта"
-        panel.message = "Рецепт сохранится в один файл — его можно передать на другой Mac"
-        panel.prompt = "Экспортировать"
+        panel.title = String(localized: "Экспорт рецепта")
+        panel.message = String(localized: "Рецепт сохранится в один файл — его можно передать на другой Mac")
+        panel.prompt = String(localized: "Экспортировать")
         panel.nameFieldStringValue = "\(recipe.name.replacingOccurrences(of: "/", with: "-").replacingOccurrences(of: ":", with: "-")).\(UserRecipe.fileExtension)"
         panel.canCreateDirectories = true
         if let type = UTType(filenameExtension: UserRecipe.fileExtension) { panel.allowedContentTypes = [type] }
         guard panel.runModal() == .OK, let url = panel.url else { return }
         do {
             try UserRecipes.export(recipe.id, to: url)
-            UserRecipeStore.shared.notice = "Рецепт «\(recipe.name)» сохранён в \(url.lastPathComponent)." +
+            UserRecipeStore.shared.notice = String(localized: "Рецепт «\(recipe.name)» сохранён в \(url.lastPathComponent).") +
                 (UserRecipes.exportNote(for: recipe).map { "\n\n\($0)" } ?? "")
         } catch {
             report(error)
@@ -332,14 +332,14 @@ extension AppModel {
     func installCustom(file: URL, in space: Space) async {
         let current = self.space(id: space.id) ?? space
         guard current.isInitialized else {
-            report("Пространство «\(current.name)» ещё не готово (нет system.reg). Создайте его заново.")
+            report(String(localized: "Пространство «\(current.name)» ещё не готово (нет system.reg). Создайте его заново."))
             return
         }
         // Waiting for the whole space would never end while e.g. Steam runs in it.
         let waitForSpace = ProcessTracker.shared.running(in: current.id).isEmpty
-        let result = await performTask("Установка \(file.deletingPathExtension().lastPathComponent)") {
+        let result = await performTask(String(localized: "Установка \(file.deletingPathExtension().lastPathComponent)")) {
             (context: TaskContext) async throws -> RecipeInstallOutcome in
-            context.status("Работает установщик \(file.lastPathComponent) — завершите установку в его окне…")
+            context.status(String(localized: "Работает установщик \(file.lastPathComponent) — завершите установку в его окне…"))
             let r = try await RecipeInstaller.runInstaller(file, in: current, waitForSpace: waitForSpace, output: context.log)
             return RecipeInstallOutcome(status: r.status, detection: r.detection)
         }
@@ -349,14 +349,14 @@ extension AppModel {
         guard let result else { return }
         guard RecipeInstaller.isSuccess(result.status) || !result.detection.candidates.isEmpty else {
             if !result.detection.isEmpty || !WineRunner.exitStatus(result.status, matches: 1602) {
-                report("Установщик \(file.lastPathComponent) завершился с кодом \(result.status).")
+                report(String(localized: "Установщик \(file.lastPathComponent) завершился с кодом \(Int(result.status))."))
             }
             return
         }
         let installed = self.space(id: current.id) ?? current
         var draft = RecipeDraft()
         draft.name = result.detection.productName ?? CatalogView.suggestedSpaceName(for: file)
-        draft.summary = [result.detection.publisher, result.detection.version.map { "версия \($0)" }]
+        draft.summary = [result.detection.publisher, result.detection.version.map { String(localized: "версия \($0)") }]
             .compactMap { $0 }.joined(separator: ", ")
         draft.installerKind = .file
         draft.localFile = file
@@ -379,11 +379,12 @@ extension AppModel {
         }
         let problems = UserRecipes.validate(user)
         guard problems.isEmpty else {
-            throw OnwinError("Рецепт «\(user.name)» не готов к установке:\n" + problems.map { "• \($0)" }.joined(separator: "\n"))
+            throw OnwinError(String(localized: "Рецепт «\(user.name)» не готов к установке:") + "\n"
+                             + problems.map { "• \($0)" }.joined(separator: "\n"))
         }
         let result = try await RecipeInstaller.install(recipe: recipe, into: target, progress: context.progress)
         if user.launchPath == nil, let best = result.detection.candidates.first {
-            context.status("Найдена программа: \(best.windowsPath)")
+            context.status(String(localized: "Найдена программа: \(best.windowsPath)"))
             var draft = RecipeDraft(recipe: user)
             draft.launchPath = best.windowsPath
             draft.launchArguments = WindowsCommandLine.join(best.arguments)
@@ -427,8 +428,8 @@ private struct UserRecipesPresenter: ViewModifier {
             .onChange(of: store.editor == nil) { _, closed in
                 if closed { store.presentPending() }
             }
-            .alert("Мои приложения", isPresented: Binding(get: { store.notice != nil },
-                                                           set: { if !$0 { store.notice = nil } })) {
+            .alert(AppRecipe.Category.user.title, isPresented: Binding(get: { store.notice != nil },
+                                                                       set: { if !$0 { store.notice = nil } })) {
                 Button("OK", role: .cancel) { store.notice = nil }
             } message: {
                 Text(store.notice ?? "")

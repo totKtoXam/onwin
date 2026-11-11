@@ -179,6 +179,6 @@ struct ShellToolbarStatus: View {
     }
 
     private func runningText(_ count: Int) -> String {
-        count == 1 ? "Запущена 1 программа" : "Запущено: \(count)"
+        count == 1 ? String(localized: "Запущена 1 программа") : String(localized: "Запущено: \(count)")
     }
 }

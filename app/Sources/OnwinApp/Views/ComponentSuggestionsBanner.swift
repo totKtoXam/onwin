@@ -71,7 +71,8 @@ struct ComponentSuggestionsBanner: View {
 
             HStack(spacing: 10) {
                 if suggestions.count > Self.collapsedCount {
-                    Button(expanded ? "Свернуть" : "Ещё \(suggestions.count - Self.collapsedCount)…") {
+                    Button(expanded ? String(localized: "Свернуть")
+                                    : String(localized: "Ещё \(suggestions.count - Self.collapsedCount)…")) {
                         withAnimation(.easeOut(duration: 0.15)) { expanded.toggle() }
                     }
                     .buttonStyle(.link)
@@ -100,17 +101,17 @@ struct ComponentSuggestionsBanner: View {
     }
 
     private func title(failure: FailureAdvice?) -> String {
-        if let failure { return "«\(failure.programTitle)» не запустилась — вот что может помочь" }
-        return "Игре может понадобиться"
+        if let failure { return String(localized: "«\(failure.programTitle)» не запустилась — вот что может помочь") }
+        return String(localized: "Игре может понадобиться")
     }
 
     private func subtitle(failure: FailureAdvice?) -> String {
         let names = suggestions.prefix(4).map(\.title).joined(separator: ", ")
-        if failure != nil { return "По журналу запуска: \(names)" }
+        if failure != nil { return String(localized: "По журналу запуска: \(names)") }
         if model.autoInstallsComponents(in: space) {
-            return "onwin поставит их сам при первом запуске программы, но можно и сейчас: \(names)"
+            return String(localized: "onwin поставит их сам при первом запуске программы, но можно и сейчас: \(names)")
         }
-        return "onwin посмотрел, какие библиотеки загружают программы этого пространства: \(names)"
+        return String(localized: "onwin посмотрел, какие библиотеки загружают программы этого пространства: \(names)")
     }
 
     private func canInstall(_ suggestion: Suggestion) -> Bool {
@@ -169,7 +170,8 @@ private struct SuggestionRow: View {
             .help(suggestion.evidence.joined(separator: "\n"))
             Spacer(minLength: 8)
             if let component = suggestion.component {
-                Button(component.kind == .global ? "Установить D3DMetal" : "Установить", action: onInstall)
+                Button(component.kind == .global ? String(localized: "Установить D3DMetal") : String(localized: "Установить"),
+                       action: onInstall)
                     .buttonStyle(.bordered)
                     .disabled(!canInstall)
             }
