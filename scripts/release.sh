@@ -51,6 +51,17 @@ SITE_URL="https://$(echo "$OWNER" | tr '[:upper:]' '[:lower:]').github.io/$NAME"
 DL="https://github.com/$REPO/releases/download"
 SUPPORT_CHAT="https://t.me/+KGkGUTbpk0ZjNDEy"   # Telegram group «onwin — помощь» (same as site/config.js)
 
+# Engine archive compression. Must stay readable by plain macOS: install.sh and the app's updater unpack it
+# with /usr/bin/tar (libarchive + liblzma 5.4 on macOS 14–26), which reads .xz with any LZMA2 dictionary
+# and the x86 BCJ filter (xz ≥ 5.0; zstd it cannot read without the zstd program).
+#  --x86       BCJ filter: almost the whole engine is x86 machine code (Wine runs under Rosetta).
+#  dict=512MiB the default -9 dictionary (64 MiB) with -T0 splits the archive into independent 192 MiB
+#              blocks; a large dictionary also finds the copies between the i386 / x86_64 halves and in
+#              Wine Mono / Gecko. Unpacking needs ~520 MiB of memory; packing takes ~13 min (one thread).
+# Measured 11.11.2026 on onwin-cx26.3 after engine/build.sh slim (MiB): xz -9 -T0 184, -9e 184,
+# dict=256MiB 153, + --x86 150, dict=512MiB 146, dict=1GiB 146 (no gain, twice the memory).
+ENGINE_XZ=(xz -T0 --x86 --lzma2=preset=9e,dict=512MiB)
+
 json_get() { /usr/bin/plutil -extract "$2" raw -o - "$1"; }   # json_get <file> <key path>
 sha256() { /usr/bin/shasum -a 256 "$1" | cut -d' ' -f1; }
 fsize() { stat -f %z "$1"; }
@@ -101,6 +112,10 @@ release_engine() {
     ensure_pushed
     local out="$DIST/engine"
     mkdir -p "$out"
+    # engine/build.sh slim strips the COFF symbol tables (NumberOfSymbols = 0) and more: ~30 MB less to download.
+    perl -e 'open(my $f, "<", $ARGV[0]) or exit 2; binmode $f; read($f, my $h, 0x40); seek($f, unpack("V", substr($h, 0x3c, 4)) + 16, 0);
+             read($f, my $n, 4) == 4 or exit 1; exit(unpack("V", $n) == 0 ? 0 : 1)' "$ENGINE_DIR/lib/wine/x86_64-windows/kernelbase.dll" \
+        || die "движок не урезан (в DLL есть таблицы символов) — сначала: engine/build.sh slim"
 
     note "лицензии → $ENGINE_ID/share/licenses"
     mkdir -p "$ENGINE_DIR/share/licenses"
@@ -108,13 +123,15 @@ release_engine() {
 
     # The archive is reused while it was made from this very engine build with the same licenses.
     local stamp
-    stamp="$ENGINE_BUILT $(cat "$ROOT"/third_party/licenses/*.txt | /usr/bin/shasum -a 256 | cut -d' ' -f1)"
+    stamp="$ENGINE_BUILT ${ENGINE_XZ[*]} $(cat "$ROOT"/third_party/licenses/*.txt | /usr/bin/shasum -a 256 | cut -d' ' -f1)"
     if [ -s "$out/$ENGINE_ASSET" ] && [ "$(cat "$out/.stamp" 2>/dev/null)" = "$stamp" ]; then
         note "движок уже упакован: $out/$ENGINE_ASSET"
     else
-        note "упаковываю движок (xz, несколько минут)"
+        note "упаковываю движок (${ENGINE_XZ[*]}, около 15 минут)"
         rm -f "$out/.stamp"
-        COPYFILE_DISABLE=1 tar -C "$ENGINE_DIST" -cf - "$ENGINE_ID" | xz -T0 -9 > "$out/$ENGINE_ASSET.part"
+        COPYFILE_DISABLE=1 tar -C "$ENGINE_DIST" -cf - "$ENGINE_ID" | "${ENGINE_XZ[@]}" > "$out/$ENGINE_ASSET.part"
+        # The same unpacker as install.sh / Updater.swift must read it.
+        /usr/bin/tar -tf "$out/$ENGINE_ASSET.part" >/dev/null || die "/usr/bin/tar не читает $ENGINE_ASSET"
         mv "$out/$ENGINE_ASSET.part" "$out/$ENGINE_ASSET"
         echo "$stamp" > "$out/.stamp"
     fi

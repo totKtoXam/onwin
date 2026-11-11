@@ -36,10 +36,16 @@ D3DMetal (Apple Game Porting Toolkit) в движок не входит: его 
 
 `./build.sh --status` показывает готовые этапы, `./build.sh --force <этап>` пересобирает этап
 (например, после правки `compat/onwincompat.c` — `--force compat`, после патчей DXVK — `--force dxvk`).
-Этапы: toolchain moltenvk wine-configure wine-build wine-install compat dxvk dxmt addons bundle manifest verify.
+Этапы: toolchain moltenvk wine-configure wine-build wine-install compat dxvk dxmt addons bundle slim manifest verify.
 Журналы — `build/logs/`. Все загрузки проверяются по SHA-256.
 
-Итог: ~1,1 ГБ, проверка `verify` убеждается, что в движке нет ссылок на Homebrew и он переносим.
+Итог: ~0,85 ГБ, проверка `verify` убеждается, что в движке нет ссылок на Homebrew и он переносим.
+
+Этап `slim` уменьшает движок, не меняя поведения: убирает из DLL Wine/DXVK/DXMT таблицы символов
+и отладочные секции (`mingw-strip --strip-all`, метка «Wine builtin DLL» сохраняется), из Mach-O —
+локальные символы (`strip -x`), а одинаковые файлы Wine Mono и Gecko заменяет жёсткими ссылками.
+Цена — в журналах падений вместо имён внутренних функций будут адреса. `--debug` отключает урезание.
+`scripts/release.sh engine` откажется упаковывать неурезанный движок.
 
 ## Проверка графики
 
