@@ -341,6 +341,9 @@
   /* ---------- Сообщить о проблеме ---------- */
 
   var SUPPORT_ICONS = {
+    // Service marks, used only on links to that service (Telegram / GitHub brand guidelines allow this).
+    telegram: '<svg class="svc-logo" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#2AABEE"/><path fill="#fff" d="M5.4 11.7l11.6-4.5c.54-.2 1.01.13.83.95l-1.97 9.3c-.15.66-.54.82-1.09.51l-3-2.21-1.45 1.4c-.16.16-.3.29-.6.29l.21-3.06 5.57-5.03c.24-.21-.05-.33-.38-.12l-6.88 4.33-2.96-.92c-.64-.2-.66-.64.13-.95z"/></svg>',
+    github: '<svg class="svc-logo" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>',
     chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 3.5V17h0A2.5 2.5 0 0 1 4 14.5z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></svg>',
     form: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4.5V3.5h6v1M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg>',
     mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5"/></svg>'
@@ -367,10 +370,22 @@
     var telegram = safeURL(s.telegram);
     var form = safeURL(s.form);
     var email = safeMailto(s.email);
-    if (telegram) list.push({ name: "Написать в Telegram", url: telegram, icon: SUPPORT_ICONS.chat, external: true });
+    if (telegram) list.push({ name: "Написать в Telegram", url: telegram, icon: SUPPORT_ICONS.telegram, external: true });
     if (form) list.push({ name: "Заполнить форму", url: form, icon: SUPPORT_ICONS.form, external: true });
     if (email) list.push({ name: "Написать на почту", url: email, icon: SUPPORT_ICONS.mail, external: false });
     return list;
+  }
+
+  // Same size as the chat buttons; GitHub Issues is for developers (needs an account).
+  function githubIssuesButton() {
+    var gh = el("a", "btn btn-lg btn-secondary support-gh");
+    gh.href = githubURL + ghPaths.issues;
+    gh.target = "_blank"; gh.rel = "noopener";
+    gh.innerHTML = SUPPORT_ICONS.github;
+    var label = el("span", null, "GitHub Issues");
+    label.appendChild(el("small", null, "для разработчиков"));
+    gh.appendChild(label);
+    return gh;
   }
 
   function renderSupport(container) {
@@ -392,6 +407,9 @@
       }
       box.appendChild(p);
       container.appendChild(box);
+      var ghRow = el("div", "support-links");
+      ghRow.appendChild(githubIssuesButton());
+      container.appendChild(ghRow);
     } else {
       var row = el("div", "support-links");
       channels.forEach(function (c, i) {
@@ -402,6 +420,7 @@
         a.appendChild(el("span", null, c.name));
         row.appendChild(a);
       });
+      row.appendChild(githubIssuesButton());
       container.appendChild(row);
       // QR code of the Telegram link: a phone camera opens the group straight away (desktop only, see CSS).
       var qr = (cfg.support || {}).telegramQR;
@@ -428,11 +447,7 @@
         "Напишите: " + SUPPORT_CHECKLIST.join(", ") + "."));
     }
 
-    var dev = el("p", "support-dev");
-    var gh = el("a", null, "Для разработчиков: GitHub Issues");
-    gh.href = githubURL + ghPaths.issues;
-    dev.appendChild(gh);
-    container.appendChild(dev);
+
   }
 
 

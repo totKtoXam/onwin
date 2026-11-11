@@ -622,3 +622,7 @@ html { scroll-behavior: smooth; }
 .beta-note { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
 .badge-beta { background: rgba(255, 159, 10, 0.16); color: #a35a00; }
 @media (prefers-color-scheme: dark) { .badge-beta { color: #ffb340; } }
+
+.svc-logo { width: 22px; height: 22px; flex: none; }
+.support-gh span { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.support-gh small { font-size: 0.75rem; font-weight: 500; color: var(--muted); }
