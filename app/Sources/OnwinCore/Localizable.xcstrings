@@ -200,6 +200,28 @@
         }
       }
     },
+    "%@ — готово" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: done"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ — дайын"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ — 完成"
+          }
+        }
+      }
+    },
     "%@ — сборка .NET" : {
       "localizations" : {
         "en" : {
@@ -986,6 +1008,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "VDF，第 %lld 行：%@"
+          }
+        }
+      }
+    },
+    "Wine Gecko %@ (32 бит)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine Gecko %@ (32-bit)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine Gecko %@ (32 бит)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine Gecko %@（32 位）"
+          }
+        }
+      }
+    },
+    "Wine Gecko %@ (64 бит)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine Gecko %@ (64-bit)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine Gecko %@ (64 бит)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine Gecko %@（64 位）"
           }
         }
       }
@@ -2066,6 +2132,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wine 引擎（%@）需要更新，但 onwin 中仍有 Windows 程序在运行。请关闭它们后重试。"
+          }
+        }
+      }
+    },
+    "Движок Wine не установился." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Wine engine wasn’t installed."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine қозғалтқышы орнатылмады."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine 引擎未能安装。"
           }
         }
       }
@@ -3439,6 +3527,28 @@
         }
       }
     },
+    "Не удалось добавить %@ в движок Wine: нет прав на запись в %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn’t add %@ to the Wine engine: no permission to write to %@."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Wine қозғалтқышына қосылмады: мына жерге жазуға рұқсат жоқ: %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法将 %1$@ 添加到 Wine 引擎：没有写入 %2$@ 的权限。"
+          }
+        }
+      }
+    },
     "Не удалось заменить приложение: %@" : {
       "localizations" : {
         "en" : {
@@ -3567,6 +3677,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "无法读取 %@：%@"
+          }
+        }
+      }
+    },
+    "Не удалось распаковать %@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn’t unpack %@: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ шығарылмады: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法解压 %@：%@"
           }
         }
       }
@@ -4007,6 +4139,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "没有配方“%@”。查看列表：onwinctl recipe list"
+          }
+        }
+      }
+    },
+    "Нет связи с GitHub: не удалось узнать, какой движок Wine скачать. Проверьте подключение к интернету." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can’t reach GitHub to find out which Wine engine to download. Check your internet connection."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GitHub-пен байланыс жоқ: қай Wine қозғалтқышын жүктеу керек екені белгісіз. Интернет байланысын тексеріңіз."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法连接 GitHub：无法确定要下载哪个 Wine 引擎。请检查网络连接。"
           }
         }
       }
@@ -5220,6 +5374,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "正在从 %2$@ 解压 %1$@…"
+          }
+        }
+      }
+    },
+    "Распаковываю %@…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpacking %@…"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ шығарылуда…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在解压 %@…"
           }
         }
       }

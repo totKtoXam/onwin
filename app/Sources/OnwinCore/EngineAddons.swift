@@ -38,8 +38,8 @@ public enum EngineAddon: String, CaseIterable, Sendable {
     public var title: String {
         switch self {
         case .mono: return "Wine Mono \(Catalog.wineMonoVersion)"
-        case .geckoX86: return "Wine Gecko \(Catalog.wineGeckoVersion) (32 бит)"
-        case .geckoX64: return "Wine Gecko \(Catalog.wineGeckoVersion) (64 бит)"
+        case .geckoX86: return String(localized: "Wine Gecko \(Catalog.wineGeckoVersion) (32 бит)", bundle: .onwinCore)
+        case .geckoX64: return String(localized: "Wine Gecko \(Catalog.wineGeckoVersion) (64 бит)", bundle: .onwinCore)
         }
     }
 
@@ -118,7 +118,7 @@ public enum EngineAddons {
             let todo = missing(addons, in: engine)
             guard !todo.isEmpty else { return false }
             guard canInstall(into: engine) else {
-                throw OnwinError("Не удалось добавить \(todo.map(\.title).joined(separator: ", ")) в движок Wine: нет прав на запись в \(engine.root.path).")
+                throw OnwinError(String(localized: "Не удалось добавить \(todo.map(\.title).joined(separator: ", ")) в движок Wine: нет прав на запись в \(engine.root.path).", bundle: .onwinCore))
             }
             let cache = OnwinPaths.cache.appendingPathComponent("Addons", isDirectory: true)
             for (index, addon) in todo.enumerated() {
@@ -126,12 +126,12 @@ public enum EngineAddons {
                 if todo.count > 1 { progress(.status("[\(index + 1)/\(todo.count)] \(addon.title)")) }
                 let archive = try await Updater.download(addon.url, sha256: addon.sha256, title: addon.title,
                                                          name: addon.archiveName, into: cache, progress: progress)
-                progress(InstallProgress(message: "Распаковываю \(addon.title)…", fraction: nil))
+                progress(InstallProgress(message: String(localized: "Распаковываю \(addon.title)…", bundle: .onwinCore), fraction: nil))
                 try await unpack(archive, addon: addon, into: engine)
                 try? FileManager.default.removeItem(at: archive)
             }
             touchWineInf(of: engine)
-            progress(InstallProgress(message: "\(todo.map(\.title).joined(separator: ", ")) — готово", fraction: 1))
+            progress(InstallProgress(message: String(localized: "\(todo.map(\.title).joined(separator: ", ")) — готово", bundle: .onwinCore), fraction: 1))
             return true
         }
     }
@@ -148,7 +148,7 @@ public enum EngineAddons {
         let r = try await ProcessRunner.run(URL(fileURLWithPath: "/usr/bin/tar"), arguments: ["-xf", archive.path, "-C", staging.path])
         let unpacked = staging.appendingPathComponent(addon.folder, isDirectory: true)
         guard r.status == 0, OnwinPaths.isDirectory(unpacked) else {
-            throw OnwinError("Не удалось распаковать \(addon.title): \(r.output.suffix(300))")
+            throw OnwinError(String(localized: "Не удалось распаковать \(addon.title): \(String(r.output.suffix(300)))", bundle: .onwinCore))
         }
         let target = addon.directory(in: engine)
         try? fm.removeItem(at: target)
