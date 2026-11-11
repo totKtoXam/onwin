@@ -5,6 +5,8 @@ import OnwinCore
 @MainActor
 struct ShellSidebar: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.openSettings) private var openSettings
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         @Bindable var model = model
@@ -42,6 +44,25 @@ struct ShellSidebar: View {
                     .tag(SidebarItem.running)
                 Label("Журналы", systemImage: "doc.text.magnifyingglass")
                     .tag(SidebarItem.logs)
+            }
+
+            Section("onwin") {
+                ShellSidebarAction("Настройки", systemImage: "gearshape", help: "Настройки onwin (⌘,)") {
+                    PreferencesTab.select(.general)
+                    openSettings()
+                }
+                ShellSidebarAction("Обновления", systemImage: "arrow.triangle.2.circlepath",
+                                   help: "Версия onwin и проверка обновлений") {
+                    PreferencesTab.select(.updates)
+                    openSettings()
+                }
+                ShellSidebarAction("Документация", systemImage: "book", help: "Открыть документацию onwin на сайте") {
+                    openURL(OnwinLinks.documentation)
+                }
+                ShellSidebarAction("Сообщить о проблеме", systemImage: "exclamationmark.bubble",
+                                   help: "Собрать сведения о проблеме и открыть чат поддержки") {
+                    model.reportProblemFromMenu()
+                }
             }
         }
         .listStyle(.sidebar)
@@ -146,51 +167,46 @@ struct ShellSpaceRow: View {
     }
 }
 
-/// Bottom of the sidebar: engine / graphics status at a glance.
+/// A sidebar row that does something instead of opening a page: looks like the other rows
+/// (icon + title, full width clickable) but never becomes the selection.
+struct ShellSidebarAction: View {
+    let title: String
+    let systemImage: String
+    let help: String
+    let action: () -> Void
+
+    init(_ title: String, systemImage: String, help: String, action: @escaping () -> Void) {
+        self.title = title
+        self.systemImage = systemImage
+        self.help = help
+        self.action = action
+    }
+
+    var body: some View {
+        Button(action: action) {
+            Label {
+                Text(title)
+            } icon: {
+                Image(systemName: systemImage)
+                    .foregroundStyle(.tint)
+            }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help(help)
+    }
+}
+
+/// Bottom of the sidebar: version, engine / graphics status at a glance.
 @MainActor
 struct ShellSidebarFooter: View {
     @Environment(AppModel.self) private var model
-    @Environment(\.openSettings) private var openSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Divider()
-            VStack(alignment: .leading, spacing: 6) {
-                HStack(spacing: 14) {
-                    Button {
-                        PreferencesTab.select(.general)
-                        openSettings()
-                    } label: {
-                        Label("Настройки", systemImage: "gearshape")
-                    }
-                    .help("Настройки onwin (⌘,)")
-                    Button {
-                        PreferencesTab.select(.updates)
-                        openSettings()
-                    } label: {
-                        Label("Обновления", systemImage: "arrow.triangle.2.circlepath")
-                    }
-                    .help("Версия onwin и проверка обновлений")
-                }
-                HStack(spacing: 14) {
-                    Link(destination: OnwinLinks.documentation) {
-                        Label("Документация", systemImage: "book")
-                    }
-                    .help("Открыть документацию onwin на сайте")
-                    Button {
-                        model.reportProblemFromMenu()
-                    } label: {
-                        Label("Сообщить о проблеме", systemImage: "exclamationmark.bubble")
-                    }
-                    .help("Собрать сведения о проблеме и открыть чат поддержки")
-                }
-            }
-            .buttonStyle(.link)
-            .font(.callout)
-            .labelStyle(.titleAndIcon)
-            .tint(OnwinTheme.accent)
-            .padding(.top, 4)
-            .padding(.bottom, 2)
+                .padding(.bottom, 4)
             Text("onwin \(OnwinVersion.displayString)")
                 .lineLimit(1)
                 .help("Установленная версия onwin")
