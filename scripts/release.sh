@@ -170,8 +170,8 @@ release_app() {
     tag="v$version"
     # Versions below 1.0 are beta: marked in the title only. Not a GitHub "pre-release" — that would hide it
     # from releases/latest, which install.sh reads.
-    local beta_suffix=""
-    case "$version" in 0.*) beta_suffix=" (бета)" ;; esac
+    local beta_suffix="" file_tag="$version" volume="onwin $version"
+    case "$version" in 0.*) beta_suffix=" (бета)"; file_tag="$version-beta"; volume="onwin $version бета" ;; esac
     if [ "$UPLOAD" = 1 ] && release_exists "$tag"; then
         die "релиз $tag уже есть — увеличьте OnwinVersion.string в app/Sources/OnwinCore/WineRunner.swift"
     fi
@@ -196,7 +196,7 @@ release_app() {
 
     note "Onwin.app без движка"
     "$SCRIPT_DIR/build-app.sh"
-    /usr/bin/ditto -c -k --keepParent "$built_app" "$out/Onwin-$version-app.zip"
+    /usr/bin/ditto -c -k --keepParent "$built_app" "$out/Onwin-$file_tag-app.zip"
 
     note "Onwin.app с движком → DMG"
     "$SCRIPT_DIR/build-app.sh" --with-engine "$ENGINE_DIR"
@@ -204,14 +204,14 @@ release_app() {
     mkdir -p "$stage"
     /usr/bin/ditto "$built_app" "$stage/Onwin.app"
     ln -s /Applications "$stage/Программы"
-    hdiutil create -quiet -volname "onwin $version" -srcfolder "$stage" -fs APFS -format ULMO \
-        "$out/Onwin-$version.dmg"
+    hdiutil create -quiet -volname "$volume" -srcfolder "$stage" -fs APFS -format ULMO \
+        "$out/Onwin-$file_tag.dmg"
     rm -rf "$stage"
 
     sed "s|__ONWIN_REPO__|$REPO|" "$ROOT/site/install.sh" > "$out/install.sh"
     bash -n "$out/install.sh"
 
-    local app_zip="$out/Onwin-$version-app.zip" dmg="$out/Onwin-$version.dmg"
+    local app_zip="$out/Onwin-$file_tag-app.zip" dmg="$out/Onwin-$file_tag.dmg"
     cat > "$out/onwin-release.json" <<JSON
 {
   "schema": 1,
@@ -219,8 +219,8 @@ release_app() {
   "build": "$build",
   "minimumMacOS": "14.0",
   "site": "$SITE_URL/",
-  "app": { "url": "$DL/$tag/Onwin-$version-app.zip", "sha256": "$(sha256 "$app_zip")", "size": $(fsize "$app_zip") },
-  "dmg": { "url": "$DL/$tag/Onwin-$version.dmg", "sha256": "$(sha256 "$dmg")", "size": $(fsize "$dmg") },
+  "app": { "url": "$DL/$tag/Onwin-$file_tag-app.zip", "sha256": "$(sha256 "$app_zip")", "size": $(fsize "$app_zip") },
+  "dmg": { "url": "$DL/$tag/Onwin-$file_tag.dmg", "sha256": "$(sha256 "$dmg")", "size": $(fsize "$dmg") },
   "engine": {
     "id": "$ENGINE_ID",
     "built": "$ENGINE_BUILT",
@@ -247,7 +247,7 @@ curl -fsSL $SITE_URL/install.sh | bash
 Эта же команда обновляет onwin: она скачивает только изменившиеся части. Другие способы — на странице
 [Установка]($SITE_URL/install.html).
 
-**Onwin-$version.dmg** — приложение вместе с движком: перетащите в «Программы». Приложение не нотаризовано Apple,
+**Onwin-$file_tag.dmg** — приложение вместе с движком: перетащите в «Программы». Приложение не нотаризовано Apple,
 поэтому при первом запуске откройте «Системные настройки → Конфиденциальность и безопасность → Всё равно открыть».
 
 Нужен Mac с Apple Silicon и macOS 14 или новее. Движок: $ENGINE_ID ([$ENGINE_TAG](https://github.com/$REPO/releases/tag/$ENGINE_TAG)).

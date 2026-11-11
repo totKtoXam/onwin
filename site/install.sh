@@ -139,7 +139,8 @@ say "читаю ${WANT_VERSION:+выпуск $WANT_VERSION}${WANT_VERSION:-по�
     || die "не удалось получить описание выпуска — проверьте подключение к интернету"
 VERSION="$(json version)" || die "описание выпуска повреждено"
 BUILD="$(json build)"
-bold "onwin $VERSION"
+case "$VERSION" in 0.*) LABEL="onwin $VERSION (бета)" ;; *) LABEL="onwin $VERSION" ;; esac
+bold "$LABEL"
 
 # ------------------------------------------------------------------------------------- engine
 ENGINE_ID="$(json engine.id)"
@@ -199,7 +200,7 @@ else
         app_running && die "закройте onwin и запустите установку снова"
     fi
     size_mb=$(( $(json app.size) / 1048576 + 1 ))
-    say "скачиваю onwin $VERSION (~${size_mb} МБ)"
+    say "скачиваю $LABEL (~${size_mb} МБ)"
     download "$(json app.url)" "$WORK/app.zip"
     check_sha "$WORK/app.zip" "$(json app.sha256)"
     mkdir -p "$WORK/app"
@@ -216,7 +217,7 @@ else
     say "приложение установлено: $TARGET"
 fi
 
-bold "Готово! onwin $VERSION установлен."
+bold "Готово! $LABEL установлен."
 echo "Обновить позже — запустите эту же команду ещё раз."
 if [ "$FRESH" = 1 ]; then
     /usr/bin/open "$TARGET" || true

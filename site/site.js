@@ -212,7 +212,7 @@
     findLatestDmg().then(function (found) {
       var tag = String(found.release.tag_name || found.release.name || "").replace(/^v(?=\d)/, "");
       var parts = [];
-      if (tag) parts.push("Версия " + tag);
+      if (tag) parts.push((/^0\./.test(tag) ? "Бета-версия " : "Версия ") + tag + " · DMG");
       var size = formatSize(found.asset.size);
       if (size) parts.push(size);
       var date = formatDate(found.release.published_at);
@@ -223,7 +223,7 @@
         if (link) {
           link.href = found.asset.browser_download_url;
           var label = link.querySelector(".label");
-          if (label) label.textContent = "Скачать " + found.asset.name;
+          if (label) label.textContent = "Скачать onwin " + tag + (/^0\./.test(tag) ? " (бета)" : "");
         }
         if (meta) meta.textContent = parts.join(" · ");
       });
