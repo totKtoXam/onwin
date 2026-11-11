@@ -633,3 +633,41 @@ html { scroll-behavior: smooth; }
 
 .btn-sub span { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
 .btn-sub small { font-size: 0.75rem; font-weight: 500; color: var(--muted); }
+
+/* ---------- Языки ---------- */
+
+.lang-switch { display: flex; gap: 2px; flex: none; }
+.lang-switch a {
+  display: block; padding: 5px 9px; border-radius: 999px;
+  color: var(--muted); text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.02em;
+}
+.lang-switch a:hover { color: var(--text); background: var(--surface-2); }
+.lang-switch a[aria-current] { color: var(--accent-text); background: var(--accent-soft); }
+/* Когда меню не помещается в одну строку с логотипом, языки встают справа от логотипа, меню — ниже. */
+@media (max-width: 1099px) {
+  .site-header .lang-switch { order: 1; margin-left: auto; }
+  .site-header .site-nav { order: 2; width: 100%; }
+}
+@media (max-width: 600px) {
+  .site-nav ul { margin-inline: -8px; }
+  .lang-switch { margin-right: -6px; }
+  .lang-switch a { padding: 5px 7px; }
+}
+
+.lang-bar { background: var(--surface); border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+.lang-bar .wrap {
+  display: flex; align-items: center; justify-content: center; gap: 6px 12px;
+  min-height: 44px; padding-block: 6px; flex-wrap: wrap; text-align: center;
+}
+.lang-bar p { margin: 0; }
+.lang-bar-go {
+  display: inline-block; padding: 4px 14px; border-radius: 999px;
+  background: var(--btn-bg); color: var(--btn-ink); font-weight: 600; text-decoration: none; white-space: nowrap;
+}
+.lang-bar-go:hover { background: var(--btn-bg-hover); }
+.lang-bar-close {
+  display: inline-grid; place-items: center; width: 30px; height: 30px; padding: 0;
+  border: 0; border-radius: 999px; background: transparent; color: var(--muted);
+  font: inherit; font-size: 1.2rem; line-height: 1; cursor: pointer;
+}
+.lang-bar-close:hover { background: var(--surface-2); color: var(--text); }

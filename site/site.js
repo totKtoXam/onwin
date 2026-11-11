@@ -6,6 +6,150 @@
   var PLACEHOLDER_REPO = "OWNER/onwin";
   var isWeb = location.protocol === "http:" || location.protocol === "https:";
 
+  /* ---------- Языки ---------- */
+
+  // Russian lives at the site root, translations in en/, zh/, kk/ (same file names).
+  // The page language comes from <html lang>; every text this script writes is taken from I18N.
+  var LANGS = [
+    { code: "ru", tag: "ru", dir: "", locale: "ru-RU" },
+    { code: "en", tag: "en", dir: "en/", locale: "en-US" },
+    { code: "zh", tag: "zh-Hans", dir: "zh/", locale: "zh-CN" },
+    { code: "kk", tag: "kk", dir: "kk/", locale: "kk-KZ" }
+  ];
+
+  var I18N = {
+    ru: {
+      copy: "Скопировать", copied: "Скопировано", copiedLive: "Скопировано в буфер обмена",
+      copyManual: "Выделите и скопируйте вручную",
+      copyAddress: function (w) { return "Скопировать адрес " + w; },
+      gb: " ГБ", mb: " МБ",
+      versionMeta: function (tag, beta) { return (beta ? "Бета-версия " : "Версия ") + tag; },
+      download: function (tag, beta) { return "Скачать onwin " + tag + (beta ? " (бета)" : ""); },
+      releaseFallback: "Откроется страница последнего выпуска на GitHub — файл .dmg в разделе Assets.",
+      network: null,
+      crypto: "Криптовалюта",
+      donateSoon: ["Способы поддержки скоро появятся здесь. А пока можно помочь по-другому: поставить звезду проекту на ", " или рассказать о нём друзьям."],
+      telegram: "Написать в Telegram", telegramSub: "", form: "Заполнить форму", mail: "Написать на почту",
+      issuesSub: "для разработчиков",
+      checklist: ["версию onwin и macOS", "модель Mac (например, MacBook Air M2)", "какая программа или игра",
+        "что вы делали и что увидели", "скриншот, если есть"],
+      listJoin: ", ", listEnd: ".",
+      supportSoon: "Способ связи скоро появится здесь.",
+      tips: [" А пока загляните в советы: ", "«Если что-то не работает»", "."],
+      qrAlt: "QR-код группы поддержки onwin в Telegram", qrCaption: "Или наведите камеру телефона",
+      checkTitle: "Чтобы мы быстрее помогли, напишите:", checkShort: "Напишите: ",
+      releasesOpen: "Открыть выпуски на GitHub", releasesOffline: "Список доступен на опубликованном сайте.",
+      releasesNone: "Выпусков пока нет.", releasesFail: "Не удалось загрузить список выпусков.",
+      badgeLatest: "последняя", badgePre: "тестовая", badgeBeta: "бета",
+      dmg: "Скачать DMG", zip: "Приложение без движка (zip)", releasePage: "Страница выпуска",
+      thisVersion: "Установить именно эту версию через Терминал:", notes: "Что нового и как установить"
+    },
+    en: {
+      copy: "Copy", copied: "Copied", copiedLive: "Copied to clipboard",
+      copyManual: "Select and copy it manually",
+      copyAddress: function (w) { return "Copy " + w + " address"; },
+      gb: " GB", mb: " MB",
+      versionMeta: function (tag, beta) { return (beta ? "Beta " : "Version ") + tag; },
+      download: function (tag, beta) { return "Download onwin " + tag + (beta ? " (beta)" : ""); },
+      releaseFallback: "Opens the latest release on GitHub — the .dmg file is under Assets.",
+      network: function (n) { return n + " network"; },
+      crypto: "Crypto",
+      donateSoon: ["Donation options will appear here soon. Meanwhile, you can help in other ways: star the project on ", " or tell your friends about it."],
+      telegram: "Telegram chat", telegramSub: "in Russian", form: "Fill in a form", mail: "Send an email",
+      issuesSub: "in English",
+      checklist: ["your onwin and macOS versions", "your Mac model (for example, MacBook Air M2)", "which program or game",
+        "what you did and what you saw", "a screenshot, if you have one"],
+      listJoin: ", ", listEnd: ".",
+      supportSoon: "Contact options will appear here soon.",
+      tips: [" Meanwhile, see the tips in ", "“If something doesn’t work”", "."],
+      qrAlt: "QR code of the onwin support group in Telegram", qrCaption: "Or point your phone’s camera here",
+      checkTitle: "To help us help you faster, tell us:", checkShort: "Please tell us: ",
+      releasesOpen: "Open releases on GitHub", releasesOffline: "The list is available on the published site.",
+      releasesNone: "No releases yet.", releasesFail: "Couldn’t load the list of releases.",
+      badgeLatest: "latest", badgePre: "pre-release", badgeBeta: "beta",
+      dmg: "Download DMG", zip: "App without the engine (zip)", releasePage: "Release page",
+      thisVersion: "Install exactly this version with Terminal:", notes: "What’s new and how to install (in Russian)",
+      bar: "This site is also available in English.", barGo: "Switch to English", barClose: "Close"
+    },
+    zh: {
+      copy: "复制", copied: "已复制", copiedLive: "已复制到剪贴板",
+      copyManual: "请手动选中并复制",
+      copyAddress: function (w) { return "复制 " + w + " 地址"; },
+      gb: " GB", mb: " MB",
+      versionMeta: function (tag, beta) { return (beta ? "测试版 " : "版本 ") + tag; },
+      download: function (tag, beta) { return "下载 onwin " + tag + (beta ? "（测试版）" : ""); },
+      releaseFallback: "将打开 GitHub 上最新版本的发布页面，.dmg 文件位于 Assets 部分。",
+      network: function (n) { return n + " 网络"; },
+      crypto: "加密货币",
+      donateSoon: ["捐助方式即将在这里公布。在此之前，您也可以用其他方式支持项目：在 ", " 上为项目点亮星标，或者把它推荐给朋友。"],
+      telegram: "Telegram 群组", telegramSub: "使用俄语交流", form: "填写表单", mail: "发送邮件",
+      issuesSub: "可使用英语",
+      checklist: ["onwin 和 macOS 的版本", "Mac 型号（例如 MacBook Air M2）", "哪个程序或游戏",
+        "您做了什么、看到了什么", "截图（如果有）"],
+      listJoin: "；", listEnd: "。",
+      supportSoon: "联系方式即将在这里公布。",
+      tips: [" 在此之前，可以先看看", "“遇到问题怎么办”", "中的建议。"],
+      qrAlt: "onwin Telegram 支持群组的二维码", qrCaption: "或用手机相机扫描",
+      checkTitle: "为了更快帮到您，请写明：", checkShort: "请写明：",
+      releasesOpen: "在 GitHub 上查看所有版本", releasesOffline: "版本列表只在正式发布的网站上显示。",
+      releasesNone: "暂无发布版本。", releasesFail: "无法加载版本列表。",
+      badgeLatest: "最新", badgePre: "预发布", badgeBeta: "测试版",
+      dmg: "下载 DMG", zip: "不含引擎的应用（zip）", releasePage: "发布页面",
+      thisVersion: "通过“终端”安装这个版本：", notes: "更新内容与安装说明（俄语）",
+      bar: "本网站有简体中文版。", barGo: "切换到中文", barClose: "关闭"
+    },
+    kk: {
+      copy: "Көшіру", copied: "Көшірілді", copiedLive: "Алмасу буферіне көшірілді",
+      copyManual: "Белгілеп, қолмен көшіріңіз",
+      copyAddress: function (w) { return w + " мекенжайын көшіру"; },
+      gb: " ГБ", mb: " МБ",
+      versionMeta: function (tag, beta) { return (beta ? "Бета нұсқа " : "Нұсқа ") + tag; },
+      download: function (tag, beta) { return "onwin " + tag + (beta ? " (бета)" : "") + " жүктеп алу"; },
+      releaseFallback: "GitHub-тағы соңғы шығарылым беті ашылады — .dmg файлы Assets бөлімінде.",
+      network: function (n) { return n + " желісі"; },
+      crypto: "Криптовалюта",
+      donateSoon: ["Қолдау тәсілдері жақында осында пайда болады. Әзірге басқаша көмектесуге болады: ", " сайтында жобаға жұлдызша қойыңыз немесе ол туралы достарыңызға айтыңыз."],
+      telegram: "Telegram-чат", telegramSub: "орыс тілінде", form: "Форманы толтыру", mail: "Поштаға жазу",
+      issuesSub: "ағылшын тілінде",
+      checklist: ["onwin және macOS нұсқасы", "Mac үлгісі (мысалы, MacBook Air M2)", "қандай бағдарлама немесе ойын",
+        "не істедіңіз және не көрдіңіз", "скриншот, бар болса"],
+      listJoin: ", ", listEnd: ".",
+      supportSoon: "Байланыс тәсілі жақында осында пайда болады.",
+      tips: [" Әзірге ", "«Бір нәрсе істемесе»", " бөліміндегі кеңестерді қараңыз."],
+      qrAlt: "onwin Telegram қолдау тобының QR коды", qrCaption: "Немесе телефон камерасын бағыттаңыз",
+      checkTitle: "Тезірек көмектесуіміз үшін мыналарды жазыңыз:", checkShort: "Жазыңыз: ",
+      releasesOpen: "GitHub-та шығарылымдарды ашу", releasesOffline: "Тізім жарияланған сайтта ғана көрінеді.",
+      releasesNone: "Әзірге шығарылымдар жоқ.", releasesFail: "Шығарылымдар тізімін жүктеу мүмкін болмады.",
+      badgeLatest: "соңғы", badgePre: "сынақ", badgeBeta: "бета",
+      dmg: "DMG жүктеп алу", zip: "Қозғалтқышсыз қолданба (zip)", releasePage: "Шығарылым беті",
+      thisVersion: "Дәл осы нұсқаны Терминал арқылы орнату:", notes: "Не жаңа және қалай орнату керек (орыс тілінде)",
+      bar: "Бұл сайттың қазақша нұсқасы бар.", barGo: "Қазақшаға ауысу", barClose: "Жабу"
+    }
+  };
+
+  function langOf(tag) {
+    var t = String(tag || "").toLowerCase();
+    for (var i = 0; i < LANGS.length; i++) {
+      if (t === LANGS[i].tag.toLowerCase() || t.split("-")[0] === LANGS[i].code) return LANGS[i];
+    }
+    return LANGS[0];
+  }
+
+  var lang = langOf(document.documentElement.lang);
+  var T = I18N[lang.code];
+
+  // Site root: the folder site.js is loaded from (pages in en/ load ../site.js).
+  var script = document.currentScript;
+  var rootBase = script && script.src ? script.src.replace(/[?#].*$/, "").replace(/[^/]*$/, "") : "";
+
+  var LANG_KEY = "onwin-lang";
+  function readLangChoice() {
+    try { return localStorage.getItem(LANG_KEY) || ""; } catch (e) { return ""; }
+  }
+  function saveLangChoice(code) {
+    try { localStorage.setItem(LANG_KEY, code); } catch (e) { /* private mode: just don't remember */ }
+  }
+
   /* ---------- Репозиторий и адрес сайта ---------- */
 
   // "владелец/репозиторий": из config.js, иначе из адреса GitHub Pages
@@ -30,9 +174,9 @@
   var repoParts = repo.split("/");
   var githubURL = "https://github.com/" + repo;
 
-  // Адрес каталога текущей страницы, всегда с "/" на конце.
+  // Адрес корня сайта (папка site.js), всегда с "/" на конце: команда установки одна для всех языков.
   function detectSiteBase() {
-    if (isWeb) return location.origin + location.pathname.replace(/[^/]*$/, "");
+    if (isWeb) return /^https?:/.test(rootBase) ? rootBase : location.origin + location.pathname.replace(/[^/]*$/, "");
     var name = repoParts[1];
     if (/\.github\.io$/i.test(name)) return "https://" + name.toLowerCase() + "/";
     return "https://" + repoParts[0].toLowerCase() + ".github.io/" + name + "/";
@@ -134,10 +278,10 @@
     var label = btn.querySelector(".label") || btn;
     if (!btn.hasAttribute("data-label")) btn.setAttribute("data-label", label.textContent);
     copyText(text).then(function () {
-      label.textContent = "Скопировано";
-      announce("Скопировано в буфер обмена");
+      label.textContent = T.copied;
+      announce(T.copiedLive);
     }, function () {
-      label.textContent = "Выделите и скопируйте вручную";
+      label.textContent = T.copyManual;
       var sel = btn.getAttribute("data-copy-from");
       var src = sel && document.querySelector(sel);
       if (src && window.getSelection) {
@@ -157,15 +301,15 @@
 
   function formatSize(bytes) {
     if (!bytes) return "";
-    var nf = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 1 });
-    if (bytes >= 1e9) return nf.format(bytes / 1073741824) + " ГБ";
-    return nf.format(Math.max(1, Math.round(bytes / 1048576))) + " МБ";
+    var nf = new Intl.NumberFormat(lang.locale, { maximumFractionDigits: 1 });
+    if (bytes >= 1e9) return nf.format(bytes / 1073741824) + T.gb;
+    return nf.format(Math.max(1, Math.round(bytes / 1048576))) + T.mb;
   }
 
   function formatDate(iso) {
     var d = new Date(iso);
     if (isNaN(d.getTime())) return "";
-    return d.toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+    return d.toLocaleDateString(lang.locale, { day: "numeric", month: "long", year: "numeric" });
   }
 
   function dmgOf(release) {
@@ -212,7 +356,8 @@
     findLatestDmg().then(function (found) {
       var tag = String(found.release.tag_name || found.release.name || "").replace(/^v(?=\d)/, "");
       var parts = [];
-      if (tag) parts.push((/^0\./.test(tag) ? "Бета-версия " : "Версия ") + tag + " · DMG");
+      var beta = /^0\./.test(tag);
+      if (tag) parts.push(T.versionMeta(tag, beta) + " · DMG");
       var size = formatSize(found.asset.size);
       if (size) parts.push(size);
       var date = formatDate(found.release.published_at);
@@ -223,14 +368,14 @@
         if (link) {
           link.href = found.asset.browser_download_url;
           var label = link.querySelector(".label");
-          if (label) label.textContent = "Скачать onwin " + tag + (/^0\./.test(tag) ? " (бета)" : "");
+          if (label) label.textContent = T.download(tag, beta);
         }
         if (meta) meta.textContent = parts.join(" · ");
       });
     }).catch(function () {
       Array.prototype.forEach.call(boxes, function (box) {
         var meta = box.querySelector("[data-release-meta]");
-        if (meta) meta.textContent = "Откроется страница последнего выпуска на GitHub — файл .dmg в разделе Assets.";
+        if (meta) meta.textContent = T.releaseFallback;
       });
     });
   }
@@ -250,6 +395,12 @@
     return /^https:\/\/[^\s]+$/i.test(v) ? v : "";
   }
 
+  // config.js labels are Russian ("USDT (сеть TON)"); translated pages get the word "network" in their language.
+  function walletLabel(label) {
+    if (!T.network) return label;
+    return label.replace(/\(сеть ([^,)]+)/, function (m, net) { return "(" + T.network(net.trim()); });
+  }
+
   function donationMethods() {
     var d = cfg.donate || {};
     var links = [];
@@ -261,7 +412,7 @@
     var crypto = d.crypto && typeof d.crypto === "object" ? d.crypto : {};
     Object.keys(crypto).forEach(function (label) {
       var addr = typeof crypto[label] === "string" ? crypto[label].trim() : "";
-      if (addr) wallets.push({ label: label, address: addr });
+      if (addr) wallets.push({ label: walletLabel(label), address: addr });
     });
     return { links: links, wallets: wallets };
   }
@@ -291,8 +442,8 @@
     var btn = el("button", "btn btn-secondary");
     btn.type = "button";
     btn.setAttribute("data-copy", w.address);
-    btn.setAttribute("aria-label", "Скопировать адрес " + w.label);
-    btn.appendChild(el("span", "label", "Скопировать"));
+    btn.setAttribute("aria-label", T.copyAddress(w.label));
+    btn.appendChild(el("span", "label", T.copy));
     row.appendChild(btn);
     return row;
   }
@@ -301,11 +452,11 @@
     var box = el("div", "donate-empty");
     box.innerHTML = ICONS.soon;
     var p = el("p");
-    p.appendChild(document.createTextNode("Способы поддержки скоро появятся здесь. А пока можно помочь по-другому: поставить звезду проекту на "));
+    p.appendChild(document.createTextNode(T.donateSoon[0]));
     var a = el("a", null, "GitHub");
     a.href = githubURL;
     p.appendChild(a);
-    p.appendChild(document.createTextNode(" или рассказать о нём друзьям."));
+    p.appendChild(document.createTextNode(T.donateSoon[1]));
     box.appendChild(p);
     return box;
   }
@@ -330,7 +481,7 @@
       var a = el("a", "btn btn-secondary btn-sub");
       a.href = "donate.html#crypto";
       a.innerHTML = ICONS.coin;
-      var label = el("span", null, "Криптовалюта");
+      var label = el("span", null, T.crypto);
       label.appendChild(el("small", null, coins.join(" · ")));
       a.appendChild(label);
       row.appendChild(a);
@@ -352,13 +503,7 @@
     mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5"/></svg>'
   };
 
-  var SUPPORT_CHECKLIST = [
-    "версию onwin и macOS",
-    "модель Mac (например, MacBook Air M2)",
-    "какая программа или игра",
-    "что вы делали и что увидели",
-    "скриншот, если есть"
-  ];
+  var SUPPORT_CHECKLIST = T.checklist;
 
   // Только адрес вида name@domain; «mailto:» в начале допускается.
   function safeMailto(value) {
@@ -373,9 +518,10 @@
     var telegram = safeURL(s.telegram);
     var form = safeURL(s.form);
     var email = safeMailto(s.email);
-    if (telegram) list.push({ name: "Написать в Telegram", url: telegram, icon: SUPPORT_ICONS.telegram, external: true });
-    if (form) list.push({ name: "Заполнить форму", url: form, icon: SUPPORT_ICONS.form, external: true });
-    if (email) list.push({ name: "Написать на почту", url: email, icon: SUPPORT_ICONS.mail, external: false });
+    // The Telegram group speaks Russian: translated pages say so under the button.
+    if (telegram) list.push({ id: "telegram", name: T.telegram, sub: T.telegramSub, url: telegram, icon: SUPPORT_ICONS.telegram, external: true });
+    if (form) list.push({ id: "form", name: T.form, url: form, icon: SUPPORT_ICONS.form, external: true });
+    if (email) list.push({ id: "email", name: T.mail, url: email, icon: SUPPORT_ICONS.mail, external: false });
     return list;
   }
 
@@ -386,7 +532,7 @@
     gh.target = "_blank"; gh.rel = "noopener";
     gh.innerHTML = SUPPORT_ICONS.github;
     var label = el("span", null, "GitHub Issues");
-    label.appendChild(el("small", null, "для разработчиков"));
+    label.appendChild(el("small", null, T.issuesSub));
     gh.appendChild(label);
     return gh;
   }
@@ -400,13 +546,13 @@
     if (!channels.length) {
       var box = el("div", "donate-empty");
       box.innerHTML = ICONS.soon;
-      var p = el("p", null, "Способ связи скоро появится здесь.");
+      var p = el("p", null, T.supportSoon);
       if (mode !== "full") {
-        p.appendChild(document.createTextNode(" А пока загляните в советы: "));
-        var tips = el("a", null, "«Если что-то не работает»");
+        p.appendChild(document.createTextNode(T.tips[0]));
+        var tips = el("a", null, T.tips[1]);
         tips.href = "docs.html#troubleshooting";
         p.appendChild(tips);
-        p.appendChild(document.createTextNode("."));
+        p.appendChild(document.createTextNode(T.tips[2]));
       }
       box.appendChild(p);
       container.appendChild(box);
@@ -420,34 +566,36 @@
         a.href = c.url;
         if (c.external) { a.target = "_blank"; a.rel = "noopener"; }
         a.innerHTML = c.icon;
-        a.appendChild(el("span", null, c.name));
+        var name = el("span", null, c.name);
+        if (c.sub) { a.classList.add("btn-sub"); name.appendChild(el("small", null, c.sub)); }
+        a.appendChild(name);
         row.appendChild(a);
       });
       row.appendChild(githubIssuesButton());
       container.appendChild(row);
       // QR code of the Telegram link: a phone camera opens the group straight away (desktop only, see CSS).
       var qr = (cfg.support || {}).telegramQR;
-      if (mode === "full" && qr && /^img\/[\w.-]+\.svg$/.test(qr) && channels[0].name === "Написать в Telegram") {
+      if (mode === "full" && qr && /^img\/[\w.-]+\.svg$/.test(qr) && channels[0].id === "telegram") {
         var fig = el("figure", "support-qr");
         var img = el("img");
-        img.src = qr; img.width = 160; img.height = 160; img.alt = "QR-код группы поддержки onwin в Telegram";
+        img.src = rootBase + qr; img.width = 160; img.height = 160; img.alt = T.qrAlt;
         img.onerror = function () { fig.hidden = true; };
         fig.appendChild(img);
-        fig.appendChild(el("figcaption", null, "Или наведите камеру телефона"));
+        fig.appendChild(el("figcaption", null, T.qrCaption));
         container.appendChild(fig);
       }
     }
 
     if (mode === "full") {
       var check = el("div", "note note-plain");
-      check.appendChild(el("p", "support-check-title", "Чтобы мы быстрее помогли, напишите:"));
+      check.appendChild(el("p", "support-check-title", T.checkTitle));
       var ul = el("ul", "list support-check");
       SUPPORT_CHECKLIST.forEach(function (item) { ul.appendChild(el("li", null, item)); });
       check.appendChild(ul);
       container.appendChild(check);
     } else {
       container.appendChild(el("p", "muted small support-check",
-        "Напишите: " + SUPPORT_CHECKLIST.join(", ") + "."));
+        T.checkShort + SUPPORT_CHECKLIST.join(T.listJoin) + T.listEnd));
     }
 
 
@@ -462,12 +610,12 @@
     function fail(text) {
       box.textContent = "";
       var p = el("p", "release-empty", text + " ");
-      var a = el("a", null, "Открыть выпуски на GitHub");
+      var a = el("a", null, T.releasesOpen);
       a.href = githubURL + ghPaths.releases;
       p.appendChild(a);
       box.appendChild(p);
     }
-    if (repo === PLACEHOLDER_REPO || !isWeb || !window.fetch) { fail("Список доступен на опубликованном сайте."); return; }
+    if (repo === PLACEHOLDER_REPO || !isWeb || !window.fetch) { fail(T.releasesOffline); return; }
     // body_html: release notes already rendered and sanitized by GitHub.
     fetch("https://api.github.com/repos/" + repo + "/releases?per_page=100",
           { headers: { "Accept": "application/vnd.github.html+json" } })
@@ -475,31 +623,32 @@
       .then(function (list) {
         var apps = list.filter(function (r) { return !r.draft && /^v\d/.test(r.tag_name || ""); });
         box.textContent = "";
-        if (!apps.length) { fail("Выпусков пока нет."); return; }
+        if (!apps.length) { fail(T.releasesNone); return; }
         var latestShown = false;
         apps.forEach(function (rel, i) {
           var version = rel.tag_name.replace(/^v/, "");
           var card = el("article", "card release");
           var head = el("div", "release-head");
           head.appendChild(el("h2", null, "onwin " + version));
-          if (!latestShown && !rel.prerelease) { head.appendChild(el("span", "badge", "последняя")); latestShown = true; }
-          else if (rel.prerelease) head.appendChild(el("span", "badge", "тестовая"));
+          if (!latestShown && !rel.prerelease) { head.appendChild(el("span", "badge", T.badgeLatest)); latestShown = true; }
+          else if (rel.prerelease) head.appendChild(el("span", "badge", T.badgePre));
           // Every version below 1.0 is a beta.
-          if (/^0\./.test(version)) head.appendChild(el("span", "badge badge-beta", "бета"));
+          if (/^0\./.test(version)) head.appendChild(el("span", "badge badge-beta", T.badgeBeta));
           var date = formatDate(rel.published_at);
           if (date) head.appendChild(el("span", "release-date", date));
           card.appendChild(head);
 
           var actions = el("div", "release-actions");
           (rel.assets || []).forEach(function (asset) {
-            var kind = /\.dmg$/i.test(asset.name) ? "Скачать DMG" : /-app\.zip$/i.test(asset.name) ? "Приложение без движка (zip)" : "";
+            var isDmg = /\.dmg$/i.test(asset.name);
+            var kind = isDmg ? T.dmg : /-app\.zip$/i.test(asset.name) ? T.zip : "";
             if (!kind) return;
-            var a = el("a", "btn " + (kind === "Скачать DMG" ? "btn-primary" : "btn-secondary"));
+            var a = el("a", "btn " + (isDmg ? "btn-primary" : "btn-secondary"));
             a.href = asset.browser_download_url;
             a.appendChild(el("span", null, kind + (formatSize(asset.size) ? " · " + formatSize(asset.size) : "")));
             actions.appendChild(a);
           });
-          var page = el("a", "btn btn-secondary", "Страница выпуска");
+          var page = el("a", "btn btn-secondary", T.releasePage);
           page.href = rel.html_url;
           actions.appendChild(page);
           card.appendChild(actions);
@@ -512,15 +661,15 @@
           var btn = el("button", "btn btn-primary");
           btn.type = "button";
           btn.setAttribute("data-copy-from", "#" + cmdId);
-          btn.appendChild(el("span", "label", "Скопировать"));
+          btn.appendChild(el("span", "label", T.copy));
           cmd.appendChild(btn);
-          card.appendChild(el("p", "muted small", "Установить именно эту версию через Терминал:"));
+          card.appendChild(el("p", "muted small", T.thisVersion));
           card.appendChild(cmd);
 
           if (rel.body_html) {
             var details = el("details", "release-notes");
             if (i === 0) details.open = true;
-            details.appendChild(el("summary", null, "Что нового и как установить"));
+            details.appendChild(el("summary", null, T.notes));
             var body = el("div");
             body.innerHTML = rel.body_html;
             details.appendChild(body);
@@ -529,7 +678,48 @@
           box.appendChild(card);
         });
       })
-      .catch(function () { fail("Не удалось загрузить список выпусков."); });
+      .catch(function () { fail(T.releasesFail); });
+  }
+
+  /* ---------- Выбор языка ---------- */
+
+  // A click on РУ / EN / 中文 / ҚАЗ is remembered, so the root page stops suggesting another language.
+  function onLangClick(event) {
+    var a = event.target.closest && event.target.closest(".lang-switch a[hreflang]");
+    if (a) saveLangChoice(langOf(a.getAttribute("hreflang")).code);
+  }
+
+  // Only on the Russian pages (site root), only until the visitor has chosen: a small bar offering
+  // the same page in the browser's language. Never redirects by itself.
+  function suggestLanguage() {
+    if (lang.code !== "ru" || readLangChoice() || !rootBase) return;
+    if (document.querySelector('meta[name="robots"][content*="noindex"]')) return;
+    var prefs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+    var first = String(prefs[0] || "").toLowerCase().split("-")[0];
+    if (!first || first === "ru" || first === "uk" || first === "be") return;
+    var target = langOf(first).code !== "ru" ? langOf(first) : LANGS[1];  // anyone else: English
+    var t = I18N[target.code];
+    var page = location.pathname.split("/").pop() || "index.html";
+    if (!/\.html$/.test(page)) page = "index.html";
+
+    var bar = el("aside", "lang-bar");
+    bar.setAttribute("lang", target.tag);
+    bar.setAttribute("aria-label", t.barGo);
+    var wrap = el("div", "wrap");
+    wrap.appendChild(el("p", null, t.bar));
+    var go = el("a", "lang-bar-go", t.barGo);
+    go.href = rootBase + target.dir + page + location.hash;
+    go.hreflang = target.tag;
+    go.addEventListener("click", function () { saveLangChoice(target.code); });
+    wrap.appendChild(go);
+    var close = el("button", "lang-bar-close", "×");
+    close.type = "button";
+    close.setAttribute("aria-label", t.barClose);
+    close.addEventListener("click", function () { saveLangChoice("ru"); bar.parentNode.removeChild(bar); });
+    wrap.appendChild(close);
+    bar.appendChild(wrap);
+    var skip = document.querySelector(".skip-link");
+    document.body.insertBefore(bar, skip ? skip.nextSibling : document.body.firstChild);
   }
 
   /* ---------- Запуск ---------- */
@@ -541,6 +731,8 @@
     setupRelease();
     setupReleasesPage();
     document.addEventListener("click", onCopyClick);
+    document.addEventListener("click", onLangClick);
+    suggestLanguage();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
