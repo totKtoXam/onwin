@@ -68,6 +68,11 @@
       var key = el.getAttribute("data-cmd");
       if (commands[key]) el.textContent = commands[key];
     });
+    // «Напишите нам» links go straight to the support chat; without one they keep their docs href.
+    each("[data-support-chat]", function (a) {
+      var chat = safeURL((cfg.support || {}).telegram);
+      if (chat) { a.href = chat; a.target = "_blank"; a.rel = "noopener"; }
+    });
     each("[data-repo-name]", function (el) { el.textContent = repo; });
     each("[data-install-url]", function (el) {
       el.textContent = installURL;
