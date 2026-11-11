@@ -48,6 +48,7 @@ REPO="${ONWIN_REPO:-$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/d
 OWNER="${REPO%%/*}"; NAME="${REPO#*/}"
 SITE_URL="https://$(echo "$OWNER" | tr '[:upper:]' '[:lower:]').github.io/$NAME"
 DL="https://github.com/$REPO/releases/download"
+SUPPORT_CHAT="https://t.me/+KGkGUTbpk0ZjNDEy"   # Telegram group «onwin — помощь» (same as site/config.js)
 
 json_get() { /usr/bin/plutil -extract "$2" raw -o - "$1"; }   # json_get <file> <key path>
 sha256() { /usr/bin/shasum -a 256 "$1" | cut -d' ' -f1; }
@@ -166,6 +167,10 @@ release_app() {
     version="$(sed -nE 's/.*static let string = "([^"]+)".*/\1/p' "$ROOT/app/Sources/OnwinCore/WineRunner.swift" | head -n 1)"
     [ -n "$version" ] || die "не найдена версия (OnwinVersion.string)"
     tag="v$version"
+    # Versions below 1.0 are beta: marked in the title only. Not a GitHub "pre-release" — that would hide it
+    # from releases/latest, which install.sh reads.
+    local beta_suffix=""
+    case "$version" in 0.*) beta_suffix=" (бета)" ;; esac
     if [ "$UPLOAD" = 1 ] && release_exists "$tag"; then
         die "релиз $tag уже есть — увеличьте OnwinVersion.string в app/Sources/OnwinCore/WineRunner.swift"
     fi
@@ -229,6 +234,7 @@ JSON
 
     local notes="$out/notes.md"
     cat > "$notes" <<MD
+$( [ -n "$beta_suffix" ] && printf '%s\n\n' "> **Бета-версия.** onwin ещё в разработке: что-то может работать нестабильно. Если что-то не так — напишите в группу поддержки: $SUPPORT_CHAT" )
 ## Установка
 
 Откройте Терминал и выполните:
@@ -251,7 +257,7 @@ MD
     fi
     note "публикую $tag"
     gh release create "$tag" --repo "$REPO" --target "$(git -C "$ROOT" rev-parse HEAD)" \
-        --title "onwin $version" --notes-file "$notes" --latest "${assets[@]}"
+        --title "onwin $version$beta_suffix" --notes-file "$notes" --latest "${assets[@]}"
 }
 
 case "$MODE" in

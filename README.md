@@ -2,6 +2,8 @@
 
 Windows-программы и игры на Mac с Apple Silicon — бесплатно и с открытым кодом.
 
+> **Бета.** onwin в разработке: многое уже работает, но возможны ошибки. Сообщить о проблеме — в группе поддержки в Telegram: https://t.me/+KGkGUTbpk0ZjNDEy
+
 **Сайт и установка:** https://totktoxam.github.io/onwin/
 
 ```bash

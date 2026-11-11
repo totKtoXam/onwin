@@ -461,6 +461,8 @@
           head.appendChild(el("h2", null, "onwin " + version));
           if (!latestShown && !rel.prerelease) { head.appendChild(el("span", "badge", "последняя")); latestShown = true; }
           else if (rel.prerelease) head.appendChild(el("span", "badge", "тестовая"));
+          // Every version below 1.0 is a beta.
+          if (/^0\./.test(version)) head.appendChild(el("span", "badge badge-beta", "бета"));
           var date = formatDate(rel.published_at);
           if (date) head.appendChild(el("span", "release-date", date));
           card.appendChild(head);

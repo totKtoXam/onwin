@@ -618,3 +618,7 @@ html { scroll-behavior: smooth; }
 .release .command { flex-wrap: wrap; }
 .release .command code { min-width: 0; overflow-wrap: anywhere; }
 .release-empty { color: var(--muted); }
+
+.beta-note { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+.badge-beta { background: rgba(255, 159, 10, 0.16); color: #a35a00; }
+@media (prefers-color-scheme: dark) { .badge-beta { color: #ffb340; } }
