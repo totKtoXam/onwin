@@ -9,28 +9,33 @@ extension Downloader {
     public static func fetch(_ download: Component.Download, progress: @escaping ProgressHandler) async throws -> URL {
         let file = try await fetch(download.url, fileName: download.fileName, progress: progress)
         guard let problem = verify(file, download.verification) else { return file }
-        progress(.status("\(download.fileName): \(problem) — скачиваю заново…"))
+        progress(.status(String(localized: "\(download.fileName): \(problem) — скачиваю заново…", bundle: .onwinCore)))
         try? FileManager.default.removeItem(at: file)
         let again = try await fetch(download.url, fileName: download.fileName, progress: progress)
         if let second = verify(again, download.verification) {
             try? FileManager.default.removeItem(at: again)
-            throw OnwinError("Файл \(download.fileName) с \(download.url.host ?? download.url.absoluteString) не прошёл проверку: \(second)")
+            let host = download.url.host ?? download.url.absoluteString
+            throw OnwinError(String(localized: "Файл \(download.fileName) с \(host) не прошёл проверку: \(second)",
+                                    bundle: .onwinCore))
         }
         return again
     }
 
-    /// nil when the file is fine, otherwise a Russian description of the problem.
+    /// nil when the file is fine, otherwise a (localized) description of the problem.
     public static func verify(_ file: URL, _ verification: Component.Download.Verification) -> String? {
         let size = ((try? FileManager.default.attributesOfItem(atPath: file.path))?[.size] as? NSNumber)?.int64Value ?? 0
-        guard size > 0 else { return "файл пустой" }
+        guard size > 0 else { return String(localized: "файл пустой", bundle: .onwinCore) }
         switch verification {
         case .sha256(let expected):
-            guard let actual = try? sha256(of: file) else { return "не удалось прочитать файл" }
-            return actual == expected.lowercased() ? nil : "SHA-256 \(actual) вместо \(expected)"
+            guard let actual = try? sha256(of: file) else { return String(localized: "не удалось прочитать файл", bundle: .onwinCore) }
+            return actual == expected.lowercased() ? nil
+                : String(localized: "SHA-256 \(actual) вместо \(expected)", bundle: .onwinCore)
         case .portableExecutable:
-            return isPortableExecutable(file) ? nil : "это не программа Windows (нет заголовка PE)"
+            return isPortableExecutable(file) ? nil
+                : String(localized: "это не программа Windows (нет заголовка PE)", bundle: .onwinCore)
         case .cabinet:
-            return header(of: file, count: 4) == Data("MSCF".utf8) ? nil : "это не архив CAB (нет заголовка MSCF)"
+            return header(of: file, count: 4) == Data("MSCF".utf8) ? nil
+                : String(localized: "это не архив CAB (нет заголовка MSCF)", bundle: .onwinCore)
         }
     }
 
@@ -76,17 +81,28 @@ public enum ComponentInstaller {
     private static func install(_ component: Component, into start: Space, progress: @escaping ProgressHandler,
                                 chain: inout Set<String>) async throws -> Space {
         if component.kind == .global {
-            throw OnwinError("\(component.name) ставится один раз для всех пространств: используйте «Установить D3DMetal» " +
-                             "в каталоге onwin или onwinctl d3dmetal-fetch.")
+            throw OnwinError(String(localized: "\(component.name) ставится один раз для всех пространств: используйте «Установить D3DMetal» в каталоге onwin или onwinctl d3dmetal-fetch.",
+                                    bundle: .onwinCore))
         }
-        guard start.isInitialized else { throw OnwinError("Пространство «\(start.name)» ещё не готово (нет system.reg).") }
+        guard start.isInitialized else {
+            throw OnwinError(String(localized: "Пространство «\(start.name)» ещё не готово (нет system.reg).", bundle: .onwinCore))
+        }
         guard chain.insert(component.id).inserted else { return start }
 
         var space = start
         for requirement in component.requires {
             guard let required = Catalog.component(requirement), !required.isInstalled(in: space.config) else { continue }
-            progress(.status("Для \(component.name) нужен \(required.name) — ставлю его первым"))
+            progress(.status(String(localized: "Для \(component.name) нужен \(required.name) — ставлю его первым", bundle: .onwinCore)))
             space = try await install(required, into: space, progress: progress, chain: &chain)
+        }
+
+        // Wine Mono / Gecko: added once to the engine and shared by every space (EngineAddons.swift)
+        // instead of the per-space .msi. The space registers them at its next start (prefix update).
+        if let addons = EngineAddons.addons(forComponent: component.id),
+           let engine = try? EngineManager.engine(for: space.config),
+           EngineAddons.missing(addons, in: engine).isEmpty || EngineAddons.canInstall(into: engine) {
+            try await EngineAddons.install(addons, into: engine, progress: progress)
+            return try markInstalled(component, in: space, progress: progress)
         }
 
         // 1. Downloads.
@@ -94,7 +110,8 @@ public enum ComponentInstaller {
         for (index, download) in component.downloads.enumerated() {
             try Task.checkCancellation()
             if component.downloads.count > 1 {
-                progress(.status("\(component.name): файл \(index + 1) из \(component.downloads.count)"))
+                progress(.status(String(localized: "\(component.name): файл \(index + 1) из \(component.downloads.count)",
+                                        bundle: .onwinCore)))
             }
             files[download.fileName] = try await Downloader.fetch(download, progress: progress)
         }
@@ -117,6 +134,12 @@ public enum ComponentInstaller {
         }
 
         // 3. Config.
+        return try markInstalled(component, in: space, progress: progress)
+    }
+
+    /// Records the component in the space's config (re-read from disk first) with its DLL overrides.
+    private static func markInstalled(_ component: Component, in start: Space, progress: ProgressHandler) throws -> Space {
+        var space = start
         if let fresh = try? Space(url: space.url) { space = fresh }
         for (dll, mode) in component.dllOverrides { space.config.dllOverrides[dll] = mode }
         let superseded = Set(component.replaces + component.legacyIDs)
@@ -125,7 +148,7 @@ public enum ComponentInstaller {
             space.config.installedComponents.append(component.id)
         }
         try space.save()
-        progress(InstallProgress(message: "\(component.name) установлен", fraction: 1))
+        progress(InstallProgress(message: String(localized: "\(component.name) установлен", bundle: .onwinCore), fraction: 1))
         return space
     }
 
@@ -185,13 +208,16 @@ public enum ComponentInstaller {
 
         var runner: WineRunner {
             get throws {
-                guard let r = runnerIfAny else { throw OnwinError("Для этого шага нужен Wine") }
+                guard let r = runnerIfAny else { throw OnwinError(String(localized: "Для этого шага нужен Wine", bundle: .onwinCore)) }
                 return r
             }
         }
 
         func file(_ name: String) throws -> URL {
-            guard let url = files[name] else { throw OnwinError("Внутренняя ошибка каталога: нет файла \(name) в \(component.id)") }
+            guard let url = files[name] else {
+                throw OnwinError(String(localized: "Внутренняя ошибка каталога: нет файла \(name) в \(component.id)",
+                                        bundle: .onwinCore))
+            }
             return url
         }
 
@@ -199,7 +225,7 @@ public enum ComponentInstaller {
             switch action {
             case .run(let name, let arguments, let overrides):
                 let file = try file(name)
-                progress(.status("Устанавливаю \(component.name): \(file.lastPathComponent)…"))
+                progress(.status(String(localized: "Устанавливаю \(component.name): \(file.lastPathComponent)…", bundle: .onwinCore)))
                 let runner = try runner
                 let r = try await runner.runAndWait(WineRunner.command(for: file, arguments: arguments),
                                                     extraOverrides: overrides,
@@ -207,13 +233,16 @@ public enum ComponentInstaller {
                 try await runner.waitForServer()
                 // Redistributables return 3010 ("reboot required") or 1638 ("a newer version is installed").
                 if !([0, 3010, 1638] as [Int32]).contains(where: { WineRunner.exitStatus(r.status, matches: $0) }) {
-                    throw OnwinError("Установщик \(file.lastPathComponent) завершился с кодом \(r.status)\n\(r.output.suffix(1500))")
+                    let output = String(r.output.suffix(1500))
+                    throw OnwinError(String(localized: "Установщик \(file.lastPathComponent) завершился с кодом \(Int(r.status))\n\(output)",
+                                            bundle: .onwinCore))
                 }
 
             case .extract(let extraction):
                 let copied = try await extract(extraction)
                 if !copied.isEmpty {
-                    progress(.status("Скопировано: " + copied.map(\.lastPathComponent).joined(separator: ", ")))
+                    let names = copied.map(\.lastPathComponent).joined(separator: ", ")
+                    progress(.status(String(localized: "Скопировано: \(names)", bundle: .onwinCore)))
                 }
 
             case .registry(let values):
@@ -224,7 +253,7 @@ public enum ComponentInstaller {
                     case .dword(let d): reg = reg.set(v.key, v.name, .dword(d))
                     }
                 }
-                progress(.status("Записываю настройки \(component.name) в реестр…"))
+                progress(.status(String(localized: "Записываю настройки \(component.name) в реестр…", bundle: .onwinCore)))
                 try await Registry.importReg(reg, runner: try runner)
 
             case .registerFonts(let fonts):
@@ -236,7 +265,7 @@ public enum ComponentInstaller {
                     reg = reg.set(#"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Fonts"#, name, .string(font.file))
                     reg = reg.set(#"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Fonts"#, name, .string(font.file))
                 }
-                progress(.status("Регистрирую шрифты…"))
+                progress(.status(String(localized: "Регистрирую шрифты…", bundle: .onwinCore)))
                 try await Registry.importReg(reg, runner: try runner)
 
             case .registerServers(let patterns, let destination):
@@ -254,7 +283,9 @@ public enum ComponentInstaller {
                     // The component's overrides reach the space config only after all actions:
                     // without them regsvr32 would load (and register) Wine's builtin instead.
                     let r = try await runner.runAndWait([tool, "/s", name], extraOverrides: component.dllOverrides)
-                    if r.status != 0 { progress(.status("regsvr32 \(name) вернул \(r.status) — пропускаю")) }
+                    if r.status != 0 {
+                        progress(.status(String(localized: "regsvr32 \(name) вернул \(Int(r.status)) — пропускаю", bundle: .onwinCore)))
+                    }
                 }
                 try await runner.waitForServer()
 
@@ -262,7 +293,7 @@ public enum ComponentInstaller {
                 try await removeWineMono()
 
             case .setWindowsVersion(let version):
-                progress(.status("Временно включаю \(version.displayName) для установщика…"))
+                progress(.status(String(localized: "Временно включаю \(version.displayName) для установщика…", bundle: .onwinCore)))
                 let runner = try runner
                 _ = try await runner.runAndWait(["winecfg", "-v", version.winecfgName])
                 try await runner.waitForServer()
@@ -270,7 +301,7 @@ public enum ComponentInstaller {
 
             case .restoreWindowsVersion:
                 let version = ((try? Space(url: space.url))?.config ?? space.config).windowsVersion
-                progress(.status("Возвращаю \(version.displayName)…"))
+                progress(.status(String(localized: "Возвращаю \(version.displayName)…", bundle: .onwinCore)))
                 let runner = try runner
                 _ = try await runner.runAndWait(["winecfg", "-v", version.winecfgName])
                 try await runner.waitForServer()
@@ -283,7 +314,7 @@ public enum ComponentInstaller {
             let cabextract = try HostTools.requireCabextract()
             let source = try file(e.source)
             guard let destination = ComponentInstaller.directory(for: e.destination, in: space) else {
-                progress(.status("32-битное пространство: 64-битные файлы из \(e.source) пропущены"))
+                progress(.status(String(localized: "32-битное пространство: 64-битные файлы из \(e.source) пропущены", bundle: .onwinCore)))
                 return []
             }
             let fm = FileManager.default
@@ -291,7 +322,8 @@ public enum ComponentInstaller {
             try fm.createDirectory(at: stage, withIntermediateDirectories: true)
             defer { try? fm.removeItem(at: stage) }
 
-            progress(.status("Распаковываю \(e.files.joined(separator: ", ")) из \(source.lastPathComponent)…"))
+            let wanted = e.files.joined(separator: ", ")
+            progress(.status(String(localized: "Распаковываю \(wanted) из \(source.lastPathComponent)…", bundle: .onwinCore)))
             var archives = [source]
             if !e.cabinets.isEmpty {
                 let outer = stage.appendingPathComponent("outer", isDirectory: true)
@@ -314,8 +346,8 @@ public enum ComponentInstaller {
             }
             if found.isEmpty {
                 if e.optional { return [] }
-                throw OnwinError("В \(source.lastPathComponent) не нашлось \(e.files.joined(separator: ", ")). " +
-                                 "Возможно, Microsoft изменила содержимое архива.")
+                throw OnwinError(String(localized: "В \(source.lastPathComponent) не нашлось \(wanted). Возможно, Microsoft изменила содержимое архива.",
+                                        bundle: .onwinCore))
             }
 
             try fm.createDirectory(at: destination, withIntermediateDirectories: true)
@@ -330,7 +362,8 @@ public enum ComponentInstaller {
                 if e.destination != .fonts && name.hasSuffix(".dll") {
                     let expected: PEImage.Machine = e.destination == .dll64 ? .amd64 : .i386
                     guard let image = PEImage.read(file), image.machine == expected else {
-                        throw OnwinError("\(name) из \(source.lastPathComponent) не того типа (ожидалась \(expected.displayName))")
+                        throw OnwinError(String(localized: "\(name) из \(source.lastPathComponent) не того типа (ожидалась \(expected.displayName))",
+                                            bundle: .onwinCore))
                     }
                 }
                 let target = destination.appendingPathComponent(name)
@@ -350,7 +383,9 @@ public enum ComponentInstaller {
             for line in list.output.split(whereSeparator: \.isNewline) where line.contains("Wine Mono") {
                 guard let guid = line.split(separator: "|").first.map({ $0.trimmingCharacters(in: .whitespaces) }),
                       guid.hasPrefix("{") else { continue }
-                progress(.status("Удаляю \(line.split(separator: "|").last.map(String.init) ?? "Wine Mono")…"))
+                let title = line.split(separator: "|").last.map(String.init) ?? "Wine Mono"
+                progress(.status(String(localized: "Удаляю \(title)…", bundle: .onwinCore)))
+
                 _ = try await runner.runAndWait(["uninstaller", "--remove", guid])
                 found = true
             }

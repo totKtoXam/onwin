@@ -54,25 +54,23 @@ struct RecipeEditorSheet: View {
 
     private var title: String {
         switch context.mode {
-        case .create: return "Новое приложение"
-        case .edit: return "Изменить «\(context.draft.name)»"
-        case .importing: return "Импорт рецепта"
-        case .afterInstall: return "Сохранить в каталог?"
+        case .create: return String(localized: "Новое приложение")
+        case .edit: return String(localized: "Изменить «\(context.draft.name)»")
+        case .importing: return String(localized: "Импорт рецепта")
+        case .afterInstall: return String(localized: "Сохранить в каталог?")
         }
     }
 
     private var subtitle: String {
         switch context.mode {
         case .create:
-            return "Рецепт для программы, которой нет в каталоге: откуда взять установщик, в какое пространство ставить и что запускать."
+            return String(localized: "Рецепт для программы, которой нет в каталоге: откуда взять установщик, в какое пространство ставить и что запускать.")
         case .edit:
-            return "Изменения применятся при следующей установке по рецепту."
+            return String(localized: "Изменения применятся при следующей установке по рецепту.")
         case .importing(let url):
-            return "Проверьте рецепт из «\(url.lastPathComponent)». Импорт ничего не устанавливает и не запускает — " +
-                "установка начнётся, только когда вы нажмёте «Установить» на карточке."
+            return String(localized: "Проверьте рецепт из «\(url.lastPathComponent)». Импорт ничего не устанавливает и не запускает — установка начнётся, только когда вы нажмёте «Установить» на карточке.")
         case .afterInstall:
-            return "Установка закончилась. onwin запомнит, как ставить эту программу, — в следующий раз она поставится " +
-                "из раздела «Мои приложения» в один щелчок."
+            return String(localized: "Установка закончилась. onwin запомнит, как ставить эту программу, — в следующий раз она поставится из раздела «Мои приложения» в один щелчок.")
         }
     }
 
@@ -123,15 +121,14 @@ struct RecipeEditorSheet: View {
     }
 
     private var cancelTitle: String {
-        if case .afterInstall = context.mode { return "Не сохранять" }
-        return "Отмена"
+        if case .afterInstall = context.mode { return String(localized: "Не сохранять") }
+        return String(localized: "Отмена")
     }
 
     private var saveTitle: String {
         switch context.mode {
-        case .importing: return "Добавить в «Мои приложения»"
-        case .afterInstall: return "Сохранить"
-        default: return "Сохранить"
+        case .importing: return String(localized: "Добавить в «Мои приложения»")
+        default: return String(localized: "Сохранить")
         }
     }
 
@@ -185,7 +182,7 @@ struct RecipeEditorSheet: View {
                         Text(installerFileTitle)
                             .lineLimit(1)
                             .truncationMode(.middle)
-                            .foregroundStyle(installerFileTitle == "не выбран" ? .secondary : .primary)
+                            .foregroundStyle(hasInstallerFile ? .primary : .secondary)
                             .help(draft.localFile?.path ?? installerFileTitle)
                         Button("Выбрать…") { chooseInstallerFile() }
                     }
@@ -219,18 +216,22 @@ struct RecipeEditorSheet: View {
         }
     }
 
+    private var hasInstallerFile: Bool {
+        draft.localFile != nil || draft.storedFileName != nil
+    }
+
     private var installerFileTitle: String {
         if let file = draft.localFile { return file.lastPathComponent }
         if let stored = draft.storedFileName { return stored }
-        return "не выбран"
+        return String(localized: "не выбран", comment: "Installer file: none chosen yet")
     }
 
     private var installerFooter: String {
         switch draft.installerKind {
         case .url:
-            return "Установщик скачивается при установке. С SHA-256 onwin откажется запускать файл, если издатель его подменил."
+            return String(localized: "Установщик скачивается при установке. С SHA-256 onwin откажется запускать файл, если издатель его подменил.")
         case .file:
-            return "Файл копируется в рецепт (~/Library/Application Support/onwin/Recipes/Files), так что рецепт продолжит работать, даже если оригинал удалить."
+            return String(localized: "Файл копируется в рецепт (~/Library/Application Support/onwin/Recipes/Files), так что рецепт продолжит работать, даже если оригинал удалить.")
         }
     }
 
@@ -244,7 +245,8 @@ struct RecipeEditorSheet: View {
             LabeledContent("Пространство") {
                 HStack(spacing: 6) {
                     TextField("Пространство", text: $draft.spaceName,
-                              prompt: Text(RecipeDraft.trimmed(draft.name).isEmpty ? "Имя пространства" : RecipeDraft.trimmed(draft.name)))
+                              prompt: RecipeDraft.trimmed(draft.name).isEmpty ? Text("Имя пространства")
+                                                                              : Text(verbatim: RecipeDraft.trimmed(draft.name)))
                         .labelsHidden()
                     if !model.spaces.isEmpty {
                         Menu("Существующие") {
@@ -280,18 +282,20 @@ struct RecipeEditorSheet: View {
     }
 
     private var spaceFooter: String {
+        let backendSummary = draft.backend.summary
         if let space = existingSpace {
-            return "Программа установится в существующее пространство «\(space.name)» (\(space.config.windowsVersion.displayName), " +
-                "\(space.config.graphicsBackend.displayName)); версия Windows и графика выше — для нового пространства. " + draft.backend.summary
+            let version = space.config.windowsVersion.displayName
+            let backend = space.config.graphicsBackend.displayName
+            return String(localized: "Программа установится в существующее пространство «\(space.name)» (\(version), \(backend)); версия Windows и графика выше — для нового пространства. \(backendSummary)")
         }
-        return "Будет создано новое пространство с этими настройками. " + draft.backend.summary
+        return String(localized: "Будет создано новое пространство с этими настройками. \(backendSummary)")
     }
 
     private var componentsSection: some View {
         Section {
             ForEach(componentCategories, id: \.self) { category in
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(category.rawValue)
+                    Text(category.title)
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
                     ForEach(selectableComponents.filter { $0.category == category }) { component in
@@ -392,9 +396,10 @@ struct RecipeEditorSheet: View {
     // MARK: Panels
 
     private func chooseInstallerFile() {
-        guard let url = OnwinPanels.chooseFile(title: "Установщик программы",
-                                               message: "Выберите установщик Windows-программы (.exe или .msi)",
-                                               prompt: "Выбрать", extensions: ["exe", "msi"]) else { return }
+        guard let url = OnwinPanels.chooseFile(title: String(localized: "Установщик программы"),
+                                               message: String(localized: "Выберите установщик Windows-программы (.exe или .msi)"),
+                                               prompt: String(localized: "Выбрать", comment: "Open panel button: choose the file"),
+                                               extensions: ["exe", "msi"]) else { return }
         draft.localFile = url
         draft.storedFileName = nil
         if RecipeDraft.trimmed(draft.name).isEmpty { draft.name = CatalogView.suggestedSpaceName(for: url) }
@@ -402,9 +407,9 @@ struct RecipeEditorSheet: View {
 
     private func chooseLaunchFile(in space: Space) {
         let panel = NSOpenPanel()
-        panel.title = "Программа для запуска"
-        panel.message = "Выберите .exe внутри пространства «\(space.name)»"
-        panel.prompt = "Выбрать"
+        panel.title = String(localized: "Программа для запуска")
+        panel.message = String(localized: "Выберите .exe внутри пространства «\(space.name)»")
+        panel.prompt = String(localized: "Выбрать", comment: "Open panel button: choose the file")
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>安装 onwin</title>
+  <meta name="description" content="如何在 Mac 上安装 onwin：在“终端”中运行一条命令，或使用 DMG 磁盘映像。另有更新和卸载说明。">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f6f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e1113" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="alternate" hreflang="ru" href="https://totktoxam.github.io/onwin/install.html">
+  <link rel="alternate" hreflang="en" href="https://totktoxam.github.io/onwin/en/install.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://totktoxam.github.io/onwin/zh/install.html">
+  <link rel="alternate" hreflang="kk" href="https://totktoxam.github.io/onwin/kk/install.html">
+  <link rel="alternate" hreflang="x-default" href="https://totktoxam.github.io/onwin/install.html">
+  <link rel="stylesheet" href="../style.css?v=13">
+  <script src="../config.js?v=5" defer></script>
+  <script src="../site.js?v=13" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <aside class="donate-bar" aria-label="支持 onwin">
+    <div class="wrap">
+      <p class="donate-bar-text">
+        <svg class="donate-bar-heart" width="16" height="16" fill="#e5484d" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        <span>onwin 免费且开源<span class="donate-bar-more">，它的发展全靠您的捐助。</span></span>
+      </p>
+      <a class="donate-bar-link" href="#donate">支持我们<span aria-hidden="true"> →</span></a>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="onwin — 返回首页">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+        onwin
+      </a>
+      <nav class="site-nav" aria-label="主菜单">
+        <ul>
+          <li><a href="install.html" aria-current="page">安装</a></li>
+          <li><a href="releases.html">更新</a></li>
+          <li><a href="docs.html">文档</a></li>
+          <li><a href="donate.html">支持我们</a></li>
+          <li><a href="licenses.html">许可证</a></li>
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+        </ul>
+      </nav>
+      <nav class="lang-switch" aria-label="语言">
+        <a href="../install.html" hreflang="ru" lang="ru" title="Русский">РУ</a>
+        <a href="../en/install.html" hreflang="en" lang="en" title="English">EN</a>
+        <a href="install.html" hreflang="zh-Hans" lang="zh-Hans" title="简体中文" aria-current="true">中文</a>
+        <a href="../kk/install.html" hreflang="kk" lang="kk" title="Қазақша">ҚАЗ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap page-head">
+      <h1>安装 onwin</h1>
+      <p class="lead">两种方式，任选其一。结果相同：onwin 会出现在“应用程序”文件夹中。</p>
+      <p class="beta-note"><span class="badge">测试版</span> 目前提供的是测试版：onwin 仍在开发中，部分功能可能不够稳定。如果遇到问题，请<a href="#support">联系我们</a>。</p>
+    </div>
+
+    <section class="section" aria-label="安装方式" style="padding-top: 24px">
+      <div class="wrap install-choice">
+        <div class="card install-way">
+          <span class="eyebrow">方式 1</span>
+          <h2 id="dmg-title">下载应用</h2>
+          <p class="muted">普通的磁盘映像（DMG），和其他 Mac 程序一样。首次启动时 onwin 会自行下载 Wine 引擎，需要联网。</p>
+          <div class="download" data-release>
+            <a class="btn btn-primary btn-lg" href="https://github.com/OWNER/onwin/releases/latest" data-release-link>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>
+              <span class="label">下载 onwin（DMG）</span>
+            </a>
+            <span class="meta" data-release-meta>GitHub 上的最新版本</span>
+          </div>
+          <p class="muted small offline-note" data-offline hidden>这台 Mac 无法联网？请下载<a href="releases.html" data-offline-link>离线版</a><span data-offline-size></span>：已包含 Wine 引擎。</p>
+          <ol class="steps">
+            <li><h3>打开下载的文件</h3><p>它会出现在“下载”文件夹中。将 Onwin 拖到“应用程序”文件夹。</p></li>
+            <li><h3>打开 Onwin</h3><p>首次打开时，macOS 会提示无法验证此应用。点按“完成”。</p></li>
+            <li><h3>允许运行一次</h3><p>“系统设置” → “隐私与安全性” → 在底部点按“仍要打开”。<a href="#gatekeeper">为什么需要这样做</a></p></li>
+          </ol>
+        </div>
+
+        <div class="card install-way">
+          <span class="eyebrow">方式 2</span>
+          <h2 id="terminal-title">通过“终端” <span class="badge">无安全提示</span></h2>
+          <p class="muted">只需一条命令，onwin 就会自动安装，无需在“系统设置”中进行任何操作。</p>
+          <div class="command">
+            <code id="cmd-install" data-cmd="install">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash</code>
+            <button class="btn btn-primary btn-lg" type="button" data-copy-from="#cmd-install">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></svg>
+              <span class="label">复制</span>
+            </button>
+          </div>
+          <ol class="steps">
+            <li><h3>打开“终端”</h3><p>按下 <kbd>⌘</kbd> + <kbd>空格键</kbd>，输入“终端”，然后按 <kbd>Return</kbd>。</p></li>
+            <li><h3>粘贴命令</h3><p>在“终端”窗口中按下 <kbd>⌘</kbd> + <kbd>V</kbd>。</p></li>
+            <li><h3>按下 Return</h3><p>等待出现 <span lang="ru">«Готово»</span>（俄语，意为“完成”）。如果 Mac 上没有 Rosetta 2，安装程序会提示您安装。</p></li>
+          </ol>
+          <p class="muted small">安装程序目前用俄语显示提示信息，操作步骤与上面相同。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="updates-title">
+      <div class="wrap narrow">
+        <div class="card">
+          <h2 id="updates-title">更新</h2>
+          <p>获取新版本的方法相同：下载新的磁盘映像，或在“终端”中运行同一条命令。命令只会下载有变化的部分。在接下来的版本中，onwin 将会主动提示更新：只需点一下按钮，无需再次授权。</p>
+          <p class="muted small">所有版本、更新内容以及安装任意版本的命令，都在<a href="releases.html">“更新”</a>页面。</p>
+          <dl class="paths" style="margin-top: 16px">
+            <div class="path-row"><dt>应用</dt><dd>“应用程序”文件夹（<code>/Applications</code>）中的 <code>Onwin.app</code></dd></div>
+            <div class="path-row"><dt>Wine 引擎</dt><dd>通过“终端”安装时，单独存放在 <code>~/Library/Application Support/onwin/Engines</code>；使用磁盘映像时，位于应用内部</dd></div>
+          </dl>
+          <p class="muted small">运行前可以先阅读安装脚本：<a href="../install.sh" data-install-url>install.sh</a>。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="gatekeeper" aria-labelledby="gk-title">
+      <div class="wrap narrow">
+        <div class="note">
+          <h2 id="gk-title" style="font-size: 1.2rem">为什么 macOS 会要求确认</h2>
+          <p>Apple 只为购买了付费开发者订阅（每年 99 美元）的程序进行验证（公证）。onwin 目前还没有这项订阅，所以首次打开从浏览器下载的应用时，macOS 会比较谨慎，要求您确认信任这个程序。只需操作一次：</p>
+          <ol class="list">
+            <li>从“应用程序”文件夹打开 Onwin。会出现“macOS 无法验证此应用”之类的提示，点按“完成”。</li>
+            <li>打开“系统设置” → “隐私与安全性”。</li>
+            <li>向下滚动到“安全性”部分，在关于 Onwin 的提示旁点按“仍要打开”。用密码或触控 ID 确认。</li>
+          </ol>
+          <p>onwin 的代码是开源的，任何人都可以检查。通过“终端”安装则不需要这些步骤，因为 macOS 不会把用命令下载的文件标记为“来自互联网”。捐款将帮助支付 Apple 的订阅费用，届时这一步就会完全消失。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="uninstall-title">
+      <div class="wrap narrow">
+        <div class="card">
+          <h2 id="uninstall-title">卸载</h2>
+          <p class="muted">此命令会删除应用和引擎。您的空间（包括已安装的程序、游戏和存档）都会保留。</p>
+          <div class="command small-cmd">
+            <code id="cmd-uninstall" data-cmd="uninstall">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#cmd-uninstall">
+              <span class="label">复制</span>
+            </button>
+          </div>
+          <p style="margin-top: 20px">如果要连空间一起删除，请加上 <code>--purge</code>。此操作无法撤销：空间中的程序和存档都会被删除。</p>
+          <div class="command small-cmd">
+            <code id="cmd-purge" data-cmd="purge">curl -fsSL https://OWNER.github.io/onwin/install.sh | bash -s -- --uninstall --purge</code>
+            <button class="btn btn-primary" type="button" data-copy-from="#cmd-purge">
+              <span class="label">复制</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section support-section" id="support" aria-labelledby="support-title-install">
+      <div class="wrap narrow">
+        <div class="card">
+          <div>
+            <span class="eyebrow">帮助</span>
+            <h2 id="support-title-install">遇到问题？联系我们</h2>
+            <p>用您自己的话描述发生了什么。也可以先看看<a href="docs.html#troubleshooting">“遇到问题怎么办”</a>中的建议。Telegram 支持群组使用俄语交流；如果想用英语联系，可以在 GitHub Issues 上提交问题。</p>
+          </div>
+          <div data-support="compact">
+            <noscript><p class="muted">联系方式见文档中的<a href="docs.html#troubleshooting">“遇到问题怎么办”</a>部分。</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section donate-section" id="donate" aria-labelledby="donate-title">
+      <div class="wrap narrow">
+        <div class="card donate-block">
+          <div>
+            <span class="eyebrow">支持项目</span>
+            <h2 id="donate-title">喜欢 onwin 吗？</h2>
+            <p>帮助我们把它做得更好，将来还能用 Apple 证书为应用签名，让安装变得更简单。 <a href="donate.html">了解更多</a></p>
+          </div>
+          <div class="donate-list" data-donate="compact">
+            <noscript><p class="muted">支持方式列在<a href="donate.html">“支持我们”</a>页面上。</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
+          onwin
+        </a>
+        <ul class="footer-links">
+          <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
+          <li><a href="install.html">安装</a></li>
+          <li><a href="releases.html">更新</a></li>
+          <li><a href="docs.html">文档</a></li>
+          <li><a href="donate.html">支持我们</a></li>
+          <li><a href="licenses.html">许可证</a></li>
+        </ul>
+      </div>
+      <p class="footer-meta">自由软件，采用 GPL-3.0 许可证。</p>
+      <p class="disclaimer">Windows、Mac、Steam 及其他产品名称归其各自所有者所有；onwin 是一个独立项目。</p>
+      <p class="disclaimer analytics-note" data-analytics-note hidden>本网站统计访问量，不使用 Cookie，也不收集个人数据。</p>
+    </div>
+  </footer>
+</body>
+</html>

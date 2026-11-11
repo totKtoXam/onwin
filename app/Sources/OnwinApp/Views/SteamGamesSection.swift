@@ -113,18 +113,20 @@ struct SteamGamesSection: View {
                     Label("Показать папку игры", systemImage: "folder")
                 }
                 Button {
-                    model.openSteamURL(Steam.validateURL(game.appID), title: "Steam — проверка «\(game.name)»", in: space)
+                    model.openSteamURL(Steam.validateURL(game.appID),
+                                       title: String(localized: "Steam — проверка «\(game.name)»"), in: space)
                 } label: {
                     Label("Проверить целостность файлов", systemImage: "checkmark.shield")
                 }
                 Button {
-                    model.openSteamURL(Steam.storeURL(game.appID), title: "Steam — «\(game.name)»", in: space)
+                    model.openSteamURL(Steam.storeURL(game.appID), title: String(localized: "Steam — «\(game.name)»"), in: space)
                 } label: {
                     Label("Страница в магазине Steam", systemImage: "cart")
                 }
                 Divider()
                 Button(role: .destructive) {
-                    model.openSteamURL(Steam.uninstallURL(game.appID), title: "Steam — удаление «\(game.name)»", in: space)
+                    model.openSteamURL(Steam.uninstallURL(game.appID),
+                                       title: String(localized: "Steam — удаление «\(game.name)»"), in: space)
                 } label: {
                     Label("Удалить через Steam…", systemImage: "trash")
                 }
@@ -187,7 +189,7 @@ private struct SteamGameCard: View {
                     Image(systemName: "arrow.triangle.2.circlepath")
                     Text("Нужно обновление")
                 } else {
-                    Text("Steam")
+                    Text(verbatim: "Steam")
                 }
             }
             .font(.caption)

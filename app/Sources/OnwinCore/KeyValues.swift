@@ -56,7 +56,7 @@ public indirect enum KeyValues: Hashable, Sendable {
     public struct ParseError: Error, LocalizedError, Sendable {
         public var message: String
         public var line: Int
-        public var errorDescription: String? { "VDF, строка \(line): \(message)" }
+        public var errorDescription: String? { String(localized: "VDF, строка \(line): \(message)", bundle: .onwinCore) }
     }
 
     /// Parses a whole file. The result is a section holding the top-level entries
@@ -112,7 +112,7 @@ public indirect enum KeyValues: Hashable, Sendable {
                 index += 1
                 var s = String.UnicodeScalarView()
                 while true {
-                    guard index < scalars.count else { throw error("строка в кавычках не закрыта") }
+                    guard index < scalars.count else { throw error(String(localized: "строка в кавычках не закрыта", bundle: .onwinCore)) }
                     let ch = scalars[index]
                     index += 1
                     if ch == "\"" { break }
@@ -162,12 +162,12 @@ public indirect enum KeyValues: Hashable, Sendable {
                 switch token {
                 case .end:
                     if topLevel { return entries }
-                    throw error("не хватает «}»")
+                    throw error(String(localized: "не хватает «}»", bundle: .onwinCore))
                 case .close:
-                    if topLevel { throw error("лишняя «}»") }
+                    if topLevel { throw error(String(localized: "лишняя «}»", bundle: .onwinCore)) }
                     return entries
                 case .open:
-                    throw error("«{» без имени раздела")
+                    throw error(String(localized: "«{» без имени раздела", bundle: .onwinCore))
                 case .text(let key):
                     if topLevel, key.hasPrefix("#") {
                         // #include "file.vdf" / #base "file.vdf"
@@ -181,7 +181,7 @@ public indirect enum KeyValues: Hashable, Sendable {
                     case .text(let value):
                         entries.append(Entry(key: key, value: .string(value)))
                     case .close, .end:
-                        throw error("у ключа «\(key)» нет значения")
+                        throw error(String(localized: "у ключа «\(key)» нет значения", bundle: .onwinCore))
                     }
                     skipCondition()
                 }

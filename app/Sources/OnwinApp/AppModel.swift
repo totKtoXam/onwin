@@ -122,7 +122,7 @@ struct TaskState: Identifiable, Equatable {
     var error: String?
     var started: Date
 
-    init(title: String, message: String = "Подготовка…") {
+    init(title: String, message: String = String(localized: "Подготовка…")) {
         self.id = UUID()
         self.title = title
         self.message = message
@@ -161,16 +161,16 @@ enum WineTool: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .winecfg: return "Настройка Wine"
-        case .regedit: return "Редактор реестра"
-        case .taskmgr: return "Диспетчер задач"
-        case .cmd: return "Командная строка"
-        case .control: return "Панель управления"
-        case .gameControllers: return "Игровые контроллеры"
-        case .internetSettings: return "Свойства интернета"
-        case .explorer: return "Проводник"
-        case .uninstaller: return "Установка и удаление программ"
-        case .reboot: return "Перезагрузить Windows"
+        case .winecfg: return String(localized: "Настройка Wine")
+        case .regedit: return String(localized: "Редактор реестра")
+        case .taskmgr: return String(localized: "Диспетчер задач")
+        case .cmd: return String(localized: "Командная строка")
+        case .control: return String(localized: "Панель управления")
+        case .gameControllers: return String(localized: "Игровые контроллеры")
+        case .internetSettings: return String(localized: "Свойства интернета")
+        case .explorer: return String(localized: "Проводник")
+        case .uninstaller: return String(localized: "Установка и удаление программ")
+        case .reboot: return String(localized: "Перезагрузить Windows")
         }
     }
 
@@ -239,10 +239,9 @@ final class AppModel {
     @ObservationIgnored private var setupChain: Task<Void, Never>?
     @ObservationIgnored private var pendingSetups = 0
 
-    static let cancelledMessage = "Операция отменена."
+    static let cancelledMessage = String(localized: "Операция отменена.")
 
-    static let noEngineMessage = "Движок Wine не установлен. Соберите его скриптом engine/build.sh из папки проекта onwin " +
-        "или установите готовый движок в \(OnwinPaths.engines.path)."
+    static let noEngineMessage = String(localized: "Движок Wine ещё не установлен: onwin скачивает его сам при первом запуске (экран «Подготовка onwin»). Запуск программ станет доступен, когда загрузка закончится.")
 
     init() {
         try? OnwinPaths.ensureLayout()
@@ -385,7 +384,7 @@ final class AppModel {
     func performTask<T: Sendable>(_ title: String, autoClose: Bool = true,
                                   _ work: @escaping (TaskContext) async throws -> T) async -> T? {
         if let current = activeTask, !current.isFinished {
-            report("Дождитесь окончания операции «\(current.title)».")
+            report(String(localized: "Дождитесь окончания операции «\(current.title)»."))
             return nil
         }
         await closeShellSheets()
@@ -433,7 +432,7 @@ final class AppModel {
         task.error = error
         if error == nil {
             task.fraction = 1
-            task.message = "Готово"
+            task.message = String(localized: "Готово", comment: "Status of a finished operation")
         }
         activeTask = task
         if error == nil && autoClose {
@@ -496,7 +495,7 @@ final class AppModel {
     func createSpace(name: String, windowsVersion: WindowsVersion, backend: GraphicsBackend) async -> Space? {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
-            report("Укажите имя пространства.")
+            report(String(localized: "Укажите имя пространства."))
             return nil
         }
         guard let engine = defaultEngine else {
@@ -504,11 +503,11 @@ final class AppModel {
             return nil
         }
         if SpaceManager.find(trimmed) != nil {
-            report("Пространство «\(trimmed)» уже существует.")
+            report(String(localized: "Пространство «\(trimmed)» уже существует."))
             return nil
         }
-        let created = await performTask("Создание пространства «\(trimmed)»") { (context: TaskContext) async throws -> Space in
-            context.status("Создаю пространство «\(trimmed)» (\(windowsVersion.displayName))…")
+        let created = await performTask(String(localized: "Создание пространства «\(trimmed)»")) { (context: TaskContext) async throws -> Space in
+            context.status(String(localized: "Создаю пространство «\(trimmed)» (\(windowsVersion.displayName))…"))
             return try await SpaceManager.create(name: trimmed, windowsVersion: windowsVersion,
                                                   backend: backend, engine: engine, log: context.log)
         }
@@ -534,7 +533,7 @@ final class AppModel {
         let trimmed = newName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmed != space.name else { return }
         guard !isRunning(space.id) else {
-            report("Закройте программы пространства «\(space.name)», прежде чем переименовывать его.")
+            report(String(localized: "Закройте программы пространства «\(space.name)», прежде чем переименовывать его."))
             return
         }
         let current = self.space(id: space.id) ?? space
@@ -550,9 +549,9 @@ final class AppModel {
     @discardableResult
     func duplicate(_ space: Space) async -> Space? {
         let source = self.space(id: space.id) ?? space
-        let newName = SpaceManager.availableName("\(source.name) копия")
-        let copy = await performTask("Копирование «\(source.name)»") { (context: TaskContext) async throws -> Space in
-            context.status("Копирую файлы пространства в «\(newName)»…")
+        let newName = SpaceManager.availableName(String(localized: "\(source.name) копия", comment: "Name of a duplicated space"))
+        let copy = await performTask(String(localized: "Копирование «\(source.name)»")) { (context: TaskContext) async throws -> Space in
+            context.status(String(localized: "Копирую файлы пространства в «\(newName)»…"))
             return try await Task.detached {
                 try SpaceManager.duplicate(source, as: newName)
             }.value
@@ -564,15 +563,15 @@ final class AppModel {
 
     func archive(_ space: Space, to url: URL) async {
         let source = self.space(id: space.id) ?? space
-        await performTask("Архивирование «\(source.name)»") { (context: TaskContext) async throws -> Void in
-            context.status("Упаковываю пространство в \(url.lastPathComponent)…")
+        await performTask(String(localized: "Архивирование «\(source.name)»")) { (context: TaskContext) async throws -> Void in
+            context.status(String(localized: "Упаковываю пространство в \(url.lastPathComponent)…"))
             try await SpaceManager.archive(source, to: url)
         }
     }
 
     func archiveInteractively(_ space: Space) {
         if isRunning(space.id) {
-            report("Закройте программы пространства «\(space.name)», прежде чем архивировать его.")
+            report(String(localized: "Закройте программы пространства «\(space.name)», прежде чем архивировать его."))
             return
         }
         guard let url = OnwinPanels.saveArchive(suggestedName: space.name) else { return }
@@ -581,8 +580,8 @@ final class AppModel {
 
     @discardableResult
     func restore(from url: URL) async -> Space? {
-        let restored = await performTask("Восстановление из архива") { (context: TaskContext) async throws -> Space in
-            context.status("Распаковываю \(url.lastPathComponent)…")
+        let restored = await performTask(String(localized: "Восстановление из архива")) { (context: TaskContext) async throws -> Space in
+            context.status(String(localized: "Распаковываю \(url.lastPathComponent)…"))
             return try await SpaceManager.restore(from: url)
         }
         reload()
@@ -640,11 +639,11 @@ final class AppModel {
     private func applySetup(spaceID: UUID, windowsVersion: Bool, registry: Bool) {
         let previous = setupChain
         pendingSetups += 1
-        backgroundActivity = "Применяю настройки пространства…"
+        backgroundActivity = String(localized: "Применяю настройки пространства…")
         setupChain = Task { @MainActor in
             await previous?.value
             if let space = self.space(id: spaceID) {
-                self.backgroundActivity = "Применяю настройки «\(space.name)»…"
+                self.backgroundActivity = String(localized: "Применяю настройки «\(space.name)»…")
                 do {
                     if windowsVersion { try await SpaceSetup.applyWindowsVersion(space) }
                     if registry { try await SpaceSetup.applyRegistrySettings(space) }
@@ -684,7 +683,7 @@ final class AppModel {
     func run(file: URL, in space: Space, arguments: [String] = []) -> RunningProgram? {
         let current = self.space(id: space.id) ?? space
         guard current.isInitialized else {
-            report("Пространство «\(current.name)» ещё не готово (нет system.reg). Создайте его заново.")
+            report(String(localized: "Пространство «\(current.name)» ещё не готово (нет system.reg). Создайте его заново."))
             return nil
         }
         return launchPreparing(file, in: current, title: file.deletingPathExtension().lastPathComponent) { [weak self] b in
@@ -700,7 +699,7 @@ final class AppModel {
     func run(files: [URL], in space: Space) {
         let runnable = files.filter(WineFileTypes.isRunnable)
         guard !runnable.isEmpty else {
-            report("onwin запускает файлы .exe, .msi, .lnk, .bat и .cmd.")
+            report(String(localized: "onwin запускает файлы .exe, .msi, .lnk, .bat и .cmd."))
             return
         }
         guard hasEngine else {
@@ -757,7 +756,7 @@ final class AppModel {
     func openFiles(_ urls: [URL], preferredSpaceID: UUID? = nil) {
         let runnable = urls.filter(WineFileTypes.isRunnable)
         guard !runnable.isEmpty else {
-            report("onwin запускает файлы .exe, .msi, .lnk, .bat и .cmd.")
+            report(String(localized: "onwin запускает файлы .exe, .msi, .lnk, .bat и .cmd."))
             return
         }
         guard hasEngine else {
@@ -765,7 +764,7 @@ final class AppModel {
             return
         }
         guard !spaces.isEmpty else {
-            report("Сначала создайте пространство — в нём будет запускаться программа.")
+            report(String(localized: "Сначала создайте пространство — в нём будет запускаться программа."))
             showNewSpaceSheet = true
             return
         }
@@ -799,9 +798,12 @@ final class AppModel {
             let advice = await self.adviseAfterFailure(program)
             guard quickExit else { return }
             let names = advice.compactMap { $0.component?.name }
-            let hint = names.isEmpty ? "Подробности — в журнале."
-                : "Похоже, не хватает: \(names.prefix(3).joined(separator: ", ")) — установить можно на странице пространства."
-            self.report("«\(program.title)» завершилась с кодом \(status) сразу после запуска. \(hint)", log: program.logURL)
+            let missing = names.prefix(3).joined(separator: ", ")
+            let code = Int(status)
+            self.report(names.isEmpty
+                ? String(localized: "«\(program.title)» завершилась с кодом \(code) сразу после запуска. Подробности — в журнале.")
+                : String(localized: "«\(program.title)» завершилась с кодом \(code) сразу после запуска. Похоже, не хватает: \(missing) — установить можно на странице пространства."),
+                log: program.logURL)
         }
     }
 
@@ -814,7 +816,7 @@ final class AppModel {
             return nil
         }
         let target = space.flatMap { self.space(id: $0.id) } ?? space
-        let result = await performTask("Установка \(recipe.name)", autoClose: false) { (context: TaskContext) async throws -> Space in
+        let result = await performTask(String(localized: "Установка \(recipe.name)"), autoClose: false) { (context: TaskContext) async throws -> Space in
             // User recipes: with detection of the installed program (AppModel+UserRecipes.swift).
             try await self.installDetecting(recipe: recipe, into: target, context: context)
         }
@@ -835,7 +837,7 @@ final class AppModel {
             return false
         }
         let target = self.space(id: space.id) ?? space
-        let result = await performTask("Установка \(component.name)", autoClose: false) { (context: TaskContext) async throws -> Space in
+        let result = await performTask(String(localized: "Установка \(component.name)"), autoClose: false) { (context: TaskContext) async throws -> Space in
             try await Installer.install(component: component, into: target, progress: context.progress)
         }
         reload()
@@ -846,7 +848,7 @@ final class AppModel {
 
     @discardableResult
     func importD3DMetal(from url: URL) async -> Bool {
-        let ok = await performTask("Импорт D3DMetal") { (context: TaskContext) async throws -> Bool in
+        let ok = await performTask(String(localized: "Импорт D3DMetal")) { (context: TaskContext) async throws -> Bool in
             if url.pathExtension.lowercased() == "dmg" {
                 try await D3DMetalImporter.importFound(.diskImage(url), progress: context.progress)
                 return true
@@ -876,8 +878,8 @@ final class AppModel {
 
     @discardableResult
     func installEngine(from url: URL) async -> Engine? {
-        let engine = await performTask("Установка движка") { (context: TaskContext) async throws -> Engine in
-            context.status("Копирую движок из \(url.lastPathComponent)…")
+        let engine = await performTask(String(localized: "Установка движка")) { (context: TaskContext) async throws -> Engine in
+            context.status(String(localized: "Копирую движок из \(url.lastPathComponent)…"))
             return try await Task.detached {
                 try EngineManager.install(from: url)
             }.value
@@ -887,9 +889,9 @@ final class AppModel {
     }
 
     func installEngineInteractively() {
-        guard let url = OnwinPanels.chooseFolder(title: "Установка движка",
-                                                 message: "Выберите папку собранного движка (в ней должен быть bin/wine)",
-                                                 prompt: "Установить") else { return }
+        guard let url = OnwinPanels.chooseFolder(title: String(localized: "Установка движка"),
+                                                 message: String(localized: "Выберите папку собранного движка (в ней должен быть bin/wine)"),
+                                                 prompt: String(localized: "Установить")) else { return }
         Task { await installEngine(from: url) }
     }
 

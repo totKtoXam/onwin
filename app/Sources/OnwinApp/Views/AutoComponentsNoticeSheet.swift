@@ -26,7 +26,7 @@ struct AutoComponentsNoticeSheet: View {
     private func d3dmetal(_ offer: AutoComponentsNotice.D3DMetalOffer) -> some View {
         VStack(alignment: .leading, spacing: 18) {
             header(symbol: "macbook", tint: OnwinTheme.accent,
-                   title: "«\(offer.programTitle)» лучше работает с D3DMetal",
+                   title: String(localized: "«\(offer.programTitle)» лучше работает с D3DMetal"),
                    subtitle: offer.reason)
 
             VStack(alignment: .leading, spacing: 10) {
@@ -62,8 +62,8 @@ struct AutoComponentsNoticeSheet: View {
     private func failureView(_ failure: AutoComponentsNotice.Failure) -> some View {
         VStack(alignment: .leading, spacing: 18) {
             header(symbol: "exclamationmark.triangle.fill", tint: .orange,
-                   title: "«\(failure.programTitle)» так и не запустилась",
-                   subtitle: "onwin установил то, чего ей не хватало, и запустил её ещё раз, но она снова завершилась с ошибкой (код \(failure.exitStatus)).")
+                   title: String(localized: "«\(failure.programTitle)» так и не запустилась"),
+                   subtitle: String(localized: "onwin установил то, чего ей не хватало, и запустил её ещё раз, но она снова завершилась с ошибкой (код \(Int(failure.exitStatus)))."))
 
             VStack(alignment: .leading, spacing: 10) {
                 if !failure.installed.isEmpty {
@@ -121,7 +121,7 @@ struct AutoComponentsNoticeSheet: View {
         }
     }
 
-    private func step(_ symbol: String, _ text: String) -> some View {
+    private func step(_ symbol: String, _ text: LocalizedStringKey) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 10) {
             Image(systemName: symbol)
                 .foregroundStyle(OnwinTheme.accent)

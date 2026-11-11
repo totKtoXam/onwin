@@ -199,7 +199,8 @@ extension AppModel {
             return false
         }
         let target = self.space(id: space.id) ?? space
-        let title = list.count == 1 ? "Установка \(list[0].name)" : "Установка компонентов (\(list.count))"
+        let title = list.count == 1 ? String(localized: "Установка \(list[0].name)")
+                                    : String(localized: "Установка компонентов (\(list.count))")
         let result = await performTask(title, autoClose: false) { (context: TaskContext) async throws -> Space in
             var current = target
             for (index, component) in list.enumerated() where !component.isInstalled(in: current.config) {

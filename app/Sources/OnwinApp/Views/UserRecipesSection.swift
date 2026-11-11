@@ -19,8 +19,8 @@ struct UserRecipesSection: View {
 
     var body: some View {
         if isVisible {
-            CatalogSection(title: AppRecipe.Category.user.rawValue, symbol: "person.crop.square",
-                           subtitle: "Программы, которых нет в каталоге: свои рецепты установки") {
+            CatalogSection(title: AppRecipe.Category.user.title, symbol: "person.crop.square",
+                           subtitle: String(localized: "Программы, которых нет в каталоге: свои рецепты установки")) {
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 14) {
                     ForEach(visibleRecipes) { recipe in
                         UserRecipeCard(recipe: recipe,
@@ -67,13 +67,16 @@ struct UserRecipesSection: View {
 
     var visibleRecipes: [UserRecipe] {
         store.recipes.filter { r in
-            matches([r.name, r.summary, r.notes, r.spaceName, r.id, AppRecipe.Category.user.rawValue]
+            matches([r.name, r.summary, r.notes, r.spaceName, r.id, AppRecipe.Category.user.title]
                     + r.components.compactMap { Catalog.component($0)?.name })
         }
     }
 
     private var showsAddCard: Bool {
-        words.isEmpty || matches(["Добавить приложение", "мои приложения", "рецепт", "импорт", "onwinrecipe"])
+        words.isEmpty || matches([String(localized: "Добавить приложение"), AppRecipe.Category.user.title,
+                                   String(localized: "рецепт", comment: "Search keyword for the «Add app» card"),
+                                   String(localized: "импорт", comment: "Search keyword for the «Add app» card"),
+                                   "onwinrecipe"])
     }
 
     private var isVisible: Bool { !visibleRecipes.isEmpty || showsAddCard }
@@ -120,7 +123,7 @@ struct UserRecipeCard: View {
                 VStack(alignment: .leading, spacing: 3) {
                     Text(recipe.name)
                         .font(.headline)
-                    Text(recipe.summary.isEmpty ? "Моё приложение" : recipe.summary)
+                    Text(recipe.summary.isEmpty ? String(localized: "Моё приложение") : recipe.summary)
                         .font(.callout)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -146,13 +149,13 @@ struct UserRecipeCard: View {
                 CatalogTag(text: recipe.windowsVersion.displayName, symbol: "macwindow")
                 CatalogTag(text: recipe.backend.displayName, symbol: "cpu")
                 if let installer = recipe.installer {
-                    CatalogTag(text: installer.isLocalFile ? "файл" : "ссылка",
+                    CatalogTag(text: installer.isLocalFile ? String(localized: "файл", comment: "Tag: the installer is a local file")
+                                                     : String(localized: "ссылка", comment: "Tag: the installer is downloaded from a link"),
                                symbol: installer.isLocalFile ? "doc" : "link")
                         .help(installer.url ?? installer.effectiveFileName)
                 }
                 if !recipe.components.isEmpty {
-                    CatalogTag(text: "+ \(recipe.components.count) " +
-                               CatalogView.plural(recipe.components.count, "компонент", "компонента", "компонентов"),
+                    CatalogTag(text: String(localized: "+ \(recipe.components.count) компонентов"),
                                symbol: "puzzlepiece.extension")
                         .help(recipe.components.map { Catalog.component($0)?.name ?? $0 }.joined(separator: ", "))
                 }
@@ -240,8 +243,7 @@ struct UserRecipeAddCard: View {
                 VStack(alignment: .leading, spacing: 3) {
                     Text("Добавить приложение")
                         .font(.headline)
-                    Text("Свой рецепт для программы не из каталога: ссылка или файл установщика, ключи тихой установки, " +
-                         "пространство, компоненты и что запускать. Можно перетащить сюда установщик или файл .\(UserRecipe.fileExtension).")
+                    Text("Свой рецепт для программы не из каталога: ссылка или файл установщика, ключи тихой установки, пространство, компоненты и что запускать. Можно перетащить сюда установщик или файл .\(UserRecipe.fileExtension).")
                         .font(.callout)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)

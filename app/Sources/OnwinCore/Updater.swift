@@ -5,9 +5,15 @@ import Foundation
 // scripts/release.sh). Every app release `v<version>` carries onwin-release.json:
 //
 //     { "schema": 1, "version", "build", "minimumMacOS",
-//       "app":    { url, sha256, size }     Onwin-<v>-app.zip, Onwin.app without the engine
-//       "dmg":    { url, sha256, size }     not used here
-//       "engine": { id, built, url, sha256, size }   tar.xz of the folder <id>/ }
+//       "app":        { url, sha256, size }   Onwin-<v>-app.zip, Onwin.app without the engine
+//       "dmg":        { url, sha256, size }   Onwin-<v>.dmg, the same app (the engine comes at first launch);
+//                                             not used here
+//       "dmgOffline": { url, sha256, size }   Onwin-<v>-offline.dmg, the app with the full engine inside;
+//                                             not used here
+//       "engine":     { id, built, url, sha256, size }   tar.xz of the folder <id>/, without Wine Mono / Gecko
+//                                             (EngineAddons.swift downloads them when a program needs them) }
+// Readers ignore keys they do not know (JSONDecoder here, plutil -extract in install.sh): new keys are fine,
+// changing or removing one needs `schema` + 1.
 //
 // Order of an update: download (into ~/Library/Caches/onwin/Updates), check SHA-256, install the engine
 // into Engines/<id> (atomic swap, like install.sh; refused while Wine of that engine runs), then the app:
@@ -43,7 +49,7 @@ extension OnwinVersion {
     /// How a version is shown to people: every version below 1.0 is a beta, «0.1.1 (бета)».
     public static func display(_ version: String) -> String {
         let major = Int(version.split(separator: ".").first ?? "") ?? 0
-        return major < 1 ? "\(version) (бета)" : version
+        return major < 1 ? String(localized: "\(version) (бета)", bundle: .onwinCore) : version
     }
 
     /// True for every version below 1.0 (beta test).
@@ -80,6 +86,7 @@ public struct ReleaseManifest: Codable, Sendable, Equatable {
     public var site: URL?
     public var app: Asset
     public var dmg: Asset?
+    public var dmgOffline: Asset?
     public var engine: EngineAsset
 
     public static let supportedSchema = 1
@@ -159,13 +166,14 @@ public enum UpdateError: LocalizedError, Sendable {
     public var errorDescription: String? {
         switch self {
         case .notWritable(let url):
-            return "onwin не может обновить себя сам: нет прав на запись в папку «\(url.deletingLastPathComponent().path)». " +
-                "Скачайте новую версию со страницы выпуска и перетащите её в «Программы»."
+            let folder = url.deletingLastPathComponent().path
+            return String(localized: "onwin не может обновить себя сам: нет прав на запись в папку «\(folder)». Скачайте новую версию со страницы выпуска и перетащите её в «Программы».",
+                          bundle: .onwinCore)
         case .engineInUse(let id):
-            return "Движок Wine (\(id)) нужно обновить, но в onwin работают Windows-программы. " +
-                "Закройте их и попробуйте ещё раз."
+            return String(localized: "Движок Wine (\(id)) нужно обновить, но в onwin работают Windows-программы. Закройте их и попробуйте ещё раз.",
+                          bundle: .onwinCore)
         case .unsupportedMac(let minimum):
-            return "Новой версии onwin нужна macOS \(minimum) или новее."
+            return String(localized: "Новой версии onwin нужна macOS \(minimum) или новее.", bundle: .onwinCore)
         case .badRelease(let message):
             return message
         }
@@ -184,7 +192,7 @@ public enum Updater {
         do {
             return try await fetchManifest(from: OnwinLinks.latestReleaseManifest)
         } catch let error as HTTPStatusError where error.status == 404 {
-            throw OnwinError("Выпусков onwin с обновлением из приложения пока нет.")
+            throw OnwinError(String(localized: "Выпусков onwin с обновлением из приложения пока нет.", bundle: .onwinCore))
         }
     }
 
@@ -192,12 +200,13 @@ public enum Updater {
     public static func manifest(forVersion version: String) async throws -> ReleaseManifest {
         let clean = version.hasPrefix("v") ? String(version.dropFirst()) : version
         guard !clean.isEmpty, clean.allSatisfy({ $0.isLetter || $0.isNumber || $0 == "." || $0 == "-" }) else {
-            throw OnwinError("Неверный номер версии: \(version)")
+            throw OnwinError(String(localized: "Неверный номер версии: \(version)", bundle: .onwinCore))
         }
         do {
             return try await fetchManifest(from: OnwinLinks.releaseManifest(version: clean))
         } catch let error as HTTPStatusError where error.status == 404 {
-            throw OnwinError("Выпуска onwin \(clean) нет (или он вышел раньше, чем появились обновления из приложения).")
+            throw OnwinError(String(localized: "Выпуска onwin \(clean) нет (или он вышел раньше, чем появились обновления из приложения).",
+                                    bundle: .onwinCore))
         }
     }
 
@@ -216,11 +225,12 @@ public enum Updater {
         } catch let error as URLError where error.code == .cancelled {
             throw CancellationError()
         } catch {
-            throw OnwinError("Не удалось проверить обновления — нет связи с GitHub. Проверьте подключение к интернету.")
+            throw OnwinError(String(localized: "Не удалось проверить обновления — нет связи с GitHub. Проверьте подключение к интернету.",
+                                    bundle: .onwinCore))
         }
         if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
             if http.statusCode == 404 { throw HTTPStatusError(status: 404) }
-            throw OnwinError("Не удалось проверить обновления: сервер ответил \(http.statusCode).")
+            throw OnwinError(String(localized: "Не удалось проверить обновления: сервер ответил \(http.statusCode).", bundle: .onwinCore))
         }
         if let final = response.url { try checkAllowed(final) }
         return try decodeManifest(data)
@@ -231,19 +241,23 @@ public enum Updater {
         do {
             manifest = try JSONDecoder().decode(ReleaseManifest.self, from: data)
         } catch {
-            throw UpdateError.badRelease("Описание выпуска onwin повреждено — попробуйте позже.")
+            throw UpdateError.badRelease(String(localized: "Описание выпуска onwin повреждено — попробуйте позже.", bundle: .onwinCore))
         }
         guard manifest.schema <= ReleaseManifest.supportedSchema else {
-            throw UpdateError.badRelease("Новый выпуск onwin устроен иначе, чем умеет эта версия. " +
-                                         "Скачайте его со страницы выпуска: \(manifest.releasePage.absoluteString)")
+            throw UpdateError.badRelease(String(localized: "Новый выпуск onwin устроен иначе, чем умеет эта версия. Скачайте его со страницы выпуска: \(manifest.releasePage.absoluteString)",
+                                                bundle: .onwinCore))
         }
-        guard isSafeName(manifest.engine.id) else { throw UpdateError.badRelease("В описании выпуска неверное имя движка.") }
+        guard isSafeName(manifest.engine.id) else {
+            throw UpdateError.badRelease(String(localized: "В описании выпуска неверное имя движка.", bundle: .onwinCore))
+        }
         return manifest
     }
 
     struct HTTPStatusError: LocalizedError {
         let status: Int
-        var errorDescription: String? { "Описание выпуска не найдено (сервер ответил \(status))." }
+        var errorDescription: String? {
+            String(localized: "Описание выпуска не найдено (сервер ответил \(status)).", bundle: .onwinCore)
+        }
     }
 
     /// https everywhere; plain http only for a local test server.
@@ -251,7 +265,7 @@ public enum Updater {
         let scheme = url.scheme?.lowercased()
         if scheme == "https" { return }
         if scheme == "http", let host = url.host?.lowercased(), ["localhost", "127.0.0.1", "::1"].contains(host) { return }
-        throw OnwinError("Небезопасный адрес загрузки: \(url.absoluteString)")
+        throw OnwinError(String(localized: "Небезопасный адрес загрузки: \(url.absoluteString)", bundle: .onwinCore))
     }
 
     static func isSafeName(_ name: String) -> Bool {
@@ -330,13 +344,9 @@ public enum Updater {
         return candidate.compare(installed, options: .numeric) == .orderedDescending
     }
 
-    /// «~5 МБ», «~1,2 ГБ».
+    /// «~5 МБ», «~1,2 ГБ» (at least 1 MB; the unit and number format follow the interface language).
     public static func sizeText(_ bytes: Int64) -> String {
-        let mb = Double(bytes) / 1_048_576
-        if mb >= 1000 {
-            return "~" + String(format: "%.1f", mb / 1024).replacingOccurrences(of: ".", with: ",") + " ГБ"
-        }
-        return "~\(max(1, Int(mb.rounded(.up)))) МБ"
+        "~" + max(bytes, 1_000_000).formatted(.byteCount(style: .file))
     }
 
     // MARK: Wine processes
@@ -403,12 +413,17 @@ public enum Updater {
         let destination = directory.appendingPathComponent(name)
         if FileManager.default.fileExists(atPath: destination.path) {
             if (try? await sha256(of: destination)) == expected.lowercased() {
-                progress(InstallProgress(message: "\(title) уже скачан", fraction: 1))
+                progress(InstallProgress(message: String(localized: "\(title) уже скачан", bundle: .onwinCore), fraction: 1))
                 return destination
             }
             try? FileManager.default.removeItem(at: destination)
         }
-        progress(InstallProgress(message: "Скачиваю \(title)…", fraction: 0))
+        progress(InstallProgress(message: String(localized: "Скачиваю \(title)…", bundle: .onwinCore), fraction: 0))
+        // A download broken off by the network continues where it stopped (slow connections: the engine
+        // takes many minutes). URLSession hands out "resume data" with the error; it is kept next to the file.
+        let resumeFile = directory.appendingPathComponent(name + ".resume")
+        let resumeData = try? Data(contentsOf: resumeFile)
+        try? FileManager.default.removeItem(at: resumeFile)
         let delegate = Downloader.DownloadDelegate(name: title, progress: progress)
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = 60
@@ -419,25 +434,36 @@ public enum Updater {
         let temp: URL
         let response: URLResponse
         do {
-            (temp, response) = try await session.download(for: request)
+            if let resumeData {
+                do {
+                    (temp, response) = try await session.download(resumeFrom: resumeData)
+                } catch let error as URLError where error.code != .cancelled && error.downloadTaskResumeData == nil {
+                    (temp, response) = try await session.download(for: request)   // stale resume data: start over
+                }
+            } else {
+                (temp, response) = try await session.download(for: request)
+            }
         } catch let error as URLError where error.code == .cancelled {
+            if let data = error.downloadTaskResumeData { try? data.write(to: resumeFile) }
             throw CancellationError()
         } catch is CancellationError {
             throw CancellationError()
         } catch {
+            if let data = (error as? URLError)?.downloadTaskResumeData { try? data.write(to: resumeFile) }
             if Task.isCancelled { throw CancellationError() }
-            throw OnwinError("Не удалось скачать \(title): \(error.localizedDescription)")
+            throw OnwinError(String(localized: "Не удалось скачать \(title): \(error.localizedDescription)", bundle: .onwinCore))
         }
         defer { try? FileManager.default.removeItem(at: temp) }
         if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
-            throw OnwinError("Не удалось скачать \(title): сервер ответил \(http.statusCode).")
+            throw OnwinError(String(localized: "Не удалось скачать \(title): сервер ответил \(http.statusCode).", bundle: .onwinCore))
         }
         if let final = response.url { try checkAllowed(final) }
         try Task.checkCancellation()
-        progress(InstallProgress(message: "Проверяю \(title)…", fraction: nil))
+        progress(InstallProgress(message: String(localized: "Проверяю \(title)…", bundle: .onwinCore), fraction: nil))
         let actual = try await sha256(of: temp)
         guard actual == expected.lowercased() else {
-            throw OnwinError("Загрузка «\(title)» повреждена (не совпала контрольная сумма). Попробуйте ещё раз.")
+            throw OnwinError(String(localized: "Загрузка «\(title)» повреждена (не совпала контрольная сумма). Попробуйте ещё раз.",
+                                    bundle: .onwinCore))
         }
         try FileManager.default.moveItem(at: temp, to: destination)
         return destination
@@ -457,6 +483,50 @@ public enum Updater {
         }.value
     }
 
+    // MARK: First launch
+
+    /// onwin-release.json whose engine the app installs when it has none (the light DMG / app.zip come
+    /// without one): the release of this very version, so the engine matches the app; the latest release
+    /// for a build that was never published (development). `ONWIN_MANIFEST_URL` overrides, for tests.
+    public static func manifestForEngineSetup() async throws -> ReleaseManifest {
+        if let custom = ProcessInfo.processInfo.environment["ONWIN_MANIFEST_URL"], !custom.isEmpty {
+            return try await latestManifest()
+        }
+        do {
+            return try await fetchManifest(from: OnwinLinks.releaseManifest(version: OnwinVersion.string))
+        } catch let error as HTTPStatusError where error.status == 404 {
+            return try await latestManifest()
+        }
+    }
+
+    /// What the first launch would download: the release, and the engine already installed if it is current.
+    public static func engineSetupPlan() async throws -> UpdatePlan {
+        let manifest: ReleaseManifest
+        do {
+            manifest = try await manifestForEngineSetup()
+        } catch let error as UpdateError {
+            throw error
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch {
+            throw OnwinError(String(localized: "Нет связи с GitHub: не удалось узнать, какой движок Wine скачать. Проверьте подключение к интернету.", bundle: .onwinCore))
+        }
+        return plan(for: manifest, app: nil)
+    }
+
+    /// Downloads and installs the engine of `plan` into Engines/<id> (the same path as an update:
+    /// SHA-256 check, /usr/bin/tar, atomic swap). Returns the installed engine.
+    public static func installEngineForSetup(_ plan: UpdatePlan, progress: @escaping ProgressHandler) async throws -> Engine {
+        if plan.engine == .none, let engine = installedEngine(id: plan.manifest.engine.id) { return engine }
+        var download = plan
+        download.engine = .download
+        guard let engine = try await installEngine(download, progress: progress) else {
+            throw OnwinError(String(localized: "Движок Wine не установился.", bundle: .onwinCore))
+        }
+        cleanUpDownloads()
+        return engine
+    }
+
     // MARK: Engine
 
     /// Downloads (or copies out of the running app) and installs the engine of the release.
@@ -470,12 +540,15 @@ public enum Updater {
             if await isEngineInUse(OnwinPaths.engines.appendingPathComponent(asset.id)) {
                 throw UpdateError.engineInUse(asset.id)
             }
-            let archive = try await download(asset.url, sha256: asset.sha256, title: "движок Wine",
+            let title = String(localized: "движок Wine", bundle: .onwinCore,
+                               comment: "Download title inside sentences like “Downloading %@…”, “%@ is already downloaded”")
+            let archive = try await download(asset.url, sha256: asset.sha256, title: title,
                                              name: "onwin-engine-\(asset.id).tar.xz",
                                              into: workDirectory(for: plan.manifest), progress: progress)
             return try await installEngine(archive: archive, id: asset.id, built: asset.builtDate, progress: progress)
         case .copyFromApp(let source):
-            progress(InstallProgress(message: "Переношу движок Wine из приложения…", fraction: nil))
+            progress(InstallProgress(message: String(localized: "Переношу движок Wine из приложения…", bundle: .onwinCore),
+                                     fraction: nil))
             let staging = try makeEngineStaging(id: asset.id)
             let copy = staging.appendingPathComponent(asset.id, isDirectory: true)
             try await Task.detached(priority: .userInitiated) {
@@ -491,14 +564,16 @@ public enum Updater {
     /// - Parameter built: expected `built` of the engine (from the release); nil = any.
     public static func installEngine(archive: URL, id: String, built: Date? = nil,
                                      progress: @escaping ProgressHandler) async throws -> Engine {
-        guard isSafeName(id) else { throw UpdateError.badRelease("Неверное имя движка: \(id)") }
-        progress(InstallProgress(message: "Распаковываю движок Wine (это займёт минуту)…", fraction: nil))
+        guard isSafeName(id) else { throw UpdateError.badRelease(String(localized: "Неверное имя движка: \(id)", bundle: .onwinCore)) }
+        progress(InstallProgress(message: String(localized: "Распаковываю движок Wine (это займёт минуту)…", bundle: .onwinCore),
+                                 fraction: nil))
         let staging = try makeEngineStaging(id: id)
         let r = try await ProcessRunner.run(URL(fileURLWithPath: "/usr/bin/tar"),
                                             arguments: ["-xf", archive.path, "-C", staging.path])
         guard r.status == 0 else {
             try? FileManager.default.removeItem(at: staging)
-            throw OnwinError("Не удалось распаковать движок Wine: \(r.output.suffix(500))")
+            let output = String(r.output.suffix(500))
+            throw OnwinError(String(localized: "Не удалось распаковать движок Wine: \(output)", bundle: .onwinCore))
         }
         return try await finishEngineInstall(staged: staging.appendingPathComponent(id, isDirectory: true),
                                              staging: staging, id: id, built: built)
@@ -517,21 +592,27 @@ public enum Updater {
         let fm = FileManager.default
         defer { try? fm.removeItem(at: staging) }
         guard let engine = try? Engine(root: staged), engine.id == id else {
-            throw UpdateError.badRelease("В архиве нет движка Wine \(id) (bin/wine).")
+            throw UpdateError.badRelease(String(localized: "В архиве нет движка Wine \(id) (bin/wine).", bundle: .onwinCore))
         }
         if let built, abs((engine.info.built ?? .distantPast).timeIntervalSince(built)) >= 1 {
-            throw UpdateError.badRelease("Скачанный движок Wine не совпадает с описанием выпуска — обновление отменено.")
+            throw UpdateError.badRelease(String(localized: "Скачанный движок Wine не совпадает с описанием выпуска — обновление отменено.",
+                                                bundle: .onwinCore))
         }
         let destination = OnwinPaths.engines.appendingPathComponent(id, isDirectory: true)
         // Checked again right before the swap: a program could have been started during the download.
         if await isEngineInUse(destination) { throw UpdateError.engineInUse(id) }
         let old = OnwinPaths.engines.appendingPathComponent(".old-\(id)", isDirectory: true)
         try? fm.removeItem(at: old)
+        // Wine Mono / Gecko downloaded on demand into the old engine stay (when Wine wants the same versions).
+        EngineAddons.carryOver(from: destination, to: staged)
         if fm.fileExists(atPath: destination.path) { try fm.moveItem(at: destination, to: old) }
         do {
             try fm.moveItem(at: staged, to: destination)
         } catch {
-            if fm.fileExists(atPath: old.path) { try? fm.moveItem(at: old, to: destination) }
+            if fm.fileExists(atPath: old.path) {
+                try? fm.moveItem(at: old, to: destination)
+                EngineAddons.carryOver(from: staged, to: destination)
+            }
             throw error
         }
         try? fm.removeItem(at: old)
@@ -572,16 +653,21 @@ public enum Updater {
         let work = workDirectory(for: manifest)
         let zip = try await download(manifest.app.url, sha256: manifest.app.sha256, title: "onwin \(manifest.version)",
                                      name: "Onwin-\(manifest.version)-app.zip", into: work, progress: progress)
-        progress(InstallProgress(message: "Распаковываю onwin \(manifest.version)…", fraction: nil))
+        progress(InstallProgress(message: String(localized: "Распаковываю onwin \(manifest.version)…", bundle: .onwinCore), fraction: nil))
         let unpacked = work.appendingPathComponent("app", isDirectory: true)
         try? FileManager.default.removeItem(at: unpacked)
         try FileManager.default.createDirectory(at: unpacked, withIntermediateDirectories: true)
         let r = try await ProcessRunner.run(URL(fileURLWithPath: "/usr/bin/ditto"), arguments: ["-x", "-k", zip.path, unpacked.path])
-        guard r.status == 0 else { throw OnwinError("Не удалось распаковать onwin \(manifest.version): \(r.output.suffix(500))") }
+        guard r.status == 0 else {
+            let output = String(r.output.suffix(500))
+            throw OnwinError(String(localized: "Не удалось распаковать onwin \(manifest.version): \(output)", bundle: .onwinCore))
+        }
         let app = unpacked.appendingPathComponent("Onwin.app", isDirectory: true)
-        guard let info = InstalledApp(url: app) else { throw UpdateError.badRelease("В архиве нет Onwin.app.") }
+        guard let info = InstalledApp(url: app) else {
+            throw UpdateError.badRelease(String(localized: "В архиве нет Onwin.app.", bundle: .onwinCore))
+        }
         guard info.bundleIdentifier == InstalledApp.bundleIdentifier, info.build == manifest.build else {
-            throw UpdateError.badRelease("Скачанный onwin не совпадает с описанием выпуска.")
+            throw UpdateError.badRelease(String(localized: "Скачанный onwin не совпадает с описанием выпуска.", bundle: .onwinCore))
         }
         try await verifySignature(of: app, against: plan.app?.url)
         try Task.checkCancellation()
@@ -595,7 +681,8 @@ public enum Updater {
         try? FileManager.default.removeItem(at: unpacked)
         guard copy.status == 0 else {
             try? FileManager.default.removeItem(at: stage)
-            throw OnwinError("Не удалось подготовить новую версию: \(copy.output.suffix(500))")
+            let output = String(copy.output.suffix(500))
+            throw OnwinError(String(localized: "Не удалось подготовить новую версию: \(output)", bundle: .onwinCore))
         }
         return PreparedApp(staged: staged, target: target)
     }
@@ -607,7 +694,10 @@ public enum Updater {
     static func verifySignature(of app: URL, against current: URL?) async throws {
         let codesign = URL(fileURLWithPath: "/usr/bin/codesign")
         let verify = try await ProcessRunner.run(codesign, arguments: ["--verify", "--deep", "--strict", app.path])
-        guard verify.status == 0 else { throw UpdateError.badRelease("У скачанного onwin повреждена подпись — обновление отменено.") }
+        guard verify.status == 0 else {
+            throw UpdateError.badRelease(String(localized: "У скачанного onwin повреждена подпись — обновление отменено.",
+                                                bundle: .onwinCore))
+        }
         guard let current else { return }
         let info = try await ProcessRunner.run(codesign, arguments: ["-d", "-r-", current.path])
         guard let line = info.output.split(separator: "\n").first(where: { $0.hasPrefix("designated => ") }),
@@ -615,7 +705,8 @@ public enum Updater {
         let requirement = String(line.dropFirst("designated => ".count))
         let check = try await ProcessRunner.run(codesign, arguments: ["--verify", "-R=" + requirement, app.path])
         guard check.status == 0 else {
-            throw UpdateError.badRelease("Скачанный onwin подписан не тем сертификатом, что установленный — обновление отменено.")
+            throw UpdateError.badRelease(String(localized: "Скачанный onwin подписан не тем сертификатом, что установленный — обновление отменено.",
+                                                bundle: .onwinCore))
         }
     }
 
@@ -644,7 +735,8 @@ public enum Updater {
                                                 environment: ["PATH": "/usr/bin:/bin:/usr/sbin:/sbin"])
             try? (r.output).appendLine(to: log)
             guard r.status == 0, InstalledApp(url: prepared.target)?.build != nil else {
-                throw OnwinError("Не удалось заменить приложение: \(r.output.suffix(500))")
+                let output = String(r.output.suffix(500))
+                throw OnwinError(String(localized: "Не удалось заменить приложение: \(output)", bundle: .onwinCore))
             }
             return log
         }
@@ -655,7 +747,10 @@ public enum Updater {
         launcher.environment = ["PATH": "/usr/bin:/bin:/usr/sbin:/sbin", "ONWIN_UPDATE_LOG": log.path]
         try launcher.run()
         launcher.waitUntilExit()
-        guard launcher.terminationStatus == 0 else { throw OnwinError("Не удалось запустить установку новой версии.") }
+        guard launcher.terminationStatus == 0 else {
+            throw OnwinError(String(localized: "Не удалось запустить установку новой версии.", bundle: .onwinCore))
+        }
+
         return log
     }
 

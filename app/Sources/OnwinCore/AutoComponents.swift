@@ -125,13 +125,15 @@ public enum AutoComponents {
         for (index, component) in components.enumerated() {
             try Task.checkCancellation()
             if component.isInstalled(in: current.config) { continue }
-            progress(.status("[\(index + 1)/\(components.count)] Устанавливаю \(component.name)…"))
+            progress(.status(String(localized: "[\(index + 1)/\(components.count)] Устанавливаю \(component.name)…", bundle: .onwinCore)))
             do {
                 current = try await Installer.install(component: component, into: current, progress: progress)
             } catch is CancellationError {
                 throw CancellationError()
             } catch {
-                throw OnwinError("Не удалось установить \(component.name): \(error.localizedDescription)")
+                throw OnwinError(String(localized: "Не удалось установить \(component.name): \(error.localizedDescription)",
+                                        bundle: .onwinCore))
+
             }
         }
         return current

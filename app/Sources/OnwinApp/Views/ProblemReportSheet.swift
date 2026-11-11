@@ -154,7 +154,8 @@ struct ProblemReportSheet: View {
                 }
                 .toggleStyle(.checkbox)
                 .disabled(logURL == nil)
-                .help(logURL.map { ProblemReport.redact($0.lastPathComponent) } ?? "У этого пространства пока нет журналов")
+                .help(logURL.map { ProblemReport.redact($0.lastPathComponent) }
+                       ?? String(localized: "У этого пространства пока нет журналов"))
                 Spacer(minLength: 0)
             }
 
@@ -230,7 +231,7 @@ struct ProblemReportSheet: View {
                 .frame(width: 48, height: 48)
                 .overlay(Image(systemName: "ladybug.fill").font(.system(size: 22, weight: .semibold)).foregroundStyle(.orange))
             VStack(alignment: .leading, spacing: 4) {
-                Text(request.programTitle.map { "Проблема с «\($0)»" } ?? "Сообщить о проблеме")
+                Text(request.programTitle.map { String(localized: "Проблема с «\($0)»") } ?? String(localized: "Сообщить о проблеме"))
                     .font(.title3.weight(.semibold))
                 Text("onwin соберёт сведения о Mac, движке и настройках пространства. Вы скопируете их одной кнопкой и вставите в чат поддержки.")
                     .font(.callout)
@@ -260,9 +261,10 @@ struct ProblemReportSheet: View {
     }
 
     private var logToggleTitle: String {
-        guard let logURL else { return "Приложить последний журнал запуска (журналов нет)" }
+        guard let logURL else { return String(localized: "Приложить последний журнал запуска (журналов нет)") }
         let title = LogsFileReader.displayTitle(for: logURL)
-        return "Приложить последний журнал запуска (\(ProblemReport.redact(title)))"
+        let name = ProblemReport.redact(title)
+        return String(localized: "Приложить последний журнал запуска (\(name))")
     }
 
     // MARK: Building
@@ -319,13 +321,13 @@ struct ProblemReportSheet: View {
 
     private func save() {
         let panel = NSSavePanel()
-        panel.title = "Сохранить отчёт о проблеме"
-        panel.message = "Текстовый файл можно отправить в чат поддержки или приложить к письму"
-        panel.prompt = "Сохранить"
+        panel.title = String(localized: "Сохранить отчёт о проблеме")
+        panel.message = String(localized: "Текстовый файл можно отправить в чат поддержки или приложить к письму")
+        panel.prompt = String(localized: "Сохранить")
         panel.allowedContentTypes = [.plainText]
         panel.canCreateDirectories = true
         let stamp = Date().formatted(.iso8601.year().month().day())
-        panel.nameFieldStringValue = "onwin-отчёт-\(stamp).txt"
+        panel.nameFieldStringValue = String(localized: "onwin-отчёт-\(stamp).txt", comment: "Default file name of a saved problem report")
         guard panel.runModal() == .OK, let url = panel.url else { return }
         do {
             try preview.write(to: url, atomically: true, encoding: .utf8)

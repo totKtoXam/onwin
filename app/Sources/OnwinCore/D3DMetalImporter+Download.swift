@@ -29,26 +29,27 @@ extension D3DMetalImporter {
         let session = AppleDeveloperDownloads.makeSession(cookies: cookies)
         defer { session.finishTasksAndInvalidate() }
 
-        progress(.status("Шаг 2 из \(stepCount): ищу последнюю версию Game Porting Toolkit на developer.apple.com…"))
+        progress(.status(String(localized: "Шаг 2 из \(stepCount): ищу последнюю версию Game Porting Toolkit на developer.apple.com…", bundle: .onwinCore)))
         let downloads = try await AppleDeveloperDownloads.listDownloads(session: session)
         guard let release = AppleDeveloperDownloads.latestGamePortingToolkit(in: downloads) else {
-            throw OnwinError("В загрузках Apple Developer не нашлось Game Porting Toolkit. Скачайте его вручную на " +
-                             "\(Catalog.gameportingToolkitURL.absoluteString) — onwin подхватит .dmg из «Загрузок».")
+            let page = Catalog.gameportingToolkitURL.absoluteString
+            throw OnwinError(String(localized: "В загрузках Apple Developer не нашлось Game Porting Toolkit. Скачайте его вручную на \(page) — onwin подхватит .dmg из «Загрузок».", bundle: .onwinCore))
         }
-        let kind = release.isPrerelease ? " (бета: стабильной версии нет)" : ""
-        progress(.status("Шаг 2 из \(stepCount): \(release.name)\(kind) — \(release.fileName)"))
+        progress(.status(release.isPrerelease
+            ? String(localized: "Шаг 2 из \(stepCount): \(release.name) (бета: стабильной версии нет) — \(release.fileName)", bundle: .onwinCore)
+            : String(localized: "Шаг 2 из \(stepCount): \(release.name) — \(release.fileName)", bundle: .onwinCore)))
         try Task.checkCancellation()
         try await AppleDeveloperDownloads.authorizeDownload(path: release.remotePath, session: session)
         let image = try await AppleDeveloperDownloads.download(release, session: session,
                                                                into: Downloader.downloadsDirectory, progress: progress)
         try Task.checkCancellation()
-        progress(.status("Шаг 3 из \(stepCount): устанавливаю D3DMetal из \(release.fileName)…"))
+        progress(.status(String(localized: "Шаг 3 из \(stepCount): устанавливаю D3DMetal из \(release.fileName)…", bundle: .onwinCore)))
         try await importFound(.diskImage(image), progress: progress)
         if deleteImageAfterImport {
             try? FileManager.default.removeItem(at: image)
-            progress(.status("Образ \(release.fileName) удалён из кэша"))
+            progress(.status(String(localized: "Образ \(release.fileName) удалён из кэша", bundle: .onwinCore)))
         }
-        progress(InstallProgress(message: "D3DMetal (\(release.name)) установлен", fraction: 1))
+        progress(InstallProgress(message: String(localized: "D3DMetal (\(release.name)) установлен", bundle: .onwinCore), fraction: 1))
         return image
     }
 }

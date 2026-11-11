@@ -99,7 +99,7 @@ extension AppModel {
                 program = try runner.launch(url, arguments: request.arguments, extraEnvironment: request.environment)
             case .steamGame(let game):
                 guard let steam = Steam.installation(in: current) else {
-                    report("В пространстве «\(current.name)» больше нет Steam.")
+                    report(String(localized: "В пространстве «\(current.name)» больше нет Steam."))
                     return nil
                 }
                 program = try runner.launch(wineArguments: Steam.launchArguments(for: game.appID, steam: steam, extra: request.arguments),
@@ -120,7 +120,7 @@ extension AppModel {
         guard hasEngine else { report(AppModel.noEngineMessage); return nil }
         let current = self.space(id: space.id) ?? space
         guard let resolved = WindowsCommandLine.resolve(line, in: current) else {
-            report("Введите команду, например: notepad или \"C:\\Games\\game.exe\" -windowed")
+            report(String(localized: "Введите команду, например: notepad или \"C:\\Games\\game.exe\" -windowed"))
             return nil
         }
         do {
@@ -148,7 +148,7 @@ extension AppModel {
                     r.arguments = arguments
                     save(.file(file), as: name, request: r, in: current)
                 } else {
-                    report("«\(resolved.program)» не найден как файл в пространстве, поэтому его нельзя сохранить как программу. Укажите полный путь (C:\\…\\program.exe).")
+                    report(String(localized: "«\(resolved.program)» не найден как файл в пространстве, поэтому его нельзя сохранить как программу. Укажите полный путь (C:\\…\\program.exe)."))
                 }
             }
             return program
@@ -209,7 +209,7 @@ extension AppModel {
         guard hasEngine else { report(AppModel.noEngineMessage); return }
         let current = self.space(id: space.id) ?? space
         guard let steam = Steam.installation(in: current) else {
-            report("В пространстве «\(current.name)» нет Steam: установите его из каталога.")
+            report(String(localized: "В пространстве «\(current.name)» нет Steam: установите его из каталога."))
             return
         }
         do {
@@ -238,11 +238,15 @@ extension AppModel {
         guard hasEngine else { report(AppModel.noEngineMessage); return nil }
         let current = self.space(id: space.id) ?? space
         guard let arguments = UninstallRegistry.command(for: app, quiet: quietly, in: current) else {
-            report("Не удалось разобрать команду удаления «\(app.displayName)»: \(app.uninstallString ?? "нет UninstallString")")
+            if let raw = app.uninstallString {
+                report(String(localized: "Не удалось разобрать команду удаления «\(app.displayName)»: \(raw)"))
+            } else {
+                report(String(localized: "Не удалось разобрать команду удаления «\(app.displayName)»: нет UninstallString"))
+            }
             return nil
         }
         do {
-            return try WineRunner(space: current).launch(wineArguments: arguments, title: "Удаление «\(app.displayName)»")
+            return try WineRunner(space: current).launch(wineArguments: arguments, title: String(localized: "Удаление «\(app.displayName)»"))
         } catch {
             report(error)
             return nil

@@ -1,0 +1,240 @@
+{
+  "sourceLanguage" : "ru",
+  "strings" : {
+    "NSCameraUsageDescription" : {
+      "comment" : "Info.plist key NSCameraUsageDescription",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows programs running in onwin need the camera, for example for video calls and streaming."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin-де іске қосылған Windows бағдарламаларына камера керек — мысалы, бейнеқоңыраулар мен трансляциялар үшін."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows-программам, запущенным в onwin, нужна камера — например, для видеозвонков и трансляций."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在 onwin 中运行的 Windows 程序需要使用摄像头，例如用于视频通话和直播。"
+          }
+        }
+      }
+    },
+    "NSHumanReadableCopyright" : {
+      "comment" : "Info.plist key NSHumanReadableCopyright",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin: run Windows programs on a Mac"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin — Mac-та Windows бағдарламаларын іске қосу"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin — запуск Windows-программ на Mac"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin：在 Mac 上运行 Windows 程序"
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "comment" : "Info.plist key NSMicrophoneUsageDescription",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows programs running in onwin need the microphone, for example for voice chat in games and launchers."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin-де іске қосылған Windows бағдарламаларына микрофон керек — мысалы, ойындар мен лаунчерлердегі дауыстық чат үшін."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows-программам, запущенным в onwin, нужен микрофон — например, для голосового чата в играх и лаунчерах."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在 onwin 中运行的 Windows 程序需要使用麦克风，例如用于游戏和启动器中的语音聊天。"
+          }
+        }
+      }
+    },
+    "Архив пространства onwin" : {
+      "comment" : "Info.plist: document / file type name (CFBundleTypeName, UTTypeDescription)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin Space Archive"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin кеңістігінің мұрағаты"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin 空间归档"
+          }
+        }
+      }
+    },
+    "Пакетный файл Windows" : {
+      "comment" : "Info.plist: document / file type name (CFBundleTypeName, UTTypeDescription)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows Batch File"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows пакеттік файлы"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 批处理文件"
+          }
+        }
+      }
+    },
+    "Программа Windows" : {
+      "comment" : "Info.plist: document / file type name (CFBundleTypeName, UTTypeDescription)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows Program"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows бағдарламасы"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 程序"
+          }
+        }
+      }
+    },
+    "Рецепт onwin" : {
+      "comment" : "Info.plist: document / file type name (CFBundleTypeName, UTTypeDescription)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin Recipe"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin рецепті"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin 配方"
+          }
+        }
+      }
+    },
+    "Установщик Windows" : {
+      "comment" : "Info.plist: document / file type name (CFBundleTypeName, UTTypeDescription)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows Installer"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows орнатқышы"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 安装程序"
+          }
+        }
+      }
+    },
+    "Ярлык Windows" : {
+      "comment" : "Info.plist: document / file type name (CFBundleTypeName, UTTypeDescription)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows Shortcut"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows жарлығы"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 快捷方式"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

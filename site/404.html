@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Страница не найдена — onwin</title>
+  <title data-t="title">Страница не найдена — onwin</title>
   <meta name="robots" content="noindex">
   <meta name="color-scheme" content="light dark">
   <script>
@@ -20,38 +20,44 @@
     })();
   </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=11">
-  <script src="config.js?v=4" defer></script>
-  <script src="site.js?v=10" defer></script>
+  <link rel="stylesheet" href="style.css?v=13">
+  <script src="config.js?v=5" defer></script>
+  <script src="site.js?v=13" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Перейти к содержанию</a>
+  <a class="skip-link" href="#main" data-t="skip">Перейти к содержанию</a>
 
-  <aside class="donate-bar" aria-label="Поддержать onwin">
+  <aside class="donate-bar" aria-label="Поддержать onwin" data-t-label="donateLabel">
     <div class="wrap">
       <p class="donate-bar-text">
         <svg class="donate-bar-heart" width="16" height="16" fill="#e5484d" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
-        <span>onwin бесплатный и с открытым кодом<span class="donate-bar-more"> — его развитие держится на ваших пожертвованиях.</span></span>
+        <span><span data-t="barText">onwin бесплатный и с открытым кодом</span><span class="donate-bar-more" data-t="barMore"> — его развитие держится на ваших пожертвованиях.</span></span>
       </p>
-      <a class="donate-bar-link" href="donate.html#crypto">Поддержать<span aria-hidden="true"> →</span></a>
+      <a class="donate-bar-link" href="donate.html#crypto"><span data-t="donate">Поддержать</span><span aria-hidden="true"> →</span></a>
     </div>
   </aside>
 
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="index.html" aria-label="onwin — на главную">
+      <a class="brand" href="index.html" aria-label="onwin — на главную" data-t-label="home">
         <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="#1797AD"/><rect x="24" y="26" width="36" height="9" rx="8" fill="#0E7385"/><rect x="24" y="31" width="36" height="4" fill="#0E7385"/><circle cx="31" cy="30.5" r="1.8" fill="#BFF2FA"/><circle cx="37" cy="30.5" r="1.8" fill="#BFF2FA"/></svg>
         onwin
       </a>
-      <nav class="site-nav" aria-label="Основное меню">
+      <nav class="site-nav" aria-label="Основное меню" data-t-label="menu">
         <ul>
-          <li><a href="install.html">Установка</a></li>
-          <li><a href="releases.html">Обновления</a></li>
-          <li><a href="docs.html">Документация</a></li>
-          <li><a href="donate.html">Поддержать</a></li>
-          <li><a href="licenses.html">Лицензии</a></li>
+          <li><a href="install.html" data-t="install">Установка</a></li>
+          <li><a href="releases.html" data-t="releases">Обновления</a></li>
+          <li><a href="docs.html" data-t="docs">Документация</a></li>
+          <li><a href="donate.html" data-t="donate">Поддержать</a></li>
+          <li><a href="licenses.html" data-t="licenses">Лицензии</a></li>
           <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
         </ul>
+      </nav>
+      <nav class="lang-switch" aria-label="Язык">
+        <a href="index.html" hreflang="ru" lang="ru" title="Русский" aria-current="true">РУ</a>
+        <a href="en/index.html" hreflang="en" lang="en" title="English">EN</a>
+        <a href="zh/index.html" hreflang="zh-Hans" lang="zh-Hans" title="简体中文">中文</a>
+        <a href="kk/index.html" hreflang="kk" lang="kk" title="Қазақша">ҚАЗ</a>
       </nav>
     </div>
   </header>
@@ -59,11 +65,11 @@
   <main id="main">
     <div class="wrap narrow lost">
       <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="36" height="30" rx="8" fill="#30B0C7" opacity=".35"/><rect x="14" y="15" width="36" height="30" rx="8" fill="#30B0C7" opacity=".6"/><rect x="24" y="26" width="36" height="32" rx="8" fill="none" stroke="#1797AD" stroke-width="2.5" stroke-dasharray="5 4"/></svg>
-      <h1>Такой страницы нет</h1>
-      <p class="muted">Возможно, ссылка устарела или в адресе опечатка.</p>
+      <h1 data-t="h1">Такой страницы нет</h1>
+      <p class="muted" data-t="lead">Возможно, ссылка устарела или в адресе опечатка.</p>
       <div class="btn-row">
-        <a class="btn btn-primary" href="index.html">На главную</a>
-        <a class="btn btn-secondary" href="install.html">Установка</a>
+        <a class="btn btn-primary" href="index.html" data-t="toHome">На главную</a>
+        <a class="btn btn-secondary" href="install.html" data-t="install">Установка</a>
       </div>
     </div>
   </main>
@@ -77,16 +83,76 @@
         </a>
         <ul class="footer-links">
           <li><a href="https://github.com/OWNER/onwin" data-gh="repo">GitHub</a></li>
-          <li><a href="install.html">Установка</a></li>
-          <li><a href="releases.html">Обновления</a></li>
-          <li><a href="docs.html">Документация</a></li>
-          <li><a href="donate.html">Поддержать</a></li>
-          <li><a href="licenses.html">Лицензии</a></li>
+          <li><a href="install.html" data-t="install">Установка</a></li>
+          <li><a href="releases.html" data-t="releases">Обновления</a></li>
+          <li><a href="docs.html" data-t="docs">Документация</a></li>
+          <li><a href="donate.html" data-t="donate">Поддержать</a></li>
+          <li><a href="licenses.html" data-t="licenses">Лицензии</a></li>
         </ul>
       </div>
-      <p class="footer-meta">Свободное программное обеспечение под лицензией GPL-3.0.</p>
-      <p class="disclaimer">Названия Windows, Mac, Steam и других продуктов принадлежат их владельцам; onwin — независимый проект.</p>
+      <p class="footer-meta" data-t="meta">Свободное программное обеспечение под лицензией GPL-3.0.</p>
+      <p class="disclaimer" data-t="tm">Названия Windows, Mac, Steam и других продуктов принадлежат их владельцам; onwin — независимый проект.</p>
+      <p class="disclaimer analytics-note" data-analytics-note data-t="analytics" hidden>Сайт считает посещения без cookie и личных данных.</p>
     </div>
   </footer>
+  <script>
+    /* Одна 404.html на весь сайт: язык берётся из адреса (/en/…, /zh/…, /kk/…), иначе из выбора посетителя.
+       Тексты переводятся здесь, ссылки ведут в папку этого языка; site.js потом читает <html lang>. */
+    (function () {
+      var DIRS = { en: "en", zh: "zh-Hans", kk: "kk" };
+      var TEXT = {
+        en: { title: "Page not found — onwin", skip: "Skip to content", donateLabel: "Support onwin",
+          barText: "onwin is free and open source", barMore: " — its development relies on your donations.",
+          home: "onwin — home", menu: "Main menu", install: "Install", releases: "Updates", docs: "Docs",
+          donate: "Donate", licenses: "Licenses", h1: "There is no such page",
+          lead: "The link may be outdated, or there is a typo in the address.", toHome: "Go to the home page",
+          meta: "Free software licensed under GPL-3.0.",
+          tm: "Windows, Mac, Steam and other product names belong to their owners; onwin is an independent project.",
+          analytics: "This site counts visits without cookies or personal data." },
+        zh: { title: "页面不存在 — onwin", skip: "跳到正文", donateLabel: "支持 onwin",
+          barText: "onwin 免费且开源", barMore: "——项目的发展依靠您的捐助。",
+          home: "onwin — 首页", menu: "主菜单", install: "安装", releases: "更新", docs: "文档",
+          donate: "支持我们", licenses: "许可证", h1: "这个页面不存在",
+          lead: "链接可能已过期，或者地址中有拼写错误。", toHome: "返回首页",
+          meta: "基于 GPL-3.0 许可证的自由软件。",
+          tm: "Windows、Mac、Steam 等产品名称归其各自所有者所有；onwin 是一个独立项目。",
+          analytics: "本网站统计访问量，不使用 Cookie，也不收集个人数据。" },
+        kk: { title: "Бет табылмады — onwin", skip: "Мазмұнға өту", donateLabel: "onwin жобасын қолдау",
+          barText: "onwin тегін және коды ашық", barMore: " — оның дамуы сіздің қайырымдылығыңызға сүйенеді.",
+          home: "onwin — басты бет", menu: "Негізгі мәзір", install: "Орнату", releases: "Жаңартулар", docs: "Құжаттама",
+          donate: "Қолдау", licenses: "Лицензиялар", h1: "Мұндай бет жоқ",
+          lead: "Сілтеме ескірген болуы мүмкін немесе мекенжайда қате бар.", toHome: "Басты бетке",
+          meta: "GPL-3.0 лицензиясы бойынша таратылатын еркін бағдарламалық жасақтама.",
+          tm: "Windows, Mac, Steam және басқа өнімдердің атаулары олардың иелеріне тиесілі; onwin — тәуелсіз жоба.",
+          analytics: "Сайт кірулерді cookie файлдарынсыз және жеке деректерсіз санайды." }
+      };
+      var parts = location.pathname.split("/").filter(Boolean);
+      if (/\.github\.io$/i.test(location.hostname) && parts.length > 1) parts.shift();
+      var code = DIRS[parts[0]] ? parts[0] : "";
+      if (!code) { try { code = localStorage.getItem("onwin-lang") || ""; } catch (e) { code = ""; } }
+      // <base> points at the site root, so the in-page skip link needs the full address.
+      var skip = document.querySelector(".skip-link");
+      if (skip) skip.href = location.href.split("#")[0] + "#main";
+      var t = TEXT[code];
+      if (!t) return;
+      document.documentElement.lang = DIRS[code];
+      document.title = t.title;
+      Array.prototype.forEach.call(document.querySelectorAll("[data-t]"), function (el) {
+        var v = t[el.getAttribute("data-t")]; if (v) el.textContent = v;
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-t-label]"), function (el) {
+        var v = t[el.getAttribute("data-t-label")]; if (v) el.setAttribute("aria-label", v);
+      });
+      // Page links go to this language's folder; the language switcher already points everywhere.
+      Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (a) {
+        var h = a.getAttribute("href");
+        if (/^[a-z]+\.html/.test(h) && !a.closest(".lang-switch")) a.setAttribute("href", code + "/" + h);
+      });
+      Array.prototype.forEach.call(document.querySelectorAll(".lang-switch a"), function (a) {
+        if (a.getAttribute("hreflang") === DIRS[code]) a.setAttribute("aria-current", "true");
+        else a.removeAttribute("aria-current");
+      });
+    })();
+  </script>
 </body>
 </html>

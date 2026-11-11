@@ -100,13 +100,20 @@ public struct WineRunner: Sendable {
 
     /// WINEDEBUG when the space's debug logging is off.
     /// Display names for helper processes that own the visible window (exe base name → name in the Dock).
-    static let dockNames = [
+    /// Format of ONWIN_DOCK_NAMES: "exe=Name;…", so ';' and '=' are dropped from the localized names.
+    static let dockNames = ([
         "steam=Steam", "steamwebhelper=Steam", "epicgameslauncher=Epic Games", "epicwebhelper=Epic Games",
         "galaxyclient=GOG Galaxy", "galaxyclient helper=GOG Galaxy", "battle.net=Battle.net",
         "battle.net launcher=Battle.net", "eadesktop=EA app", "upc=Ubisoft Connect",
-        "ubisoftconnect=Ubisoft Connect", "explorer=Проводник", "notepad=Блокнот", "winecfg=Настройки Wine",
-        "regedit=Редактор реестра", "taskmgr=Диспетчер задач", "cmd=Командная строка",
-    ].joined(separator: ";")
+        "ubisoftconnect=Ubisoft Connect",
+    ] + [
+        ("explorer", String(localized: "Проводник", bundle: .onwinCore, comment: "Dock name of Wine's file manager (explorer.exe)")),
+        ("notepad", String(localized: "Блокнот", bundle: .onwinCore, comment: "Dock name of notepad.exe")),
+        ("winecfg", String(localized: "Настройки Wine", bundle: .onwinCore, comment: "Dock name of winecfg.exe")),
+        ("regedit", String(localized: "Редактор реестра", bundle: .onwinCore, comment: "Dock name of regedit.exe")),
+        ("taskmgr", String(localized: "Диспетчер задач", bundle: .onwinCore, comment: "Dock name of taskmgr.exe")),
+        ("cmd", String(localized: "Командная строка", bundle: .onwinCore, comment: "Dock name of cmd.exe")),
+    ].map { "\($0.0)=\($0.1.filter { $0 != ";" && $0 != "=" })" }).joined(separator: ";")
 
     public static let quietDebugChannels = "-all,err+module,err+mscoree,err+mshtml"
 
@@ -233,5 +240,5 @@ public struct WineRunner: Sendable {
 }
 
 public enum OnwinVersion {
-    public static let string = "0.1.1"
+    public static let string = "0.1.2"
 }

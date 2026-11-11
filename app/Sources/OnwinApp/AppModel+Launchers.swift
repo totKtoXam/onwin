@@ -72,7 +72,7 @@ extension AppModel {
     @discardableResult
     func handleLaunchURL(_ url: URL) -> Bool {
         guard let request = LaunchRequest(url: url) else {
-            report("onwin не понимает адрес \(url.absoluteString).")
+            report(String(localized: "onwin не понимает адрес \(url.absoluteString)."))
             return false
         }
         guard hasEngine else {
@@ -113,19 +113,20 @@ extension AppModel {
     func createLauncher(for program: SpaceProgram, in space: Space) {
         let current = self.space(id: space.id) ?? space
         let root = LauncherBuilder.defaultRoot
-        backgroundActivity = "Создаю ярлык «\(program.name)»…"
+        let status = String(localized: "Создаю ярлык «\(program.name)»…")
+        backgroundActivity = status
         Task.detached(priority: .userInitiated) {
             let outcome: Result<URL, Error> = Result { try LauncherBuilder.create(for: program, in: current, root: root) }
             let list = LauncherBuilder.launchers(for: current.id, root: root)
             await MainActor.run {
                 let model = AppModel.shared
-                if model.backgroundActivity?.hasPrefix("Создаю ярлык") == true { model.backgroundActivity = nil }
+                if model.backgroundActivity == status { model.backgroundActivity = nil }
                 LauncherStore.shared.set(list, for: current.id)
                 switch outcome {
                 case .success(let app):
                     NSWorkspace.shared.activateFileViewerSelecting([app])
                 case .failure(let error):
-                    model.report("Не удалось создать ярлык «\(program.name)»: \(error.localizedDescription)")
+                    model.report(String(localized: "Не удалось создать ярлык «\(program.name)»: \(error.localizedDescription)"))
                 }
             }
         }
@@ -136,7 +137,7 @@ extension AppModel {
         do {
             try LauncherBuilder.remove(launcher)
         } catch {
-            report("Не удалось удалить ярлык «\(launcher.name)»: \(error.localizedDescription)")
+            report(String(localized: "Не удалось удалить ярлык «\(launcher.name)»: \(error.localizedDescription)"))
         }
         LauncherStore.shared.set(LauncherBuilder.launchers(for: space.id), for: space.id)
     }
@@ -161,7 +162,8 @@ extension AppModel {
             await MainActor.run {
                 store.set(launchers, for: space.id)
                 if !result.errors.isEmpty {
-                    AppModel.shared.report("Ярлыки пространства «\(space.name)»: " + result.errors.prefix(3).joined(separator: "; "))
+                    let errors = result.errors.prefix(3).joined(separator: "; ")
+                    AppModel.shared.report(String(localized: "Ярлыки пространства «\(space.name)»: \(errors)"))
                 }
                 if store.endSync(space.id) { AppModel.shared.syncLaunchers(of: space.id) }
             }

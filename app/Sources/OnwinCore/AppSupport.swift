@@ -36,7 +36,7 @@ extension SpaceManager {
     /// A space name that is not taken yet: `base`, `base 2`, `base 3`...
     public static func availableName(_ base: String) -> String {
         let trimmed = base.trimmingCharacters(in: .whitespacesAndNewlines)
-        let root = trimmed.isEmpty ? "Пространство" : trimmed
+        let root = trimmed.isEmpty ? String(localized: "Пространство", bundle: .onwinCore, comment: "Default name of a new space") : trimmed
         if find(root) == nil { return root }
         var n = 2
         while find("\(root) \(n)") != nil { n += 1 }

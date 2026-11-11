@@ -47,14 +47,14 @@ extension AppModel {
     @discardableResult
     func installD3DMetal() async -> Bool {
         if let current = activeTask, !current.isFinished {
-            report("Дождитесь окончания операции «\(current.title)».")
+            report(String(localized: "Дождитесь окончания операции «\(current.title)»."))
             return false
         }
         let source: D3DMetalSource
         if let found = D3DMetalImporter.find() {
             source = .found(found)
         } else {
-            backgroundActivity = "Проверяю вход в Apple ID…"
+            backgroundActivity = String(localized: "Проверяю вход в Apple ID…")
             let cookies = await D3DMetalInstallFlow.storedAppleCookies()
             let problem = await D3DMetalImporter.sessionProblem(cookies: cookies)
             backgroundActivity = nil
@@ -68,13 +68,13 @@ extension AppModel {
             }
         }
         let deleteImage = D3DMetalInstallFlow.deleteImageAfterImport
-        let ok = await performTask("Установка D3DMetal", autoClose: false) { (context: TaskContext) async throws -> Bool in
+        let ok = await performTask(String(localized: "Установка D3DMetal"), autoClose: false) { (context: TaskContext) async throws -> Bool in
             switch source {
             case .found(let found):
-                context.status("Нашёл \(found.url.lastPathComponent) — вход в Apple ID не нужен")
+                context.status(String(localized: "Нашёл \(found.url.lastPathComponent) — вход в Apple ID не нужен"))
                 try await D3DMetalImporter.importFound(found, progress: context.progress)
             case .session(let cookies):
-                context.status("Шаг 1 из \(D3DMetalImporter.stepCount): вход в Apple ID выполнен")
+                context.status(String(localized: "Шаг 1 из \(D3DMetalImporter.stepCount): вход в Apple ID выполнен"))
                 try await D3DMetalImporter.downloadAndImport(cookies: cookies, deleteImageAfterImport: deleteImage,
                                                              progress: context.progress)
             }
@@ -106,7 +106,7 @@ extension AppModel {
 @MainActor
 @Observable
 final class AppleSignInState {
-    var message = "Войдите со своим Apple ID — бесплатной учётной записи разработчика достаточно."
+    var message = String(localized: "Войдите со своим Apple ID — бесплатной учётной записи разработчика достаточно.")
     var isChecking = false
     var isWarning = false
     var deleteImageAfterImport = D3DMetalInstallFlow.deleteImageAfterImport {
@@ -136,7 +136,7 @@ final class AppleSignInWindow: NSObject, NSWindowDelegate, WKHTTPCookieStoreObse
         }
         state = AppleSignInState()
         if case .agreementRequired? = initialProblem {
-            state.message = "Apple просит принять соглашение Apple Developer — примите его на странице ниже."
+            state.message = String(localized: "Apple просит принять соглашение Apple Developer — примите его на странице ниже.")
             state.isWarning = true
         }
         lastCheckedSession = nil
@@ -154,7 +154,7 @@ final class AppleSignInWindow: NSObject, NSWindowDelegate, WKHTTPCookieStoreObse
         let hosting = NSHostingView(rootView: view.tint(OnwinTheme.accent))
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 900, height: 760),
                               styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
-        window.title = "Установка D3DMetal — вход в Apple ID"
+        window.title = String(localized: "Установка D3DMetal — вход в Apple ID")
         window.contentView = hosting
         window.contentMinSize = NSSize(width: 720, height: 600)
         window.isReleasedWhenClosed = false
@@ -178,7 +178,7 @@ final class AppleSignInWindow: NSObject, NSWindowDelegate, WKHTTPCookieStoreObse
                         let size = AppleDeveloperDownloads.fileSize(url)
                         defer { lastImage = (url, size) }
                         guard size > 0, lastImage?.0 == url, lastImage?.1 == size else {
-                            self.state.message = "Вижу \(url.lastPathComponent) — жду окончания загрузки…"
+                            self.state.message = String(localized: "Вижу \(url.lastPathComponent) — жду окончания загрузки…")
                             continue
                         }
                     }
@@ -194,7 +194,7 @@ final class AppleSignInWindow: NSObject, NSWindowDelegate, WKHTTPCookieStoreObse
         NSWorkspace.shared.open(AppleDeveloperDownloads.gptkPageURL)
         state.openedInBrowser = true
         state.isWarning = false
-        state.message = "Скачайте «Game Porting Toolkit» (.dmg) в браузере в папку «Загрузки» — onwin заметит файл и установит D3DMetal сам. Это окно можно не закрывать."
+        state.message = String(localized: "Скачайте «Game Porting Toolkit» (.dmg) в браузере в папку «Загрузки» — onwin заметит файл и установит D3DMetal сам. Это окно можно не закрывать.")
     }
 
     // MARK: Session detection
@@ -222,16 +222,16 @@ final class AppleSignInWindow: NSObject, NSWindowDelegate, WKHTTPCookieStoreObse
             guard self.window != nil else { return }
             switch problem {
             case nil:
-                self.state.message = "Вход выполнен — начинаю загрузку."
+                self.state.message = String(localized: "Вход выполнен — начинаю загрузку.")
                 self.finish(.session(cookies))
             case .agreementRequired?:
                 self.state.isWarning = true
-                self.state.message = "Вход выполнен, но Apple просит принять соглашение Apple Developer — примите его на странице, onwin продолжит сам."
+                self.state.message = String(localized: "Вход выполнен, но Apple просит принять соглашение Apple Developer — примите его на странице, onwin продолжит сам.")
             case .notSignedIn?:
                 break
             case .service(let text)?:
                 self.state.isWarning = true
-                self.state.message = "Apple пока не отдаёт список загрузок: \(text). Завершите вход на странице — onwin проверит ещё раз."
+                self.state.message = String(localized: "Apple пока не отдаёт список загрузок: \(text). Завершите вход на странице — onwin проверит ещё раз.")
             }
         }
     }

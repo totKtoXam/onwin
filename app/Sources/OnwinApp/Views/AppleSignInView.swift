@@ -53,7 +53,7 @@ struct AppleSignInView: View {
                     Image(systemName: state.isWarning ? "exclamationmark.triangle.fill" : "person.badge.key.fill")
                         .foregroundStyle(state.isWarning ? Color.orange : OnwinTheme.accent)
                 }
-                Text(state.isChecking ? "Проверяю вход в Apple ID…" : state.message)
+                Text(state.isChecking ? String(localized: "Проверяю вход в Apple ID…") : state.message)
                     .font(.callout)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -102,7 +102,7 @@ struct AppleSignInView: View {
 struct AppleSignInStepChip: View {
     enum StepState { case done, current, upcoming }
     let number: Int
-    let title: String
+    let title: LocalizedStringKey
     let state: StepState
 
     var body: some View {
@@ -112,7 +112,7 @@ struct AppleSignInStepChip: View {
                 if state == .done {
                     Image(systemName: "checkmark").font(.caption2.bold()).foregroundStyle(Color.white)
                 } else {
-                    Text("\(number)").font(.caption2.bold())
+                    Text(verbatim: "\(number)").font(.caption2.bold())
                         .foregroundStyle(state == .upcoming ? Color.secondary : Color.white)
                 }
             }

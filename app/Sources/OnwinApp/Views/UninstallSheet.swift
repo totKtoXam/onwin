@@ -31,7 +31,7 @@ struct UninstallProgramsSheet: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Удаление программ")
                         .font(.title3.weight(.semibold))
-                    Text(verbatim: "Пространство «\(space?.name ?? "—")» — программы, которые зарегистрировали свой деинсталлятор")
+                    Text("Пространство «\(space?.name ?? "—")» — программы, которые зарегистрировали свой деинсталлятор")
                         .font(.callout)
                         .foregroundStyle(.secondary)
                         .lineLimit(2)
@@ -149,8 +149,8 @@ struct UninstallProgramsSheet: View {
         if let kb = app.estimatedSizeKB {
             parts.append(ByteCountFormatter.string(fromByteCount: Int64(kb) * 1024, countStyle: .file))
         }
-        if app.scope == .machine32 { parts.append("32-бит") }
-        if app.scope == .user { parts.append("для пользователя") }
+        if app.scope == .machine32 { parts.append(String(localized: "32-бит", comment: "A 32-bit Windows program")) }
+        if app.scope == .user { parts.append(String(localized: "для пользователя", comment: "Program installed only for the current Windows user")) }
         if let location = app.installLocation { parts.append(location) }
         return parts.isEmpty ? app.keyName : parts.joined(separator: " · ")
     }
@@ -162,15 +162,15 @@ struct UninstallProgramsSheet: View {
     }
 
     private var confirmTitle: String {
-        confirming.map { "Удалить «\($0.displayName)»?" } ?? ""
+        confirming.map { String(localized: "Удалить «\($0.displayName)»?") } ?? ""
     }
 
     private func confirmMessage(_ app: InstalledApplication) -> String {
-        var text = "Откроется деинсталлятор программы — следуйте его шагам."
-        if UninstallRegistry.canUninstallQuietly(app) {
-            text += " «Удалить без вопросов» запустит тихое удаление (\(app.isWindowsInstaller ? "msiexec /qn" : "QuietUninstallString"))."
+        guard UninstallRegistry.canUninstallQuietly(app) else {
+            return String(localized: "Откроется деинсталлятор программы — следуйте его шагам.")
         }
-        return text
+        let command = app.isWindowsInstaller ? "msiexec /qn" : "QuietUninstallString"
+        return String(localized: "Откроется деинсталлятор программы — следуйте его шагам. «Удалить без вопросов» запустит тихое удаление (\(command)).")
     }
 
     private func start(_ app: InstalledApplication, quietly: Bool) {

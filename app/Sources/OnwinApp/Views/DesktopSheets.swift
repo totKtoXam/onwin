@@ -33,7 +33,7 @@ struct DesktopFileSheet: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(action == .install ? "Установка программы" : "Запуск программы")
                         .font(.title3.bold())
-                    Text(file.lastPathComponent)
+                    Text(verbatim: file.lastPathComponent)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                         .truncationMode(.middle)
@@ -124,8 +124,8 @@ struct DesktopFileSheet: View {
 
     private var actionHint: String {
         switch action {
-        case .install: return "Это установщик: onwin дождётся его окончания и найдёт, что он установил."
-        case .run: return "Это сама программа (например, портативная версия): onwin просто запустит её."
+        case .install: return String(localized: "Это установщик: onwin дождётся его окончания и найдёт, что он установил.")
+        case .run: return String(localized: "Это сама программа (например, портативная версия): onwin просто запустит её.")
         }
     }
 
@@ -148,8 +148,10 @@ struct DesktopFileSheet: View {
 
     private var nameProblem: String? {
         guard target == .newSpace else { return nil }
-        if trimmedName.isEmpty { return "Укажите имя пространства" }
-        if CatalogView.isNameTaken(trimmedName, in: model.spaces) { return "Пространство с таким именем уже есть" }
+        if trimmedName.isEmpty { return String(localized: "Укажите имя пространства") }
+        if CatalogView.isNameTaken(trimmedName, in: model.spaces) {
+            return String(localized: "Пространство с таким именем уже есть")
+        }
         return nil
     }
 

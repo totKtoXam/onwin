@@ -72,10 +72,10 @@ public struct LaunchCandidate: Identifiable, Hashable, Sendable {
 
         public var displayName: String {
             switch self {
-            case .shortcut: return "ярлык в меню «Пуск»"
-            case .uninstallIcon: return "значок в «Установке и удалении программ»"
-            case .installLocation: return "папка установки программы"
-            case .programFolder: return "новая папка в Program Files"
+            case .shortcut: return String(localized: "ярлык в меню «Пуск»", bundle: .onwinCore)
+            case .uninstallIcon: return String(localized: "значок в «Установке и удалении программ»", bundle: .onwinCore)
+            case .installLocation: return String(localized: "папка установки программы", bundle: .onwinCore)
+            case .programFolder: return String(localized: "новая папка в Program Files", bundle: .onwinCore)
             }
         }
     }
@@ -231,7 +231,7 @@ public enum RecipeInstaller {
         } else if let found = SpaceManager.find(recipe.spaceName) {
             space = found
         } else {
-            progress(InstallProgress(message: "Создаю пространство «\(recipe.spaceName)»…", fraction: nil))
+            progress(InstallProgress(message: String(localized: "Создаю пространство «\(recipe.spaceName)»…", bundle: .onwinCore), fraction: nil))
             space = try await SpaceManager.create(name: recipe.spaceName, windowsVersion: recipe.windowsVersion,
                                                     backend: recipe.backend,
                                                     log: { line in progress(InstallProgress(message: line.trimmingCharacters(in: .whitespacesAndNewlines), fraction: nil)) })

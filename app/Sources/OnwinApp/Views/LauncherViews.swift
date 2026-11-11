@@ -57,7 +57,7 @@ struct LauncherSettingsSection: View {
             let launchers = model.launchers(of: space.id)
             LabeledContent("Ярлыки") {
                 HStack(spacing: 10) {
-                    Text(launchers.isEmpty ? "нет" : "\(launchers.count)")
+                    Text(launchers.isEmpty ? String(localized: "нет", comment: "Number of launchers: none") : "\(launchers.count)")
                         .foregroundStyle(.secondary)
                         .monospacedDigit()
                     Button("Показать в Finder") {

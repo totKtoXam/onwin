@@ -164,15 +164,15 @@ extension Steam {
     public static func requestInstall(appID: Int, name: String, in space: Space,
                                       progress: @escaping ProgressHandler) async throws -> RunningProgram {
         guard let steam = installation(in: space) else {
-            throw OnwinError("В пространстве «\(space.name)» нет Steam: сначала установите Steam из каталога.")
+            throw OnwinError(String(localized: "В пространстве «\(space.name)» нет Steam: сначала установите Steam из каталога.", bundle: .onwinCore))
         }
-        progress(InstallProgress(message: "Открываю установку «\(name)» в Steam…", fraction: nil))
+        progress(InstallProgress(message: String(localized: "Открываю установку «\(name)» в Steam…", bundle: .onwinCore), fraction: nil))
         let program = try await MainActor.run {
             try WineRunner(space: space).launch(wineArguments: urlArguments(installURL(appID), steam: steam),
-                                                  title: "Steam — установка \(name)",
+                                                  title: String(localized: "Steam — установка \(name)", bundle: .onwinCore),
                                                   workingDirectory: steam.root)
         }
-        progress(InstallProgress(message: "Steam открыт: подтвердите установку «\(name)» в его окне. Игра появится в разделе «Игры Steam» пространства.",
+        progress(InstallProgress(message: String(localized: "Steam открыт: подтвердите установку «\(name)» в его окне. Игра появится в разделе «Игры Steam» пространства.", bundle: .onwinCore),
                                  fraction: 1))
         return program
     }

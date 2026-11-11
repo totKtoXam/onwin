@@ -113,7 +113,7 @@ final class DesktopModel {
         do {
             try DesktopStore.save(copy)
         } catch {
-            AppModel.shared.report("Не удалось сохранить \(DesktopStore.file.lastPathComponent): \(error.localizedDescription)")
+            AppModel.shared.report(String(localized: "Не удалось сохранить \(DesktopStore.file.lastPathComponent): \(error.localizedDescription)"))
         }
     }
 
@@ -226,11 +226,11 @@ extension AppModel {
     func launch(_ item: DesktopItem) {
         guard hasEngine else { report(AppModel.noEngineMessage); return }
         guard let space = space(id: item.spaceID) else {
-            report("Пространства «\(item.spaceName)» больше нет.")
+            report(String(localized: "Пространства «\(item.spaceName)» больше нет."))
             return
         }
         guard item.isLaunchable else {
-            report("«\(item.name)» ещё загружается в Steam — запустить можно, когда загрузка закончится.")
+            report(String(localized: "«\(item.name)» ещё загружается в Steam — запустить можно, когда загрузка закончится."))
             return
         }
         let started: RunningProgram?
@@ -254,7 +254,7 @@ extension AppModel {
     /// «Завершить» in the «Запущено» strip: SIGTERM (force: SIGKILL) to the started Wine process.
     func desktopQuit(_ program: RunningProgram, force: Bool) {
         if !RunningProgramControl.terminate(program, force: force) {
-            report("Не удалось завершить «\(program.title)». Попробуйте «Завершить всё в пространстве».")
+            report(String(localized: "Не удалось завершить «\(program.title)». Попробуйте «Завершить всё в пространстве»."))
         }
     }
 
@@ -280,9 +280,10 @@ extension AppModel {
     /// «Из файла…»: picks an installer, then asks for the space (DesktopFileSheet).
     func desktopChooseInstaller() {
         guard hasEngine else { report(AppModel.noEngineMessage); return }
-        guard let url = OnwinPanels.chooseFile(title: "Установить программу",
-                                               message: "Выберите установщик Windows-программы (.exe или .msi)",
-                                               prompt: "Выбрать", extensions: ["exe", "msi"]) else { return }
+        guard let url = OnwinPanels.chooseFile(title: String(localized: "Установить программу"),
+                                               message: String(localized: "Выберите установщик Windows-программы (.exe или .msi)"),
+                                               prompt: String(localized: "Выбрать", comment: "Open panel button: choose the file"),
+                                               extensions: ["exe", "msi"]) else { return }
         desktop.fileRequest = DesktopFileRequest(file: url, actions: [.install])
     }
 

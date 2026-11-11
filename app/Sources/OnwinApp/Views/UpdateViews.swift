@@ -43,6 +43,9 @@ final class UpdateController {
     func checkAtLaunchIfNeeded() {
         let settings = OnwinSettings.load()
         guard Self.runningApp != nil else { return }
+        // First launch of the light app: «Подготовка onwin» downloads the engine first and asks
+        // afterwards (EngineSetupController calls this again), so two things do not compete at once.
+        guard AppModel.shared.hasEngine else { return }
         guard let enabled = settings.checkForUpdates else {
             Task { @MainActor in
                 try? await Task.sleep(nanoseconds: 2_000_000_000)   // after the main window has appeared
@@ -61,9 +64,9 @@ final class UpdateController {
     /// The one-time question of the first launch; the answer can be changed in Preferences.
     private func askAboutAutomaticChecks() {
         guard OnwinSettings.load().checkForUpdates == nil else { return }
-        let answer = Self.alert("Проверять обновления onwin автоматически?",
-                                "onwin раз в день спросит у GitHub, вышла ли новая версия. Ничего не скачивается без вашего согласия.\n\nЭто можно поменять в любой момент в настройках onwin.",
-                                buttons: ["Проверять", "Не проверять"])
+        let answer = Self.alert(String(localized: "Проверять обновления onwin автоматически?"),
+                                String(localized: "onwin раз в день спросит у GitHub, вышла ли новая версия. Ничего не скачивается без вашего согласия.\n\nЭто можно поменять в любой момент в настройках onwin."),
+                                buttons: [String(localized: "Проверять"), String(localized: "Не проверять")])
         let yes = answer == .alertFirstButtonReturn
         AppModel.shared.updateSettings { $0.checkForUpdates = yes }
         if yes { Task { await self.check(userInitiated: false) } }
@@ -85,15 +88,15 @@ final class UpdateController {
             guard found.hasUpdate else {
                 plan = nil
                 if userInitiated {
-                    Self.alert("У вас последняя версия onwin",
-                               "Установлена onwin \(OnwinVersion.displayString). Новее пока ничего не выходило.")
+                    Self.alert(String(localized: "У вас последняя версия onwin"),
+                               String(localized: "Установлена onwin \(OnwinVersion.displayString). Новее пока ничего не выходило."))
                 }
                 return
             }
             guard manifest.supportsThisMac else {
                 plan = nil
                 if userInitiated {
-                    Self.alert("Вышла onwin \(OnwinVersion.display(manifest.version))",
+                    Self.alert(String(localized: "Вышла onwin \(OnwinVersion.display(manifest.version))"),
                                UpdateError.unsupportedMac(manifest.minimumMacOS ?? "?").errorDescription ?? "")
                 }
                 return
@@ -104,7 +107,7 @@ final class UpdateController {
         } catch {
             phase = .idle
             if userInitiated, !(error is CancellationError) {
-                Self.alert("Не удалось проверить обновления", error.localizedDescription)
+                Self.alert(String(localized: "Не удалось проверить обновления"), error.localizedDescription)
             }
         }
     }
@@ -112,8 +115,10 @@ final class UpdateController {
     /// The banner lives in the main window; without one (all windows closed) ask in an alert instead.
     private func presentFound(_ found: UpdatePlan) {
         if showMainWindow() { return }
-        let answer = Self.alert("Доступна onwin \(OnwinVersion.display(found.manifest.version))", Self.sizeLine(found),
-                                buttons: ["Обновить", "Позже", "Пропустить эту версию"])
+        let answer = Self.alert(String(localized: "Доступна onwin \(OnwinVersion.display(found.manifest.version))"),
+                                Self.sizeLine(found),
+                                buttons: [String(localized: "update.install", defaultValue: "Обновить", comment: "Button: install the update"),
+                                          String(localized: "Позже"), String(localized: "Пропустить эту версию")])
         switch answer {
         case .alertFirstButtonReturn: update()
         case .alertThirdButtonReturn: skip()
@@ -124,6 +129,7 @@ final class UpdateController {
     @discardableResult
     private func showMainWindow() -> Bool {
         guard let window = NSApplication.shared.windows.first(where: { $0.canBecomeMain && $0.isVisible }) else { return false }
+        guard !UISnapshot.isBackground else { return true }
         window.makeKeyAndOrderFront(nil)
         NSApplication.shared.activate(ignoringOtherApps: true)
         return true
@@ -182,24 +188,26 @@ final class UpdateController {
         let servers = await Updater.runningWineServers()
         if plan.engine == .download,
            await Updater.isEngineInUse(OnwinPaths.engines.appendingPathComponent(manifest.engine.id), servers: servers) {
-            Self.alert("Сначала закройте Windows-программы", UpdateError.engineInUse(manifest.engine.id).errorDescription ?? "")
+            Self.alert(String(localized: "Сначала закройте Windows-программы"),
+                       UpdateError.engineInUse(manifest.engine.id).errorDescription ?? "")
             return
         }
         if plan.appNeedsUpdate {
             if let bundled = plan.app?.bundledEngine, await Updater.isEngineInUse(bundled.root, servers: servers) {
-                Self.alert("Сначала закройте Windows-программы",
-                           "Сейчас работают Windows-программы, а движок Wine у них внутри приложения onwin, которое будет заменено. Закройте их и нажмите «Обновить» ещё раз.")
+                Self.alert(String(localized: "Сначала закройте Windows-программы"),
+                           String(localized: "Сейчас работают Windows-программы, а движок Wine у них внутри приложения onwin, которое будет заменено. Закройте их и нажмите «Обновить» ещё раз."))
                 return
             }
             if !servers.isEmpty || !ProcessTracker.shared.running.isEmpty {
-                let answer = Self.alert("onwin закроется и откроется снова",
-                                        "Сейчас работают Windows-программы. Они продолжат работать, но в окне onwin после перезапуска их не будет в списке «Запущено». Если в программе есть несохранённые данные — сохраните их заранее.",
-                                        buttons: ["Обновить", "Отмена"])
+                let answer = Self.alert(String(localized: "onwin закроется и откроется снова"),
+                                        String(localized: "Сейчас работают Windows-программы. Они продолжат работать, но в окне onwin после перезапуска их не будет в списке «Запущено». Если в программе есть несохранённые данные — сохраните их заранее."),
+                                        buttons: [String(localized: "update.install", defaultValue: "Обновить", comment: "Button: install the update"),
+                                                  String(localized: "Отмена")])
                 guard answer == .alertFirstButtonReturn else { return }
             }
         }
 
-        phase = .working(message: "Готовлюсь к обновлению…", fraction: nil)
+        phase = .working(message: String(localized: "Готовлюсь к обновлению…"), fraction: nil)
         let progress: ProgressHandler = { [weak self] p in
             Task { @MainActor in self?.report(p) }
         }
@@ -212,7 +220,7 @@ final class UpdateController {
             guard plan.appNeedsUpdate, let app = plan.app else {
                 Updater.cleanUpDownloads()
                 self.plan = nil
-                phase = .finished("Движок Wine обновлён до сборки от \(Self.dateText(manifest.engine.builtDate)).")
+                phase = .finished(String(localized: "Движок Wine обновлён до сборки от \(Self.dateText(manifest.engine.builtDate))."))
                 return
             }
             let prepared = try await Updater.prepareApp(plan, target: app.url, progress: progress)
@@ -231,18 +239,19 @@ final class UpdateController {
             offerDownloadPage(manifest, reason: UpdateError.notWritable(url).errorDescription ?? "")
         } catch {
             phase = .idle
-            Self.alert("Не удалось обновить onwin", error.localizedDescription)
+            Self.alert(String(localized: "Не удалось обновить onwin"), error.localizedDescription)
         }
     }
 
     private func report(_ p: InstallProgress) {
         guard case .working = phase else { return }
         let text = p.message.trimmingCharacters(in: .whitespacesAndNewlines)
-        phase = .working(message: text.isEmpty ? "Обновляю…" : text, fraction: p.fraction)
+        phase = .working(message: text.isEmpty ? String(localized: "Обновляю…") : text, fraction: p.fraction)
     }
 
     private func offerDownloadPage(_ manifest: ReleaseManifest, reason: String) {
-        let answer = Self.alert("Обновите onwin вручную", reason, buttons: ["Открыть страницу загрузки", "Отмена"])
+        let answer = Self.alert(String(localized: "Обновите onwin вручную"), reason,
+                                buttons: [String(localized: "Открыть страницу загрузки"), String(localized: "Отмена")])
         if answer == .alertFirstButtonReturn { NSWorkspace.shared.open(manifest.releasePage) }
     }
 
@@ -250,30 +259,30 @@ final class UpdateController {
 
     /// «~5 МБ», «~5 МБ + ~200 МБ движок», «движок Wine ~200 МБ».
     static func sizeLine(_ plan: UpdatePlan) -> String {
-        var parts: [String] = []
-        if plan.appNeedsUpdate { parts.append(Updater.sizeText(plan.appDownloadSize)) }
-        if plan.engineDownloadSize > 0 {
-            parts.append(plan.appNeedsUpdate ? "+ \(Updater.sizeText(plan.engineDownloadSize)) движок"
-                                             : "движок Wine \(Updater.sizeText(plan.engineDownloadSize))")
+        let app = Updater.sizeText(plan.appDownloadSize)
+        let engine = Updater.sizeText(plan.engineDownloadSize)
+        switch (plan.appNeedsUpdate, plan.engineDownloadSize > 0) {
+        case (true, true): return String(localized: "Скачать: \(app) + \(engine) движок")
+        case (true, false): return String(localized: "Скачать: \(app)")
+        case (false, true): return String(localized: "Скачать: движок Wine \(engine)")
+        case (false, false): return ""
         }
-        return "Скачать: " + parts.joined(separator: " ")
     }
 
     static func dateText(_ date: Date?) -> String {
         guard let date else { return "?" }
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "ru_RU")
-        f.dateStyle = .long
-        f.timeStyle = .none
-        return f.string(from: date)
+        return date.formatted(date: .long, time: .omitted)
     }
 
     @discardableResult
-    static func alert(_ title: String, _ text: String, buttons: [String] = ["OK"]) -> NSApplication.ModalResponse {
+    static func alert(_ title: String, _ text: String,
+                      buttons: [String] = [String(localized: "OK")]) -> NSApplication.ModalResponse {
         let alert = NSAlert()
         alert.messageText = title
         alert.informativeText = text
         for button in buttons { alert.addButton(withTitle: button) }
+        // A background test run must not pop up a modal question.
+        if UISnapshot.isBackground { return .alertSecondButtonReturn }
         NSApplication.shared.activate(ignoringOtherApps: true)
         return alert.runModal()
     }
@@ -347,7 +356,9 @@ struct UpdateBanner: View {
                     .font(.callout)
                     .help("Не напоминать об onwin \(OnwinVersion.display(plan.manifest.version)). Проверить вручную можно в меню onwin.")
                 Button("Позже") { updates.later() }
-                Button("Обновить") { updates.update() }
+                Button(String(localized: "update.install", defaultValue: "Обновить", comment: "Button: install the update")) {
+                    updates.update()
+                }
                     .buttonStyle(.borderedProminent)
                     .disabled(updates.isBusy)
                     .help("onwin скачает новую версию, закроется и откроется снова")
@@ -367,6 +378,37 @@ struct UpdateBanner: View {
 // MARK: - Preferences
 
 /// «Обновления» in Preferences → Основные.
+/// Preferences → «Обновления»: installed version, the check, the automatic-check switch.
+@MainActor
+struct PreferencesUpdatesTab: View {
+    @Environment(AppModel.self) private var model
+
+    var body: some View {
+        Form {
+            Section {
+                LabeledContent("Версия onwin", value: OnwinVersion.displayString)
+                LabeledContent("Сборка", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—")
+                LabeledContent("Движок Wine", value: engineText)
+            } header: {
+                Text("Установлено")
+            } footer: {
+                if OnwinVersion.isBeta {
+                    Text("Все версии onwin до 1.0 — бета: многое уже работает, но возможны ошибки.")
+                }
+            }
+            PreferencesUpdatesSection()
+        }
+        .formStyle(.grouped)
+    }
+
+    private var engineText: String {
+        guard let engine = model.defaultEngine else { return String(localized: "не установлен") }
+        guard let built = engine.info.built else { return "Wine \(engine.info.wineVersion)" }
+        let date = built.formatted(.dateTime.day().month(.wide).year())
+        return String(localized: "Wine \(engine.info.wineVersion) · собран \(date)")
+    }
+}
+
 @MainActor
 struct PreferencesUpdatesSection: View {
     @Environment(AppModel.self) private var model
@@ -386,9 +428,9 @@ struct PreferencesUpdatesSection: View {
             }
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Установлена onwin \(OnwinVersion.displayString)")
+                    Text("Проверить, вышла ли новая версия")
                     if let last = model.settings.lastUpdateCheck {
-                        Text("Последняя проверка: \(last.formatted(.dateTime.day().month(.wide).hour().minute().locale(Locale(identifier: "ru_RU"))))")
+                        Text("Последняя проверка: \(last.formatted(.dateTime.day().month(.wide).hour().minute()))")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }

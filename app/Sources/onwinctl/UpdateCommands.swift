@@ -6,12 +6,14 @@ import OnwinCore
 // updated from its own menu, so it can restart itself.
 
 func runUpdateCommand(_ command: String, _ arguments: [String]) async throws -> Bool {
+    if command == "engine-setup" { try await runEngineSetup(arguments); return true }
+    if command == "addons" { try await runAddons(arguments); return true }
     guard command == "update" else { return false }
     var rest = arguments
     let version = option("--version", in: &rest)
     let checkOnly = rest.contains("--check")
     rest.removeAll { $0 == "--check" }
-    guard rest.isEmpty else { fail("использование: onwinctl update [--check] [--version <версия>]") }
+    guard rest.isEmpty else { fail(String(localized: "использование: onwinctl update [--check] [--version <версия>]", bundle: .onwinctl)) }
 
     let manifest: ReleaseManifest
     if let version { manifest = try await Updater.manifest(forVersion: version) } else { manifest = try await Updater.latestManifest() }
@@ -19,34 +21,42 @@ func runUpdateCommand(_ command: String, _ arguments: [String]) async throws -> 
     let plan = Updater.plan(for: manifest, app: app, exact: version != nil)
 
     if let app {
-        print("Приложение:  onwin \(app.displayVersion) (сборка \(app.build ?? "?")) — \(app.url.path)")
+        print(String(localized: "Приложение:  onwin \(app.displayVersion) (сборка \(app.build ?? "?")) — \(app.url.path)", bundle: .onwinctl))
     } else {
-        print("Приложение:  не установлено")
+        print(String(localized: "Приложение:  не установлено", bundle: .onwinctl))
     }
     let installed = Updater.installedEngine(id: manifest.engine.id) ?? app?.bundledEngine
     if let installed {
         let built = installed.info.built.map { ISO8601DateFormatter().string(from: $0) } ?? "?"
-        print("Движок:      \(installed.id), собран \(built) — \(installed.root.path)")
+        print(String(localized: "Движок:      \(installed.id), собран \(built) — \(installed.root.path)", bundle: .onwinctl))
     } else {
-        print("Движок:      \(manifest.engine.id) не установлен")
+        print(String(localized: "Движок:      \(manifest.engine.id) не установлен", bundle: .onwinctl))
     }
-    print("\(version == nil ? "Последний выпуск" : "Выпуск"): onwin \(OnwinVersion.display(manifest.version)) (сборка \(manifest.build)), " +
-          "движок \(manifest.engine.id) от \(manifest.engine.built)")
-    print("Что нового:  \(manifest.releasePage.absoluteString)")
+    let release = OnwinVersion.display(manifest.version), build = manifest.build
+    let engineID = manifest.engine.id, engineBuilt = manifest.engine.built
+    print(version == nil
+          ? String(localized: "Последний выпуск: onwin \(release) (сборка \(build)), движок \(engineID) от \(engineBuilt)", bundle: .onwinctl)
+          : String(localized: "Выпуск: onwin \(release) (сборка \(build)), движок \(engineID) от \(engineBuilt)", bundle: .onwinctl))
+    print(String(localized: "Что нового:  \(manifest.releasePage.absoluteString)", bundle: .onwinctl))
 
     guard plan.hasUpdate else {
-        print("Обновлять нечего: установлена \(version == nil ? "последняя" : "эта") версия.")
+        print(version == nil ? String(localized: "Обновлять нечего: установлена последняя версия.", bundle: .onwinctl)
+                             : String(localized: "Обновлять нечего: установлена эта версия.", bundle: .onwinctl))
         return true
     }
-    print("Нужно:")
-    if plan.appNeedsUpdate { print("  • приложение onwin \(OnwinVersion.display(manifest.version)), \(Updater.sizeText(manifest.app.size))") }
+    print(String(localized: "Нужно:", bundle: .onwinctl, comment: "Followed by the list of parts to update"))
+    if plan.appNeedsUpdate {
+        print("  • " + String(localized: "приложение onwin \(release), \(Updater.sizeText(manifest.app.size))", bundle: .onwinctl))
+    }
     switch plan.engine {
     case .none: break
-    case .download: print("  • движок Wine \(manifest.engine.id), \(Updater.sizeText(manifest.engine.size))")
-    case .copyFromApp: print("  • перенести движок Wine из приложения в \(OnwinPaths.engines.path) (без загрузки)")
+    case .download:
+        print("  • " + String(localized: "движок Wine \(engineID), \(Updater.sizeText(manifest.engine.size))", bundle: .onwinctl))
+    case .copyFromApp:
+        print("  • " + String(localized: "перенести движок Wine из приложения в \(OnwinPaths.engines.path) (без загрузки)", bundle: .onwinctl))
     }
     if checkOnly {
-        print("Обновить: onwinctl update")
+        print(String(localized: "Обновить: onwinctl update", bundle: .onwinctl))
         return true
     }
     guard manifest.supportsThisMac else { throw UpdateError.unsupportedMac(manifest.minimumMacOS ?? "?") }
@@ -56,13 +66,13 @@ func runUpdateCommand(_ command: String, _ arguments: [String]) async throws -> 
     var appBlocked: String?
     if plan.appNeedsUpdate {
         if await Updater.isAppRunning(at: target) {
-            appBlocked = """
+            appBlocked = String(localized: """
             onwin сейчас открыт. Обновите его из самого приложения: меню «onwin» → «Проверить обновления…»
             (onwin перезапустится сам) — или закройте onwin и выполните onwinctl update ещё раз.
-            """
+            """, bundle: .onwinctl)
         } else if !Updater.canReplaceApp(at: target) {
-            appBlocked = (UpdateError.notWritable(target).errorDescription ?? "") +
-                "\nСтраница выпуска: \(manifest.releasePage.absoluteString)"
+            appBlocked = (UpdateError.notWritable(target).errorDescription ?? "") + "\n" +
+                String(localized: "Страница выпуска: \(manifest.releasePage.absoluteString)", bundle: .onwinctl)
         }
     }
 
@@ -70,16 +80,62 @@ func runUpdateCommand(_ command: String, _ arguments: [String]) async throws -> 
         if case .copyFromApp = plan.engine, appBlocked != nil {
             // The app stays as it is, with its engine inside: nothing to move.
         } else if let engine = try await Updater.installEngine(plan, progress: printProgress) {
-            print("Движок установлен: \(engine.root.path)")
+            print(String(localized: "Движок установлен: \(engine.root.path)", bundle: .onwinctl))
         }
     }
     if plan.appNeedsUpdate {
         if let appBlocked { print(appBlocked); exit(1) }
         let prepared = try await Updater.prepareApp(plan, target: target, progress: printProgress)
         try await Updater.replaceApp(prepared, waitingFor: nil, relaunch: false)
-        print("Приложение установлено: \(target.path)")
+        print(String(localized: "Приложение установлено: \(target.path)", bundle: .onwinctl))
     }
     Updater.cleanUpDownloads()
-    print("Готово: onwin \(OnwinVersion.display(manifest.version)).")
+    print(String(localized: "Готово: onwin \(OnwinVersion.display(manifest.version)).", bundle: .onwinctl))
     return true
+}
+
+// `onwinctl engine-setup [--check]`: what the app does at first launch when it has no engine (the light DMG):
+// the engine of this onwin version's release (Updater.manifestForEngineSetup) into Engines/<id>.
+func runEngineSetup(_ arguments: [String]) async throws {
+    let checkOnly = arguments.contains("--check")
+    guard arguments.allSatisfy({ $0 == "--check" }) else { fail(String(localized: "использование: onwinctl engine-setup [--check]", bundle: .onwinctl)) }
+    let plan = try await Updater.engineSetupPlan()
+    let asset = plan.manifest.engine
+    print(String(localized: "Выпуск:  onwin \(OnwinVersion.display(plan.manifest.version)), движок \(asset.id) от \(asset.built), \(Updater.sizeText(asset.size))", bundle: .onwinctl))
+    if plan.engine == .none, let engine = Updater.installedEngine(id: asset.id) {
+        print(String(localized: "Движок уже установлен: \(engine.root.path)", bundle: .onwinctl))
+        return
+    }
+    if checkOnly { print(String(localized: "Установить: onwinctl engine-setup", bundle: .onwinctl)); return }
+    let engine = try await Updater.installEngineForSetup(plan, progress: printProgress)
+    print(String(localized: "Движок установлен: \(engine.root.path)", bundle: .onwinctl))
+}
+
+// `onwinctl addons [install mono|gecko|all]`: Wine Mono / Gecko of the default engine (EngineAddons.swift).
+// Normally onwin adds them by itself when a program needs them.
+func runAddons(_ arguments: [String]) async throws {
+    let usage = String(localized: "использование: onwinctl addons [install mono|gecko|all]", bundle: .onwinctl)
+    guard let engine = try? EngineManager.engine(for: nil) else { fail(String(localized: "движок Wine не установлен (onwinctl engine-setup)", bundle: .onwinctl)) }
+    if arguments.isEmpty {
+        print(String(localized: "Движок: \(engine.id) — \(engine.root.path)", bundle: .onwinctl))
+        for addon in EngineAddon.allCases {
+            print(addon.isInstalled(in: engine)
+                  ? String(localized: "  \(addon.title): есть", bundle: .onwinctl)
+                  : String(localized: "  \(addon.title): нет (\(Updater.sizeText(addon.size)) при первой необходимости)", bundle: .onwinctl))
+        }
+        return
+    }
+    guard arguments.count == 2, arguments[0] == "install" else { fail(usage) }
+    let addons: [EngineAddon]
+    switch arguments[1] {
+    case "mono": addons = [.mono]
+    case "gecko": addons = EngineAddon.gecko
+    case "all": addons = EngineAddon.allCases
+    default: fail(usage)
+    }
+    if try await EngineAddons.install(addons, into: engine, progress: printProgress) {
+        print(String(localized: "Готово. Пространства обновятся при следующем запуске.", bundle: .onwinctl))
+    } else {
+        print(String(localized: "Уже установлено.", bundle: .onwinctl))
+    }
 }

@@ -7,18 +7,39 @@ import OnwinCore
 /// main window; a short status line is mirrored at the top of each tab.
 @MainActor
 struct PreferencesView: View {
+    /// The open tab; the sidebar's «Обновления» opens the window straight on `.updates`.
+    @AppStorage(PreferencesTab.storageKey) private var tab: PreferencesTab = .general
+
     init() {}
 
     var body: some View {
-        TabView {
+        TabView(selection: $tab) {
             PreferencesGeneralTab()
                 .tabItem { Label("Основные", systemImage: "gearshape") }
+                .tag(PreferencesTab.general)
+            PreferencesUpdatesTab()   // Views/UpdateViews.swift
+                .tabItem { Label("Обновления", systemImage: "arrow.triangle.2.circlepath") }
+                .tag(PreferencesTab.updates)
             PreferencesEnginesTab()
                 .tabItem { Label("Движки", systemImage: "cpu") }
+                .tag(PreferencesTab.engines)
             PreferencesD3DMetalTab()
                 .tabItem { Label("D3DMetal", systemImage: "cube.transparent") }
+                .tag(PreferencesTab.d3dMetal)
         }
         .frame(width: 620, height: 560)
+    }
+}
+
+/// Tabs of the preferences window (stored in UserDefaults, so it reopens where it was left).
+enum PreferencesTab: String {
+    case general, updates, engines, d3dMetal
+
+    static let storageKey = "onwin.preferencesTab"
+
+    /// Makes the next opening of the preferences window show this tab.
+    static func select(_ tab: PreferencesTab) {
+        UserDefaults.standard.set(tab.rawValue, forKey: storageKey)
     }
 }
 
@@ -71,7 +92,7 @@ struct PreferencesBadge: View {
 
     var body: some View {
         Label {
-            Text(title)
+            Text(verbatim: title)
         } icon: {
             Image(systemName: isOn ? "checkmark" : "xmark")
         }
@@ -87,11 +108,11 @@ struct PreferencesBadge: View {
 @MainActor
 struct PreferencesPathRow: View {
     @Environment(AppModel.self) private var model
-    let title: String
+    let title: LocalizedStringKey
     let symbol: String
     let url: URL
 
-    init(_ title: String, symbol: String, url: URL) {
+    init(_ title: LocalizedStringKey, symbol: String, url: URL) {
         self.title = title
         self.symbol = symbol
         self.url = url
@@ -112,9 +133,11 @@ struct PreferencesPathRow: View {
                     .textSelection(.enabled)
             }
             Spacer(minLength: 8)
-            Button("Открыть") {
+            Button {
                 try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
                 model.open(url)
+            } label: {
+                Text("Открыть", comment: "Button: open the folder in Finder")
             }
         }
     }
@@ -136,6 +159,8 @@ struct PreferencesGeneralTab: View {
                     PreferencesTaskStatus()
                 }
             }
+
+            LanguagePreferenceSection()   // Views/LanguagePreferenceSection.swift
 
             Section {
                 SettingsBackendRows(selection: $defaultBackend, engine: model.defaultEngine)
@@ -161,8 +186,6 @@ struct PreferencesGeneralTab: View {
             } footer: {
                 Text("D3DMetal onwin только предложит — для него нужен вход с Apple ID. У каждого пространства это можно поменять в его настройках. Если выключить, onwin будет лишь подсказывать, чего не хватает.")
             }
-
-            PreferencesUpdatesSection()   // Views/UpdateViews.swift
 
             Section {
                 PreferencesPathRow("Данные onwin", symbol: "externaldrive", url: OnwinPaths.root)
@@ -278,7 +301,7 @@ struct PreferencesEnginesTab: View {
             Text("Без движка onwin не может создавать пространства и запускать программы. Проще всего снова выполнить в Терминале команду со страницы «Установка» на сайте onwin — она скачает движок. Разработчики могут собрать его из исходного кода:")
                 .font(.callout)
                 .fixedSize(horizontal: false, vertical: true)
-            Text("xcode-select --install\n./engine/build.sh")
+            Text(verbatim: "xcode-select --install\n./engine/build.sh")
                 .font(.system(.callout, design: .monospaced))
                 .textSelection(.enabled)
                 .padding(8)
@@ -366,10 +389,10 @@ struct PreferencesEngineRow: View {
     private var detailLine: String {
         var parts = ["Wine \(engine.info.wineVersion)"]
         if let source = engine.info.crossoverSourceVersion, !source.isEmpty {
-            parts.append("исходники CrossOver \(source)")
+            parts.append(String(localized: "исходники CrossOver \(source)"))
         }
         if let built = engine.info.built {
-            parts.append("собран \(built.formatted(date: .abbreviated, time: .omitted))")
+            parts.append(String(localized: "собран \(built.formatted(date: .abbreviated, time: .omitted))"))
         }
         parts.append("id: \(engine.id)")
         return parts.joined(separator: " · ")
@@ -519,9 +542,9 @@ struct PreferencesD3DMetalTab: View {
     /// Folder picker that starts in /Volumes, where the mounted Game Porting Toolkit DMG appears.
     private func chooseAndImport() {
         let panel = NSOpenPanel()
-        panel.title = "Импорт D3DMetal"
-        panel.message = "Выберите смонтированный диск Game Porting Toolkit или папку redist на нём"
-        panel.prompt = "Импортировать"
+        panel.title = String(localized: "Импорт D3DMetal")
+        panel.message = String(localized: "Выберите смонтированный диск Game Porting Toolkit или папку redist на нём")
+        panel.prompt = String(localized: "Импортировать")
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
@@ -535,16 +558,16 @@ struct PreferencesD3DMetalTab: View {
 @MainActor
 struct PreferencesD3DMetalStep: View {
     let number: Int
-    let text: String
+    let text: LocalizedStringKey
 
-    init(number: Int, text: String) {
+    init(number: Int, text: LocalizedStringKey) {
         self.number = number
         self.text = text
     }
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
-            Text("\(number)")
+            Text(verbatim: "\(number)")
                 .font(.caption.weight(.bold))
                 .foregroundStyle(Color.white)
                 .frame(width: 20, height: 20)
