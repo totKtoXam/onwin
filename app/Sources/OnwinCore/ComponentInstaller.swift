@@ -89,6 +89,15 @@ public enum ComponentInstaller {
             space = try await install(required, into: space, progress: progress, chain: &chain)
         }
 
+        // Wine Mono / Gecko: added once to the engine and shared by every space (EngineAddons.swift)
+        // instead of the per-space .msi. The space registers them at its next start (prefix update).
+        if let addons = EngineAddons.addons(forComponent: component.id),
+           let engine = try? EngineManager.engine(for: space.config),
+           EngineAddons.missing(addons, in: engine).isEmpty || EngineAddons.canInstall(into: engine) {
+            try await EngineAddons.install(addons, into: engine, progress: progress)
+            return try markInstalled(component, in: space, progress: progress)
+        }
+
         // 1. Downloads.
         var files: [String: URL] = [:]
         for (index, download) in component.downloads.enumerated() {
@@ -117,6 +126,12 @@ public enum ComponentInstaller {
         }
 
         // 3. Config.
+        return try markInstalled(component, in: space, progress: progress)
+    }
+
+    /// Records the component in the space's config (re-read from disk first) with its DLL overrides.
+    private static func markInstalled(_ component: Component, in start: Space, progress: ProgressHandler) throws -> Space {
+        var space = start
         if let fresh = try? Space(url: space.url) { space = fresh }
         for (dll, mode) in component.dllOverrides { space.config.dllOverrides[dll] = mode }
         let superseded = Set(component.replaces + component.legacyIDs)

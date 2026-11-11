@@ -43,6 +43,9 @@ final class UpdateController {
     func checkAtLaunchIfNeeded() {
         let settings = OnwinSettings.load()
         guard Self.runningApp != nil else { return }
+        // First launch of the light app: «Подготовка onwin» downloads the engine first and asks
+        // afterwards (EngineSetupController calls this again), so two things do not compete at once.
+        guard AppModel.shared.hasEngine else { return }
         guard let enabled = settings.checkForUpdates else {
             Task { @MainActor in
                 try? await Task.sleep(nanoseconds: 2_000_000_000)   // after the main window has appeared

@@ -166,6 +166,16 @@ else
     rm -rf "$staging"; mkdir -p "$staging"
     /usr/bin/tar -xf "$WORK/engine.tar.xz" -C "$staging"
     [ -x "$staging/$ENGINE_ID/bin/wine" ] || { rm -rf "$staging"; die "в архиве движка нет bin/wine"; }
+    # The engine archive has no Wine Mono / Gecko (onwin downloads them when a program needs them): keep the
+    # ones the installed engine already has. Same engine id = same Wine = the versions Wine expects.
+    for group in mono gecko; do
+        for addon in "$ENGINE_DIR/share/wine/$group"/wine-*; do
+            [ -d "$addon" ] || continue
+            [ -e "$staging/$ENGINE_ID/share/wine/$group/$(basename "$addon")" ] && continue
+            mkdir -p "$staging/$ENGINE_ID/share/wine/$group"
+            mv "$addon" "$staging/$ENGINE_ID/share/wine/$group/"
+        done
+    done
     rm -rf "$ENGINE_DIR.old"
     if [ -d "$ENGINE_DIR" ]; then mv "$ENGINE_DIR" "$ENGINE_DIR.old"; fi
     mv "$staging/$ENGINE_ID" "$ENGINE_DIR"
