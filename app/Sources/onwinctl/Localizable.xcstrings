@@ -574,6 +574,28 @@
         }
       }
     },
+    "onwinctl component <пространство> %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwinctl component <space> %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwinctl component <кеңістік> %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwinctl component <空间> %@"
+          }
+        }
+      }
+    },
     "wineboot --restart: код %lld" : {
       "localizations" : {
         "en" : {

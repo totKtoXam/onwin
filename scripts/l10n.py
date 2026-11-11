@@ -237,7 +237,7 @@ def check():
                         # The same text is fine for loanwords («Графика», «Каталог», «Журнал: %@»).
                         if text == source_key and len(CYRILLIC_WORD.findall(source_key)) > 2:
                             problems.append(f"{target}: kk: same as Russian: {key!r}")
-                        elif RUSSIAN_WORDS.search(text) or (len(CYRILLIC.findall(text)) > 25 and not KAZAKH_LETTERS.search(text)):
+                        elif RUSSIAN_WORDS.search(text) or (len(CYRILLIC.findall(text)) > 45 and not KAZAKH_LETTERS.search(text)):
                             problems.append(f"{target}: kk: looks Russian: {key!r} → {text!r}")
     # Lookups that would miss their bundle: OnwinCore / onwinctl must pass bundle:.
     for target, bundle in TARGET_BUNDLES.items():

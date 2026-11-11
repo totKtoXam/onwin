@@ -315,7 +315,10 @@ struct DesktopTopBar: View {
 
     private var summary: String {
         guard itemCount > 0 else { return String(localized: "Все Windows-программы и игры из всех пространств") }
-        return String(localized: "\(itemCount) программ в \(spaceCount) пространствах")
+        // Two counted numbers: each half has its own plural forms in the catalog.
+        let programs = String(localized: "\(itemCount) программ", comment: "Desktop summary, first half: N programs")
+        let spaces = String(localized: "в \(spaceCount) пространствах", comment: "Desktop summary, second half: in N spaces")
+        return String(localized: "\(programs) \(spaces)", comment: "Desktop summary: «5 программ» + «в 2 пространствах»")
     }
 }
 
