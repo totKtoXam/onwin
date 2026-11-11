@@ -1,6 +1,50 @@
 {
   "sourceLanguage" : "ru",
   "strings" : {
+    "  %@: есть" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "  %@: installed"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "  %@: бар"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "  %@：已安装"
+          }
+        }
+      }
+    },
+    "  %@: нет (%@ при первой необходимости)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "  %@: not installed (%@ when first needed)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "  %@: жоқ (алғаш керек болғанда, %@)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "  %@：未安装（首次需要时下载 %@）"
+          }
+        }
+      }
+    },
     "%@ (файла нет!)" : {
       "localizations" : {
         "en" : {
@@ -904,6 +948,28 @@
         }
       }
     },
+    "Выпуск:  onwin %@, движок %@ от %@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Release: onwin %@, engine %@ built %@, %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шығарылым: onwin %@, қозғалтқыш %@ (күні: %@), %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本：  onwin %@，引擎 %@（构建于 %@），%@"
+          }
+        }
+      }
+    },
     "Выпуск: onwin %@ (сборка %@), движок %@ от %@" : {
       "localizations" : {
         "en" : {
@@ -945,6 +1011,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "完成"
+          }
+        }
+      }
+    },
+    "Готово. Пространства обновятся при следующем запуске." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done. Spaces will be updated the next time they start."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дайын. Кеңістіктер келесі іске қосылғанда жаңартылады."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成。空间将在下次启动时更新。"
           }
         }
       }
@@ -1015,7 +1103,28 @@
         }
       }
     },
-    "Движки и графика:\n  onwinctl engines                         список движков Wine\n  onwinctl engine-install <папка>          установить собранный движок\n  onwinctl engine-setup [--check]          скачать движок Wine этой версии onwin (то же, что первый запуск)\n  onwinctl addons [install mono|gecko|all] Wine Mono / Gecko в движке (обычно onwin ставит их сам, когда нужно)\n  onwinctl d3dmetal-import <путь к GPTK>   импортировать D3DMetal из Game Porting Toolkit (.dmg или том)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout минуты] [--downloads папка]\n                                           импортировать уже скачанный Game Porting Toolkit (.dmg из «Загрузок»\n                                           или кэша onwin); вход с Apple ID и загрузка — в приложении onwin\n  onwinctl status                          что установлено\n  onwinctl update [--check] [--version X]  обновить onwin и движок до последнего выпуска (--check — только\n                                           проверить, --version — поставить определённую версию)" : {},
+    "Движки и графика:\n  onwinctl engines                         список движков Wine\n  onwinctl engine-install <папка>          установить собранный движок\n  onwinctl engine-setup [--check]          скачать движок Wine этой версии onwin (то же, что первый запуск)\n  onwinctl addons [install mono|gecko|all] Wine Mono / Gecko в движке (обычно onwin ставит их сам, когда нужно)\n  onwinctl d3dmetal-import <путь к GPTK>   импортировать D3DMetal из Game Porting Toolkit (.dmg или том)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout минуты] [--downloads папка]\n                                           импортировать уже скачанный Game Porting Toolkit (.dmg из «Загрузок»\n                                           или кэша onwin); вход с Apple ID и загрузка — в приложении onwin\n  onwinctl status                          что установлено\n  onwinctl update [--check] [--version X]  обновить onwin и движок до последнего выпуска (--check — только\n                                           проверить, --version — поставить определённую версию)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engines and graphics:\n  onwinctl engines                         list of Wine engines\n  onwinctl engine-install <folder>         install a built engine\n  onwinctl engine-setup [--check]          download the Wine engine of this onwin version (same as the first launch)\n  onwinctl addons [install mono|gecko|all] Wine Mono / Gecko in the engine (onwin usually adds them itself when needed)\n  onwinctl d3dmetal-import <path to GPTK>  import D3DMetal from Game Porting Toolkit (.dmg or volume)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout minutes] [--downloads folder]\n                                           import an already downloaded Game Porting Toolkit (.dmg from Downloads\n                                           or the onwin cache); Apple ID sign-in and download happen in the onwin app\n  onwinctl status                          what’s installed\n  onwinctl update [--check] [--version X]  update onwin and the engine to the latest release (--check: only\n                                           check, --version: install a specific version)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыштар және графика:\n  onwinctl engines                         Wine қозғалтқыштарының тізімі\n  onwinctl engine-install <қалта>          жиналған қозғалтқышты орнату\n  onwinctl engine-setup [--check]          onwin-нің осы нұсқасының Wine қозғалтқышын жүктеп алу (алғашқы іске қосудағыдай)\n  onwinctl addons [install mono|gecko|all] қозғалтқыштағы Wine Mono / Gecko (әдетте onwin оларды керек кезде өзі орнатады)\n  onwinctl d3dmetal-import <GPTK жолы>     Game Porting Toolkit ішінен D3DMetal импорттау (.dmg немесе том)\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout минут] [--downloads қалта]\n                                           жүктеп алынған Game Porting Toolkit импорттау («Жүктеулер» қалтасынан\n                                           немесе onwin кэшінен .dmg); Apple ID арқылы кіру және жүктеп алу — onwin қолданбасында\n  onwinctl status                          не орнатылған\n  onwinctl update [--check] [--version X]  onwin мен қозғалтқышты соңғы шығарылымға дейін жаңарту (--check — тек\n                                           тексеру, --version — белгілі бір нұсқаны орнату)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎与图形：\n  onwinctl engines                         Wine 引擎列表\n  onwinctl engine-install <文件夹>         安装已构建的引擎\n  onwinctl engine-setup [--check]          下载此版本 onwin 的 Wine 引擎（与首次启动相同）\n  onwinctl addons [install mono|gecko|all] 引擎中的 Wine Mono / Gecko（通常 onwin 会在需要时自动安装）\n  onwinctl d3dmetal-import <GPTK 路径>     从 Game Porting Toolkit（.dmg 或宗卷）导入 D3DMetal\n  onwinctl d3dmetal-fetch [--wait] [--browser] [--timeout 分钟] [--downloads 文件夹]\n                                           导入已下载的 Game Porting Toolkit（“下载”文件夹或\n                                           onwin 缓存中的 .dmg）；Apple ID 登录和下载在 onwin 应用中进行\n  onwinctl status                          已安装的内容\n  onwinctl update [--check] [--version X]  将 onwin 和引擎更新到最新版本（--check — 仅检查，\n                                           --version — 安装指定版本）"
+          }
+        }
+      }
+    },
     "Движки:   %@" : {
       "localizations" : {
         "en" : {
@@ -1082,6 +1191,28 @@
         }
       }
     },
+    "Движок уже установлен: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The engine is already installed: %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыш орнатылып қойған: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎已安装：%@"
+          }
+        }
+      }
+    },
     "Движок установлен: %@" : {
       "localizations" : {
         "en" : {
@@ -1144,6 +1275,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "引擎：       %@，构建于 %@ — %@"
+          }
+        }
+      }
+    },
+    "Движок: %@ — %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engine: %@ — %@"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыш: %@ — %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎：%@ — %@"
           }
         }
       }
@@ -2605,6 +2758,50 @@
         }
       }
     },
+    "Уже установлено." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Already installed."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Орнатылып қойған."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已安装。"
+          }
+        }
+      }
+    },
+    "Установить: onwinctl engine-setup" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To install: onwinctl engine-setup"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Орнату: onwinctl engine-setup"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安装：onwinctl engine-setup"
+          }
+        }
+      }
+    },
     "Установлен движок %@ → %@" : {
       "localizations" : {
         "en" : {
@@ -3048,6 +3245,28 @@
         }
       }
     },
+    "движок Wine не установлен (onwinctl engine-setup)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the Wine engine isn’t installed (onwinctl engine-setup)"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine қозғалтқышы орнатылмаған (onwinctl engine-setup)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未安装 Wine 引擎（onwinctl engine-setup）"
+          }
+        }
+      }
+    },
     "для steam:<appid> нужно пространство со Steam" : {
       "localizations" : {
         "en" : {
@@ -3203,6 +3422,28 @@
         }
       }
     },
+    "использование: onwinctl addons [install mono|gecko|all]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl addons [install mono|gecko|all]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl addons [install mono|gecko|all]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl addons [install mono|gecko|all]"
+          }
+        }
+      }
+    },
     "использование: onwinctl advise <пространство|-> <файл.exe>" : {
       "localizations" : {
         "en" : {
@@ -3309,6 +3550,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "用法：onwinctl component-files <组件> <文件夹>"
+          }
+        }
+      }
+    },
+    "использование: onwinctl engine-setup [--check]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "usage: onwinctl engine-setup [--check]"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "қолданылуы: onwinctl engine-setup [--check]"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用法：onwinctl engine-setup [--check]"
           }
         }
       }

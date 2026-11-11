@@ -509,7 +509,7 @@ public enum Updater {
         } catch is CancellationError {
             throw CancellationError()
         } catch {
-            throw OnwinError("Нет связи с GitHub: не удалось узнать, какой движок Wine скачать. Проверьте подключение к интернету.")
+            throw OnwinError(String(localized: "Нет связи с GitHub: не удалось узнать, какой движок Wine скачать. Проверьте подключение к интернету.", bundle: .onwinCore))
         }
         return plan(for: manifest, app: nil)
     }
@@ -521,7 +521,7 @@ public enum Updater {
         var download = plan
         download.engine = .download
         guard let engine = try await installEngine(download, progress: progress) else {
-            throw OnwinError("Движок Wine не установился.")
+            throw OnwinError(String(localized: "Движок Wine не установился.", bundle: .onwinCore))
         }
         cleanUpDownloads()
         return engine

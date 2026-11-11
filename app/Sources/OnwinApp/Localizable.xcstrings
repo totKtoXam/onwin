@@ -1195,7 +1195,28 @@
         }
       }
     },
-    "onwin готовится к работе: скачивает движок Wine. Запуск программ — чуть позже." : {},
+    "onwin готовится к работе: скачивает движок Wine. Запуск программ — чуть позже." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin is getting ready: it’s downloading the Wine engine. You can run programs shortly."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin жұмысқа дайындалуда: Wine қозғалтқышын жүктеп алуда. Бағдарламаларды сәл кейінірек іске қосуға болады."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin 正在准备：正在下载 Wine 引擎。稍后即可运行程序。"
+          }
+        }
+      }
+    },
     "onwin закроется и откроется снова" : {
       "localizations" : {
         "en" : {
@@ -3803,7 +3824,28 @@
         }
       }
     },
-    "Готово — движок установлен." : {},
+    "Готово — движок установлен." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done — the engine is installed."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дайын — қозғалтқыш орнатылды."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成 — 引擎已安装。"
+          }
+        }
+      }
+    },
     "Готово, нужна перезагрузка" : {
       "localizations" : {
         "en" : {
@@ -4200,8 +4242,50 @@
         }
       }
     },
-    "Движок Wine ещё не установлен — запуск программ пока недоступен." : {},
-    "Движок Wine ещё не установлен: onwin скачивает его сам при первом запуске (экран «Подготовка onwin»). Запуск программ станет доступен, когда загрузка закончится." : {},
+    "Движок Wine ещё не установлен — запуск программ пока недоступен." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Wine engine isn’t installed yet, so programs can’t run for now."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine қозғалтқышы әлі орнатылмаған — әзірге бағдарламаларды іске қосу мүмкін емес."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine 引擎尚未安装，暂时无法运行程序。"
+          }
+        }
+      }
+    },
+    "Движок Wine ещё не установлен: onwin скачивает его сам при первом запуске (экран «Подготовка onwin»). Запуск программ станет доступен, когда загрузка закончится." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Wine engine isn’t installed yet: onwin downloads it by itself at first launch (the “Getting onwin Ready” screen). You can run programs once the download finishes."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine қозғалтқышы әлі орнатылмаған: onwin оны алғашқы іске қосуда өзі жүктеп алады («onwin-ді дайындау» экраны). Жүктеу аяқталғанда бағдарламаларды іске қосуға болады."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine 引擎尚未安装：onwin 会在首次启动时自动下载（“准备 onwin”界面）。下载完成后即可运行程序。"
+          }
+        }
+      }
+    },
     "Движок Wine не установлен" : {
       "localizations" : {
         "en" : {
@@ -4290,7 +4374,28 @@
         }
       }
     },
-    "Движок не скачался" : {},
+    "Движок не скачался" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Engine Didn’t Download"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқыш жүктелмеді"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "引擎下载失败"
+          }
+        }
+      }
+    },
     "Движок не установлен" : {
       "localizations" : {
         "en" : {
@@ -4533,7 +4638,28 @@
         }
       }
     },
-    "Для разработчиков: движок собирается скриптом engine/build.sh из исходного кода onwin; путь к нему можно задать переменной окружения ONWIN_ENGINE." : {},
+    "Для разработчиков: движок собирается скриптом engine/build.sh из исходного кода onwin; путь к нему можно задать переменной окружения ONWIN_ENGINE." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For developers: the engine is built with the engine/build.sh script from onwin’s source code; you can set its path with the ONWIN_ENGINE environment variable."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Әзірлеушілерге: қозғалтқыш onwin бастапқы кодындағы engine/build.sh скриптімен жиналады; оның жолын ONWIN_ENGINE орта айнымалысымен көрсетуге болады."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开发者：引擎可用 onwin 源代码中的 engine/build.sh 脚本构建；可通过环境变量 ONWIN_ENGINE 指定其路径。"
+          }
+        }
+      }
+    },
     "Добавит %@ в список программ пространства" : {
       "localizations" : {
         "en" : {
@@ -4997,7 +5123,28 @@
         }
       }
     },
-    "Другие способы" : {},
+    "Другие способы" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other Ways"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Басқа тәсілдер"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "其他方式"
+          }
+        }
+      }
+    },
     "Дублировать" : {
       "localizations" : {
         "en" : {
@@ -5064,7 +5211,28 @@
         }
       }
     },
-    "Если этот Mac не подключается к интернету, скачайте на другом компьютере вариант onwin «без интернета» (файл с «offline» в названии на странице выпуска: движок уже внутри) и перенесите onwin оттуда в «Программы»." : {},
+    "Если этот Mac не подключается к интернету, скачайте на другом компьютере вариант onwin «без интернета» (файл с «offline» в названии на странице выпуска: движок уже внутри) и перенесите onwin оттуда в «Программы»." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If this Mac can’t connect to the internet, download the offline version of onwin on another computer (the file with “offline” in its name on the release page: the engine is already inside) and move onwin from it to Applications."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Егер бұл Mac интернетке қосылмаса, басқа компьютерде onwin-нің «интернетсіз» нұсқасын жүктеп алыңыз (шығарылым бетіндегі атауында «offline» бар файл: қозғалтқыш ішінде бар) да, onwin-ді одан «Бағдарламалар» (Applications) қалтасына көшіріңіз."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "如果这台 Mac 无法连接互联网，请在另一台电脑上下载 onwin 的离线版本（发布页面上名称带有“offline”的文件，引擎已包含在内），然后将其中的 onwin 移到“应用程序”文件夹。"
+          }
+        }
+      }
+    },
     "Есть в %lld пространствах" : {
       "localizations" : {
         "en" : {
@@ -5834,7 +6002,28 @@
         }
       }
     },
-    "Загрузка остановлена. Без движка onwin не может запускать программы — продолжите, когда будет удобно." : {},
+    "Загрузка остановлена. Без движка onwin не может запускать программы — продолжите, когда будет удобно." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The download was stopped. onwin can’t run programs without the engine, so continue whenever it suits you."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жүктеу тоқтатылды. Қозғалтқышсыз onwin бағдарламаларды іске қоса алмайды — ыңғайлы кезде жалғастырыңыз."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下载已停止。没有引擎，onwin 无法运行程序 — 方便时请继续。"
+          }
+        }
+      }
+    },
     "Закрепить" : {
       "localizations" : {
         "en" : {
@@ -8499,7 +8688,28 @@
         }
       }
     },
-    "Можно пользоваться Mac как обычно. Если связь прервётся, нажмите «Повторить» — загрузка обычно продолжается с того же места." : {},
+    "Можно пользоваться Mac как обычно. Если связь прервётся, нажмите «Повторить» — загрузка обычно продолжается с того же места." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can use your Mac as usual. If the connection drops, click “Try Again”: the download usually picks up where it left off."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac-ты әдеттегідей қолдана беруге болады. Байланыс үзілсе, «Қайталау» батырмасын басыңыз — жүктеу әдетте тоқтаған жерінен жалғасады."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你可以照常使用 Mac。如果连接中断，请点击“重试” — 下载通常会从中断处继续。"
+          }
+        }
+      }
+    },
     "Можно просто перетащить сюда файл .exe, .msi или ярлык .lnk." : {
       "localizations" : {
         "en" : {
@@ -9955,7 +10165,28 @@
         }
       }
     },
-    "Один раз onwin скачивает движок Wine — то, что запускает Windows-программы на Mac. Потом интернет для этого не нужен." : {},
+    "Один раз onwin скачивает движок Wine — то, что запускает Windows-программы на Mac. Потом интернет для этого не нужен." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin downloads the Wine engine once: it’s what runs Windows programs on a Mac. After that, no internet is needed for it."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin Wine қозғалтқышын бір рет жүктеп алады — Mac-та Windows бағдарламаларын іске қосатын да сол. Кейін бұл үшін интернет керек емес."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin 只需下载一次 Wine 引擎 — 它负责在 Mac 上运行 Windows 程序。之后就不再需要联网。"
+          }
+        }
+      }
+    },
     "Окно Wine «Установка и удаление»" : {
       "localizations" : {
         "en" : {
@@ -12027,8 +12258,50 @@
         }
       }
     },
-    "Повторить" : {},
-    "Подготовка onwin" : {},
+    "Повторить" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try Again"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қайталау"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重试"
+          }
+        }
+      }
+    },
+    "Подготовка onwin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Getting onwin Ready"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin-ді дайындау"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "准备 onwin"
+          }
+        }
+      }
+    },
     "Подготовка к запуску «%@»" : {
       "localizations" : {
         "en" : {
@@ -12073,7 +12346,28 @@
         }
       }
     },
-    "Подробнее" : {},
+    "Подробнее" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Толығырақ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "详细信息"
+          }
+        }
+      }
+    },
     "Подробный журнал Wine" : {
       "localizations" : {
         "en" : {
@@ -12932,7 +13226,28 @@
         }
       }
     },
-    "Проверьте подключение к интернету и нажмите «Повторить». Без интернета — см. «Другие способы» ниже." : {},
+    "Проверьте подключение к интернету и нажмите «Повторить». Без интернета — см. «Другие способы» ниже." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check your internet connection and click “Try Again”. No internet? See “Other Ways” below."
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Интернет байланысын тексеріп, «Қайталау» батырмасын басыңыз. Интернет жоқ болса — төмендегі «Басқа тәсілдер» бөлімін қараңыз."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请检查网络连接，然后点击“重试”。没有网络？请参阅下方的“其他方式”。"
+          }
+        }
+      }
+    },
     "Проверьте рецепт из «%@». Импорт ничего не устанавливает и не запускает — установка начнётся, только когда вы нажмёте «Установить» на карточке." : {
       "localizations" : {
         "en" : {
@@ -16385,7 +16700,28 @@
         }
       }
     },
-    "Страница выпуска" : {},
+    "Страница выпуска" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Release Page"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шығарылым беті"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发布页面"
+          }
+        }
+      }
+    },
     "Строка окружения «%@»: нужно ИМЯ=ЗНАЧЕНИЕ" : {
       "localizations" : {
         "en" : {
@@ -17244,7 +17580,28 @@
         }
       }
     },
-    "Узнаю, какой движок нужен этой версии onwin…" : {},
+    "Узнаю, какой движок нужен этой версии onwin…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking which engine this version of onwin needs…"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "onwin-нің осы нұсқасына қай қозғалтқыш керек екенін анықтап жатырмын…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在确定此版本 onwin 需要哪个引擎…"
+          }
+        }
+      }
+    },
     "Укажите имя библиотеки" : {
       "localizations" : {
         "en" : {
@@ -17685,7 +18042,28 @@
         }
       }
     },
-    "Установить движок из папки…" : {},
+    "Установить движок из папки…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Install Engine from Folder…"
+          }
+        },
+        "kk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Қозғалтқышты қалтадан орнату…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从文件夹安装引擎…"
+          }
+        }
+      }
+    },
     "Установить ещё раз" : {
       "localizations" : {
         "en" : {

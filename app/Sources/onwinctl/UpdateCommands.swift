@@ -98,28 +98,30 @@ func runUpdateCommand(_ command: String, _ arguments: [String]) async throws -> 
 // the engine of this onwin version's release (Updater.manifestForEngineSetup) into Engines/<id>.
 func runEngineSetup(_ arguments: [String]) async throws {
     let checkOnly = arguments.contains("--check")
-    guard arguments.allSatisfy({ $0 == "--check" }) else { fail("использование: onwinctl engine-setup [--check]") }
+    guard arguments.allSatisfy({ $0 == "--check" }) else { fail(String(localized: "использование: onwinctl engine-setup [--check]", bundle: .onwinctl)) }
     let plan = try await Updater.engineSetupPlan()
     let asset = plan.manifest.engine
-    print("Выпуск:  onwin \(OnwinVersion.display(plan.manifest.version)), движок \(asset.id) от \(asset.built), \(Updater.sizeText(asset.size))")
+    print(String(localized: "Выпуск:  onwin \(OnwinVersion.display(plan.manifest.version)), движок \(asset.id) от \(asset.built), \(Updater.sizeText(asset.size))", bundle: .onwinctl))
     if plan.engine == .none, let engine = Updater.installedEngine(id: asset.id) {
-        print("Движок уже установлен: \(engine.root.path)")
+        print(String(localized: "Движок уже установлен: \(engine.root.path)", bundle: .onwinctl))
         return
     }
-    if checkOnly { print("Установить: onwinctl engine-setup"); return }
+    if checkOnly { print(String(localized: "Установить: onwinctl engine-setup", bundle: .onwinctl)); return }
     let engine = try await Updater.installEngineForSetup(plan, progress: printProgress)
-    print("Движок установлен: \(engine.root.path)")
+    print(String(localized: "Движок установлен: \(engine.root.path)", bundle: .onwinctl))
 }
 
 // `onwinctl addons [install mono|gecko|all]`: Wine Mono / Gecko of the default engine (EngineAddons.swift).
 // Normally onwin adds them by itself when a program needs them.
 func runAddons(_ arguments: [String]) async throws {
-    let usage = "использование: onwinctl addons [install mono|gecko|all]"
-    guard let engine = try? EngineManager.engine(for: nil) else { fail("движок Wine не установлен (onwinctl engine-setup)") }
+    let usage = String(localized: "использование: onwinctl addons [install mono|gecko|all]", bundle: .onwinctl)
+    guard let engine = try? EngineManager.engine(for: nil) else { fail(String(localized: "движок Wine не установлен (onwinctl engine-setup)", bundle: .onwinctl)) }
     if arguments.isEmpty {
-        print("Движок: \(engine.id) — \(engine.root.path)")
+        print(String(localized: "Движок: \(engine.id) — \(engine.root.path)", bundle: .onwinctl))
         for addon in EngineAddon.allCases {
-            print("  \(addon.title): \(addon.isInstalled(in: engine) ? "есть" : "нет (\(Updater.sizeText(addon.size)) при первой необходимости)")")
+            print(addon.isInstalled(in: engine)
+                  ? String(localized: "  \(addon.title): есть", bundle: .onwinctl)
+                  : String(localized: "  \(addon.title): нет (\(Updater.sizeText(addon.size)) при первой необходимости)", bundle: .onwinctl))
         }
         return
     }
@@ -132,8 +134,8 @@ func runAddons(_ arguments: [String]) async throws {
     default: fail(usage)
     }
     if try await EngineAddons.install(addons, into: engine, progress: printProgress) {
-        print("Готово. Пространства обновятся при следующем запуске.")
+        print(String(localized: "Готово. Пространства обновятся при следующем запуске.", bundle: .onwinctl))
     } else {
-        print("Уже установлено.")
+        print(String(localized: "Уже установлено.", bundle: .onwinctl))
     }
 }
